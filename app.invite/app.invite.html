@@ -609,7 +609,7 @@ function shareInvitation() {
 
 <!-- Invitation module -->
 <script type="module">
-  import { render, mount } from '../Scripts/the_gospel/the_gospel_invitation.js';
+  import { render, mount } from 'Scripts/the_gospel/the_gospel_invitation.js';
 
   var root    = document.getElementById('inv-root');
   var loading = document.getElementById('inv-loading');
@@ -685,7 +685,7 @@ function shareInvitation() {
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('../../sw.js').then(function(reg) {
+      navigator.serviceWorker.register('../the_living_water.js').then(function(reg) {
         console.log('[Invite PWA] SW registered:', reg.scope);
       }, function(err) {
         console.warn('[Invite PWA] SW registration failed:', err);
