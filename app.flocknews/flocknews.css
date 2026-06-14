@@ -115,6 +115,149 @@ html, body {
   /* Darken muted label color on mobile for readability */
   :root { --ink-label: #2e2820; }
 
+  /* ═════════════════════════════════════════════════════════════════════
+     IN THIS EDITION — stacked cards instead of cramped dotted leaders
+     ═════════════════════════════════════════════════════════════════════ */
+  .fn-index-box {
+    border: 2px solid var(--rule);
+    border-radius: 0;            /* chunky square — brutalist */
+    padding: 10px 0 0;
+    margin-top: 18px;
+    background: var(--paper);
+  }
+  .fn-index-box-label {
+    font-size: 12px; letter-spacing: .24em;
+    padding: 0 14px 10px;
+    margin-bottom: 0;
+    border-bottom: 2px solid var(--rule);
+  }
+  .fn-index-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+  .fn-index-list li {
+    border-bottom: 1px solid var(--rule-soft);
+    border-right: 1px solid var(--rule-soft);
+    padding: 12px 10px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+  }
+  .fn-index-list li:nth-child(even) { border-right: none; }
+  .fn-index-list li:last-child,
+  .fn-index-list li:nth-last-child(2) { border-bottom: none; }
+  .fn-index-link {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    width: 100%;
+  }
+  .fn-index-link span:first-child {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink);
+    font-family: var(--serif);
+  }
+  .fn-index-dots { display: none; }
+  .fn-index-pg {
+    font-size: 10px;
+    color: var(--ink-label);
+    font-weight: 900;
+    background: var(--paper-tint);
+    padding: 1px 7px;
+    border: 1px solid var(--rule-soft);
+    margin-top: 2px;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     FLOCKOS SUITE TILES (§ 11) — subtitle moves below the "pill"
+     ═════════════════════════════════════════════════════════════════════ */
+  .fn-suite-icons {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .fn-suite-tile {
+    padding: 16px 6px 14px;
+    border: 2px solid var(--rule);
+    border-radius: 0;
+    background: var(--paper-white);
+    box-shadow: 4px 4px 0 var(--ink);
+    gap: 8px;
+    position: relative;
+  }
+  .fn-suite-tile:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .fn-suite-tile-icon svg {
+    width: 28px; height: 28px;
+  }
+  .fn-suite-tile-name {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .03em;
+    line-height: 1.1;
+  }
+  .fn-suite-tile-sub {
+    font-size: 8.5px;
+    letter-spacing: .04em;
+    line-height: 1.25;
+    padding: 3px 6px;
+    background: var(--paper-tint);
+    border: 1px solid var(--rule-soft);
+    color: var(--ink-label);
+    font-weight: 700;
+  }
+
+  /* ═════════════════════════════════════════════════════════════════════
+     MULTIPLY APP CARDS (§ 10) — strip out cruft, dress as brutalist tiles
+     ═════════════════════════════════════════════════════════════════════ */
+  .fn-multiply-apps {
+    grid-template-columns: 1fr;
+    border: 2px solid var(--rule);
+    border-radius: 0;
+    background: var(--paper-white);
+    box-shadow: 6px 6px 0 var(--ink);
+    margin-top: 18px;
+  }
+  .fn-multiply-app-card {
+    min-height: auto;
+    padding: 14px 14px 16px;
+    border-right: none;
+    border-bottom: 2px solid var(--rule);
+    background: var(--paper-white);
+  }
+  .fn-multiply-app-card:last-child { border-bottom: none; }
+  .fn-multiply-app-card-name {
+    font-size: .92rem;
+    font-weight: 900;
+    letter-spacing: .01em;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+    line-height: 1.2;
+  }
+  .fn-multiply-app-card-desc {
+    font-size: .82rem;
+    line-height: 1.55;
+    color: var(--ink-mid);
+    /* show only first ~2 lines, reveal on tap? */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* Let the user tap to expand description */
+  .fn-multiply-app-card:active .fn-multiply-app-card-desc {
+    -webkit-line-clamp: unset;
+    display: block;
+  }
+
   /* Compact centered popover — NOT full-page takeover */
   .fn-app-switcher {
     position: fixed;
