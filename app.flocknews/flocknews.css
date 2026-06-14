@@ -1533,6 +1533,17 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 
 .fn-sw-name { color: #f8fafc; }
 .fn-sw-hint { color: rgba(226,232,240,.78); }
+.fn-sw-item,
+.fn-sw-item:hover,
+.fn-sw-item:focus-visible,
+.fn-sw-item:active {
+  color: #f8fafc;
+}
+.fn-sw-item:hover .fn-sw-name,
+.fn-sw-item:focus-visible .fn-sw-name,
+.fn-sw-item:active .fn-sw-name {
+  color: #fff;
+}
 
 .fn-masthead {
   min-height: 470px;
@@ -1740,6 +1751,18 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   color: var(--herald-gold);
   font-family: var(--sans);
   font-weight: 900;
+}
+
+.fn-dateline .fn-date-arrow:hover,
+.fn-dateline .fn-date-arrow:focus-visible {
+  color: #fff;
+  outline: none;
+}
+
+.fn-church-website:hover,
+.fn-church-website:focus-visible {
+  color: #fff;
+  outline: none;
 }
 
 .fn-section-label,
@@ -2799,8 +2822,14 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 }
 
 .fn-section-label a {
-  color: inherit;
+  color: #f8fafc;
   text-decoration: none;
+}
+
+.fn-section-label a:hover,
+.fn-section-label a:focus-visible {
+  color: #fff;
+  outline: none;
 }
 
 .fn-lead-scripture,

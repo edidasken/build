@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="FlockOS — A complete suite of ministry tools for the local church pastor. Free to the Body of Christ.">
-  <title>FlockOS — A Ministry Suite for the Local Church</title>
+  <title>Multiply — FlockOS Public Desk</title>
+  <link rel="icon" type="image/svg+xml" href="../Images/icon-herald.svg">
+  <link rel="apple-touch-icon" href="../Images/icon-herald.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Merriweather:wght@700;900&amp;display=swap">
 
   <!-- Firebase config — patched per-church by B-Build -->
   <script>
@@ -27,6 +29,13 @@
     (function () {
       try { var t = localStorage.getItem('flock_theme') || 'america'; document.documentElement.setAttribute('data-theme', t); }
       catch (_) { document.documentElement.setAttribute('data-theme', 'america'); }
+      try {
+        var s = localStorage.getItem('fn_sidebar_open');
+        var open = s == null ? window.matchMedia('(min-width: 641px)').matches : s === 'true';
+        document.documentElement.setAttribute('data-fn-sidebar', open ? 'open' : 'closed');
+      } catch (_) {
+        document.documentElement.setAttribute('data-fn-sidebar', window.matchMedia('(min-width: 641px)').matches ? 'open' : 'closed');
+      }
     })();
   </script>
 
@@ -35,31 +44,151 @@
 </head>
 <body>
 
-<div class="herald-page">
+<div class="fn-page multiply-page">
 
-  <!-- ══ BACK TO SUITE + SHARE ═══════════════════════════════════════ -->
-  <div class="herald-back-bar">
-    <button class="herald-back-btn" onclick="goBack()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      Back to FlockOS
+  <!-- ══ APP BAR ═════════════════════════════════════════════════════ -->
+  <div class="fn-back-bar" style="position:relative">
+    <button class="fn-nav-toggle" id="fn-sidebar-toggle" type="button" aria-label="Open app navigation" aria-controls="fn-side-nav" aria-expanded="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
-    <button class="herald-share-btn" id="mly-share-btn" onclick="shareFlockOS()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Share with a Friend
+    <button class="fn-back-btn" id="fn-app-switcher-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-app-switcher">
+      <span class="fn-app-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg>
+      </span>
+      <span class="fn-btn-label">Multiply</span>
+      <svg class="fn-switcher-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
+    <nav id="fn-app-switcher" class="fn-app-switcher" role="menu" aria-hidden="true" hidden>
+      <a class="fn-sw-item" href="../app.flocknews/flocknews.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><img src="../Images/icon-herald.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Herald</span><span class="fn-sw-hint">Daily paper</span></span>
+      </a>
+      <hr class="fn-sw-divider">
+      <a class="fn-sw-item" href="../app.flockos/app.flockos.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#3b82f6"><img src="../Images/icon-flockos.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockOS</span><span class="fn-sw-hint">Shepherd's Dashboard</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.grow/app.grow.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#d97706"><img src="../Images/icon-grow.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">GROW</span><span class="fn-sw-hint">Discipleship Hub</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.invite/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#22c55e"><img src="../Images/icon-invite.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">The Invitation</span><span class="fn-sw-hint">Gospel Page</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.stand/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#a855f7"><img src="../Images/icon-stand.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Flock Stand</span><span class="fn-sw-hint">Music Stand</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.flockshow/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#ef4444"><img src="../Images/icon-show.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockShow</span><span class="fn-sw-hint">Worship Display</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.feed/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><img src="../Images/icon-feed.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FEED</span><span class="fn-sw-hint">Sermon Workspace</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.flockchat/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#06b6d4"><img src="../Images/icon-chat.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockChat</span><span class="fn-sw-hint">Church Messaging</span></span>
+      </a>
+      <a class="fn-sw-item fn-sw-current" href="multiply.html" role="menuitem" aria-current="page">
+        <span class="fn-sw-icon" style="color:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Multiply</span><span class="fn-sw-hint">Church planting &amp; multiplication</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.flockdocs/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#3b82f6"><img src="../Images/icon-flockdocs.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockDocs</span><span class="fn-sw-hint">Church Documents</span></span>
+      </a>
+      <a class="fn-sw-item" href="../app.melchizedek/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><img src="../Images/icon-melchizedek.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Melchizedek</span><span class="fn-sw-hint">Master Admin</span></span>
+      </a>
+    </nav>
+    <div class="fn-top-actions">
+      <button class="fn-share-btn" id="mly-share-btn" onclick="shareFlockOS()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span class="fn-btn-label">Share with a Friend</span>
+      </button>
+    </div>
   </div>
 
+  <div class="fn-side-backdrop" id="fn-side-backdrop" aria-hidden="true"></div>
+  <aside class="fn-side-nav" id="fn-side-nav" aria-label="FlockOS apps">
+    <section class="fn-side-section">
+      <a class="fn-side-link" href="../app.flocknews/flocknews.html">
+        <span class="fn-side-icon" style="color:#e8a838"><img src="../Images/icon-herald.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Herald</span>
+      </a>
+      <a class="fn-side-link" href="../app.flockos/app.flockos.html">
+        <span class="fn-side-icon" style="color:#3b82f6"><img src="../Images/icon-flockos.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">FlockOS</span>
+      </a>
+      <a class="fn-side-link" href="../app.grow/app.grow.html">
+        <span class="fn-side-icon" style="color:#d97706"><img src="../Images/icon-grow.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">GROW</span>
+      </a>
+      <a class="fn-side-link" href="../app.invite/">
+        <span class="fn-side-icon" style="color:#22c55e"><img src="../Images/icon-invite.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Invite</span>
+      </a>
+      <a class="fn-side-link" href="../app.stand/">
+        <span class="fn-side-icon" style="color:#a855f7"><img src="../Images/icon-stand.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Stand</span>
+      </a>
+      <a class="fn-side-link" href="../app.flockshow/">
+        <span class="fn-side-icon" style="color:#ef4444"><img src="../Images/icon-show.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Show</span>
+      </a>
+      <a class="fn-side-link" href="../app.feed/">
+        <span class="fn-side-icon" style="color:#e8a838"><img src="../Images/icon-feed.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">FEED</span>
+      </a>
+      <a class="fn-side-link" href="../app.flockchat/">
+        <span class="fn-side-icon" style="color:#06b6d4"><img src="../Images/icon-chat.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Chat</span>
+      </a>
+      <a class="fn-side-link fn-side-link-active" href="multiply.html" aria-current="page">
+        <span class="fn-side-icon" style="color:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg></span>
+        <span class="fn-side-label">Multiply</span>
+      </a>
+      <a class="fn-side-link" href="../app.flockdocs/">
+        <span class="fn-side-icon" style="color:#3b82f6"><img src="../Images/icon-flockdocs.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Docs</span>
+      </a>
+      <a class="fn-side-link" href="../app.melchizedek/">
+        <span class="fn-side-icon" style="color:#e8a838"><img src="../Images/icon-melchizedek.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Admin</span>
+      </a>
+    </section>
+  </aside>
+
   <!-- ══ MASTHEAD ════════════════════════════════════════════════════ -->
-  <header class="herald-masthead">
-    <div class="herald-flag">The Flock Herald</div>
-    <div class="herald-tagline">Ministry Tools for the Local Church &nbsp;·&nbsp; Free to the Body of Christ</div>
-    <div class="herald-dateline">
-      <span>Vol. I &nbsp;·&nbsp; No. 1</span>
-      <span id="mly-date">2026</span>
-      <span>flock-os.github.io</span>
+  <header class="fn-masthead">
+    <hr class="fn-masthead-rule-top">
+    <div class="fn-masthead-inner">
+      <div class="fn-church-name">FlockOS Public Desk</div>
+      <div class="fn-flag">Multiply</div>
+      <div class="fn-welcome-message" data-day="Church Planting &amp; Multiplication">Tools for pastors, planters, missionaries, and churches sending the Gospel farther.</div>
+      <div class="fn-motto">
+        <a class="fn-motto-link" href="../app.flockos/app.flockos.html">Shepherd's Dashboard</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="../app.grow/app.grow.html#the_gospel_missions">Missions</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#mly-form-wrap">Request Help</a>
+      </div>
+      <div class="fn-dateline">
+        <span class="fn-dateline-row">
+          <span>Vol. I &nbsp;·&nbsp; No. 1</span>
+          <span id="mly-date">2026</span>
+          <span>flock-os.github.io</span>
+        </span>
+      </div>
     </div>
+    <hr class="fn-masthead-rule-bot">
   </header>
 
+  <main class="multiply-content">
   <hr class="rule-thick">
 
   <!-- ══ HEADLINE ═════════════════════════════════════════════════════ -->
@@ -203,7 +332,9 @@
     FlockOS &nbsp;·&nbsp; flock-os.github.io &nbsp;·&nbsp; Free to the Church &nbsp;·&nbsp; All Rights Reserved
   </footer>
 
-</div><!-- /.herald-page -->
+  </main>
+
+</div><!-- /.fn-page -->
 
 <!-- ── Status toast ──────────────────────────────────────────────────── -->
 <div id="mly-status" role="alert" aria-live="polite"></div>
@@ -221,9 +352,85 @@
     } else if (history.length > 1) {
       history.back();
     } else {
-      window.location.href = 'index.html';
+      window.location.href = '../app.flockos/app.flockos.html';
     }
   }
+
+  // ── Sidebar toggle ───────────────────────────────────────────────────
+  (function () {
+    var toggle = document.getElementById('fn-sidebar-toggle');
+    var nav = document.getElementById('fn-side-nav');
+    var backdrop = document.getElementById('fn-side-backdrop');
+    if (!toggle || !nav) return;
+
+    function isOpen() {
+      return document.documentElement.getAttribute('data-fn-sidebar') === 'open';
+    }
+
+    function sync(open) {
+      document.documentElement.setAttribute('data-fn-sidebar', open ? 'open' : 'closed');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close app navigation' : 'Open app navigation');
+      nav.setAttribute('aria-hidden', open ? 'false' : 'true');
+      try { localStorage.setItem('fn_sidebar_open', open ? 'true' : 'false'); } catch (_) {}
+    }
+
+    sync(isOpen());
+    toggle.addEventListener('click', function () { sync(!isOpen()); });
+    if (backdrop) backdrop.addEventListener('click', function () { sync(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && isOpen() && window.matchMedia('(max-width: 640px)').matches) {
+        sync(false);
+        toggle.focus();
+      }
+    });
+  })();
+
+  // ── App switcher ─────────────────────────────────────────────────────
+  (function () {
+    var btn = document.getElementById('fn-app-switcher-btn');
+    var panel = document.getElementById('fn-app-switcher');
+    if (!btn || !panel) return;
+    var chevron = btn.querySelector('.fn-switcher-chevron');
+    var backdrop = document.createElement('div');
+    backdrop.className = 'fn-switcher-backdrop';
+    document.body.appendChild(backdrop);
+
+    function openSwitcher() {
+      panel.hidden = false;
+      panel.setAttribute('aria-hidden', 'false');
+      btn.setAttribute('aria-expanded', 'true');
+      if (chevron) chevron.style.transform = 'rotate(180deg)';
+      if (window.innerWidth <= 640) {
+        backdrop.classList.add('visible');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeSwitcher() {
+      panel.hidden = true;
+      panel.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('aria-expanded', 'false');
+      if (chevron) chevron.style.transform = '';
+      backdrop.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      panel.hidden ? openSwitcher() : closeSwitcher();
+    });
+    backdrop.addEventListener('click', closeSwitcher);
+    document.addEventListener('click', function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) closeSwitcher();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) closeSwitcher();
+    });
+    window.addEventListener('scroll', function () {
+      if (!panel.hidden && window.innerWidth > 640) closeSwitcher();
+    }, { passive: true });
+  })();
 
   // ── Share ─────────────────────────────────────────────────────────────
   function shareFlockOS() {
