@@ -8,8 +8,7 @@
   },
   "include": [
     "Scripts/**/*",
-    "Views/**/*",
-    "the_living_water.js"
+    "Views/**/*"
   ],
   "exclude": [
     "Data/**/*"
