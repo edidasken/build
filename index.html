@@ -43,6 +43,7 @@
   </script>
   <link rel="manifest" href="../manifest.json">
   <link rel="stylesheet" href="app.flocknews/flocknews.css">
+  <link rel="stylesheet" href="Styles/herald_grow.css">
   <!-- Embedded-mode override: when loaded inside the launcher iframe, hide
        the Herald's own topbar and sidebar (the parent provides these). -->
   <style>
@@ -100,7 +101,7 @@
         <span class="fn-sw-icon" style="color:#3b82f6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <span class="fn-sw-text"><span class="fn-sw-name">FlockOS</span><span class="fn-sw-hint">Shepherd's Dashboard</span></span>
       </a>
-      <a class="fn-sw-item" href="app.grow/app.grow.html" role="menuitem">
+      <a class="fn-sw-item" href="#fn-section-grow" role="menuitem" data-herald-grow-nav>
         <span class="fn-sw-icon" style="color:#d97706"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M5 12C5 7 8 4 12 2c4 2 7 5 7 10"/><path d="M5 12c0 3 3 6 7 8 4-2 7-5 7-8"/></svg></span>
         <span class="fn-sw-text"><span class="fn-sw-name">GROW</span><span class="fn-sw-hint">Discipleship Hub</span></span>
       </a>
@@ -164,7 +165,7 @@
         <span class="fn-side-icon" style="color:#3b82f6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <span class="fn-side-label">FlockOS</span>
       </a>
-      <a class="fn-side-link" href="app.grow/app.grow.html">
+      <a class="fn-side-link" href="#fn-section-grow" data-herald-grow-nav>
         <span class="fn-side-icon" style="color:#d97706"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22V12"/><path d="M5 12C5 7 8 4 12 2c4 2 7 5 7 10"/><path d="M5 12c0 3 3 6 7 8 4-2 7-5 7-8"/></svg></span>
         <span class="fn-side-label">GROW</span>
       </a>
@@ -215,13 +216,13 @@
       <div class="fn-church-name">FlockOS</div>
       <div class="fn-welcome-message" id="fn-welcome-message" aria-live="polite"></div>
       <div class="fn-motto">
-        <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_courses">Discipleship</a>
+        <a class="fn-motto-link" href="#the_gospel_courses">Discipleship</a>
         <span class="fn-motto-dot">·</span>
-        <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_devotionals">Devotions</a>
+        <a class="fn-motto-link" href="#the_gospel_devotionals">Devotions</a>
         <span class="fn-motto-dot">·</span>
-        <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_missions">Missions</a>
+        <a class="fn-motto-link" href="#the_gospel_missions">Missions</a>
         <span class="fn-motto-dot">·</span>
-        <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_theology">Theology</a>
+        <a class="fn-motto-link" href="#the_gospel_theology">Theology</a>
       </div>
       <div class="fn-dateline">
         <span class="fn-dateline-row">
@@ -245,33 +246,34 @@
 
       <!-- ── Left: Today's Readings ──────────────────────────────────── -->
       <aside class="fn-front-left">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_reading">Today's Scripture Readings</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_reading">Today's Scripture Readings</a></div>
         <div id="fn-readings-content" class="fn-loading">Loading…</div>
         <div id="fn-psalm-highlight"></div>
         <div class="fn-index-box">
           <div class="fn-index-box-label">In This Edition</div>
           <ul class="fn-index-list">
-            <li><span>Devotional</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 1</span></li>
-            <li><span>Missions</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 2</span></li>
-            <li><span>Theology</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 3</span></li>
-            <li><span>Apologetics</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 4</span></li>
-            <li><span>Discipleship</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 5</span></li>
-            <li><span>Daily Quiz</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 6</span></li>
-            <li><span>Person of Scripture</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 7</span></li>
-            <li><span>The Invitation</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 8</span></li>
-            <li><span>The FlockOS Suite</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 9</span></li>
+            <li><a class="fn-index-link" href="#fn-section-devo" aria-label="Jump to Devotional section"><span>Devotional</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 1</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-missions" aria-label="Jump to Missions section"><span>Missions</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 2</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-theology" aria-label="Jump to Theology section"><span>Theology</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 3</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-apologetics" aria-label="Jump to Apologetics section"><span>Apologetics</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 4</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-discipleship" aria-label="Jump to Discipleship section"><span>Discipleship</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 5</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-quiz" aria-label="Jump to Daily Quiz section"><span>Daily Quiz</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 6</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-figure" aria-label="Jump to Person of Scripture section"><span>Person of Scripture</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 7</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-invitation" aria-label="Jump to The Invitation section"><span>The Invitation</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 8</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-grow" aria-label="Jump to GROW section"><span>GROW</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 9</span></a></li>
+            <li><a class="fn-index-link" href="#fn-section-suite" aria-label="Jump to The FlockOS Suite section"><span>The FlockOS Suite</span><span class="fn-index-dots"></span><span class="fn-index-pg">§ 10</span></a></li>
           </ul>
         </div>
       </aside>
 
       <!-- ── Main: Devotional of the Day ─────────────────────────────── -->
       <main class="fn-front-main" id="fn-section-devo">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_devotionals">Devotional of the Day</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_devotionals">Devotional of the Day</a></div>
         <div id="fn-devo-content" class="fn-loading">Loading today's devotional…</div>
         <!-- ── Heart Check (flows directly below prayer) ────────────── -->
         <div id="fn-section-heartcheck" class="fn-heartcheck-inline">
           <hr style="border:none;border-top:2px solid var(--rule);margin:24px 0 18px">
-          <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_heart">Heart Check</a></div>
+          <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_heart">Heart Check</a></div>
           <div id="fn-heart-content" class="fn-loading">Loading…</div>
         </div>
       </main>
@@ -282,18 +284,18 @@
   <!-- ══ SECTION 2 — MISSIONS REPORT ════════════════════════════════════ -->
   <section data-fn-section="missions" id="fn-section-missions">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_missions">§ 2 &nbsp;·&nbsp; Missions Report &nbsp;·&nbsp; Joshua Project &amp; Operation World &nbsp;·&nbsp; <span id="fn-spot-country-name">—</span></a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_missions">§ 2 &nbsp;·&nbsp; Missions Report &nbsp;·&nbsp; Joshua Project &amp; Operation World &nbsp;·&nbsp; <span id="fn-spot-country-name">—</span></a></p>
     <div class="fn-missions-grid">
       <div class="fn-missions-spotlight">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_missions">Today's Spotlight</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_missions">Today's Spotlight</a></div>
         <div id="fn-spot-content" class="fn-loading">Loading…</div>
       </div>
       <div class="fn-missions-stats">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_missions">Global Numbers</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_missions">Global Numbers</a></div>
         <div id="fn-stats-content" class="fn-loading">…</div>
       </div>
       <div class="fn-missions-watch">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_missions">World Watch</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_missions">World Watch</a></div>
         <div id="fn-watch-content" class="fn-loading">…</div>
       </div>
     </div>
@@ -302,53 +304,53 @@
   <!-- ══ SECTION 3 — THEOLOGY CORNER ════════════════════════════════════ -->
   <section data-fn-section="theology" id="fn-section-theology">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_theology">§ 3 &nbsp;·&nbsp; Theology Corner &nbsp;·&nbsp; <span id="fn-theo-head">—</span></a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_theology">§ 3 &nbsp;·&nbsp; Theology Corner &nbsp;·&nbsp; <span id="fn-theo-head">—</span></a></p>
     <div id="fn-theo-content" class="fn-loading">Loading…</div>
   </section>
 
   <!-- ══ SECTION 4 — APOLOGETICS ═════════════════════════════════════════ -->
   <section data-fn-section="apologetics" id="fn-section-apologetics">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_apologetics">§ 4 &nbsp;·&nbsp; Apologetics &nbsp;·&nbsp; Answers to Hard Questions</a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_apologetics">§ 4 &nbsp;·&nbsp; Apologetics &nbsp;·&nbsp; Answers to Hard Questions</a></p>
     <div id="fn-apol-content" class="fn-loading">Loading…</div>
   </section>
 
   <!-- ══ SECTION 5 — DISCIPLESHIP & CARE ═════════════════════════════════ -->
   <section data-fn-section="discipleship" id="fn-section-discipleship">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_counseling">§ 5 &nbsp;·&nbsp; Discipleship &amp; Biblical Care &nbsp;·&nbsp; <span id="fn-counsel-head">—</span></a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_counseling">§ 5 &nbsp;·&nbsp; Discipleship &amp; Biblical Care &nbsp;·&nbsp; <span id="fn-counsel-head">—</span></a></p>
     <div id="fn-counsel-content" class="fn-loading">Loading…</div>
   </section>
 
   <!-- ══ SECTION 6 — DAILY QUIZ ═══════════════════════════════════════════ -->
   <section data-fn-section="quiz" id="fn-section-quiz">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_quizzes">§ 6 &nbsp;·&nbsp; The Daily Quiz &nbsp;·&nbsp; Test Your Knowledge</a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_quizzes">§ 6 &nbsp;·&nbsp; The Daily Quiz &nbsp;·&nbsp; Test Your Knowledge</a></p>
     <div id="fn-quiz-content" class="fn-loading">Loading…</div>
   </section>
 
   <!-- ══ SECTION 7 — PERSON OF SCRIPTURE ══════════════════════════════════ -->
   <section data-fn-section="figure" id="fn-section-figure">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_genealogy">§ 7 &nbsp;·&nbsp; Person of Scripture &nbsp;·&nbsp; <span id="fn-figure-head">—</span></a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_genealogy">§ 7 &nbsp;·&nbsp; Person of Scripture &nbsp;·&nbsp; <span id="fn-figure-head">—</span></a></p>
     <div id="fn-figure-content" class="fn-loading">Loading…</div>
   </section>
 
   <!-- ══ SECTION 8 — THE INVITATION ═════════════════════════════════════ -->
   <section data-fn-section="invitation" id="fn-section-invitation">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_invitation">§ 8 &nbsp;·&nbsp; The Invitation &nbsp;·&nbsp; Come to Christ</a></p>
+    <p class="fn-section-label"><a class="fn-section-link" href="#the_gospel_invitation">§ 8 &nbsp;·&nbsp; The Invitation &nbsp;·&nbsp; Come to Christ</a></p>
     <div class="fn-inv-grid">
       <div class="fn-inv-col" id="fn-inv-invitation">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_invitation">Today’s Invitation</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_invitation">Today’s Invitation</a></div>
         <div class="fn-loading">Loading…</div>
       </div>
       <div class="fn-inv-col" id="fn-inv-iam">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_invitation">I Am</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_invitation">I Am</a></div>
         <div class="fn-loading">Loading…</div>
       </div>
       <div class="fn-inv-col" id="fn-inv-work">
-        <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_invitation">The Finished Work</a></div>
+        <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_invitation">The Finished Work</a></div>
         <div class="fn-loading">Loading…</div>
       </div>
     </div>
@@ -357,10 +359,17 @@
     </div>
   </section>
 
-  <!-- ══ SECTION 9 — THE FLOCKOS SUITE ════════════════════════════════════ -->
+  <!-- ══ SECTION 9 — GROW DISCIPLESHIP HUB ════════════════════════════════ -->
+  <section data-fn-section="grow" id="fn-section-grow" class="hg-herald-integrated">
+    <hr class="rule-double" style="margin-top:30px">
+    <p class="fn-section-label">§ 9 &nbsp;·&nbsp; GROW &nbsp;·&nbsp; Discipleship Hub</p>
+    <main id="hg-edition-content" class="hg-edition-content" data-herald-integrated="true" role="region" aria-label="GROW discipleship hub"></main>
+  </section>
+
+  <!-- ══ SECTION 10 — THE FLOCKOS SUITE ═══════════════════════════════════ -->
   <section data-fn-section="suite" id="fn-section-suite">
     <hr class="rule-double" style="margin-top:30px">
-    <p class="fn-section-label">§ 9 &nbsp;·&nbsp; The FlockOS Suite &nbsp;·&nbsp; Eight Apps, One Mission</p>
+    <p class="fn-section-label">§ 10 &nbsp;·&nbsp; The FlockOS Suite &nbsp;·&nbsp; Eight Apps, One Mission</p>
     <div class="fn-suite-icons">
 
       <button class="fn-suite-tile" onclick="openSuitePanel('flockos')" aria-label="FlockOS details">
@@ -1407,7 +1416,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
   const work = WORK[DAY % WORK.length];
 
   document.getElementById('fn-inv-invitation').innerHTML = `
-    <div class="fn-col-label"><a class="fn-section-link" href="app.grow/app.grow.html#the_gospel_invitation">Today's Invitation</a></div>
+    <div class="fn-col-label"><a class="fn-section-link" href="#the_gospel_invitation">Today's Invitation</a></div>
     <div class="fn-inv-title">${esc(inv.title)}</div>
     <blockquote class="fn-inv-quote">"${esc(inv.quote)}"</blockquote>
     <div class="fn-inv-ref">${esc(inv.ref)}</div>
@@ -1492,7 +1501,7 @@ var SUITE_APPS = {
     full: 'GROW — Discipleship Hub',
     sub: 'Discipleship Hub',
     color: '#d97706',
-    href: 'app.grow/app.grow.html',
+    href: '#fn-section-grow',
     svg: '<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M5 12C5 7 8 4 12 2c4 2 7 5 7 10"/><path d="M5 12c0 3 3 6 7 8 4-2 7-5 7-8"/></svg>',
     what: 'GROW is a public-access discipleship library covering daily devotionals, Bible reading plans, theology, apologetics, and global missions data for 238 nations. No account required — built for the believer and the curious seeker alike.',
     keyFeatures: ['Daily devotionals with reflection and prayer', 'Theology corner and apologetics Q&A', 'Strong\'s Greek and Hebrew lexicon', 'Missions data for 238 nations'],
@@ -1813,5 +1822,6 @@ document.addEventListener('keydown', function(e) {
     });
   })();
 </script>
+<script type="module" src="Scripts/herald_grow.js"></script>
 </body>
 </html>

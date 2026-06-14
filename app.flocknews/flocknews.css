@@ -1088,11 +1088,31 @@ html, body {
   color: var(--ink);
 }
 .fn-index-list li:last-child { border-bottom: none; }
+.fn-index-link {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
+  color: inherit;
+  text-decoration: none;
+}
+.fn-index-link:hover,
+.fn-index-link:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
 .fn-index-dots {
   flex: 1; border-bottom: 1px dotted var(--rule-soft); margin: 0 4px; min-width: 12px;
 }
 .fn-index-pg {
   font-size: 11px; color: var(--ink-label); font-weight: 700; white-space: nowrap;
+}
+
+#fn-section-devo,
+[id^="fn-section-"] {
+  scroll-margin-top: calc(var(--fn-shell-below-bar, 104px) + 1rem);
 }
 
 

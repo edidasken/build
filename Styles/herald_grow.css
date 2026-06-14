@@ -1,0 +1,869 @@
+/* ==========================================================================
+   HERALD GROW
+   GROW runs inside the same live Herald/FlockNews shell. This file only maps
+   GROW-specific module classes onto that design language.
+   ========================================================================== */
+
+:root {
+  --grow-paper: var(--paper);
+  --grow-paper-white: var(--paper-white);
+  --grow-paper-tint: var(--paper-tint);
+  --grow-ink: var(--ink);
+  --grow-ink-mid: var(--ink-mid);
+  --grow-label: var(--ink-label);
+  --grow-rule: var(--rule);
+  --grow-rule-soft: var(--rule-soft);
+  --grow-rule-faint: var(--rule-faint);
+  --grow-serif: var(--serif);
+  --grow-sans: var(--sans);
+}
+
+body.hg-grow {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body.hg-grow .fn-sw-icon img,
+body.hg-grow .fn-side-icon img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.hg-page > .hg-back-bar {
+  grid-column: 1 / -1;
+}
+
+.hg-page > .hg-side-nav {
+  grid-column: 1;
+  grid-row: 2 / span 20;
+}
+
+.hg-page > .hg-masthead,
+.hg-page > .hg-edition-content,
+.hg-page > .hg-footer {
+  grid-column: 2;
+}
+
+html[data-fn-sidebar="closed"] .hg-page > .hg-masthead,
+html[data-fn-sidebar="closed"] .hg-page > .hg-edition-content,
+html[data-fn-sidebar="closed"] .hg-page > .hg-footer {
+  grid-column: 1;
+}
+
+.hg-edition-content,
+.hg-module-section,
+.hg-module-body {
+  min-width: 0;
+}
+
+.hg-herald-integrated {
+  scroll-margin-top: calc(var(--fn-shell-below-bar, 104px) + 1rem);
+}
+
+.hg-herald-integrated .hg-edition-content {
+  display: block;
+}
+
+.hg-herald-integrated .hg-edition-content > section:first-child {
+  margin-top: 0;
+}
+
+.hg-herald-integrated .hg-edition-content > section:first-child > .rule-double:first-child {
+  display: none;
+}
+
+.hg-herald-integrated .hg-edition-content [data-fn-section],
+.hg-herald-integrated .hg-front-grid {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+.hg-herald-integrated .hg-edition-content [data-fn-section]::before,
+.hg-herald-integrated .hg-front-grid::before,
+.hg-herald-integrated .fn-front-left::before,
+.hg-herald-integrated .fn-front-main::before {
+  display: none;
+}
+
+.hg-herald-integrated .fn-front-left,
+.hg-herald-integrated .fn-front-main {
+  border: 0 !important;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 !important;
+}
+
+.hg-herald-integrated .fn-front-left {
+  border-right: 1px solid var(--rule-soft) !important;
+  padding-right: 1.1rem !important;
+}
+
+.hg-herald-integrated .fn-front-main {
+  padding-left: .35rem !important;
+}
+
+.hg-herald-integrated .hg-section-grid,
+.hg-herald-integrated .hg-section-grid-wide {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+@media (max-width: 760px) {
+  .hg-herald-integrated .fn-front-left {
+    border-right: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .hg-herald-integrated .fn-front-main {
+    padding-left: 0 !important;
+  }
+}
+
+.hg-masthead .fn-welcome-message::before {
+  content: "Discipleship Edition";
+}
+
+.hg-module-body > .grow-page {
+  padding-bottom: 0;
+}
+
+.hg-module-body .grow-hero {
+  display: none !important;
+}
+
+.hg-module-body .grow-page > :first-child {
+  margin-top: 0;
+}
+
+.hg-module-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin: -.25rem 0 1rem;
+}
+
+/* Home front page --------------------------------------------------------- */
+
+.hg-front-grid {
+  margin-top: 1.35rem;
+}
+
+.hg-lead .fn-lead-headline {
+  max-width: 820px;
+}
+
+.hg-section-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 0;
+}
+
+.hg-section-grid-wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hg-section-card {
+  min-height: 168px;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr;
+  gap: .45rem;
+  overflow: hidden;
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--herald-radius-lg);
+  background: var(--herald-panel-strong);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: 0 10px 28px rgba(15,23,42,.06);
+  transition: border-color .15s ease, background .15s ease, transform .12s ease;
+  scroll-margin-top: calc(var(--fn-shell-below-bar, 104px) + 1rem);
+}
+
+.hg-section-card::before {
+  content: "";
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 140px;
+  height: 140px;
+  border-radius: 999px;
+  background: rgba(72,211,217,.14);
+}
+
+.hg-section-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hg-section-card:hover,
+.hg-section-card:focus-visible {
+  border-color: rgba(247,199,86,.45);
+  background: #fffdf7;
+  color: var(--ink);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.fn-index-link {
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .4rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.fn-index-link:hover,
+.fn-index-link:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.hg-section-mark {
+  width: 2.15rem;
+  height: 2.15rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: .8rem;
+  background: rgba(15,23,42,.06);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hg-section-kicker,
+.grow-card-tags,
+.grow-plan-cat,
+.grow-detail-meta,
+.grow-devo-feat-badge,
+.grow-devo-feed-meta,
+.grow-oyb-hero-label,
+.grow-oyb-stream-label,
+.grow-stat-label,
+.grow-action-cat,
+.grow-quiz-cat-chip,
+.grow-chip,
+.grow-pill {
+  color: var(--ink-label);
+  font-family: var(--sans);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.hg-section-title {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.hg-section-copy {
+  color: var(--ink-mid);
+  font-family: var(--sans);
+  font-size: .98rem;
+  line-height: 1.65;
+}
+
+/* GROW module surface ----------------------------------------------------- */
+
+.grow-page {
+  --text: var(--ink);
+  --muted: var(--ink-label);
+  --surface: var(--herald-panel-strong);
+  --border: var(--rule);
+  --grow-accent: var(--herald-gold-deep);
+  color: var(--ink);
+  font-family: var(--sans);
+  gap: 1.25rem;
+  padding: 0;
+}
+
+.grow-page a {
+  color: #b45309;
+}
+
+.grow-page p,
+.grow-detail-body,
+.grow-doctrine-body,
+.grow-segment-body,
+.grow-apo-answer,
+.grow-devo-feat-reflection,
+.grow-devo-feed-reflection,
+.grow-card-desc,
+.growth-card-desc,
+.grow-plan-desc,
+.grow-detail-sub,
+.grow-quiz-lobby-desc,
+.grow-prayer,
+.grow-journal-body,
+.grow-action-q,
+.grow-action-rx,
+.grow-action-ref {
+  color: var(--ink-mid);
+  font-family: var(--sans);
+  font-size: .98rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.grow-page > :not(.grow-hero):not(.grow-tabs):not(.grow-toolbar)::before {
+  display: none;
+}
+
+.growth-section,
+.grow-section-head,
+.grow-devo-feed-head {
+  margin-top: 0;
+}
+
+.growth-section-title,
+.grow-section-title,
+.grow-detail-h4,
+.grow-heart-cat-title,
+.grow-apo-section-title,
+.grow-devo-feat-prayer-label {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 1rem;
+  padding: .38rem .65rem;
+  border: 1px solid rgba(247,199,86,.18);
+  border-radius: 999px;
+  background: rgba(247,199,86,.16);
+  color: #b45309;
+  font-family: var(--sans);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.growth-grid,
+.grow-grid,
+.grow-grid--reading,
+.grow-stats,
+.grow-devo-feed {
+  gap: 1rem;
+}
+
+.grow-page[data-grow="home"] .growth-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.growth-card,
+.grow-card,
+.grow-plan-card,
+.grow-quiz-q-card,
+.grow-quiz-lobby,
+.grow-courses-gate,
+.grow-devo-featured,
+.grow-devo-feed-card,
+.grow-devo,
+.grow-streak,
+.grow-today,
+.grow-oyb-card,
+.grow-oyb-hero,
+.grow-split-aside,
+.grow-split-main,
+.grow-detail,
+.grow-journal,
+.grow-compose-card,
+.grow-empty,
+.grow-stat-tile,
+.grow-activity,
+.grow-segment,
+.grow-action-card,
+.grow-rx-card,
+.grow-apo-card,
+.grow-quiz-review-card,
+.gp-full-access-banner {
+  border: 1px solid var(--rule);
+  border-radius: var(--herald-radius-lg);
+  background: var(--herald-panel-strong);
+  color: var(--ink);
+  box-shadow: 0 10px 28px rgba(15,23,42,.06);
+}
+
+.growth-card,
+.grow-card,
+.grow-plan-card,
+.grow-devo-feed-card,
+.grow-apo-card,
+.grow-card--counsel {
+  overflow: hidden;
+  transition: border-color .15s ease, background .15s ease, transform .12s ease;
+}
+
+.growth-card:hover,
+.grow-card:hover,
+.grow-plan-card:hover,
+.grow-devo-feed-card.is-open,
+.grow-apo-card.is-open,
+.grow-card--counsel.is-open {
+  border-color: rgba(247,199,86,.45);
+  background: #fffdf7;
+  transform: translateY(-1px);
+}
+
+.growth-card,
+.grow-card,
+.grow-plan-card,
+.grow-devo-featured,
+.grow-devo-feed-card,
+.grow-quiz-q-card,
+.grow-quiz-lobby,
+.grow-courses-gate,
+.grow-split-main,
+.grow-detail,
+.grow-journal,
+.grow-compose-card,
+.grow-action-card,
+.grow-rx-card {
+  padding: 1rem;
+}
+
+.growth-card-icon,
+.grow-card-cover--placeholder,
+.grow-cert-seal,
+.grow-courses-gate-icon,
+.grow-quiz-q-num,
+.grow-quiz-opt-letter,
+.grow-plan-ring {
+  background: rgba(15,23,42,.06);
+  color: var(--ink);
+}
+
+.growth-card-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: .85rem;
+}
+
+.grow-card-cover {
+  display: none;
+}
+
+.grow-card-body {
+  padding: 0;
+}
+
+.growth-card-title,
+.grow-card-title,
+.grow-plan-title,
+.grow-detail-title,
+.grow-doctrine-title,
+.grow-quiz-q-text,
+.grow-quiz-big-label,
+.grow-review-q,
+.grow-gen-name,
+.grow-oyb-day,
+.grow-oyb-hero-day,
+.grow-oyb-stream-val,
+.grow-oyb-hero-stream-val,
+.grow-devo-title,
+.grow-devo-feat-title,
+.grow-devo-feed-title,
+.grow-courses-gate-title,
+.grow-journal-title,
+.gp-prayer-title,
+.gp-prayer-success-title,
+.gp-signin-title {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+.growth-card-title {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.grow-card-title,
+.grow-plan-title,
+.grow-doctrine-title,
+.grow-devo-feed-title {
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+}
+
+.grow-detail-title,
+.grow-devo-feat-title,
+.grow-courses-gate-title,
+.grow-quiz-q-text {
+  font-size: clamp(1.45rem, 3vw, 2.35rem);
+}
+
+.grow-card-desc,
+.growth-card-desc,
+.grow-plan-desc,
+.grow-detail-sub,
+.grow-detail-meta,
+.grow-muted,
+.grow-card-by,
+.grow-card-meta,
+.grow-plan-done,
+.grow-quiz-score-detail,
+.grow-quiz-review-wrong,
+.grow-quiz-review-ref,
+.grow-gen-meaning,
+.grow-oyb-date,
+.grow-oyb-hero-date,
+.grow-devo-scripture,
+.grow-devo-feed-verse,
+.grow-devo-feed-prayer,
+.gp-full-access-label,
+.gp-signin-sub,
+.gp-signin-foot,
+.gp-prayer-sub,
+.gp-prayer-label,
+.gp-prayer-privacy,
+.gp-prayer-success-sub {
+  color: var(--ink-label);
+}
+
+/* Lists, splits, and tabs ------------------------------------------------- */
+
+.grow-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin: 0 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.grow-tab {
+  color: var(--ink-label);
+  font-family: var(--sans);
+  font-size: .86rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.grow-tab:hover,
+.grow-tab.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--herald-gold-deep);
+}
+
+.grow-split {
+  gap: 1rem;
+}
+
+.grow-split-aside {
+  padding: .65rem;
+}
+
+.grow-cat,
+.grow-lex-row,
+.grow-book-row,
+.grow-gen-row {
+  border-radius: var(--herald-radius-md);
+  color: var(--ink);
+}
+
+.grow-cat:hover,
+.grow-lex-row:hover,
+.grow-book-row:hover,
+.grow-gen-row:hover {
+  background: rgba(15,23,42,.05);
+}
+
+.grow-cat.is-active,
+.grow-lex-row.is-active,
+.grow-book-row.is-active,
+.grow-gen-row.is-active {
+  background: rgba(247,199,86,.16);
+  box-shadow: inset 3px 0 0 var(--herald-gold-deep);
+}
+
+.grow-cat-title,
+.grow-book-name,
+.grow-gen-name,
+.grow-lex-en {
+  color: var(--ink);
+}
+
+.grow-cat-count,
+.grow-book-genre,
+.grow-gen-meaning,
+.grow-lex-orig {
+  color: var(--ink-label);
+}
+
+/* Buttons, chips, inputs -------------------------------------------------- */
+
+.grow-btn,
+.gp-cta,
+.grow-quiz-launch,
+.grow-filter,
+.grow-session-tab,
+.grow-ans-btn,
+.gp-prayer-cancel,
+.grow-quiz-opt {
+  border-radius: var(--herald-radius-md);
+  font-family: var(--sans);
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.grow-btn,
+.gp-cta,
+.grow-quiz-launch {
+  border-color: rgba(15,23,42,.12);
+  background: var(--herald-navy);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(15,23,42,.14);
+}
+
+.grow-btn:hover,
+.gp-cta:hover,
+.grow-quiz-launch:hover {
+  filter: none;
+  background: var(--herald-navy-2);
+  transform: translateY(-1px);
+}
+
+.grow-btn--ghost,
+.grow-filter,
+.grow-session-tab,
+.grow-ans-btn,
+.gp-prayer-cancel {
+  border-color: var(--rule);
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 8px 20px rgba(15,23,42,.05);
+}
+
+.grow-btn--ghost:hover,
+.grow-filter:hover,
+.grow-session-tab:hover,
+.grow-ans-btn:hover:not(.is-active) {
+  background: #fffdf7;
+  color: var(--ink);
+}
+
+.grow-filter.is-active,
+.grow-session-tab.is-active,
+.grow-ans-btn.is-active {
+  background: rgba(247,199,86,.16);
+  color: var(--ink);
+  border-color: rgba(247,199,86,.45);
+}
+
+.grow-chip,
+.grow-pill,
+.grow-scripture,
+.grow-quiz-cat-chip,
+.grow-devo-feat-theme,
+.grow-devo-feed-theme {
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 999px;
+  background: rgba(15,23,42,.05);
+  color: var(--ink-label);
+}
+
+.grow-search,
+.grow-input,
+.grow-textarea,
+.gp-prayer-input {
+  border-color: var(--rule);
+  border-radius: var(--herald-radius-md);
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 8px 20px rgba(15,23,42,.05);
+}
+
+.grow-search:focus,
+.grow-input:focus,
+.grow-textarea:focus,
+.gp-prayer-input:focus {
+  outline: 2px solid rgba(247,199,86,.34);
+  border-color: rgba(247,199,86,.55);
+}
+
+/* Reading and devotional views ------------------------------------------- */
+
+.grow-oyb-hero {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  overflow: hidden;
+  padding: 0;
+}
+
+.grow-oyb-hero-left {
+  padding: 1.25rem;
+  border-right: 1px solid var(--rule);
+  background:
+    radial-gradient(circle at top right, rgba(247,199,86,.14), transparent 9rem),
+    #fffdf7;
+}
+
+.grow-oyb-hero-streams {
+  background: rgba(15,23,42,.04);
+}
+
+.grow-oyb-hero-stream,
+.grow-oyb-stream {
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: var(--herald-radius-md);
+  background: #fff;
+}
+
+.grow-devo-featured,
+.grow-devo-feat-scripture,
+.grow-devo-feat-question,
+.grow-quote,
+.grow-detail-quote,
+.grow-apo-quote,
+.grow-work-hope {
+  border-left: 4px solid var(--herald-gold);
+  background:
+    radial-gradient(circle at top right, rgba(247,199,86,.11), transparent 9rem),
+    #ffffff;
+}
+
+.grow-quote,
+.grow-detail-quote,
+.grow-apo-quote,
+.grow-devo-feat-scripture {
+  border-radius: var(--herald-radius-md);
+  color: var(--ink-mid);
+  font-family: var(--sans);
+  font-style: normal;
+}
+
+.grow-devo-feed {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grow-devo-feed-card {
+  border: 1px solid var(--rule);
+}
+
+.grow-devo-feed-body {
+  border-top-color: var(--rule);
+}
+
+/* Details, tables, and forms --------------------------------------------- */
+
+.grow-segment[open],
+.grow-devo[open],
+.grow-card--counsel.is-open {
+  background: #fffdf7;
+}
+
+.grow-segment > summary,
+.grow-apo-q,
+.grow-devo-feed-summary,
+.grow-quiz-opt {
+  color: var(--ink);
+}
+
+.grow-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--herald-radius-lg);
+  background: #fff;
+}
+
+.grow-table,
+.grow-oyb-table {
+  background: #fff;
+  color: var(--ink);
+}
+
+.grow-table th,
+.grow-oyb-table th {
+  background: rgba(15,23,42,.05);
+  color: var(--ink-label);
+  font-family: var(--sans);
+  font-weight: 900;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.grow-table th,
+.grow-table td,
+.grow-oyb-table th,
+.grow-oyb-table td {
+  border-bottom-color: var(--rule-faint);
+}
+
+.gp-signin-dropdown,
+.gp-prayer-card {
+  border: 1px solid var(--rule);
+  border-radius: var(--herald-radius-lg);
+  background: #fff;
+  box-shadow: var(--herald-shadow-soft);
+}
+
+/* Mobile ------------------------------------------------------------------ */
+
+@media (max-width: 980px) {
+  .hg-section-grid,
+  .hg-section-grid-wide,
+  .grow-devo-feed {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .grow-oyb-hero,
+  .grow-split {
+    grid-template-columns: 1fr;
+  }
+
+  .grow-oyb-hero-left {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .grow-split--lex .grow-split-aside,
+  .grow-split--lib .grow-split-aside {
+    max-height: min(280px, 38vh);
+  }
+
+  .growth-card,
+  .grow-card,
+  .grow-plan-card,
+  .grow-quiz-q-card,
+  .grow-quiz-lobby,
+  .grow-courses-gate,
+  .grow-devo-featured,
+  .hg-section-card {
+    padding: 1rem;
+  }
+
+  .grow-page p,
+  .grow-detail-body,
+  .grow-doctrine-body,
+  .grow-segment-body,
+  .grow-apo-answer,
+  .grow-devo-feat-reflection,
+  .grow-devo-feed-reflection,
+  .grow-card-desc,
+  .growth-card-desc,
+  .grow-plan-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}

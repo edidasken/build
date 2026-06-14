@@ -2,307 +2,165 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- base: resolves all relative resource paths from the parent New_Covenant/ folder -->
   <base href="../">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
-  <title>GROW with FlockOS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="GROW by FlockOS — free discipleship tools in the new Herald design. Bible reading, devotionals, theology, apologetics, missions, and more.">
+  <title>GROW — Herald Edition</title>
 
-  <!-- Icons -->
   <link rel="icon" type="image/svg+xml" href="Images/icon-grow.svg">
   <link rel="apple-touch-icon" href="Images/icon-grow.svg">
-
-  <!-- PWA manifest — path relative to base (New_Covenant/) -->
   <link rel="manifest" href="app.grow/manifest.json">
+  <meta name="theme-color" content="#0f172a">
 
-  <!-- PWA meta -->
-  <meta name="theme-color" content="#d97706">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="GROW">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-  <!-- SEO -->
-  <meta name="description" content="GROW by FlockOS — free discipleship tools available in 210 countries. Bible reading plans, devotionals, lexicons, apologetics, theology, missions, and more. No account required. Offline-capable.">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="GROW — Free Discipleship Tools by FlockOS">
-  <meta property="og:description" content="Bible reading plans, devotionals, strong's lexicon, apologetics, theology, missions, and more — freely available in 210 countries. No account required. Offline-capable.">
-  <meta property="og:image" content="Images/icon-grow.svg">
-  <meta property="og:url" content="https://flock-os.github.io/FlockOS/New_Covenant/grow-public.html">
-  <meta property="og:type" content="website">
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap">
 
-  <!-- Flash prevention: apply saved FlockOS theme before first paint -->
   <script>
     (function () {
       try {
-        var t = localStorage.getItem('flock_theme') || 'america';
-        document.documentElement.setAttribute('data-theme', t);
+        var isEmbedded = new URLSearchParams(location.search).get('embedded') === '1' || window !== window.top;
+        if (isEmbedded) document.documentElement.setAttribute('data-fn-embedded', 'true');
+      } catch (_) {}
+      try {
+        var s = localStorage.getItem('fn_sidebar_open');
+        var open = s == null ? window.matchMedia('(min-width: 641px)').matches : s === 'true';
+        document.documentElement.setAttribute('data-fn-sidebar', open ? 'open' : 'closed');
       } catch (_) {
-        document.documentElement.setAttribute('data-theme', 'america');
+        document.documentElement.setAttribute('data-fn-sidebar', window.matchMedia('(min-width: 641px)').matches ? 'open' : 'closed');
       }
+      try {
+        var scale = Number(localStorage.getItem('herald.text-size-scale') || '1');
+        var sizes = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+        var best = sizes.reduce(function (nearest, value) {
+          return Math.abs(value - scale) < Math.abs(nearest - scale) ? value : nearest;
+        }, 1);
+        document.documentElement.style.setProperty('--reader-scale', String(best));
+        document.documentElement.setAttribute('data-reader-scale', String(best));
+        document.documentElement.style.fontSize = (16 * best) + 'px';
+      } catch (_) {}
     })();
   </script>
 
-  <!-- Styles — one file: american_garments is merged into new_covenant.css -->
   <link rel="stylesheet" href="Styles/new_covenant.css">
-  <!-- Herald token bridge — must load AFTER new_covenant.css to override theme tokens -->
-  <link rel="stylesheet" href="Styles/herald-tokens.css">
-
-  <!--
-    Flash prevention + shell layout.
-    Mirrors the main app shell exactly so all CSS classes work identically.
-    We define --sidebar-w here so the CSS grid picks it up.
-  -->
+  <link rel="stylesheet" href="app.flocknews/flocknews.css">
+  <link rel="stylesheet" href="Styles/herald_grow.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    /* Don't override NC theme tokens — let new_covenant.css :root values flow through */
-
-    html, body {
-      height: 100dvh; margin: 0; padding: 0;
-      color: var(--ink);
-      overflow: hidden;
-      overscroll-behavior: none;
-    }
-    /* html stays dark navy (from new_covenant.css) so iOS safe-area matches footer */
-    body { background: var(--bg); }
-
-    /* ── Shell grid — mirrors .veil-wrap from new_covenant.css ─────────── */
-    .gp-wrap {
-      display: grid;
-      grid-template-areas: "top top" "side main" "foot foot";
-      grid-template-columns: var(--sidebar-w, 256px) 1fr;
-      grid-template-rows: calc(var(--topbar-h, 60px) + var(--safe-top, 0px)) 1fr auto;
-      height: 100dvh;
-      position: relative;
-    }
-    #gp-topbar-wrap  { grid-area: top; }
-    #gp-sidebar-wrap { grid-area: side; overflow-y: auto; overflow-x: hidden; }
-    #gp-main         { grid-area: main; overflow-y: auto; overflow-x: hidden; padding: 24px 28px 24px; min-width: 0; }
-    #gp-main > *     { max-width: 1200px; margin-left: auto; margin-right: auto; }
-    #grow-footer     { grid-area: foot; }
-
-    /* ── Topbar ──────────────────────────────────────────────────────────── */
-    #gp-topbar-wrap { grid-area: top; display: flex; }
-    #gp-topbar {
-      display: flex; align-items: center; gap: 12px;
-      width: 100%; padding: var(--safe-top, 0px) 20px 0;
-      background: var(--top-bg);
-      border-bottom: 1px solid var(--top-line);
-      color: var(--top-ink);
-      position: relative; z-index: 400;
-    }
-    #gp-topbar::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2.5px; pointer-events: none;
-      background: var(--grad-rainbow);
-      background-size: 200% 100%;
-      animation: gp-rainbow 9s linear infinite;
-      opacity: 0.72;
-    }
-    @keyframes gp-rainbow { from { background-position: 0% 0; } to { background-position: 200% 0; } }
-    @media (prefers-reduced-motion: reduce) { #gp-topbar::after { animation: none; opacity: 0.5; } }
-
-    /* ── CTA button / sign-in dropdown ────────────────────────────────────── */
-    .gp-cta {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 16px; border-radius: 999px;
-      background: var(--gold, #e8a838); color: #0c1445;
-      font: 600 0.82rem var(--font-ui, 'Plus Jakarta Sans', sans-serif);
-      text-decoration: none; border: 0; cursor: pointer; flex-shrink: 0;
-      transition: background 150ms, transform 100ms, box-shadow 150ms;
-      box-shadow: 0 2px 10px rgba(232,168,56,0.35);
-    }
-    .gp-cta:hover { background: #f0b534; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,168,56,0.50); }
-    .gp-cta:active { transform: scale(0.97); }
-
-    /* Sign-in dropdown */
-    .gp-signin-dropdown {
-      position: absolute; top: calc(100% + 10px); right: 0;
-      width: 260px;
-      background: var(--bg-raised, #fff);
-      border: 1px solid var(--line, #e5e7ef);
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(15,23,42,0.16), 0 4px 12px rgba(15,23,42,0.08);
-      z-index: 500;
-      overflow: hidden;
-      animation: gp-dropdown-in 160ms cubic-bezier(.2,.8,.2,1);
-    }
-    @keyframes gp-dropdown-in {
-      from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .gp-signin-dropdown-inner { padding: 22px 20px 18px; text-align: center; }
-    .gp-signin-title {
-      font: 700 1rem var(--font-ui, sans-serif); color: var(--ink, #1b264f);
-      margin: 0 0 6px;
-    }
-    .gp-signin-sub {
-      font: 0.82rem var(--font-ui, sans-serif); color: var(--ink-muted, #7a7f96);
-      margin: 0 0 18px; line-height: 1.5;
-    }
-    .gp-signin-cta { width: 100%; justify-content: center; border-radius: 10px; padding: 10px 18px; }
-    .gp-signin-foot {
-      margin: 14px 0 0;
-      font: 0.74rem var(--font-ui, sans-serif); color: var(--ink-muted, #7a7f96);
-    }
-    .gp-signin-foot strong { color: var(--ink, #1b264f); font-weight: 600; }
-
-    /* ── Sidebar wrapper — mobile overlay behaviour ───────────────────────── */
-    #gp-sidebar-wrap {
-      background: var(--side-bg);
-      color: var(--side-ink);
-      padding: 14px 10px 120px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.10) transparent;
-      display: flex; flex-direction: column;
-    }
-    #gp-sidebar-wrap::-webkit-scrollbar { width: 4px; }
-    #gp-sidebar-wrap::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
-    #gp-sidebar { display: flex; flex-direction: column; gap: 0; flex: 1; }
-
-    /* ── Full-access banner at bottom of home page ───────────────────────── */
-    .gp-full-access-banner {
-      margin-top: 40px; border-radius: 16px;
-      background: linear-gradient(135deg, rgba(232,168,56,0.12) 0%, rgba(124,58,237,0.10) 100%);
-      border: 1px solid rgba(232,168,56,0.22);
-      padding: 20px 24px;
-    }
-    .gp-full-access-inner { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; }
-    .gp-full-access-label { flex: 1; font: 500 0.95rem var(--font-ui); color: var(--ink, #1b264f); min-width: 200px; }
-
-    /* ── Hamburger (hidden on desktop) ──────────────────────────────────── */
-    .gp-hamburger { color: rgba(255,255,255,0.72) !important; }
-
-    /* ── Mobile breakpoint ───────────────────────────────────────────────── */
-    @media (max-width: 860px) {
-      .gp-wrap {
-        grid-template-columns: 1fr;
-        grid-template-areas: "top" "main" "foot";
-      }
-      #gp-sidebar-wrap {
-        display: none;
-        position: fixed; top: calc(var(--topbar-h, 60px) + var(--safe-top, 0px));
-        left: 0; bottom: 0;
-        width: min(280px, 85vw);
-        z-index: 300;
-        overflow-y: auto;
-        /* Slide-in animation */
-        transform: translateX(-100%);
-        transition: transform 220ms cubic-bezier(.2,.8,.2,1);
-      }
-      #gp-sidebar-wrap.gp-sidebar-open {
-        display: flex;
-        transform: translateX(0);
-      }
-      /* Backdrop when sidebar is open */
-      #gp-sidebar-wrap.gp-sidebar-open::before {
-        content: '';
-        position: fixed; inset: 0;
-        background: var(--modal-dim);
-        z-index: -1;
-        left: min(280px, 85vw);
-        width: calc(100vw - min(280px, 85vw));
-      }
-      .gp-hamburger { display: inline-flex !important; }
-      #gp-main { padding: 16px 16px 120px; }
-    }
-
-    @media (min-width: 861px) {
-      .gp-hamburger { display: none !important; }
-    }
-
-    /* .ptr-indicator now lives in new_covenant.css — single source of truth. */
+    [data-fn-embedded="true"] .fn-back-bar { display: none !important; }
+    [data-fn-embedded="true"] .fn-side-nav { display: none !important; }
+    [data-fn-embedded="true"] .fn-side-backdrop { display: none !important; }
+    [data-fn-embedded="true"] .fn-nav-toggle { display: none !important; }
+    [data-fn-embedded="true"] .fn-masthead { padding-top: 28px; }
   </style>
 </head>
-<body>
-  <div class="gp-wrap">
-    <!-- Topbar (unity-header mounted by grow_public.js) -->
-    <header id="gp-topbar-wrap" class="unity-header" role="banner"></header>
+<body class="hg-grow">
+  <div class="fn-page hg-page">
+    <div class="fn-back-bar hg-back-bar">
+      <button class="fn-nav-toggle" id="fn-sidebar-toggle" type="button" aria-label="Open app navigation" aria-controls="fn-side-nav" aria-expanded="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
 
-    <!-- Bespoke sign-in marketing dropdown — opened by the unity-header avatar via onAccount -->
-    <div id="gp-signin-dropdown" class="gp-signin-dropdown" role="menu" hidden></div>
+      <button class="fn-back-btn" id="fn-app-switcher-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-app-switcher">
+        <img class="fn-herald-mark" src="Images/icon-grow.svg" alt="" aria-hidden="true">
+        <span class="fn-btn-label">GROW</span>
+        <svg class="fn-switcher-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
 
-    <!-- Sidebar -->
-    <nav id="gp-sidebar-wrap" role="navigation" aria-label="GROW modules">
-      <div id="gp-sidebar"></div>
-    </nav>
+      <nav id="fn-app-switcher" class="fn-app-switcher" role="menu" aria-hidden="true" hidden>
+        <a class="fn-sw-item" href="index.html" role="menuitem"><span class="fn-sw-icon" style="color:#e8a838"><img src="Images/icon-pwa.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">Herald</span><span class="fn-sw-hint">Daily paper</span></span></a>
+        <hr class="fn-sw-divider">
+        <a class="fn-sw-item" href="app.flockos/app.flockos.html" role="menuitem"><span class="fn-sw-icon" style="color:#3b82f6"><img src="Images/icon-flockos.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">FlockOS</span><span class="fn-sw-hint">Shepherd's Dashboard</span></span></a>
+        <a class="fn-sw-item" href="app.grow/app.grow.html" role="menuitem"><span class="fn-sw-icon" style="color:#d97706"><img src="Images/icon-grow.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">GROW</span><span class="fn-sw-hint">Discipleship Hub — you are here</span></span></a>
+        <a class="fn-sw-item" href="app.invite/app.invite.html" role="menuitem"><span class="fn-sw-icon" style="color:#22c55e"><img src="Images/icon-invite.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">The Invitation</span><span class="fn-sw-hint">Gospel Page</span></span></a>
+        <a class="fn-sw-item" href="app.stand/" role="menuitem"><span class="fn-sw-icon" style="color:#a855f7"><img src="Images/icon-stand.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">Flock Stand</span><span class="fn-sw-hint">Music Stand</span></span></a>
+        <a class="fn-sw-item" href="app.flockshow/app.flockshow.html" role="menuitem"><span class="fn-sw-icon" style="color:#ef4444"><img src="Images/icon-show.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">FlockShow</span><span class="fn-sw-hint">Worship Display</span></span></a>
+        <a class="fn-sw-item" href="app.feed/" role="menuitem"><span class="fn-sw-icon" style="color:#e8a838"><img src="Images/icon-feed.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">FEED</span><span class="fn-sw-hint">Sermon Workspace</span></span></a>
+        <a class="fn-sw-item" href="app.flockchat/app.flockchat.html" role="menuitem"><span class="fn-sw-icon" style="color:#06b6d4"><img src="Images/icon-chat.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">FlockChat</span><span class="fn-sw-hint">Church Messaging</span></span></a>
+        <a class="fn-sw-item" href="app.wellspring/app.wellspring.html" role="menuitem"><span class="fn-sw-icon" style="color:#22c55e"><img src="Images/icon-wellspring.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">The Wellspring</span><span class="fn-sw-hint">Offline Mode</span></span></a>
+        <a class="fn-sw-item" href="app.multiply/multiply.html" role="menuitem"><span class="fn-sw-icon" style="color:#22c55e"><img src="Images/icon-pwa.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">Multiply</span><span class="fn-sw-hint">Church planting &amp; multiplication</span></span></a>
+        <a class="fn-sw-item" href="app.flockdocs/app.flockdocs.html" role="menuitem"><span class="fn-sw-icon" style="color:#3b82f6"><img src="Images/icon-flockdocs.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">FlockDocs</span><span class="fn-sw-hint">Church Documents</span></span></a>
+        <a class="fn-sw-item" href="app.melchizedek/app.melchizedek.html" role="menuitem"><span class="fn-sw-icon" style="color:#e8a838"><img src="Images/icon-melchizedek.svg" alt="" aria-hidden="true"></span><span class="fn-sw-text"><span class="fn-sw-name">Melchizedek</span><span class="fn-sw-hint">Master Admin</span></span></a>
+      </nav>
 
-    <!-- Main content -->
-    <main id="gp-main" role="main"></main>
+      <div class="fn-top-actions">
+        <button class="fn-share-btn" id="hg-share-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span class="fn-btn-label">Share GROW</span>
+        </button>
+      </div>
+    </div>
 
+    <div class="fn-side-backdrop" id="fn-side-backdrop" aria-hidden="true"></div>
+    <aside class="fn-side-nav hg-side-nav" id="fn-side-nav" aria-label="FlockOS apps">
+      <section class="fn-side-section">
+        <a class="fn-side-link" href="index.html"><span class="fn-side-icon" style="color:#e8a838"><img src="Images/icon-pwa.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Herald</span></a>
+        <a class="fn-side-link" href="app.flockos/app.flockos.html"><span class="fn-side-icon" style="color:#3b82f6"><img src="Images/icon-flockos.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">FlockOS</span></a>
+        <a class="fn-side-link fn-side-link-active" href="app.grow/app.grow.html" aria-current="page"><span class="fn-side-icon" style="color:#d97706"><img src="Images/icon-grow.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">GROW</span></a>
+        <a class="fn-side-link" href="app.invite/app.invite.html"><span class="fn-side-icon" style="color:#22c55e"><img src="Images/icon-invite.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Invite</span></a>
+        <a class="fn-side-link" href="app.stand/"><span class="fn-side-icon" style="color:#a855f7"><img src="Images/icon-stand.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Stand</span></a>
+        <a class="fn-side-link" href="app.flockshow/app.flockshow.html"><span class="fn-side-icon" style="color:#ef4444"><img src="Images/icon-show.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Show</span></a>
+        <a class="fn-side-link" href="app.feed/"><span class="fn-side-icon" style="color:#e8a838"><img src="Images/icon-feed.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">FEED</span></a>
+        <a class="fn-side-link" href="app.flockchat/app.flockchat.html"><span class="fn-side-icon" style="color:#06b6d4"><img src="Images/icon-chat.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Chat</span></a>
+        <a class="fn-side-link" href="app.wellspring/app.wellspring.html"><span class="fn-side-icon" style="color:#22c55e"><img src="Images/icon-wellspring.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Wellspring</span></a>
+        <a class="fn-side-link" href="app.multiply/multiply.html"><span class="fn-side-icon" style="color:#22c55e"><img src="Images/icon-pwa.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Multiply</span></a>
+        <a class="fn-side-link" href="app.flockdocs/app.flockdocs.html"><span class="fn-side-icon" style="color:#3b82f6"><img src="Images/icon-flockdocs.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Docs</span></a>
+        <a class="fn-side-link" href="app.melchizedek/app.melchizedek.html"><span class="fn-side-icon" style="color:#e8a838"><img src="Images/icon-melchizedek.svg" alt="" aria-hidden="true"></span><span class="fn-side-label">Admin</span></a>
+      </section>
+    </aside>
 
+    <header class="fn-masthead hg-masthead">
+      <hr class="fn-masthead-rule-top">
+      <div class="fn-masthead-inner">
+        <div class="fn-flag" id="hg-flag">GROW</div>
+        <div class="fn-church-name">The Flock Herald</div>
+        <div class="fn-welcome-message" id="hg-deck">Discipleship, devotions, Scripture, theology, apologetics, and missions in the new Herald design.</div>
+        <div class="fn-motto" id="hg-motto"></div>
+        <div class="fn-dateline">
+          <span class="fn-dateline-row">
+            <span>Vol. <span id="hg-vol">2026</span> &nbsp;·&nbsp; Section <span id="hg-section-no">GROW</span></span>
+            <span id="hg-date">June 14, 2026</span>
+          </span>
+          <span>Free to the Body of Christ</span>
+        </div>
+      </div>
+      <hr class="fn-masthead-rule-bot">
+    </header>
+
+    <main id="hg-edition-content" class="hg-edition-content" role="main"></main>
+
+    <footer class="fn-footer hg-footer">
+      <em>"But grow in the grace and knowledge of our Lord and Savior Jesus Christ."<br>2 Peter 3:18</em>
+      GROW &nbsp;·&nbsp; A Flock Herald Discipleship Edition &nbsp;·&nbsp; FlockOS
+    </footer>
   </div>
 
-  <!--
-    grow_public.js bootstraps the full page:
-    sidebar, topbar CTA, hash-based module routing.
-    Firebase compat SDK loaded here so prayer/outreach submissions can write
-    to Firestore without requiring the user to sign in.
-  -->
-  <!-- Pull-to-Refresh indicator -->
-  <div class="ptr-indicator" id="ptrIndicator">&#8635; Release to refresh</div>
+  <div class="fn-reader-tools" aria-label="Reading controls">
+    <button class="fn-reader-fab" id="fn-reader-toggle" type="button" aria-expanded="false" aria-controls="fn-reader-menu" aria-label="Text size" title="Text size">
+      <strong>Aa</strong>
+    </button>
+    <div class="fn-reader-menu" id="fn-reader-menu" role="menu" aria-label="Text size" hidden>
+      <button class="fn-reader-size-option" type="button" data-reading-size="0.92">Smaller</button>
+      <button class="fn-reader-size-option is-active" type="button" data-reading-size="1">Normal (Default)</button>
+      <button class="fn-reader-size-option" type="button" data-reading-size="1.08">Large</button>
+      <button class="fn-reader-size-option" type="button" data-reading-size="1.16">XL</button>
+      <button class="fn-reader-size-option" type="button" data-reading-size="1.24">XXL</button>
+      <button class="fn-reader-size-option" type="button" data-reading-size="1.32">XXXL</button>
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
     window.FLOCK_FIREBASE_CONFIG = {
-      apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
-      authDomain:        'flockos-notify.firebaseapp.com',
-      projectId:         'flockos-notify',
-      storageBucket:     'flockos-notify.appspot.com',
+      apiKey: 'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
+      authDomain: 'flockos-notify.firebaseapp.com',
+      projectId: 'flockos-notify',
+      storageBucket: 'flockos-notify.appspot.com',
       messagingSenderId: '145632597',
-      appId:             '1:145632597:web:placeholder',
+      appId: '1:145632597:web:placeholder',
     };
   </script>
   <script defer src="Scripts/the_upper_room.js"></script>
-  <script type="module" src="Scripts/grow_public.js"></script>
-
-  <script>
-  // ── Pull-to-Refresh ────────────────────────────────────────────────────────
-  (function () {
-    if (window.innerWidth > 860) return; // desktop — skip
-    var mainEl  = document.getElementById('gp-main');
-    var ptr     = document.getElementById('ptrIndicator');
-    if (!mainEl || !ptr) return;
-    var startY = 0, pulling = false, triggered = false;
-
-    mainEl.addEventListener('touchstart', function (e) {
-      if (mainEl.scrollTop > 5) return; // only trigger at top
-      startY   = e.touches[0].clientY;
-      pulling  = true;
-      triggered = false;
-    }, { passive: true });
-
-    mainEl.addEventListener('touchmove', function (e) {
-      if (!pulling) return;
-      var dy = e.touches[0].clientY - startY;
-      if (dy > 60 && !triggered) {
-        triggered = true;
-        ptr.classList.add('visible');
-      } else if (dy < 30) {
-        triggered = false;
-        ptr.classList.remove('visible');
-      }
-    }, { passive: true });
-
-    mainEl.addEventListener('touchend', function () {
-      if (triggered) {
-        ptr.textContent = 'Refreshing\u2026';
-        setTimeout(function () { location.reload(); }, 300);
-      } else {
-        ptr.classList.remove('visible');
-      }
-      pulling   = false;
-      triggered = false;
-    }, { passive: true });
-  })();
-  </script>
-
+  <script type="module" src="Scripts/herald_grow.js"></script>
 </body>
 </html>
