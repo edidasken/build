@@ -780,10 +780,15 @@ function goBack() {
   var panel   = document.getElementById('fn-app-switcher');
   var chevron = btn.querySelector('.fn-switcher-chevron');
 
-  // Backdrop overlay for mobile
+  // Backdrop overlay for mobile — light tint, not heavy blackout
   var backdrop = document.createElement('div');
-  backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;-webkit-tap-highlight-color:transparent;';
+  backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(12,20,69,.32);z-index:9998;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);';
   document.body.appendChild(backdrop);
+
+  // Prevent body scroll when touching the backdrop on mobile
+  backdrop.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+  }, { passive: false });
 
   function openSwitcher() {
     panel.hidden = false;
@@ -792,7 +797,8 @@ function goBack() {
     chevron.style.transform = 'rotate(180deg)';
     if (window.innerWidth <= 640) {
       backdrop.style.display = 'block';
-      document.body.style.overflow = 'hidden';
+      // Lock body scroll without breaking iOS nested-scroll (avoid overflow:hidden on body)
+      document.documentElement.style.overflow = 'hidden';
     }
   }
   function closeSwitcher() {
@@ -801,7 +807,7 @@ function goBack() {
     btn.setAttribute('aria-expanded', 'false');
     chevron.style.transform = '';
     backdrop.style.display = 'none';
-    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   }
 
   btn.addEventListener('click', function (e) {
@@ -815,10 +821,6 @@ function goBack() {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !panel.hidden) closeSwitcher();
   });
-  // Close if user scrolls the page on desktop
-  window.addEventListener('scroll', function () {
-    if (!panel.hidden && window.innerWidth > 640) closeSwitcher();
-  }, { passive: true });
 })();
 
 // ── Herald text-size switcher ───────────────────────────────────────

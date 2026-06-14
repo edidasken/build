@@ -3,94 +3,116 @@
 <head>
   <meta charset="UTF-8">
   <base href="../">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-  <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="The Invitation">
-  <meta name="theme-color" content="#22c55e">
-  <meta name="description" content="A hope-filled look at Jesus Christ — His invitations, His identity, and His finished work.">
-
-  <title>The Invitation</title>
-
-  <!-- PWA Manifest — href set by script below to bypass <base href> and use actual page URL -->
-  <link rel="manifest" id="inv-manifest">
-  <script>document.getElementById('inv-manifest').href=new URL('manifest.json',location.href).href;</script>
-
-  <!-- Icons -->
-  <link rel="icon" type="image/svg+xml" href="Images/icon-invite.svg">
-  <link rel="apple-touch-icon" href="Images/icon-invite.svg">
-
-  <!-- Fonts -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="The Invitation — A hope-filled look at Jesus Christ: His invitations, His identity, and His finished work.">
+  <title>The Invitation — Herald by FlockOS</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-  <!-- Flash prevention: apply saved FlockOS theme before first paint -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap">
   <script>
     (function () {
+      try { var t = localStorage.getItem('flock_theme') || 'america'; document.documentElement.setAttribute('data-theme', t); }
+      catch (_) { document.documentElement.setAttribute('data-theme', 'america'); }
       try {
-        var t = localStorage.getItem('flock_theme') || 'america';
-        document.documentElement.setAttribute('data-theme', t);
+        var isEmbedded = new URLSearchParams(location.search).get('embedded') === '1' || window !== window.top;
+        if (isEmbedded) document.documentElement.setAttribute('data-fn-embedded', 'true');
+      } catch (_) {}
+      try {
+        var s = localStorage.getItem('fn_sidebar_open');
+        var open = s == null ? window.matchMedia('(min-width: 641px)').matches : s === 'true';
+        document.documentElement.setAttribute('data-fn-sidebar', open ? 'open' : 'closed');
       } catch (_) {
-        document.documentElement.setAttribute('data-theme', 'america');
+        document.documentElement.setAttribute('data-fn-sidebar', window.matchMedia('(min-width: 641px)').matches ? 'open' : 'closed');
+      }
+      try {
+        var scale = Number(localStorage.getItem('herald.text-size-scale') || '1');
+        var sizes = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+        var best = sizes.reduce(function (nearest, value) {
+          return Math.abs(value - scale) < Math.abs(nearest - scale) ? value : nearest;
+        }, 1);
+        document.documentElement.style.setProperty('--reader-scale', String(best));
+        document.documentElement.setAttribute('data-reader-scale', String(best));
+      } catch (_) {
+        document.documentElement.style.setProperty('--reader-scale', '1');
+        document.documentElement.setAttribute('data-reader-scale', '1');
       }
     })();
   </script>
-
-  <!-- One CSS file: american_garments is merged into new_covenant.css -->
-  <link rel="stylesheet" href="Styles/new_covenant.css">
-
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="app.flocknews/flocknews.css">
+  <!-- Embedded-mode override: when loaded inside the launcher iframe, hide
+       the Herald's own topbar and sidebar (the parent provides these). -->
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    [data-fn-embedded="true"] .fn-back-bar { display: none !important; }
+    [data-fn-embedded="true"] .fn-side-nav { display: none !important; }
+    [data-fn-embedded="true"] .fn-side-backdrop { display: none !important; }
+    [data-fn-embedded="true"] .fn-nav-toggle { display: none !important; }
+    [data-fn-embedded="true"] .fn-masthead { padding-top: 28px; }
+    .fn-pull-refresh {
+      position: fixed;
+      left: 50%;
+      top: calc(env(safe-area-inset-top, 0px) + 10px);
+      z-index: 10000;
+      transform: translate3d(-50%, -14px, 0);
+      opacity: 0;
+      pointer-events: none;
+      padding: 8px 14px;
+      border: 1px solid rgba(232, 168, 56, 0.28);
+      border-radius: 999px;
+      background: rgba(14, 22, 40, 0.92);
+      color: #e8a838;
+      box-shadow: 0 10px 28px rgba(2, 6, 23, 0.24);
+      font: 700 0.76rem/1 Inter, sans-serif;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .fn-pull-refresh.fn-visible {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
 
+    /* ── Bridge CSS variables for the invitation module ─────────────── */
     :root {
-      /* Inherit --gold/--gold-text from new_covenant.css; only define safe-area helpers here */
-      --safe-top:    env(safe-area-inset-top, 0px);
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-      --safe-left:   env(safe-area-inset-left, 0px);
-      --safe-right:  env(safe-area-inset-right, 0px);
+      --paper: #f8fafc;
+      --paper-white: #ffffff;
+      --paper-tint: #f1f5f9;
+      --ink: #111827;
+      --ink-mid: #334155;
+      --ink-label: #64748b;
+      --rule: rgba(15, 23, 42, .1);
+      --rule-soft: rgba(15, 23, 42, .1);
+      --rule-faint: rgba(15, 23, 42, .08);
+      --serif: "Merriweather", Georgia, "Times New Roman", serif;
+      --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --masthead-font: "Merriweather", Georgia, "Times New Roman", serif;
+      --bg: #f8fafc;
+      --bg-raised: #ffffff;
+      --line: rgba(15, 23, 42, 0.1);
+      --font-ui: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --gold: #f7c756;
+      --gold-text: #b45309;
+      --ink-faint: #94a3b8;
+      --c-sky: #38bdf8;
+      --top-bg: #0f172a;
+      --top-ink: #f8fafc;
+      --top-line: rgba(255,255,255,0.08);
+
+      --herald-navy: #0f172a;
+      --herald-navy-2: #162235;
+      --herald-gold: #f7c756;
+      --herald-gold-deep: #b8871e;
+      --herald-cyan: #48d3d9;
+      --herald-panel: rgba(255,255,255,.72);
+      --herald-panel-strong: #ffffff;
+      --herald-shadow: 0 22px 60px rgba(15,23,42,.1);
+      --herald-shadow-soft: 0 12px 30px rgba(15,23,42,.08);
+      --herald-radius-xl: 24px;
+      --herald-radius-lg: 18px;
+      --herald-radius-md: 14px;
     }
 
-    html, body {
-      height: 100dvh;
-      margin: 0; padding: 0;
-      background: #0c1445; /* matches topbar so iOS status bar band is dark */
-      color: var(--ink, #1b264f);
-      font-family: var(--font-ui, 'Plus Jakarta Sans', sans-serif);
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-      overscroll-behavior: none;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* #inv-shell contains header, nav, and scrolling main content */
-    #inv-shell {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg, #f7f8fb);
-      overflow: hidden;
-    }
-
-    /* Main content area is the scroll container */
-    #inv-main {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-      background: var(--bg, #f7f8fb);
-    }
-
-    /* ── Grow page / hero styles (extracted from new_covenant.css) ── */
+    /* ── Base grow-page / grow-hero styles (invitation module depends on these) ── */
     .grow-page {
       --text:    var(--ink, #1b264f);
       --muted:   var(--ink-muted, #7a7f96);
@@ -127,220 +149,575 @@
     .grow-hero-title { margin: 0 0 4px; font-size: 26px; font-weight: 700; letter-spacing: -.01em; color: var(--text, #f5f5f7); }
     .grow-hero-sub   { margin: 0; color: var(--text, #f5f5f7); opacity: .88; font-size: 14px; line-height: 1.55; max-width: 60ch; }
 
-    /* ── Topbar (handled by .unity-header in new_covenant.css) ── */
-    #inv-topbar {
-      position: sticky; top: 0; z-index: 100;
+    /* ── Invitation masthead overrides ──────────────────────────────── */
+    .fn-invite-masthead {
+      min-height: 380px;
+      background:
+        linear-gradient(90deg, rgba(8,13,33,.96) 0%, rgba(15,23,42,.75) 43%, rgba(15,23,42,.38) 72%, rgba(15,23,42,.84) 100%),
+        linear-gradient(0deg, rgba(15,23,42,.82), rgba(15,23,42,.12) 42%),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
     }
 
-    /* ── Subbar (church attribution + share pill) ── */
-    #inv-subbar {
-      position: sticky; top: calc(56px + var(--safe-top, 0px)); z-index: 99;
-      background: var(--top-bg);
-      color: var(--top-ink);
-      padding: 7px 20px;
-      display: flex; align-items: center; gap: 10px;
-      border-bottom: 1px solid var(--top-line);
-    }
-    .inv-brand-church {
-      flex: 1; min-width: 0;
-      font: 500 .82rem 'Plus Jakarta Sans', system-ui, sans-serif;
-      color: rgba(255,255,255,.78);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .inv-share-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 13px; border-radius: 999px;
-      background: rgba(61,139,79,.25); border: 1.5px solid rgba(61,139,79,.55);
-      color: #6ee7b7; font: 600 .8rem var(--font-ui, sans-serif);
-      cursor: pointer; transition: background .18s;
-    }
-    .inv-share-pill:hover { background: rgba(61,139,79,.4); }
-
-    /* ── Scroll area ────────────────────────────────────────────── */
-    #inv-main {
-      padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
-    }
-    #inv-main > * {
-      max-width: 860px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    /* grow-page needs padding since we removed the GROW shell's #gp-main padding */
-    .grow-page {
-      padding: 0 20px 48px;
-    }
-    @media (min-width: 600px) {
-      .grow-page { padding: 0 28px 64px; }
-    }
-    /* Hero sits full-bleed edge to edge in the invitation */
-    [data-grow="the_gospel_invitation"] .grow-hero {
-      margin-left: -20px; margin-right: -20px;
-    }
-    @media (min-width: 600px) {
-      [data-grow="the_gospel_invitation"] .grow-hero {
-        margin-left: -28px; margin-right: -28px;
-      }
+    /* ── Invitation section — full-width content area ───────────────── */
+    #fn-section-invitation {
+      margin-top: 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      backdrop-filter: none;
     }
 
-    /* ── Loading state ──────────────────────────────────────────── */
+    /* Let the invitation module's hero sit full-width within the Herald page */
+    #fn-section-invitation .grow-page {
+      padding: 0;
+    }
+    #fn-section-invitation [data-grow="the_gospel_invitation"] .grow-hero {
+      border-radius: 26px;
+      margin-bottom: 1.35rem;
+    }
+
+    /* Keep section chrome styled like Herald cards */
+    #fn-section-invitation .gi-section {
+      margin-top: 1.35rem;
+      border: 1px solid var(--rule);
+      border-radius: var(--herald-radius-xl, 24px);
+      background: var(--herald-panel, rgba(255,255,255,.72));
+      box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+      padding: 1.25rem;
+      backdrop-filter: blur(16px);
+    }
+
+    /* Loading state */
     #inv-loading {
       display: flex; align-items: center; justify-content: center;
-      min-height: 60vh; flex-direction: column; gap: 16px;
-      color: var(--ink-muted, #7a7f96); font: .95rem var(--font-ui, sans-serif);
+      min-height: 40vh; flex-direction: column; gap: 16px;
+      color: var(--ink-label, #64748b); font: .95rem var(--sans, Inter, sans-serif);
     }
     .inv-spinner {
       width: 40px; height: 40px;
-      border: 3px solid var(--line, #e5e7ef);
-      border-top-color: #3d8b4f;
+      border: 3px solid var(--rule-soft, rgba(15,23,42,.1));
+      border-top-color: #e8a838;
       border-radius: 50%;
       animation: inv-spin .7s linear infinite;
     }
     @keyframes inv-spin { to { transform: rotate(360deg); } }
-
-    /* ── SW update banner ───────────────────────────────────────── */
-    #inv-sw-banner {
-      display: none;
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: var(--bg-raised); color: var(--ink); border-radius: 12px;
-      padding: 12px 20px; font: .88rem var(--font-ui, sans-serif);
-      box-shadow: 0 6px 24px rgba(12,20,69,.4);
-      z-index: 999; gap: 12px; align-items: center;
-      border: 1.5px solid rgba(61,139,79,.4);
-    }
-    #inv-sw-banner.visible { display: flex; }
-    #inv-sw-reload {
-      background: #3d8b4f; color: #fff; border: none; border-radius: 8px;
-      padding: 6px 14px; font: 600 .82rem var(--font-ui, sans-serif); cursor: pointer;
-    }
   </style>
 </head>
 <body>
+<div class="fn-pull-refresh" id="fn-pull-refresh" aria-live="polite">&#8635; Release to refresh</div>
+<div class="fn-page">
 
-  <!-- ── Single scroll container (kills PTR on iOS) ───────────────── -->
-  <div id="inv-shell">
-
-  <!-- ── Topbar ──────────────────────────────────────────────────── -->
-  <!-- Unity header (mounted by inline module below) -->
-  <header id="inv-topbar" class="unity-header" role="banner"></header>
-
-  <!-- Subbar: church attribution + share pill -->
-  <nav id="inv-subbar" aria-label="Invitation actions">
-    <div class="inv-brand-church" id="inv-church-name"></div>
-    <button class="inv-share-pill" id="inv-topbar-share" aria-label="Share this page">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Share
+  <!-- ══ BACK / SHARE BAR ═══════════════════════════════════════════════ -->
+  <div class="fn-back-bar" style="position:relative">
+    <button class="fn-nav-toggle" id="fn-sidebar-toggle" type="button" aria-label="Open app navigation" aria-controls="fn-side-nav" aria-expanded="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
     </button>
-  </nav>
+    <button class="fn-back-btn" id="fn-app-switcher-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fn-app-switcher">
+      <img class="fn-herald-mark" src="Images/icon-pwa.svg" alt="" aria-hidden="true">
+      <span class="fn-btn-label">Herald</span>
+      <svg class="fn-switcher-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <!-- App switcher dropdown -->
+    <nav id="fn-app-switcher" class="fn-app-switcher" role="menu" aria-hidden="true" hidden>
+      <a class="fn-sw-item" href="index.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h16a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Herald</span><span class="fn-sw-hint">Daily paper</span></span>
+      </a>
+      <hr class="fn-sw-divider">
+      <a class="fn-sw-item" href="app.flockos/app.flockos.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#3b82f6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockOS</span><span class="fn-sw-hint">Shepherd's Dashboard</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.invite/app.invite.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#22c55e"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="9" x2="19" y2="9"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">The Invitation</span><span class="fn-sw-hint">Gospel Page — you are here</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.stand/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#a855f7"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Flock Stand</span><span class="fn-sw-hint">Music Stand</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.flockshow/app.flockshow.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#ef4444"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockShow</span><span class="fn-sw-hint">Worship Display</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.feed/" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FEED</span><span class="fn-sw-hint">Sermon Workspace</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.flockchat/app.flockchat.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#06b6d4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockChat</span><span class="fn-sw-hint">Church Messaging</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.wellspring/app.wellspring.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#22c55e"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6 9 4 13 4 16a8 8 0 0 0 16 0c0-3-2-7-8-14z"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">The Wellspring</span><span class="fn-sw-hint">Offline Mode</span></span>
+      </a>
+      <a class="fn-sw-item" href="#fn-section-multiply" role="menuitem">
+        <span class="fn-sw-icon" style="color:#22c55e"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Multiply</span><span class="fn-sw-hint">Church planting & multiplication</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.docs/docs.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#3b82f6"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">FlockDocs</span><span class="fn-sw-hint">Church Documents</span></span>
+      </a>
+      <a class="fn-sw-item" href="app.melchizedek/melchizedek.html" role="menuitem">
+        <span class="fn-sw-icon" style="color:#e8a838"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+        <span class="fn-sw-text"><span class="fn-sw-name">Melchizedek</span><span class="fn-sw-hint">Master Admin</span></span>
+      </a>
+    </nav>
+    <div class="fn-top-actions">
+      <button class="fn-share-btn" id="fn-share-btn" onclick="shareInvitation()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span class="fn-btn-label">Share This Page</span>
+      </button>
+      <button class="fn-share-btn" id="fn-pwa-install" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span class="fn-btn-label">Install Herald</span>
+      </button>
+    </div>
+  </div>
 
-  <!-- ── Content ─────────────────────────────────────────────────── -->
-  <main id="inv-main" role="main">
+  <div class="fn-side-backdrop" id="fn-side-backdrop" aria-hidden="true"></div>
+  <aside class="fn-side-nav" id="fn-side-nav" aria-label="FlockOS apps">
+    <section class="fn-side-section">
+      <a class="fn-side-link" href="index.html">
+        <span class="fn-side-icon" style="color:#e8a838"><img src="Images/icon-pwa.svg" alt="" aria-hidden="true"></span>
+        <span class="fn-side-label">Herald</span>
+      </a>
+      <a class="fn-side-link" href="app.flockos/app.flockos.html">
+        <span class="fn-side-icon" style="color:#3b82f6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        <span class="fn-side-label">FlockOS</span>
+      </a>
+      <a class="fn-side-link fn-side-link-active" href="app.invite/app.invite.html" aria-current="page">
+        <span class="fn-side-icon" style="color:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="9" x2="19" y2="9"/></svg></span>
+        <span class="fn-side-label">Invite</span>
+      </a>
+      <a class="fn-side-link" href="app.stand/">
+        <span class="fn-side-icon" style="color:#a855f7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
+        <span class="fn-side-label">Stand</span>
+      </a>
+      <a class="fn-side-link" href="app.flockshow/app.flockshow.html">
+        <span class="fn-side-icon" style="color:#ef4444"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <span class="fn-side-label">Show</span>
+      </a>
+      <a class="fn-side-link" href="app.feed/">
+        <span class="fn-side-icon" style="color:#e8a838"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
+        <span class="fn-side-label">FEED</span>
+      </a>
+      <a class="fn-side-link" href="app.flockchat/app.flockchat.html">
+        <span class="fn-side-icon" style="color:#06b6d4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+        <span class="fn-side-label">Chat</span>
+      </a>
+      <a class="fn-side-link" href="app.wellspring/app.wellspring.html">
+        <span class="fn-side-icon" style="color:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2C6 9 4 13 4 16a8 8 0 0 0 16 0c0-3-2-7-8-14z"/></svg></span>
+        <span class="fn-side-label">Wellspring</span>
+      </a>
+      <a class="fn-side-link" href="#fn-section-multiply">
+        <span class="fn-side-icon" style="color:#22c55e"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg></span>
+        <span class="fn-side-label">Multiply</span>
+      </a>
+      <a class="fn-side-link" href="app.docs/docs.html">
+        <span class="fn-side-icon" style="color:#3b82f6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span>
+        <span class="fn-side-label">Docs</span>
+      </a>
+      <a class="fn-side-link" href="app.melchizedek/melchizedek.html">
+        <span class="fn-side-icon" style="color:#e8a838"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+        <span class="fn-side-label">Admin</span>
+      </a>
+    </section>
+  </aside>
+
+  <!-- ══ MASTHEAD ════════════════════════════════════════════════════════ -->
+  <header class="fn-masthead fn-invite-masthead">
+    <div class="fn-masthead-inner">
+      <div class="fn-church-name">The Invitation</div>
+      <div class="fn-flag">Come to Christ</div>
+      <div class="fn-motto">
+        <a class="fn-motto-link" href="#inv-invitations">His Invitations</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#inv-iam">His Identity</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#inv-work">His Finished Work</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ INVITATION CONTENT ═══════════════════════════════════════════ -->
+  <section data-fn-section="invitation" id="fn-section-invitation">
     <div id="inv-loading">
       <div class="inv-spinner"></div>
       Loading…
     </div>
     <div id="inv-root"></div>
-  </main>
+  </section>
 
-  </div><!-- /#inv-shell -->
+  <!-- ══ FOOTER ════════════════════════════════════════════════════════ -->
+  <footer class="fn-footer">
+    <em>"Come to me, all who labor and are heavy laden, and I will give you rest."<br>
+    — Matthew 11:28</em>
+    The Invitation &nbsp;·&nbsp; A FlockOS Gospel Page &nbsp;·&nbsp; All Rights Reserved
+  </footer>
 
-  <!-- ── SW update banner (outside scroller — fixed positioning) ─── -->
-  <div id="inv-sw-banner" role="status" aria-live="polite">
-    New version available
-    <button id="inv-sw-reload">Refresh</button>
+</div><!-- /.fn-page -->
+
+<div id="fn-status" role="alert" aria-live="polite"></div>
+
+<div class="fn-reader-tools" aria-label="Reading controls">
+  <button class="fn-reader-fab" id="fn-reader-toggle" type="button" aria-expanded="false" aria-controls="fn-reader-menu" aria-label="Text size" title="Text size">
+    <strong>Aa</strong>
+  </button>
+  <div class="fn-reader-menu" id="fn-reader-menu" role="menu" aria-label="Text size" hidden>
+    <button class="fn-reader-size-option" type="button" data-reading-size="0.92">Smaller</button>
+    <button class="fn-reader-size-option is-active" type="button" data-reading-size="1">Normal (Default)</button>
+    <button class="fn-reader-size-option" type="button" data-reading-size="1.08">Large</button>
+    <button class="fn-reader-size-option" type="button" data-reading-size="1.16">XL</button>
+    <button class="fn-reader-size-option" type="button" data-reading-size="1.24">XXL</button>
+    <button class="fn-reader-size-option" type="button" data-reading-size="1.32">XXXL</button>
   </div>
+</div>
 
-  <!-- Firebase config — patched per-church by B-Build -->
-  <script>
-    window.FLOCK_FIREBASE_CONFIG = {
-      apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
-      authDomain:        'flockos-notify.firebaseapp.com',
-      projectId:         'flockos-notify',
-      storageBucket:     'flockos-notify.firebasestorage.app',
-      messagingSenderId: '321766738616',
-      appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d',
-    };
-  </script>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
 
-  <!-- Firebase (for church map / Come Join Us Firestore reads) -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+// ── Helpers ───────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s||'').replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
+}
 
-  <!-- Standalone invite boot -->
-  <script>
-    /* Share URL = this page itself (so the recipient opens the same standalone invite) */
-    window._INVITE_SHARE_URL = location.href.split('?')[0].split('#')[0];
-  </script>
-  <script defer src="Scripts/the_upper_room.js"></script>
+// If rendered inside an iframe, intercept internal navigation so links drive
+// the top-level window instead of the iframe.
+if (window !== window.top) {
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('javascript') ||
+        href.startsWith('http://') || href.startsWith('https://') ||
+        href.startsWith('sms:') || href.startsWith('tel:') || href.startsWith('mailto:')) return;
+    if (link.getAttribute('target')) return;
+    e.preventDefault();
+    window.top.location.href = new URL(href, location.href).href;
+  }, false);
+}
 
-  <script type="module" src="./Scripts/the_gospel/the_gospel_invitation.js"></script>
-  <script type="module">
-    import { mountUnityHeader } from './Scripts/the_unity_header.js';
-    import { render, mount }    from './Scripts/the_gospel/the_gospel_invitation.js';
+function goBack() {
+  if (window !== window.top) { window.top.location.href = 'index.html'; return; }
+  if (window.opener && !window.opener.closed) window.close();
+  else if (history.length > 1) history.back();
+  else window.location.href = 'index.html';
+}
 
-    /* ── Mount unity header (public — no user) ── */
-    const INV_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4.5" y1="8.5" x2="19.5" y2="8.5"/></svg>';
-    const topbar = document.getElementById('inv-topbar');
-    if (topbar) {
-      mountUnityHeader(topbar, {
-        appId:       'invite',
-        appName:     'The Invitation',
-        appIconSvg:  INV_ICON,
-        appAccent:   '#22c55e',
-        appAccentDk: '#14532d',
-        homeHref:    'app.invite/',
-        user:        null,
-        signInHref:  './',
-        features: [
-          { id: 'inv-share',    label: 'Share This Page', hint: 'Send this invitation to someone', run: () => document.getElementById('inv-topbar-share')?.click() },
-          { id: 'inv-launcher', label: 'Back to Launcher', hint: 'All FlockOS apps',               run: () => { location.href = '../'; } },
-        ],
+// ── Sidebar toggle ───────────────────────────────────────────────────
+(function () {
+  var toggle = document.getElementById('fn-sidebar-toggle');
+  var nav = document.getElementById('fn-side-nav');
+  var backdrop = document.getElementById('fn-side-backdrop');
+  if (!toggle || !nav) return;
+
+  function isOpen() {
+    return document.documentElement.getAttribute('data-fn-sidebar') === 'open';
+  }
+
+  function sync(open) {
+    document.documentElement.setAttribute('data-fn-sidebar', open ? 'open' : 'closed');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close app navigation' : 'Open app navigation');
+    nav.setAttribute('aria-hidden', open ? 'false' : 'true');
+    try { localStorage.setItem('fn_sidebar_open', open ? 'true' : 'false'); } catch (_) {}
+  }
+
+  sync(isOpen());
+
+  toggle.addEventListener('click', function () {
+    sync(!isOpen());
+  });
+
+  if (backdrop) {
+    backdrop.addEventListener('click', function () {
+      sync(false);
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen() && window.matchMedia('(max-width: 640px)').matches) {
+      sync(false);
+      toggle.focus();
+    }
+  });
+})();
+
+// ── App Switcher ───────────────────────────────────────────────────
+(function () {
+  var btn     = document.getElementById('fn-app-switcher-btn');
+  var panel   = document.getElementById('fn-app-switcher');
+  var chevron = btn.querySelector('.fn-switcher-chevron');
+
+  // Backdrop overlay for mobile — light tint, not heavy blackout
+  var backdrop = document.createElement('div');
+  backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(12,20,69,.32);z-index:9998;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);';
+  document.body.appendChild(backdrop);
+
+  // Prevent body scroll when touching the backdrop on mobile
+  backdrop.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+  }, { passive: false });
+
+  function openSwitcher() {
+    panel.hidden = false;
+    panel.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true');
+    chevron.style.transform = 'rotate(180deg)';
+    if (window.innerWidth <= 640) {
+      backdrop.style.display = 'block';
+      // Lock body scroll without breaking iOS nested-scroll (avoid overflow:hidden on body)
+      document.documentElement.style.overflow = 'hidden';
+    }
+  }
+  function closeSwitcher() {
+    panel.hidden = true;
+    panel.setAttribute('aria-hidden', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    chevron.style.transform = '';
+    backdrop.style.display = 'none';
+    document.documentElement.style.overflow = '';
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    panel.hidden ? openSwitcher() : closeSwitcher();
+  });
+  backdrop.addEventListener('click', closeSwitcher);
+  document.addEventListener('click', function (e) {
+    if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) closeSwitcher();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !panel.hidden) closeSwitcher();
+  });
+})();
+
+// ── Herald text-size switcher ───────────────────────────────────────
+(function () {
+  var TEXT_SIZE_KEY = 'herald.text-size-scale';
+  var SIZES = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+  var toggle = document.getElementById('fn-reader-toggle');
+  var menu = document.getElementById('fn-reader-menu');
+  var menuOpen = false;
+
+  function nearestScale(value) {
+    var scale = Number(value);
+    if (!Number.isFinite(scale)) scale = 1;
+    return SIZES.reduce(function (nearest, option) {
+      return Math.abs(option - scale) < Math.abs(nearest - scale) ? option : nearest;
+    }, 1);
+  }
+
+  function storedScale() {
+    try { return nearestScale(localStorage.getItem(TEXT_SIZE_KEY) || '1'); }
+    catch (_) { return 1; }
+  }
+
+  function setTextSize(scale, persist) {
+    var best = nearestScale(scale);
+    document.documentElement.style.setProperty('--reader-scale', String(best));
+    document.documentElement.setAttribute('data-reader-scale', String(best));
+    document.querySelectorAll('[data-reading-size]').forEach(function (btn) {
+      var active = Math.abs(Number(btn.getAttribute('data-reading-size') || '1') - best) < 0.001;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    if (persist) {
+      try { localStorage.setItem(TEXT_SIZE_KEY, String(best)); } catch (_) {}
+    }
+  }
+
+  function closeMenu() {
+    if (!menu || !toggle) return;
+    menuOpen = false;
+    menu.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function openMenu() {
+    if (!menu || !toggle) return;
+    menuOpen = true;
+    menu.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  setTextSize(storedScale(), false);
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener('click', function (event) {
+    event.stopPropagation();
+    menuOpen ? closeMenu() : openMenu();
+  });
+
+  menu.querySelectorAll('[data-reading-size]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setTextSize(btn.getAttribute('data-reading-size') || '1', true);
+      closeMenu();
+      toggle.focus();
+    });
+  });
+
+  document.addEventListener('click', function (event) {
+    if (!menuOpen) return;
+    if (!menu.contains(event.target) && !toggle.contains(event.target)) closeMenu();
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && menuOpen) {
+      closeMenu();
+      toggle.focus();
+    }
+  });
+})();
+
+function shareInvitation() {
+  var url = location.href.split('?')[0].split('#')[0];
+  if (navigator.share) navigator.share({ title:'The Invitation — A Hope-Filled View of Jesus Christ', text:'I thought you\'d appreciate this — a hope-filled look at Jesus Christ:', url: url }).catch(function(){});
+  else navigator.clipboard.writeText(url).then(function(){
+    var b = document.getElementById('fn-share-btn');
+    var o = b.innerHTML; b.textContent = 'Link Copied!';
+    setTimeout(function(){ b.innerHTML = o; }, 2200);
+  }).catch(function(){ prompt('Copy to share:', url); });
+}
+</script>
+
+<!-- ══ Firebase config — patched per-church by B-Build ═══════════════════ -->
+<script>
+  window.FLOCK_FIREBASE_CONFIG = {
+    apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
+    authDomain:        'flockos-notify.firebaseapp.com',
+    projectId:         'flockos-notify',
+    storageBucket:     'flockos-notify.firebasestorage.app',
+    messagingSenderId: '321766738616',
+    appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d'
+  };
+</script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+
+<!-- Standalone invite share URL -->
+<script>
+  window._INVITE_SHARE_URL = location.href.split('?')[0].split('#')[0];
+</script>
+
+<!-- Invitation module -->
+<script type="module">
+  import { render, mount } from '../Scripts/the_gospel/the_gospel_invitation.js';
+
+  var root    = document.getElementById('inv-root');
+  var loading = document.getElementById('inv-loading');
+
+  /* Render invitation content */
+  root.innerHTML = render();
+  loading.remove();
+
+  /* Mount interactivity */
+  mount(root);
+</script>
+
+<!-- ── Pull-to-refresh ─────────────────────────────────────────────── -->
+<script>
+  (function() {
+    if (window.innerWidth > 860) return;
+    var indicator = document.getElementById('fn-pull-refresh');
+    if (!indicator) return;
+
+    var scrollEl = document.scrollingElement || document.documentElement;
+    var startY = 0;
+    var pulling = false;
+    var triggered = false;
+    var skipSelector = 'a, button, input, textarea, select, [role="button"], .fn-side-nav, .fn-app-switcher';
+
+    function atTop() {
+      return (window.scrollY || scrollEl.scrollTop || 0) <= 5;
+    }
+
+    function reset() {
+      indicator.classList.remove('fn-visible');
+      indicator.textContent = '\u21bb Release to refresh';
+      pulling = false;
+      triggered = false;
+    }
+
+    document.addEventListener('touchstart', function(e) {
+      if (!atTop() || !e.touches || e.touches.length !== 1) return;
+      if (e.target.closest && e.target.closest(skipSelector)) return;
+      startY = e.touches[0].clientY;
+      pulling = true;
+      triggered = false;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!pulling || !e.touches || e.touches.length !== 1) return;
+      var dy = e.touches[0].clientY - startY;
+      if (dy > 70 && !triggered) {
+        triggered = true;
+        indicator.classList.add('fn-visible');
+      } else if (dy < 35 && triggered) {
+        triggered = false;
+        indicator.classList.remove('fn-visible');
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchend', function() {
+      if (!pulling) return;
+      if (triggered) {
+        indicator.textContent = 'Refreshing\u2026';
+        indicator.classList.add('fn-visible');
+        setTimeout(function() { window.location.reload(); }, 300);
+        return;
+      }
+      reset();
+    }, { passive: true });
+
+    document.addEventListener('touchcancel', reset, { passive: true });
+  })();
+</script>
+
+<!-- ══ PWA Service Worker Registration & Install Prompt ═══════════════════ -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('../../sw.js').then(function(reg) {
+        console.log('[Invite PWA] SW registered:', reg.scope);
+      }, function(err) {
+        console.warn('[Invite PWA] SW registration failed:', err);
+      });
+    });
+  }
+  (function() {
+    var deferredPrompt = null;
+    var installBtn = document.getElementById('fn-pwa-install');
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+    if (installBtn) {
+      installBtn.addEventListener('click', function() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choiceResult) {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('[Invite PWA] User accepted install prompt');
+          }
+          deferredPrompt = null;
+          installBtn.style.display = 'none';
+        });
       });
     }
-
-    const root    = document.getElementById('inv-root');
-    const loading = document.getElementById('inv-loading');
-
-    /* Render invitation content */
-    root.innerHTML = render();
-    loading.remove();
-
-    /* Mount interactivity */
-    mount(root);
-
-    /* ── Topbar share pill ──────────────────────────────────────── */
-    document.getElementById('inv-topbar-share')?.addEventListener('click', () => {
-      const url = window._INVITE_SHARE_URL || location.href;
-      const msg = 'I thought you\u2019d appreciate this \u2014 a hope-filled look at Jesus Christ:';
-      if (navigator.share) {
-        navigator.share({ title: 'A Hope-Filled View of Jesus Christ', text: msg, url }).catch(() => {});
-      } else {
-        navigator.clipboard?.writeText(url).catch(() => {});
-        window.location.href = `sms:?body=${encodeURIComponent(msg + '\n' + url)}`;
-      }
+    window.addEventListener('appinstalled', function() {
+      if (installBtn) installBtn.style.display = 'none';
+      console.log('[Invite PWA] App installed');
     });
-
-    /* ── Church name in topbar ──────────────────────────────────── */
-    (async () => {
-      try {
-        const cfg = window.FLOCK_FIREBASE_CONFIG;
-        const fb  = window.firebase;
-        if (!fb || !cfg) return;
-        const appName = 'invite-church-info';
-        const app = fb.apps.find(a => a.name === appName) || fb.initializeApp(cfg, appName);
-        const db  = app.firestore();
-        const doc = await db.collection('appConfig').doc('church_name').get();
-        const name = doc.exists ? (doc.data().value || '').trim() : '';
-        if (name) document.getElementById('inv-church-name').textContent = name;
-      } catch (_) {}
-    })();
-
-    /* ── Service worker ─────────────────────────────────────────── */
-    if ('serviceWorker' in navigator) {
-      import('./Scripts/the_living_water_register.js')
-        .then(m => m.register())
-        .catch(() => {});
-    }
-  </script>
-
+  })();
+</script>
 </body>
 </html>
