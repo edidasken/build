@@ -526,6 +526,26 @@ var _FN_NOW   = window._FN_NOW;
 var _FN_DAY   = window._FN_DAY;
 var _FN_TODAY = window._FN_TODAY;
 
+// ── Rotating Welcome Message ──────────────────────────────────────────────
+(function () {
+  var messages = [
+    "Grace and peace to you on the Lord's Day. May you be renewed in worship and fellowship.",
+    "Welcome to a new week. May God's wisdom guide your steps and His joy be your strength today.",
+    "Grace to you this Tuesday. Stand firm in the faith and let the light of Christ shine through your work.",
+    "Midweek peace to you. May you be refreshed by His Word and sustained by His unfailing grace.",
+    "Rejoice in His faithfulness this Thursday. Cast your cares upon Him, for He cares for you.",
+    "Press on with courage this Friday. The Lord is your shield and your exceedingly great reward.",
+    "Rest in His presence today. May this Saturday bring quiet reflection and preparation for worship."
+  ];
+  var dayNames = ['Sunday encouragement', 'Monday encouragement', 'Tuesday encouragement', 'Wednesday encouragement', 'Thursday encouragement', 'Friday encouragement', 'Saturday encouragement'];
+  var dayOfWeek = _FN_NOW ? _FN_NOW.getDay() : new Date().getDay();
+  var msgEl = document.getElementById('fn-welcome-message');
+  if (msgEl) {
+    msgEl.setAttribute('data-day', dayNames[dayOfWeek]);
+    msgEl.textContent = messages[dayOfWeek];
+  }
+})();
+
 // ── Load editor config ────────────────────────────────────────────────────
 var _CFG = (function () {
   try { return JSON.parse(localStorage.getItem('fn_config') || 'null') || {}; }
@@ -1625,6 +1645,37 @@ function closeSuitePanel() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSuitePanel();
 });
+</script>
+
+<!-- ── Church registry — populate masthead placeholders ─────────────── -->
+<script>
+  (function() {
+    var churchEl = document.querySelector('.fn-church-name');
+    var websiteEl = document.querySelector('.fn-church-website');
+    if (!churchEl && !websiteEl) return;
+
+    fetch('../Data/church.json')
+      .then(function(r) { return r.json(); })
+      .then(function(church) {
+        if (churchEl && church.name && churchEl.textContent.trim() === '{{CHURCH_NAME}}') {
+          churchEl.textContent = church.name.toLowerCase();
+        }
+        if (websiteEl && church.website && !websiteEl.textContent.trim()) {
+          var url = 'https://' + church.website.replace(/^https?:\/\//, '').toLowerCase();
+          var a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = url;
+          a.style.cssText = websiteEl.style.cssText || '';
+          a.className = websiteEl.className;
+          websiteEl.parentNode.replaceChild(a, websiteEl);
+        }
+      })
+      .catch(function() {
+        // Non-fatal — placeholders remain if fetch fails
+      });
+  })();
 </script>
 
 <!-- ── Firebase config — B-Build patches this per deployment ───────── -->
