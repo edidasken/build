@@ -187,7 +187,7 @@
     <hr class="fn-masthead-rule-top">
     <div class="fn-masthead-inner">
       <div class="fn-flag">The Herald</div>
-      <div class="fn-church-name">FlockOS</div>
+      <div class="fn-church-name">{{CHURCH_NAME}}</div>
       <div class="fn-welcome-message" id="fn-welcome-message" aria-live="polite"></div>
       <div class="fn-motto">
         <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_courses">Discipleship</a>
@@ -208,7 +208,7 @@
             <button class="fn-date-arrow" id="fn-next-day" title="Next edition" aria-label="Next edition">›</button>
           </span>
         </span>
-        <span class="fn-church-website">root.yhwh.one</span>
+        <span class="fn-church-website">{{CHURCH_WEBSITE}}</span>
       </div>
     </div>
     <hr class="fn-masthead-rule-bot">
@@ -1681,10 +1681,10 @@ document.addEventListener('keydown', function(e) {
     fetch('./Data/church.json')
       .then(function(r) { return r.json(); })
       .then(function(church) {
-        if (churchEl && church.name && churchEl.textContent.trim() === 'FlockOS') {
+        if (churchEl && church.name && churchEl.textContent.trim() === '{{CHURCH_NAME}}') {
           churchEl.textContent = church.name.toLowerCase();
         }
-        if (websiteEl && church.website && websiteEl.textContent.trim() === 'root.yhwh.one') {
+        if (websiteEl && church.website && websiteEl.textContent.trim() === '{{CHURCH_WEBSITE}}') {
           var url = 'https://' + church.website.replace(/^https?:\/\//, '').toLowerCase();
           var a = document.createElement('a');
           a.href = url;
