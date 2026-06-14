@@ -181,6 +181,10 @@ html, body {
   font-family: var(--serif); font-size: 18px; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ink); margin-top: 8px; font-weight: 400;
 }
+.fn-welcome-message {
+  font-family: var(--sans); font-size: 17px; font-weight: 400;
+  line-height: 1.68; color: var(--ink); margin-top: 10px;
+}
 .fn-motto {
   font-family: var(--serif); font-size: 12px; letter-spacing: .22em;
   text-transform: uppercase; color: var(--ink-label); margin-top: 5px;
