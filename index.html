@@ -207,7 +207,7 @@
             <button class="fn-date-arrow" id="fn-next-day" title="Next edition" aria-label="Next edition">›</button>
           </span>
         </span>
-        <span class="fn-church-website">{{CHURCH_WEBSITE}}</span>
+        <span class="fn-church-website">root.yhwh.one</span>
       </div>
     </div>
     <hr class="fn-masthead-rule-bot">
@@ -1663,7 +1663,7 @@ document.addEventListener('keydown', function(e) {
         if (churchEl && church.name && churchEl.textContent.trim() === 'FlockOS') {
           churchEl.textContent = church.name.toLowerCase();
         }
-        if (websiteEl && church.website && websiteEl.textContent.trim() === '{{CHURCH_WEBSITE}}') {
+        if (websiteEl && church.website && websiteEl.textContent.trim() === 'root.yhwh.one') {
           var url = 'https://' + church.website.replace(/^https?:\/\//, '').toLowerCase();
           var a = document.createElement('a');
           a.href = url;
