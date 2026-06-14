@@ -39,6 +39,7 @@
       }
     })();
   </script>
+  <link rel="manifest" href="../../manifest.json">
   <link rel="stylesheet" href="flocknews.css">
   <!-- Embedded-mode override: when loaded inside the launcher iframe, hide
        the Herald's own topbar and sidebar (the parent provides these). -->
@@ -124,6 +125,10 @@
       <button class="fn-share-btn" id="fn-share-btn" onclick="shareHerald()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         <span class="fn-btn-label">Share This Edition</span>
+      </button>
+      <button class="fn-share-btn" id="fn-pwa-install" style="display:none">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span class="fn-btn-label">Install Herald</span>
       </button>
     </div>
   </div>
@@ -1650,5 +1655,43 @@ document.addEventListener('keydown', function(e) {
   });
 </script>
 
+<!-- ══ PWA Service Worker Registration & Install Prompt ═══════════════════ -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('../../sw.js').then(function(reg) {
+        console.log('[Herald PWA] SW registered:', reg.scope);
+      }, function(err) {
+        console.warn('[Herald PWA] SW registration failed:', err);
+      });
+    });
+  }
+  (function() {
+    var deferredPrompt = null;
+    var installBtn = document.getElementById('fn-pwa-install');
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installBtn) installBtn.style.display = 'inline-flex';
+    });
+    if (installBtn) {
+      installBtn.addEventListener('click', function() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choiceResult) {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('[Herald PWA] User accepted install prompt');
+          }
+          deferredPrompt = null;
+          installBtn.style.display = 'none';
+        });
+      });
+    }
+    window.addEventListener('appinstalled', function() {
+      if (installBtn) installBtn.style.display = 'none';
+      console.log('[Herald PWA] App installed');
+    });
+  })();
+</script>
 </body>
 </html>
