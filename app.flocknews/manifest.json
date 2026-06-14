@@ -1,0 +1,16 @@
+{
+  "name": "Herald by FlockOS",
+  "short_name": "Herald",
+  "description": "Daily ministry news, devotionals, missions, and study tools — free to the Body of Christ.",
+  "start_url": "app.flocknews/flocknews.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#d97706",
+  "icons": [
+    {
+      "src": "../Images/icon-herald.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
