@@ -2550,6 +2550,52 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   letter-spacing: 0;
 }
 
+/* ── Stationary Herald shell ───────────────────────────────────────────── */
+:root {
+  --fn-shell-top: 12px;
+  --fn-shell-bar-height: 68px;
+  --fn-shell-gap: 1.35rem;
+  --fn-shell-below-bar: calc(var(--fn-shell-top) + var(--fn-shell-bar-height) + var(--fn-shell-gap));
+}
+
+.fn-back-bar {
+  position: sticky !important;
+  top: var(--fn-shell-top);
+  z-index: 80;
+}
+
+.fn-side-nav {
+  position: sticky;
+  top: var(--fn-shell-below-bar);
+  z-index: 70;
+  height: calc(100vh - var(--fn-shell-below-bar) - 20px);
+}
+
+@media (min-width: 641px) {
+  .fn-masthead {
+    position: sticky;
+    top: var(--fn-shell-below-bar);
+    z-index: 60;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --fn-shell-top: 8px;
+    --fn-shell-bar-height: 62px;
+    --fn-shell-gap: 1rem;
+  }
+
+  .fn-back-bar {
+    position: sticky !important;
+    top: var(--fn-shell-top);
+  }
+
+  html[data-fn-sidebar="open"] .fn-side-nav {
+    top: calc(var(--fn-shell-top) + var(--fn-shell-bar-height) + .85rem);
+  }
+}
+
 /* ── Herald graphical card pass ────────────────────────────────────────── */
 [data-fn-section],
 .fn-front-grid,
