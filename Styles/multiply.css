@@ -254,19 +254,6 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   outline: none;
 }
 
-.fn-sw-icon {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
-  display: grid;
-  place-items: center;
-}
-
-.fn-sw-icon img {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
 
 .fn-sw-text { display: flex; flex-direction: column; gap: 3px; }
 .fn-sw-name {
@@ -356,16 +343,33 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   box-shadow: inset 0 -2px 0 rgba(247,199,86,.85);
 }
 .fn-side-icon {
-  width: 22px;
-  height: 22px;
-  flex: 0 0 22px;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
   display: grid;
   place-items: center;
 }
-.fn-side-icon img {
-  width: 20px;
-  height: 20px;
+.fn-herald-mark {
+  width: 32px;
+  height: 32px;
   display: block;
+}
+.fn-side-icon img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+.fn-sw-icon img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+.fn-sw-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
 }
 .fn-side-label {
   min-width: 0;
