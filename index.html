@@ -187,7 +187,7 @@
     <hr class="fn-masthead-rule-top">
     <div class="fn-masthead-inner">
       <div class="fn-flag">The Herald</div>
-      <div class="fn-church-name">{{CHURCH_NAME}}</div>
+      <div class="fn-church-name">FlockOS</div>
       <div class="fn-welcome-message" id="fn-welcome-message" aria-live="polite"></div>
       <div class="fn-motto">
         <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_courses">Discipleship</a>
@@ -1681,7 +1681,7 @@ document.addEventListener('keydown', function(e) {
     fetch('./Data/church.json')
       .then(function(r) { return r.json(); })
       .then(function(church) {
-        if (churchEl && church.name && churchEl.textContent.trim() === '{{CHURCH_NAME}}') {
+        if (churchEl && church.name && churchEl.textContent.trim() === 'FlockOS') {
           churchEl.textContent = church.name.toLowerCase();
         }
         if (websiteEl && church.website && !websiteEl.textContent.trim()) {
