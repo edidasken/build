@@ -327,6 +327,29 @@ html, body {
 .fn-welcome-message {
   font-family: var(--sans); font-size: 17px; font-weight: 400;
   line-height: 1.68; color: var(--ink); margin-top: 10px;
+  transition: max-height .3s ease;
+}
+.fn-welcome-expand,
+.fn-welcome-collapse {
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0 4px;
+  font-family: var(--serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  transition: color .15s;
+}
+.fn-welcome-expand:hover,
+.fn-welcome-collapse:hover {
+  color: var(--ink);
 }
 .fn-motto {
   font-family: var(--serif); font-size: 12px; letter-spacing: .22em;

@@ -673,7 +673,25 @@ var _FN_TODAY = window._FN_TODAY;
   var msgEl = document.getElementById('fn-welcome-message');
   if (msgEl) {
     msgEl.setAttribute('data-day', dayNames[dayOfWeek]);
-    msgEl.textContent = messages[dayOfWeek];
+    var fullText = messages[dayOfWeek];
+    var sentences = fullText.match(/[^.!?]+[.!?]+/g) || [fullText];
+    var short = sentences.slice(0, 2).join(' ').trim();
+    var expanded = false;
+    if (sentences.length > 2) {
+      msgEl.innerHTML = short + ' <button class="fn-welcome-expand" aria-label="Read full encouragement">&#8230;more</button>';
+      msgEl.style.cursor = 'pointer';
+      msgEl.addEventListener('click', function() {
+        if (!expanded) {
+          msgEl.innerHTML = fullText + ' <button class="fn-welcome-collapse" aria-label="Collapse">show less</button>';
+          expanded = true;
+        } else {
+          msgEl.innerHTML = short + ' <button class="fn-welcome-expand" aria-label="Read full encouragement">&#8230;more</button>';
+          expanded = false;
+        }
+      });
+    } else {
+      msgEl.textContent = fullText;
+    }
   }
 })();
 
