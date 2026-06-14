@@ -609,7 +609,9 @@ function shareInvitation() {
 
 <!-- Invitation module -->
 <script type="module">
-  import { render, mount } from 'Scripts/the_gospel/the_gospel_invitation.js';
+  // <base href="../"> sets the base URL to the app root (parent of app.invite/).
+  // Use ./ (relative to base) instead of ../ (which would go one level above the base).
+  import { render, mount } from './Scripts/the_gospel/the_gospel_invitation.js';
 
   var root    = document.getElementById('inv-root');
   var loading = document.getElementById('inv-loading');
@@ -685,7 +687,9 @@ function shareInvitation() {
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('../the_living_water.js').then(function(reg) {
+      // <base href="../"> sets the base URL to the app root.
+      // Use ./ so the SW is found at the same root as this deployment.
+      navigator.serviceWorker.register('./the_living_water.js').then(function(reg) {
         console.log('[Invite PWA] SW registered:', reg.scope);
       }, function(err) {
         console.warn('[Invite PWA] SW registration failed:', err);
