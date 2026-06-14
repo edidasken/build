@@ -401,8 +401,6 @@
     </div><!-- /fn-multiply-body -->
     </div><!-- /fn-multiply-expand -->
 
-    <div class="fn-multiply-expand" id="fn-multiply-expand-2">
-
     <hr class="rule-double">
     <p class="fn-multiply-section-label">The FlockOS Suite — Eight Apps, One Mission</p>
 
@@ -463,7 +461,6 @@
       </div>
     </div>
 
-    </div><!-- /fn-multiply-expand-2 -->
   </section>
 
   <!-- ══ SECTION 10 — THE FLOCKOS SUITE ════════════════════════════════════ -->
@@ -1469,7 +1466,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
   document.getElementById('fn-figure-content').innerHTML = `
     <div class="fn-figure-grid">
       <div class="fn-figure-card">
-        <div class="fn-figure-name-big">${esc(fig.name.charAt(0))}</div>
+        <div class="fn-figure-name-big">${esc(fig.name)}</div>
         <div class="fn-figure-title">${esc(fig.title||'')}</div>
         ${fig.meaning ? `<div class="fn-figure-meaning">"${esc(fig.meaning)}"</div>` : ''}
         ${fig.lifespan ? `<div class="fn-figure-lifespan">Lived: ${esc(fig.lifespan)} years</div>` : ''}

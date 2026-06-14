@@ -821,17 +821,19 @@ html, body {
    PERSON OF SCRIPTURE
    ════════════════════════════════════════════════════════════════════════════ */
 .fn-figure-grid {
-  display: grid; grid-template-columns: 200px 1fr;
+  display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 1.6fr);
   gap: 0; margin-top: 20px;
 }
 .fn-figure-card {
   border-right: 1px solid var(--rule); padding-right: 26px; text-align: center;
+  min-width: 0;
 }
 .fn-figure-name-big {
-  font-family: var(--masthead-font); font-size: 52px; line-height: 1; color: var(--ink); margin-bottom: 6px;
+  font-family: var(--masthead-font); font-size: clamp(30px, 4.5vw, 58px); line-height: 1.05; color: var(--ink); margin-bottom: 2px;
+  overflow-wrap: anywhere; word-break: break-word;
 }
 .fn-figure-title {
-  font-family: var(--serif); font-size: 13px; font-weight: 700; letter-spacing: .08em;
+  font-family: var(--serif); font-size: 14px; font-weight: 700; letter-spacing: .06em;
   text-transform: uppercase; color: var(--ink-label); margin-bottom: 8px;
 }
 .fn-figure-meaning {
@@ -1155,9 +1157,9 @@ html, body {
   padding: 24px 0 10px;
   color: var(--ink);
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 5vw, 4.6rem);
+  font-size: 1.4rem;
   font-weight: 900;
-  line-height: .98;
+  line-height: 1.2;
   letter-spacing: 0;
   text-align: left;
   overflow-wrap: anywhere;
@@ -1372,8 +1374,8 @@ html, body {
 
 @media (max-width: 640px) {
   .fn-multiply-headline {
-    font-size: clamp(1.55rem, 7.4vw, 2rem);
-    line-height: 1.08;
+    font-size: 1.25rem;
+    line-height: 1.2;
     overflow-wrap: anywhere;
     word-break: break-word;
   }
