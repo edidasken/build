@@ -188,6 +188,7 @@
     <div class="fn-masthead-inner">
       <div class="fn-flag">The Herald</div>
       <div class="fn-church-name">FlockOS</div>
+      <div id="fn-welcome-message" style="font-family: Merriweather, Georgia, serif; font-size: 0.9rem; font-style: italic; opacity: 0.8; margin: 8px auto 12px; max-width: 600px; line-height: 1.4;"></div>
       <div class="fn-motto">
         <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_courses">Discipleship</a>
         <span class="fn-motto-dot">·</span>
@@ -520,6 +521,24 @@
 var _FN_NOW   = window._FN_NOW;
 var _FN_DAY   = window._FN_DAY;
 var _FN_TODAY = window._FN_TODAY;
+
+// ── Rotating Welcome Message ──────────────────────────────────────────────
+(function () {
+  var messages = [
+    "Grace and peace to you on the Lord's Day. May you be renewed in worship and fellowship.",
+    "Welcome to a new week. May God's wisdom guide your steps and His joy be your strength today.",
+    "Grace to you this Tuesday. Stand firm in the faith and let the light of Christ shine through your work.",
+    "Midweek peace to you. May you be refreshed by His Word and sustained by His unfailing grace.",
+    "Rejoice in His faithfulness this Thursday. Cast your cares upon Him, for He cares for you.",
+    "Press on with courage this Friday. The Lord is your shield and your exceedingly great reward.",
+    "Rest in His presence today. May this Saturday bring quiet reflection and preparation for worship."
+  ];
+  var dayOfWeek = _FN_NOW ? _FN_NOW.getDay() : new Date().getDay();
+  var msgEl = document.getElementById('fn-welcome-message');
+  if (msgEl) {
+    msgEl.textContent = messages[dayOfWeek];
+  }
+})();
 
 // ── Load editor config ────────────────────────────────────────────────────
 var _CFG = (function () {
