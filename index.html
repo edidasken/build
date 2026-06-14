@@ -188,7 +188,7 @@
     <div class="fn-masthead-inner">
       <div class="fn-flag">The Herald</div>
       <div class="fn-church-name">FlockOS</div>
-      <div id="fn-welcome-message" style="font-family: Merriweather, Georgia, serif; font-size: 0.9rem; font-style: italic; opacity: 0.8; margin: 8px auto 12px; max-width: 600px; line-height: 1.4;"></div>
+      <div class="fn-welcome-message" id="fn-welcome-message" aria-live="polite"></div>
       <div class="fn-motto">
         <a class="fn-motto-link" href="app.grow/app.grow.html#the_gospel_courses">Discipleship</a>
         <span class="fn-motto-dot">·</span>
@@ -533,9 +533,11 @@ var _FN_TODAY = window._FN_TODAY;
     "Press on with courage this Friday. The Lord is your shield and your exceedingly great reward.",
     "Rest in His presence today. May this Saturday bring quiet reflection and preparation for worship."
   ];
+  var dayNames = ['Sunday encouragement', 'Monday encouragement', 'Tuesday encouragement', 'Wednesday encouragement', 'Thursday encouragement', 'Friday encouragement', 'Saturday encouragement'];
   var dayOfWeek = _FN_NOW ? _FN_NOW.getDay() : new Date().getDay();
   var msgEl = document.getElementById('fn-welcome-message');
   if (msgEl) {
+    msgEl.setAttribute('data-day', dayNames[dayOfWeek]);
     msgEl.textContent = messages[dayOfWeek];
   }
 })();
