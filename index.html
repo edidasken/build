@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Herald by FlockOS — Daily devotionals, missions, theology, apologetics, discipleship, and Scripture for the Body of Christ.">
-  <title>Herald — FlockOS Public Desk</title>
+  <title>Herald</title>
   <link rel="icon" type="image/svg+xml" href="Images/icon-herald.svg">
   <link rel="apple-touch-icon" href="Images/icon-herald.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -769,16 +769,16 @@ window.addEventListener('message', function(e) {
 </script>
 
 <script type="module">
-import devosRaw     from 'Data/devotionals.js';
-import missionsRaw  from 'Data/missions.js';
-import theologyRaw  from 'Data/theology.js';
-import apologeticsRaw from 'Data/apologetics.js';
-import counselingRaw  from 'Data/counseling.js';
-import quizRaw        from 'Data/quiz.js';
-import genealogyRaw   from 'Data/genealogy.js';
-import heartRaw       from 'Data/heart.js';
-import bibleRaw       from 'Data/one_year_bible.js';
-import psalmsRaw      from 'Data/psalms.js';
+import devosRaw     from './Data/devotionals.js';
+import missionsRaw  from './Data/missions.js';
+import theologyRaw  from './Data/theology.js';
+import apologeticsRaw from './Data/apologetics.js';
+import counselingRaw  from './Data/counseling.js';
+import quizRaw        from './Data/quiz.js';
+import genealogyRaw   from './Data/genealogy.js';
+import heartRaw       from './Data/heart.js';
+import bibleRaw       from './Data/one_year_bible.js';
+import psalmsRaw      from './Data/psalms.js';
 
 const DAY   = window._FN_DAY;
 const TODAY = window._FN_TODAY;
@@ -1648,6 +1648,37 @@ document.addEventListener('keydown', function(e) {
       });
     } catch(_) {}
   });
+</script>
+
+<!-- ── Church registry — populate masthead placeholders ─────────────── -->
+<script>
+  (function() {
+    var churchEl = document.querySelector('.fn-church-name');
+    var websiteEl = document.querySelector('.fn-church-website');
+    if (!churchEl && !websiteEl) return;
+
+    fetch('./Data/church.json')
+      .then(function(r) { return r.json(); })
+      .then(function(church) {
+        if (churchEl && church.name && churchEl.textContent.trim() === 'FlockOS') {
+          churchEl.textContent = church.name.toLowerCase();
+        }
+        if (websiteEl && church.website && websiteEl.textContent.trim() === '{{CHURCH_WEBSITE}}') {
+          var url = 'https://' + church.website.replace(/^https?:\/\//, '').toLowerCase();
+          var a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = url;
+          a.style.cssText = websiteEl.style.cssText || '';
+          a.className = websiteEl.className;
+          websiteEl.parentNode.replaceChild(a, websiteEl);
+        }
+      })
+      .catch(function() {
+        // Non-fatal — placeholders remain if fetch fails
+      });
+  })();
 </script>
 
 </body>
