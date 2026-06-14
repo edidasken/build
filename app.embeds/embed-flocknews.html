@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <!-- Absolute base so all relative URLs resolve to GitHub Pages regardless of embed host -->
-  <base href="https://flock-os.github.io/FlockOS/New_Covenant/">
+  <base href="https://edidasken.github.io/developer/New_Covenant/">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Herald by FlockOS — Daily devotionals, missions, theology, apologetics, discipleship, and Scripture for the Body of Christ.">
   <title>Herald — FlockNews Edition</title>
@@ -17,7 +17,7 @@
       try { var t = localStorage.getItem('flock_theme') || 'america'; document.documentElement.setAttribute('data-theme', t); }
       catch (_) { document.documentElement.setAttribute('data-theme', 'america'); }
       try {
-        var isEmbedded = new URLSearchParams(location.search).get('embedded') === '1' || window !== window.top;
+        var isEmbedded = new URLSearchParams(location.search).get('embedded') === '1'; // Only hide nav when launcher explicitly requests it
         if (isEmbedded) document.documentElement.setAttribute('data-fn-embedded', 'true');
       } catch (_) {}
       try {
