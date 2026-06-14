@@ -1,0 +1,19 @@
+{
+  "id": "gas",
+  "sheetId": "",
+  "name": "FlockOS-GAS",
+  "shortName": "GAS",
+  "brandName": "FlockOS-GAS",
+  "tagline": "Ministry Operating System \u2014 Free. Offline-capable. Built for every church.",
+  "favicon": "FlockOS_Orange.png",
+  "portrait": "FlockOS_Orange.png",
+  "themeColor": "#e8a838",
+  "backgroundColor": "#1a1a2e",
+  "databaseUrl": "https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec",
+  "photosUrl": "",
+  "adminEmail": "",
+  "analyticsId": "",
+  "firebaseConfig": null,
+  "version": "3.0",
+  "website": "gas.yhwh.one"
+}

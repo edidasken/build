@@ -23,6 +23,23 @@ import * as adornment from './the_adornment.js';
 import * as livingWater from './the_living_water_register.js';
 import { installScriptureLinks } from './the_scrolls/the_bible_link.js';
 
+// ── Dynamic-import anchor ───────────────────────────────────────────────────
+// Browsers disagree on whether <base href> applies to dynamic import().
+// Some (Chromium) resolve import('./foo') relative to the document base,
+// others (Firefox, Safari) resolve it relative to the importing module.
+// When <base href="../"> is set (as in app.flockos), Chromium would
+// resolve import('../Views/life/index.js') as https://…/trinity/Views/…
+// instead of https://…/New_Covenant/Views/… — causing 404s.
+//
+// _resolve(path) always uses import.meta.url as the base, so dynamic
+// imports are anchored to this file's location regardless of <base href>.
+// Use it for EVERY dynamic import in this file.  Static imports are fine.
+const _resolve = (path) => new URL(path, import.meta.url).href;
+const _import = (path) => import(_resolve(path));
+// _import is the preferred API: _import('../Views/the_life/index.js')
+// For call sites that need template strings, use _resolve() inside import():
+//   import(_resolve(`../Views/${n}/index.js`))
+
 const flock = {
   /** Boot the new FlockOS shell. Idempotent.
    *
@@ -93,7 +110,7 @@ const flock = {
 /* ── View registration ────────────────────────────────────────────────────── */
 async function _registerViews() {
   // Lazy view loaders — each view is its own folder with index.js.
-  const V = (n) => () => import(`../Views/${n}/index.js`);
+  const V = (n) => () => import(_resolve(`../Views/${n}/index.js`));
 
   register('the_good_shepherd',          V('the_good_shepherd'),          { command: 'Go to: Home' });
   register('the_great_commission',       V('the_great_commission'),       { command: 'Go to: Missions' });
@@ -167,22 +184,22 @@ function _preloadViews() {
   // background while dress() is running.  When go('the_good_shepherd') fires
   // the module is already in the browser's module registry — zero-latency.
   // _frame.js is shared by every view so it's cheap to preload once here.
-  import('../Views/_frame.js').catch(() => {});
-  import('../Views/the_good_shepherd/index.js').catch(() => {});
+  _import('../Views/_frame.js').catch(() => {});
+  _import('../Views/the_good_shepherd/index.js').catch(() => {});
   // Sub-modules — without these the home view has to await each one after mount.
-  import('../Views/the_good_shepherd/the_count.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_pasture.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_today_events.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_birthdays.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_todos.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_next_steps.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_flock_feed.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_call.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_word.js').catch(() => {});
-  import('../Views/the_good_shepherd/the_prayer_hours.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_count.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_pasture.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_today_events.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_birthdays.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_todos.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_next_steps.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_flock_feed.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_call.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_word.js').catch(() => {});
+  _import('../Views/the_good_shepherd/the_prayer_hours.js').catch(() => {});
   // The Upper Room — surfaced from the home dashboard, parse it now.
-  import('../Views/the_upper_room/index.js').catch(() => {});
-  import('../Views/the_upper_room/the_devotional.js').catch(() => {});
+  _import('../Views/the_upper_room/index.js').catch(() => {});
+  _import('../Views/the_upper_room/the_devotional.js').catch(() => {});
 }
 
 /* ── Home data pre-warm ──────────────────────────────────────────────────── */
@@ -211,7 +228,7 @@ const HOME_DATA_KEYS = [
  */
 async function _hydrateAllFromCistern() {
   try {
-    const { hydrateAll } = await import('./the_manna.js');
+    const { hydrateAll } = await _import('./the_manna.js');
     await hydrateAll();
   } catch (_) { /* non-fatal */ }
 }
@@ -224,7 +241,7 @@ async function _hydrateAllFromCistern() {
  */
 async function _wrapDataSources() {
   try {
-    const { wrap } = await import('./the_manna.js');
+    const { wrap } = await _import('./the_manna.js');
     // UpperRoom (Firestore SDK) — wrap once it's ready.
     const wrapUR = () => {
       const UR = window.UpperRoom;
@@ -311,8 +328,8 @@ async function _warmCommonData() {
 async function _hydrateHomeFromCistern() {
   try {
     const [{ hydrate }, { read }] = await Promise.all([
-      import('./the_manna.js'),
-      import('./the_cistern.js'),
+      _import('./the_manna.js'),
+      _import('./the_cistern.js'),
     ]);
     const entries = await Promise.all(
       HOME_DATA_KEYS.map(async ({ key }) => {
