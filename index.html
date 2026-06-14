@@ -41,7 +41,7 @@
       }
     })();
   </script>
-  <link rel="manifest" href="../manifest.json">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="Styles/new_covenant.css">
   <link rel="stylesheet" href="app.flocknews/flocknews.css">
   <link rel="stylesheet" href="Styles/herald_grow.css">
@@ -1889,7 +1889,7 @@ document.addEventListener('keydown', function(e) {
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('../sw.js').then(function(reg) {
+      navigator.serviceWorker.register('the_living_water.js').then(function(reg) {
         console.log('[Herald PWA] SW registered:', reg.scope);
       }, function(err) {
         console.warn('[Herald PWA] SW registration failed:', err);
