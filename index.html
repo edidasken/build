@@ -33,9 +33,11 @@
         }, 1);
         document.documentElement.style.setProperty('--reader-scale', String(best));
         document.documentElement.setAttribute('data-reader-scale', String(best));
+        document.documentElement.style.fontSize = (16 * best) + 'px';
       } catch (_) {
         document.documentElement.style.setProperty('--reader-scale', '1');
         document.documentElement.setAttribute('data-reader-scale', '1');
+        document.documentElement.style.fontSize = '16px';
       }
     })();
   </script>
@@ -742,6 +744,7 @@ function goBack() {
     var best = nearestScale(scale);
     document.documentElement.style.setProperty('--reader-scale', String(best));
     document.documentElement.setAttribute('data-reader-scale', String(best));
+    document.documentElement.style.fontSize = (16 * best) + 'px';
     document.querySelectorAll('[data-reading-size]').forEach(function (btn) {
       var active = Math.abs(Number(btn.getAttribute('data-reading-size') || '1') - best) < 0.001;
       btn.classList.toggle('is-active', active);
