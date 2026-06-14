@@ -115,8 +115,6 @@ html, body {
   /* Darken muted label color on mobile for readability */
   :root { --ink-label: #2e2820; }
 
-  .fn-back-bar { position: static !important; }
-
   /* Compact centered popover — NOT full-page takeover */
   .fn-app-switcher {
     position: fixed;
@@ -1236,7 +1234,6 @@ body {
   color: var(--ink);
   font-family: var(--sans);
   line-height: 1.6;
-  overflow-x: hidden;
 }
 
 html {
@@ -2569,14 +2566,6 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   top: var(--fn-shell-below-bar);
   z-index: 70;
   height: calc(100vh - var(--fn-shell-below-bar) - 20px);
-}
-
-@media (min-width: 641px) {
-  .fn-masthead {
-    position: sticky;
-    top: var(--fn-shell-below-bar);
-    z-index: 60;
-  }
 }
 
 @media (max-width: 640px) {
