@@ -1867,7 +1867,7 @@
 
   <!-- Unity header -->
   <script type="module">
-    import { mountUnityHeader } from '../Scripts/the_unity_header.js';
+    import { mountUnityHeader } from 'Scripts/the_unity_header.js';
     
     window.addEventListener('load', () => {
       mountUnityHeader(document.getElementById('fc-topbar'), {
@@ -1879,7 +1879,7 @@
         homeHref: 'app.flockchat/',
         hideHamburger: true,  // FlockChat doesn't use sidebar
         features: [
-          { id: 'fc-conversations', label: 'All Conversations', hint: 'Browse all channels', run: () => document.getElementById('fc-back-btn')?.click() },
+          { id: 'fc-conversations', label: 'All Conversations', hint: 'Browse all channels', run: () => document.getElementById('fc-back')?.click() },
           { id: 'fc-announcements', label: 'Announcements',     hint: 'Church announcements', run: () => window._openConversation?.('announcements') },
           { id: 'fc-prayer',        label: 'Prayer Chain',      hint: 'Church prayer requests', run: () => window._openConversation?.('prayer') },
         ],
@@ -1892,7 +1892,7 @@
 
   <!-- Auto-linkify scripture references → bible.com ESV (same as GROW) -->
   <script type="module">
-    import { installScriptureLinks } from '../Scripts/the_scrolls/the_bible_link.js';
+    import { installScriptureLinks } from 'Scripts/the_scrolls/the_bible_link.js';
     installScriptureLinks(document.body);
   </script>
 

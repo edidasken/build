@@ -3120,6 +3120,8 @@
     modal.style.display = 'flex';
     modal.setAttribute('data-srm-id', _srmSlides[0]?.text || '');
     // Keyboard support
+    // Remove previous handler to prevent duplicate listeners stacking up
+    if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
     modal._keyHandler = function(e) {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') window._srmSlideNext();
       if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   window._srmSlidePrev();
