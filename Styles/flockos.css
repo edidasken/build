@@ -27,7 +27,7 @@ body.veil-app {
 }
 
 body.veil-app .veil-wrap {
-  --topbar-h: 92px;
+  --topbar-h: 68px;
   --sidebar-w: 238px;
   background:
     radial-gradient(circle at top left, rgba(247,199,86,0.16), transparent 32rem),
@@ -113,8 +113,8 @@ body.veil-app .unity-avatar {
 }
 
 body.veil-app .veil-side {
-  margin: 12px 0 0 22px;
-  height: calc(100dvh - 126px);
+  margin: 22px 0 0 22px;
+  height: calc(100dvh - 100px);
   padding: 0.75rem;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
@@ -181,21 +181,294 @@ body.veil-app .pillars-item[data-section="admin"] .pillars-icon {
 }
 
 body.veil-app .veil-main {
-  padding: 24px 34px calc(var(--safe-bottom, 0px) + 48px);
+  padding: 0 22px calc(var(--safe-bottom, 0px) + 64px);
 }
 
 body.veil-app .veil-main > * {
   max-width: 1180px;
 }
 
-body.veil-app .pasture-hero h1 {
-  background: linear-gradient(135deg, var(--flockos-navy) 10%, var(--flockos-cyan) 55%, var(--flockos-gold) 95%);
-  -webkit-background-clip: text;
-  background-clip: text;
+/* The Good Shepherd home */
+body.veil-app .pasture {
+  gap: 22px;
+}
+
+body.veil-app .pasture-hero.page-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(22px, 4vw, 44px);
+  align-items: end;
+  min-height: 430px;
+  margin: 0;
+  padding: clamp(32px, 5vw, 72px);
+  border: 1px solid rgba(247,199,86,0.26);
+  border-radius: 26px;
+  background:
+    linear-gradient(90deg, rgba(8,13,33,0.96) 0%, rgba(15,23,42,0.78) 44%, rgba(15,23,42,0.42) 72%, rgba(15,23,42,0.86) 100%),
+    linear-gradient(0deg, rgba(15,23,42,0.82), rgba(15,23,42,0.12) 44%),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
+  color: #f8fafc;
+  box-shadow: var(--flockos-shadow);
+  isolation: isolate;
+}
+
+body.veil-app .pasture-hero.page-hero::before {
+  display: none;
+}
+
+body.veil-app .pasture-hero.page-hero::after {
+  content: '';
+  position: absolute;
+  inset: clamp(14px, 2vw, 22px);
+  z-index: 0;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 44%),
+    linear-gradient(90deg, rgba(247,199,86,0.18), transparent 34%);
+  pointer-events: none;
+}
+
+body.veil-app .pasture-hero-copy {
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+body.veil-app .pasture-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin-bottom: 18px;
+  padding: 8px 13px;
+  border: 1px solid rgba(247,199,86,0.12);
+  border-radius: 999px;
+  background: rgba(247,199,86,0.95);
+  color: #111827;
+  font: 900 0.74rem var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 body.veil-app .pasture-date {
-  color: var(--flockos-gold-deep);
+  margin: 0 0 10px;
+  color: rgba(248,250,252,0.78);
+  font: 800 0.88rem var(--font-ui);
+  letter-spacing: 0;
+}
+
+body.veil-app .pasture-hero h1,
+body.veil-app .pasture-hero .page-hero-title {
+  max-width: 780px;
+  margin: 0 0 16px;
+  background: none;
+  color: #ffffff;
+  -webkit-text-fill-color: currentColor;
+  font: 900 clamp(2.7rem, 5vw, 5rem)/1.08 var(--font-serif);
+  letter-spacing: 0;
+  text-shadow: 0 8px 34px rgba(0,0,0,0.32);
+}
+
+body.veil-app .pasture-tagline,
+body.veil-app .pasture-hero .page-hero-sub {
+  max-width: 58ch;
+  margin: 0;
+  color: rgba(248,250,252,0.86);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+body.veil-app .pasture-hero .page-hero-scripture {
+  max-width: 62ch;
+  margin-top: 18px;
+  padding: 13px 16px;
+  border-left: 4px solid var(--flockos-gold);
+  border-top: 1px solid rgba(255,255,255,0.14);
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+  background: linear-gradient(90deg, rgba(15,23,42,0.76), rgba(15,23,42,0.36) 68%, transparent);
+  color: rgba(255,255,255,0.94);
+}
+
+body.veil-app .pasture-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+body.veil-app .pasture-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 13px 9px 10px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.10);
+  color: #f8fafc;
+  font: 900 0.82rem var(--font-ui);
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+  transition: transform 150ms var(--ease), border-color 150ms var(--ease), background 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+
+body.veil-app .pasture-action:hover,
+body.veil-app .pasture-action:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+  box-shadow: 0 14px 28px rgba(15,23,42,0.11);
+}
+
+body.veil-app .pasture-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+body.veil-app .pasture-action--know {
+  border-color: rgba(247,199,86,0.42);
+  background: rgba(247,199,86,0.18);
+  color: #fff;
+}
+
+body.veil-app .pasture-action--feed {
+  border-color: rgba(72,211,217,0.34);
+  background: rgba(72,211,217,0.13);
+  color: #fff;
+}
+
+body.veil-app .pasture-action--guard {
+  border-color: rgba(34,197,94,0.28);
+  background: rgba(34,197,94,0.12);
+  color: #fff;
+}
+
+body.veil-app .pasture-hero-aside {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  width: 152px;
+}
+
+body.veil-app .pasture-compass {
+  position: relative;
+  width: 118px;
+  height: 118px;
+  margin: 0 auto 6px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(247,199,86,0.24), transparent 48%),
+    linear-gradient(245deg, rgba(72,211,217,0.24), transparent 52%),
+    rgba(15,23,42,0.42);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.20);
+}
+
+body.veil-app .pasture-compass-ring {
+  position: absolute;
+  inset: 24px;
+  border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+
+body.veil-app .pasture-compass-ring::before,
+body.veil-app .pasture-compass-ring::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,255,255,0.18);
+}
+
+body.veil-app .pasture-compass-ring::before {
+  width: 2px;
+  inset: -14px auto -14px 50%;
+}
+
+body.veil-app .pasture-compass-ring::after {
+  height: 2px;
+  inset: 50% -14px auto -14px;
+}
+
+body.veil-app .pasture-compass-mark {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  color: #111827;
+  font: 900 0.76rem var(--font-ui);
+  box-shadow: 0 8px 18px rgba(15,23,42,0.12);
+}
+
+body.veil-app .pasture-compass-mark--top {
+  top: 10px;
+  left: 45px;
+  background: #fde68a;
+}
+
+body.veil-app .pasture-compass-mark--right {
+  top: 45px;
+  right: 10px;
+  background: #a5f3fc;
+}
+
+body.veil-app .pasture-compass-mark--bottom {
+  left: 45px;
+  bottom: 10px;
+  background: #bbf7d0;
+}
+
+body.veil-app .pasture-hero-aside span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  color: #f8fafc;
+  font: 900 0.78rem var(--font-ui);
+  text-transform: uppercase;
+}
+
+body.veil-app .pasture-devo-row,
+body.veil-app .pasture-row,
+body.veil-app .pasture-grid {
+  gap: 16px;
+}
+
+body.veil-app .pasture .pasture-hero h1 {
+  background: none;
+  color: #ffffff;
+  -webkit-text-fill-color: currentColor;
+}
+
+body.veil-app .pasture .pasture-date {
+  color: rgba(248,250,252,0.78);
+}
+
+body.veil-app .pasture-hero-aside span:nth-of-type(1) {
+  background: rgba(247,199,86,0.20);
+  color: #fff;
+}
+
+body.veil-app .pasture-hero-aside span:nth-of-type(2) {
+  background: rgba(72,211,217,0.18);
+  color: #fff;
+}
+
+body.veil-app .pasture-hero-aside span:nth-of-type(3) {
+  background: rgba(34,197,94,0.14);
+  color: #fff;
 }
 
 body.veil-app flock-card,
@@ -211,7 +484,98 @@ body.veil-app .page-hero {
 }
 
 body.veil-app .pasture .stat-card {
-  border-top: 3px solid var(--flockos-gold);
+  min-height: 154px;
+  padding: 18px 18px 16px;
+  border-top: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.76)),
+    linear-gradient(135deg, rgba(72,211,217,0.12), transparent 58%);
+}
+
+body.veil-app .pasture .stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: linear-gradient(90deg, var(--stat-accent, var(--flockos-gold)), rgba(255,255,255,0));
+}
+
+body.veil-app .pasture [data-bind="fellowship-summary"] .stat-card,
+body.veil-app .pasture [data-bind="prayers"] .stat-card {
+  --stat-accent: var(--flockos-cyan);
+}
+
+body.veil-app .pasture [data-bind="care-summary"] .stat-card {
+  --stat-accent: #22c55e;
+}
+
+body.veil-app .pasture [data-bind="today"] .stat-card {
+  --stat-accent: var(--flockos-gold);
+}
+
+body.veil-app .pasture [data-bind="members"] .stat-card {
+  --stat-accent: #8b5cf6;
+}
+
+body.veil-app .pasture .stat-card:hover {
+  box-shadow: var(--flockos-shadow-soft), 0 0 0 1px rgba(247,199,86,0.24);
+}
+
+body.veil-app .pasture .stat-icon {
+  border: 1px solid color-mix(in srgb, var(--stat-accent, var(--flockos-gold)) 35%, transparent);
+  background: color-mix(in srgb, var(--stat-accent, var(--flockos-gold)) 14%, #ffffff);
+  color: color-mix(in srgb, var(--stat-accent, var(--flockos-gold)) 72%, var(--flockos-navy));
+}
+
+body.veil-app .pasture .stat-value {
+  color: var(--flockos-navy);
+  font-family: var(--font-serif);
+}
+
+body.veil-app .pasture .stat-caption {
+  color: #64748b;
+}
+
+body.veil-app .pasture .stat-arrow {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .pasture flock-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px;
+  border-color: rgba(15,23,42,0.10);
+  background:
+    linear-gradient(135deg, rgba(72,211,217,0.08), transparent 56%),
+    rgba(255,255,255,0.84);
+}
+
+body.veil-app .pasture flock-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--flockos-gold), rgba(72,211,217,0.7), transparent);
+}
+
+body.veil-app .pasture flock-card h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--flockos-navy);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+body.veil-app .pasture flock-card h3::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--flockos-gold);
+  box-shadow: 0 0 0 4px rgba(247,199,86,0.14);
 }
 
 body.veil-app .devo-dark-card,
@@ -221,10 +585,106 @@ body.veil-app .pray-liturgy-card {
   box-shadow: 0 18px 44px rgba(15,23,42,0.20);
 }
 
+body.veil-app .pasture .devo-dark-card,
+body.veil-app .pasture .pray-liturgy-card {
+  min-height: 100%;
+  border: 1px solid rgba(247,199,86,0.24);
+  border-radius: var(--flockos-radius-lg);
+  background:
+    linear-gradient(115deg, rgba(247,199,86,0.16), transparent 35%),
+    linear-gradient(245deg, rgba(72,211,217,0.14), transparent 42%),
+    linear-gradient(180deg, #ffffff, rgba(248,250,252,0.90));
+  color: var(--flockos-navy);
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app .pasture .word-title,
+body.veil-app .pasture .pray-liturgy-title {
+  color: var(--flockos-navy) !important;
+}
+
+body.veil-app .pasture .word-scrip,
+body.veil-app .pasture .pray-liturgy-verse {
+  color: #334155 !important;
+}
+
+body.veil-app .pasture .devo-dark-eyebrow,
+body.veil-app .pasture .pray-lit-time {
+  color: var(--flockos-gold-deep) !important;
+}
+
+body.veil-app .pasture .devo-dark-theme,
+body.veil-app .pasture .pray-lit-now-pill {
+  background: rgba(247,199,86,0.20) !important;
+  color: #7c4f05 !important;
+}
+
+body.veil-app .pasture .devo-dark-scrip {
+  border-left-color: var(--flockos-cyan) !important;
+  background: rgba(72,211,217,0.12) !important;
+}
+
+body.veil-app .pasture .devo-dark-tease,
+body.veil-app .pasture .pray-lit-text {
+  color: #475569 !important;
+}
+
+body.veil-app .pasture .pray-liturgy-row {
+  border-radius: 12px;
+}
+
+body.veil-app .pasture .pray-liturgy-row:hover {
+  background: rgba(72,211,217,0.10);
+}
+
+body.veil-app .pasture .pray-liturgy-row.is-now {
+  background: rgba(247,199,86,0.16);
+  border-left-color: var(--flockos-gold);
+}
+
+body.veil-app .pasture .devo-dark-btn,
+body.veil-app .pasture .ph-begin-btn {
+  border-color: rgba(15,23,42,0.14) !important;
+  background: rgba(255,255,255,0.72) !important;
+  color: var(--flockos-navy) !important;
+}
+
+body.veil-app .pasture .devo-dark-btn:hover,
+body.veil-app .pasture .ph-begin-btn:hover {
+  background: rgba(72,211,217,0.12) !important;
+  border-color: rgba(72,211,217,0.38) !important;
+}
+
 body.veil-app .today-row:hover,
 body.veil-app .bday-row:hover,
 body.veil-app .feed-row:hover {
   background: rgba(247,199,86,0.08);
+}
+
+body.veil-app .pasture .today-row,
+body.veil-app .pasture .bday-row,
+body.veil-app .pasture .todo-row,
+body.veil-app .pasture .feed-row {
+  min-height: 52px;
+  padding: 11px 8px;
+  border-bottom-color: rgba(15,23,42,0.08);
+  border-radius: 10px;
+}
+
+body.veil-app .pasture .todo-title,
+body.veil-app .pasture .today-title,
+body.veil-app .pasture .bday-name,
+body.veil-app .pasture .feed-row-label {
+  color: var(--flockos-navy);
+}
+
+body.veil-app .pasture .today-loc,
+body.veil-app .pasture .bday-age,
+body.veil-app .pasture .todo-due,
+body.veil-app .pasture .feed-row-detail,
+body.veil-app .pasture .feed-row-time,
+body.veil-app .pasture .empty-soft {
+  color: #64748b;
 }
 
 body.veil-app .today-time,
@@ -280,25 +740,91 @@ body.veil-app .fc-pane-frame iframe {
 body.veil-app .garments-overlay {
   padding: 20px;
   overflow-y: auto;
+  background:
+    linear-gradient(90deg, rgba(8,13,33,0.96) 0%, rgba(15,23,42,0.82) 48%, rgba(15,23,42,0.58) 100%),
+    linear-gradient(0deg, rgba(15,23,42,0.82), rgba(15,23,42,0.20) 45%),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
 body.veil-app .garments-card {
-  width: min(360px, calc(100vw - 32px)) !important;
+  width: min(420px, calc(100vw - 32px)) !important;
   max-width: calc(100vw - 32px) !important;
   min-width: 0;
   margin: auto;
-  border: 1px solid rgba(247,199,86,0.20);
-  border-radius: var(--flockos-radius-lg);
-  background: linear-gradient(180deg, var(--flockos-navy), #11143f);
-  box-shadow: 0 24px 70px rgba(15,23,42,0.35);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), transparent 42%),
+    linear-gradient(135deg, rgba(247,199,86,0.18), transparent 36%),
+    rgba(15,23,42,0.74);
+  box-shadow: 0 32px 90px rgba(0,0,0,0.42), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+body.veil-app .garments-card::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+body.veil-app .garments-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 body.veil-app .garments-title {
-  color: var(--flockos-gold);
+  background: none;
+  color: #ffffff;
+  -webkit-text-fill-color: currentColor;
+  font-size: 2rem;
+  letter-spacing: 0;
+  text-shadow: 0 8px 30px rgba(0,0,0,0.28);
+}
+
+body.veil-app .garments-sub {
+  color: rgba(248,250,252,0.76);
+}
+
+body.veil-app .garments-label {
+  color: rgba(248,250,252,0.68);
+}
+
+body.veil-app .garments-input {
+  border-color: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+}
+
+body.veil-app .garments-input:focus {
+  border-color: rgba(247,199,86,0.70);
+  box-shadow: 0 0 0 3px rgba(247,199,86,0.18);
 }
 
 body.veil-app .garments-btn-submit {
   background: linear-gradient(135deg, var(--flockos-gold), #d86d1e);
+  color: #111827;
+  box-shadow: 0 14px 28px rgba(247,199,86,0.28);
+}
+
+body.veil-app .garments-scripture {
+  color: rgba(255,255,255,0.74);
+}
+
+body.veil-app .garments-request-access,
+body.veil-app .garments-request-link,
+body.veil-app .garments-request-sep {
+  color: rgba(248,250,252,0.68);
+}
+
+body.veil-app .garments-request-link:hover,
+body.veil-app .garments-request-link:focus-visible {
+  color: var(--flockos-gold);
 }
 
 /* The Upper Room view */
@@ -627,9 +1153,540 @@ body.veil-app .gen-view--embedded .way-section-header {
   margin-top: 24px;
 }
 
+/* Visible FlockOS views — shared Herald treatment beyond the home dashboard. */
+body.veil-app :is(
+  .grow-page,
+  .fold-view,
+  .life-view,
+  .seasons-view,
+  .aow-view,
+  .qwp-view,
+  .gc-view,
+  .harvest-view,
+  .way-view,
+  .truth-view,
+  .gift-view,
+  .wv-view,
+  .wall-view
+) {
+  --view-accent: var(--flockos-gold);
+  --view-accent-2: var(--flockos-cyan);
+  --view-accent-soft: rgba(247,199,86,0.14);
+  gap: 22px;
+  color: var(--flockos-navy);
+}
+
+body.veil-app .grow-page { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,0.13); }
+body.veil-app .fold-view { --view-accent: #8b5cf6; --view-accent-soft: rgba(139,92,246,0.13); }
+body.veil-app .life-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,0.13); }
+body.veil-app .seasons-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,0.13); }
+body.veil-app .gc-view,
+body.veil-app .harvest-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,0.13); }
+body.veil-app .way-view,
+body.veil-app .truth-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,0.14); }
+body.veil-app .gift-view { --view-accent: #8b5cf6; --view-accent-soft: rgba(139,92,246,0.13); }
+body.veil-app .wv-view { --view-accent: #0ea5e9; --view-accent-soft: rgba(14,165,233,0.13); }
+body.veil-app .wall-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,0.13); }
+
+body.veil-app :is(
+  .fold-view,
+  .life-view,
+  .seasons-view,
+  .aow-view,
+  .qwp-view,
+  .gc-view,
+  .harvest-view,
+  .way-view,
+  .truth-view,
+  .gift-view,
+  .wv-view,
+  .wall-view
+) > .page-hero,
+body.veil-app .grow-page > .grow-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: clamp(26px, 4vw, 42px);
+  border: 1px solid rgba(247,199,86,0.24);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(72,211,217,0.18), transparent 18rem),
+    radial-gradient(circle at 14% 88%, rgba(247,199,86,0.18), transparent 18rem),
+    linear-gradient(135deg, rgba(15,23,42,0.98), rgba(22,34,53,0.96));
+  color: #f8fafc;
+  box-shadow: var(--flockos-shadow);
+  isolation: isolate;
+}
+
+body.veil-app :is(
+  .fold-view,
+  .life-view,
+  .seasons-view,
+  .aow-view,
+  .qwp-view,
+  .gc-view,
+  .harvest-view,
+  .way-view,
+  .truth-view,
+  .gift-view,
+  .wv-view,
+  .wall-view
+) > .page-hero::before,
+body.veil-app .grow-page > .grow-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--view-accent) 22%, transparent), transparent 46%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 54%);
+  pointer-events: none;
+}
+
+body.veil-app :is(.page-hero-title, .grow-hero-title) {
+  color: #ffffff;
+  -webkit-text-fill-color: currentColor;
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+  text-shadow: 0 8px 30px rgba(0,0,0,0.28);
+}
+
+body.veil-app :is(.page-hero-sub, .grow-hero-sub) {
+  color: rgba(248,250,252,0.78);
+}
+
+body.veil-app .page-hero-scripture {
+  width: fit-content;
+  max-width: 68ch;
+  margin-top: 14px;
+  padding: 10px 13px;
+  border-left: 4px solid var(--view-accent, var(--flockos-gold));
+  border-radius: 0 12px 12px 0;
+  background: rgba(15,23,42,0.35);
+  color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 68%, #ffffff);
+}
+
+body.veil-app .grow-hero-icon {
+  border: 1px solid rgba(255,255,255,0.16);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--view-accent) 70%, #ffffff), var(--flockos-gold));
+  color: #111827;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+}
+
+body.veil-app :is(
+  .growth-card,
+  .fold-card,
+  .life-stat-card,
+  .life-card,
+  .seasons-card,
+  .mini-cal,
+  .aow-service-tabs,
+  .aow-budget-row,
+  .aow-segment,
+  .qwp-grid-card,
+  .qwp-setup,
+  .qwp-summary,
+  .gc-kpi-card,
+  .gc-stat,
+  .gc-country-card,
+  .gc-prayer-card,
+  .gc-partner-card,
+  .gc-team-card,
+  .gc-update-card,
+  .gc-resource-card,
+  .gc-uotd,
+  .harvest-stat-card,
+  .harvest-outreach-row,
+  .way-track-card,
+  .way-group-row,
+  .truth-series-card,
+  .truth-msg-row,
+  .gift-kpi-card,
+  .gift-card,
+  .wv-card,
+  .wv-goal-row,
+  .wv-init-row,
+  .wv-milestone-row,
+  .wall-layout,
+  .wall-panel,
+  .wall-setting-row,
+  .inv-stat-card,
+  .gi-card,
+  .gi-tl-panel
+) {
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--view-accent-2, var(--flockos-cyan)) 10%, transparent), transparent 10rem),
+    radial-gradient(circle at bottom left, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 9%, transparent), transparent 10rem),
+    rgba(255,255,255,0.88);
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app :is(
+  .fc-pane,
+  .fold-grid,
+  .life-queue,
+  .seasons-list,
+  .seasons-personal-list,
+  .seasons-todo-list,
+  .way-tracks,
+  .way-groups,
+  .truth-series-grid,
+  .truth-messages,
+  .harvest-missionaries,
+  .harvest-outreach,
+  .gc-country-grid,
+  .gc-prayer-list,
+  .gc-partner-grid,
+  .gc-team-grid,
+  .gc-updates-list
+) {
+  border-radius: var(--flockos-radius-lg);
+}
+
+body.veil-app .fc-pane {
+  position: relative;
+  border-color: rgba(247,199,86,0.20);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.10), transparent 12rem),
+    #ffffff;
+  box-shadow:
+    inset 0 4px 0 rgba(247,199,86,0.76),
+    var(--flockos-shadow-soft);
+}
+
+body.veil-app :is(
+  .fold-grid > .life-empty,
+  .way-tracks > .life-empty,
+  .way-groups > .life-empty,
+  .truth-series-grid > .life-empty,
+  .truth-messages > .life-empty,
+  .gc-country-grid > .gc-empty,
+  .gc-prayer-list > .gc-empty,
+  .harvest-missionaries > .life-empty,
+  .harvest-outreach > .life-empty
+) {
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.veil-app :is(
+  .growth-card,
+  .fold-card,
+  .life-card,
+  .seasons-card,
+  .aow-segment,
+  .qwp-grid-card,
+  .gc-country-card,
+  .gc-prayer-card,
+  .gc-partner-card,
+  .gc-team-card,
+  .gc-update-card,
+  .harvest-outreach-row,
+  .way-track-card,
+  .way-group-row,
+  .truth-series-card,
+  .truth-msg-row,
+  .gift-tx-row,
+  .gift-fund-row,
+  .wv-goal-row,
+  .wv-init-row,
+  .wv-milestone-row
+):hover {
+  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 34%, transparent);
+  background:
+    radial-gradient(circle at top right, color-mix(in srgb, var(--view-accent-2, var(--flockos-cyan)) 13%, transparent), transparent 10rem),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.90));
+  box-shadow: var(--flockos-shadow-soft), 0 0 0 1px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 18%, transparent);
+}
+
+body.veil-app :is(
+  .life-stat-card,
+  .harvest-stat-card,
+  .gift-kpi-card,
+  .gc-kpi-card,
+  .inv-stat-card
+) {
+  position: relative;
+  overflow: hidden;
+}
+
+body.veil-app :is(
+  .life-stat-card,
+  .harvest-stat-card,
+  .gift-kpi-card,
+  .gc-kpi-card,
+  .inv-stat-card,
+  .wv-card,
+  .gift-card,
+  .qwp-grid-card
+)::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--view-accent, var(--flockos-gold)), var(--view-accent-2, var(--flockos-cyan)), transparent);
+}
+
+body.veil-app :is(
+  .fold-toolbar,
+  .life-toolbar,
+  .fold-filters,
+  .seasons-list-header,
+  .aow-header-row,
+  .qwp-controls,
+  .qwp-action-row,
+  .qwp-mode-bar,
+  .qwp-dow-bar,
+  .gc-filter-bar,
+  .gc-tabs,
+  .gc-action-bar,
+  .wall-nav,
+  .gift-card-header,
+  .wv-card-header,
+  .way-section-header,
+  .growth-section-head
+) {
+  border: 1px solid rgba(15,23,42,0.09);
+  border-radius: var(--flockos-radius-md);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 11%, transparent), rgba(72,211,217,0.06)),
+    rgba(255,255,255,0.78);
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app .way-section-header,
+body.veil-app .growth-section-head,
+body.veil-app .gift-card-header,
+body.veil-app .wv-card-header {
+  padding: 14px 16px;
+}
+
+body.veil-app :is(
+  .way-section-title,
+  .growth-section-title,
+  .fold-name,
+  .life-card-name,
+  .seasons-card-title,
+  .aow-seg-title,
+  .qwp-grid-title,
+  .gc-country-name,
+  .gc-prayer-title,
+  .gc-team-name,
+  .gc-partner-name,
+  .harvest-outreach-title,
+  .truth-series-title,
+  .truth-msg-title,
+  .gift-card-title,
+  .wv-card-title,
+  .wv-init-title,
+  .wv-milestone-label,
+  .wall-panel-title
+) {
+  color: var(--flockos-navy);
+  letter-spacing: 0;
+}
+
+body.veil-app :is(
+  .growth-section-blurb,
+  .fold-meta,
+  .fold-joined,
+  .life-card-note,
+  .life-card-foot,
+  .seasons-card-meta,
+  .seasons-loc,
+  .aow-seg-meta,
+  .aow-seg-note,
+  .qwp-label,
+  .gc-country-meta,
+  .gc-partner-desc,
+  .gc-team-meta,
+  .gc-update-meta,
+  .harvest-stat-delta,
+  .harvest-outreach-meta,
+  .way-track-desc,
+  .way-group-meta,
+  .truth-series-desc,
+  .truth-msg-meta,
+  .gift-card-sub,
+  .gift-kpi-delta,
+  .wv-goal-owner,
+  .wv-init-meta,
+  .wall-field-hint,
+  .wall-setting-label
+) {
+  color: #64748b;
+}
+
+body.veil-app :is(
+  .fold-filter,
+  .gc-tabs button,
+  .qwp-mode-tab,
+  .qwp-dow-btn,
+  .wall-nav-item,
+  .aow-service-tab,
+  .life-action-btn,
+  .aow-btn-edit,
+  .aow-btn-move,
+  .qwp-row-btn
+) {
+  border-color: rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.72);
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(
+  .fold-filter.is-active,
+  .gc-tabs button.is-active,
+  .qwp-mode-tab.active,
+  .qwp-dow-btn.active,
+  .wall-nav-item.is-active,
+  .aow-service-tab.is-active
+) {
+  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 44%, transparent);
+  background: linear-gradient(135deg, var(--view-accent, var(--flockos-gold)), var(--flockos-gold));
+  color: #111827;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 22%, transparent);
+}
+
+body.veil-app :is(
+  .flock-btn--primary,
+  .fold-add-btn,
+  .seasons-add-btn,
+  .seasons-personal-add-btn,
+  .seasons-todo-add-btn,
+  .aow-btn-add
+) {
+  border-color: rgba(247,199,86,0.42);
+  background: linear-gradient(135deg, var(--flockos-gold), #f59e0b);
+  color: #111827;
+  box-shadow: 0 12px 26px rgba(247,199,86,0.20);
+}
+
+body.veil-app :is(.flock-btn--ghost, .btn-outline, .flock-btn--secondary) {
+  border-color: rgba(15,23,42,0.14);
+  background: rgba(255,255,255,0.74);
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.flock-btn--ghost, .btn-outline, .flock-btn--secondary):hover {
+  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 42%, transparent);
+  background: var(--view-accent-soft, rgba(247,199,86,0.14));
+}
+
+body.veil-app :is(
+  .fold-search,
+  .fold-sort,
+  .life-member-search,
+  .life-member-select,
+  .aow-edit-input,
+  .qwp-input,
+  .qwp-select,
+  .qwp-cell-input,
+  .gc-search,
+  .gc-select,
+  .wall-church-input,
+  .wall-jp-key-input,
+  .inv-select,
+  .inv-textarea
+) {
+  border-color: rgba(15,23,42,0.12);
+  background: rgba(255,255,255,0.92);
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(
+  .fold-search,
+  .fold-sort,
+  .life-member-search,
+  .life-member-select,
+  .aow-edit-input,
+  .qwp-input,
+  .qwp-select,
+  .qwp-cell-input,
+  .gc-search,
+  .gc-select,
+  .wall-church-input,
+  .wall-jp-key-input,
+  .inv-select,
+  .inv-textarea
+):focus {
+  border-color: var(--view-accent-2, var(--flockos-cyan));
+  box-shadow: 0 0 0 3px rgba(72,211,217,0.15);
+  outline: none;
+}
+
+body.veil-app :is(
+  .life-empty,
+  .gc-empty,
+  .gc-loading,
+  .truth-loading,
+  .fold-touches-empty,
+  .qwp-empty-row td
+) {
+  border: 1px dashed rgba(15,23,42,0.13);
+  border-radius: var(--flockos-radius-md);
+  background:
+    linear-gradient(135deg, var(--view-accent-soft, rgba(247,199,86,0.12)), rgba(72,211,217,0.06)),
+    rgba(255,255,255,0.72);
+  color: #64748b !important;
+}
+
+body.veil-app :is(
+  .fold-role-badge,
+  .life-type-badge,
+  .life-priority-badge,
+  .seasons-type-badge,
+  .gift-method-badge,
+  .truth-type-badge,
+  .gc-pri-badge,
+  .gc-rank-pill,
+  .gc-access-badge,
+  .gc-1040-badge,
+  .wv-badge,
+  .wall-status-badge
+) {
+  border: 1px solid color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 28%, transparent);
+  background: var(--view-accent-soft, rgba(247,199,86,0.14));
+  color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 62%, var(--flockos-navy));
+}
+
+body.veil-app :is(
+  .fold-avatar,
+  .life-card-icon,
+  .seasons-card-date,
+  .harvest-stat-icon,
+  .way-group-avatar,
+  .way-group-icon,
+  .truth-msg-play,
+  .gift-tx-avatar,
+  .gc-stat-icon,
+  .gc-prayer-icon,
+  .gc-resource-icon,
+  .gc-partner-icon,
+  .gi-card-icon
+) {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 72%, #ffffff), var(--flockos-gold));
+  color: #111827;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 18%, transparent);
+}
+
+body.veil-app :is(
+  .qwp-tscroll,
+  .perm-matrix-wrap,
+  .wall-panels,
+  .gift-transactions
+) {
+  border-radius: var(--flockos-radius-md);
+}
+
 @media (max-width: 900px) {
   body.veil-app .veil-wrap {
-    --topbar-h: 74px;
+    --topbar-h: 72px;
   }
 
   body.veil-app .veil-top,
@@ -637,7 +1694,7 @@ body.veil-app .gen-view--embedded .way-section-header {
     min-height: 56px;
     height: 56px;
     margin: 8px 10px 0;
-    padding: 7px 12px 7px 8px;
+    padding: 6px 12px 6px 8px;
   }
 
   body.veil-app .unity-brand {
@@ -661,11 +1718,55 @@ body.veil-app .gen-view--embedded .way-section-header {
   body.veil-app .veil-side {
     margin: 10px 0 0 10px;
     width: min(310px, calc(100vw - 20px));
-    height: calc(100dvh - 94px);
+    height: calc(100dvh - 92px);
   }
 
   body.veil-app .veil-main {
-    padding: 18px 14px calc(var(--safe-bottom, 0px) + 34px);
+    padding: 8px 14px calc(var(--safe-bottom, 0px) + 34px);
+  }
+
+  body.veil-app .pasture-hero.page-hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    min-height: 380px;
+    padding: 34px 24px;
+  }
+
+  body.veil-app .pasture-hero h1,
+  body.veil-app .pasture-hero .page-hero-title {
+    font-size: 2.7rem;
+  }
+
+  body.veil-app .pasture-hero-aside {
+    width: 100%;
+    grid-template-columns: 92px repeat(3, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  body.veil-app .pasture-compass {
+    width: 84px;
+    height: 84px;
+    margin: 0;
+    border-radius: 22px;
+  }
+
+  body.veil-app .pasture-compass-ring {
+    inset: 18px;
+  }
+
+  body.veil-app .pasture-compass-mark {
+    width: 22px;
+    height: 22px;
+    font-size: 0.68rem;
+  }
+
+  body.veil-app .pasture-compass-mark--top,
+  body.veil-app .pasture-compass-mark--bottom {
+    left: 31px;
+  }
+
+  body.veil-app .pasture-compass-mark--right {
+    top: 31px;
   }
 
   body.veil-app .fellowship-frame-view {
@@ -679,6 +1780,43 @@ body.veil-app .gen-view--embedded .way-section-header {
 }
 
 @media (max-width: 720px) {
+  body.veil-app .pasture {
+    gap: 16px;
+  }
+
+  body.veil-app .pasture-hero.page-hero {
+    min-height: 420px;
+    padding: 42px 20px 28px;
+    border-radius: 22px;
+    background-position: 55% center;
+  }
+
+  body.veil-app .pasture-hero h1,
+  body.veil-app .pasture-hero .page-hero-title {
+    font-size: 2.2rem;
+    line-height: 1.08;
+  }
+
+  body.veil-app .pasture-hero .page-hero-scripture {
+    font-size: 0.92rem;
+    padding: 11px 13px;
+  }
+
+  body.veil-app .pasture-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  body.veil-app .pasture-action {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  body.veil-app .pasture-hero-aside {
+    display: none;
+  }
+
   body.veil-app .upper-room .page-hero,
   body.veil-app .ur-devo-card,
   body.veil-app .ur-read-hero,
@@ -702,5 +1840,261 @@ body.veil-app .gen-view--embedded .way-section-header {
 
   body.veil-app .ur-recent-theme {
     display: none;
+  }
+}
+
+/* Good Shepherd popout trays and opened cards carry the Herald palette. */
+body.veil-app .nc-switcher-backdrop.open,
+body.veil-app .unity-nav-backdrop.is-open,
+body.veil-app .unity-search-backdrop,
+body.veil-app .unity-pp-backdrop,
+body.veil-app .life-sheet-overlay.is-open,
+body.veil-app .bp-overlay.is-open,
+body.veil-app .modal-overlay.open {
+  background:
+    radial-gradient(circle at 18% 14%, rgba(247,199,86,0.18), transparent 22rem),
+    radial-gradient(circle at 82% 78%, rgba(72,211,217,0.16), transparent 24rem),
+    rgba(8,12,32,0.62);
+}
+
+body.veil-app .nc-switcher-pop,
+body.veil-app .unity-nav-drawer,
+body.veil-app .unity-search-card,
+body.veil-app .unity-pp-card {
+  border-color: rgba(247,199,86,0.24);
+  background:
+    radial-gradient(circle at top left, rgba(247,199,86,0.20), transparent 10rem),
+    radial-gradient(circle at bottom right, rgba(72,211,217,0.16), transparent 12rem),
+    linear-gradient(180deg, rgba(15,23,42,0.98), rgba(22,34,53,0.96));
+  box-shadow:
+    inset 0 3px 0 rgba(247,199,86,0.76),
+    0 28px 70px rgba(15,23,42,0.38),
+    0 0 0 1px rgba(255,255,255,0.04);
+}
+
+body.veil-app .nc-switcher-title,
+body.veil-app .unity-nav-drawer-head,
+body.veil-app .unity-search-foot,
+body.veil-app .unity-sv-title {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .unity-search-input-wrap,
+body.veil-app .unity-pp-header,
+body.veil-app .nc-switcher-divider,
+body.veil-app .unity-pp-divider,
+body.veil-app .unity-search-foot {
+  border-color: rgba(247,199,86,0.16);
+}
+
+body.veil-app .unity-search-input-wrap {
+  background:
+    linear-gradient(90deg, rgba(72,211,217,0.10), rgba(247,199,86,0.08)),
+    rgba(255,255,255,0.03);
+}
+
+body.veil-app .nc-switcher-item,
+body.veil-app .unity-nav-item,
+body.veil-app .unity-search-item,
+body.veil-app .unity-pp-item {
+  border: 1px solid transparent;
+}
+
+body.veil-app .nc-switcher-item:hover,
+body.veil-app .unity-nav-item:hover,
+body.veil-app .unity-search-item:hover,
+body.veil-app .unity-search-item.is-sel,
+body.veil-app .unity-pp-item:hover {
+  background: linear-gradient(90deg, rgba(247,199,86,0.15), rgba(72,211,217,0.10));
+  border-color: rgba(247,199,86,0.24);
+  color: #ffffff;
+}
+
+body.veil-app .nc-switcher-item.is-current,
+body.veil-app .unity-nav-item.is-current {
+  background: linear-gradient(90deg, rgba(247,199,86,0.22), rgba(34,197,94,0.13));
+  border-color: rgba(247,199,86,0.42);
+  box-shadow: inset 3px 0 0 var(--flockos-gold);
+}
+
+body.veil-app .nc-switcher-item.is-current .nc-switcher-label strong,
+body.veil-app .unity-nav-item.is-current .unity-nav-copy strong {
+  color: #ffffff;
+}
+
+body.veil-app .nc-switcher-current-pill {
+  border-color: rgba(247,199,86,0.52);
+  background: linear-gradient(135deg, var(--flockos-gold), #f59e0b);
+  color: #111827;
+}
+
+body.veil-app .nc-switcher-icon.tone-gold,
+body.veil-app .unity-nav-icon,
+body.veil-app .unity-pp-avatar {
+  background: linear-gradient(135deg, var(--flockos-gold), #f59e0b);
+  color: #111827;
+  box-shadow: 0 0 0 1px rgba(247,199,86,0.34), 0 10px 24px rgba(247,199,86,0.20);
+}
+
+body.veil-app .nc-switcher-icon.tone-green {
+  background: linear-gradient(135deg, #166534, #22c55e);
+}
+
+body.veil-app .nc-switcher-icon.tone-blue,
+body.veil-app .nc-switcher-icon.tone-cyan {
+  background: linear-gradient(135deg, #0e7490, var(--flockos-cyan));
+}
+
+body.veil-app .nc-switcher-icon.tone-purple {
+  background: linear-gradient(135deg, #5b21b6, #a78bfa);
+}
+
+body.veil-app .nc-switcher-icon.tone-red {
+  background: linear-gradient(135deg, #7f1d1d, #ef4444);
+  color: #ffffff;
+}
+
+body.veil-app .unity-pp-item--danger:hover {
+  background: linear-gradient(90deg, rgba(239,68,68,0.16), rgba(247,199,86,0.08));
+  border-color: rgba(248,113,113,0.26);
+  color: #fca5a5;
+}
+
+body.veil-app .life-sheet-panel,
+body.veil-app .bp-panel,
+body.veil-app .modal,
+body.veil-app .modal-card {
+  border: 1px solid rgba(247,199,86,0.20);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.12), transparent 12rem),
+    radial-gradient(circle at bottom left, rgba(247,199,86,0.10), transparent 12rem),
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+  box-shadow:
+    inset 0 4px 0 rgba(247,199,86,0.82),
+    0 -24px 70px rgba(15,23,42,0.24);
+}
+
+body.veil-app .life-sheet-drag {
+  background: linear-gradient(90deg, var(--flockos-cyan), #8b5cf6, var(--flockos-gold), #22c55e);
+}
+
+body.veil-app .life-sheet-hd,
+body.veil-app .bp-head,
+body.veil-app .modal-header {
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.18), transparent 12rem),
+    linear-gradient(90deg, rgba(15,23,42,0.98), rgba(22,34,53,0.96));
+  color: #f8fafc;
+  border-bottom-color: rgba(247,199,86,0.22);
+}
+
+body.veil-app .life-sheet-hd-name,
+body.veil-app .modal-title {
+  color: #ffffff;
+}
+
+body.veil-app .life-sheet-hd-meta,
+body.veil-app .life-sheet-close {
+  color: rgba(248,250,252,0.72);
+}
+
+body.veil-app .life-sheet-close:hover {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .life-sheet-foot,
+body.veil-app .bp-tabs {
+  background:
+    linear-gradient(90deg, rgba(247,199,86,0.10), rgba(72,211,217,0.08)),
+    rgba(248,250,252,0.96);
+  border-color: rgba(15,23,42,0.08);
+}
+
+body.veil-app .life-sheet-input,
+body.veil-app .life-sheet-ta,
+body.veil-app .life-note-ta,
+body.veil-app .life-composer-ta,
+body.veil-app .bp-input,
+body.veil-app .modal-card input,
+body.veil-app .modal-card textarea,
+body.veil-app .modal-card select {
+  border-color: rgba(15,23,42,0.12);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92));
+}
+
+body.veil-app .life-sheet-input:focus,
+body.veil-app .life-sheet-ta:focus,
+body.veil-app .life-note-ta:focus,
+body.veil-app .life-composer-ta:focus,
+body.veil-app .bp-input:focus,
+body.veil-app .modal-card input:focus,
+body.veil-app .modal-card textarea:focus,
+body.veil-app .modal-card select:focus {
+  border-color: var(--flockos-cyan);
+  box-shadow: 0 0 0 3px rgba(72,211,217,0.16);
+}
+
+body.veil-app .life-status-pill,
+body.veil-app .life-priority-pill,
+body.veil-app .life-ix-item,
+body.veil-app .bp-section,
+body.veil-app .bp-toggle {
+  border: 1px solid rgba(15,23,42,0.08);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.08), transparent 8rem),
+    #ffffff;
+}
+
+body.veil-app .life-status-pill.is-active,
+body.veil-app .life-priority-pill.is-active {
+  border-color: rgba(247,199,86,0.46);
+  background: linear-gradient(135deg, rgba(247,199,86,0.22), rgba(34,197,94,0.12));
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .bp-section-title,
+body.veil-app .bp-tab.is-active,
+body.veil-app .life-sheet-label {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .bp-tab.is-active {
+  border-bottom-color: var(--flockos-gold);
+}
+
+/* Loaded last so the FlockOS shell keeps the same Herald page spacing as app.flocknews. */
+body.veil-app .veil-main {
+  padding: 22px 22px calc(var(--safe-bottom, 0px) + 64px) !important;
+}
+
+@media (max-width: 900px) {
+  body.veil-app .veil-main {
+    padding: 8px 14px calc(var(--safe-bottom, 0px) + 34px) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body.veil-app .veil-top,
+  body.veil-app .unity-header {
+    gap: 0.45rem;
+  }
+
+  body.veil-app .unity-brand {
+    flex: 0 0 auto;
+    padding: 0.35rem;
+  }
+
+  body.veil-app .unity-brand-text {
+    display: none;
+  }
+
+  body.veil-app .veil-main {
+    padding: 10px 10px calc(var(--safe-bottom, 0px) + 64px) !important;
+  }
+
+  body.veil-app .pasture-hero.page-hero {
+    min-height: 430px;
+    padding: 26px 20px 24px;
   }
 }

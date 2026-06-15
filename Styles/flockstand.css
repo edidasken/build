@@ -1,0 +1,1332 @@
+/* ============================================================================
+   FLOCKSTAND - Herald-aligned app and auth skin
+   Loaded after new_covenant.css and herald-tokens.css.
+   ============================================================================ */
+
+/* Sign-in shell */
+.stand-auth,
+.stand-auth body {
+  min-height: 100%;
+}
+
+body.stand-auth {
+  --stand-accent: #a855f7;
+  --stand-accent-deep: #4c1d95;
+  --stand-accent-soft: rgba(168,85,247,.14);
+  --stand-accent-line: rgba(168,85,247,.28);
+  --stand-accent-glow: rgba(168,85,247,.30);
+  min-height: 100dvh;
+  margin: 0;
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at top left, rgba(168,85,247,.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+  color: var(--ink, #111827);
+  font-family: var(--font-ui, Inter, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.stand-auth *,
+.stand-auth *::before,
+.stand-auth *::after {
+  box-sizing: border-box;
+}
+
+.stand-auth .bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(168,85,247,.18), transparent 20rem),
+    radial-gradient(circle at 84% 18%, rgba(72,211,217,.12), transparent 18rem);
+}
+
+.stand-auth .card {
+  position: relative;
+  z-index: 1;
+  width: min(420px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  flex: 0 1 auto;
+  overflow: hidden;
+  padding: 40px 38px 36px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: var(--herald-radius-xl, 24px);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 12rem),
+    rgba(255,255,255,.72);
+  box-shadow: var(--herald-shadow, 0 22px 60px rgba(15,23,42,.10));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.stand-auth .card::before {
+  content: "";
+  position: absolute;
+  top: -72px;
+  right: -72px;
+  width: 150px;
+  height: 150px;
+  border-radius: 999px;
+  background: rgba(168,85,247,.12);
+  pointer-events: none;
+}
+
+.stand-auth .card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.stand-auth .brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.stand-auth .brand-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--stand-accent-deep), var(--stand-accent));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(15,23,42,.22);
+}
+
+.stand-auth .brand-icon svg {
+  stroke: currentColor;
+}
+
+.stand-auth .brand-name {
+  font-family: var(--font-serif, Merriweather, Georgia, serif);
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: var(--ink, #111827);
+}
+
+.stand-auth .brand-sub {
+  margin-top: 3px;
+  color: var(--ink-muted, #334155);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.stand-auth .form-title {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: .38rem .65rem;
+  border: 1px solid var(--stand-accent-line);
+  border-radius: 999px;
+  background: var(--stand-accent-soft);
+  color: var(--ink-muted, #334155);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.stand-auth .field-group {
+  margin-bottom: 18px;
+}
+
+.stand-auth label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--ink-muted, #334155);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.stand-auth input[type="email"],
+.stand-auth input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: var(--herald-radius-md, 14px);
+  background: #ffffff;
+  color: var(--ink, #111827);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  -webkit-appearance: none;
+}
+
+.stand-auth input[type="email"]:focus,
+.stand-auth input[type="password"]:focus {
+  border-color: var(--stand-accent);
+  box-shadow: 0 0 0 3px rgba(168,85,247,.16);
+}
+
+.stand-auth input::placeholder {
+  color: #8b8175;
+}
+
+.stand-auth .btn-signin {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px;
+  border: 1px solid var(--herald-navy, #0f172a);
+  border-radius: 13px;
+  background: var(--herald-navy, #0f172a);
+  color: #ffffff;
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(15,23,42,.22);
+  transition: background .15s, transform .1s, box-shadow .15s, opacity .15s;
+}
+
+.stand-auth .btn-signin:hover {
+  background: var(--herald-navy-2, #162235);
+  box-shadow: 0 10px 26px rgba(15,23,42,.26);
+}
+
+.stand-auth .btn-signin:active {
+  transform: scale(.98);
+}
+
+.stand-auth .btn-signin:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.stand-auth .error-msg {
+  display: none;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid rgba(192,57,43,.25);
+  border-radius: var(--herald-radius-md, 14px);
+  background: rgba(192,57,43,.08);
+  color: var(--danger, #c0392b);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+.stand-auth .error-msg.visible {
+  display: block;
+}
+
+@keyframes flockstand-spin {
+  to { transform: rotate(360deg); }
+}
+
+.stand-auth .spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 6px;
+  border: 2px solid rgba(168,85,247,.24);
+  border-top-color: var(--stand-accent);
+  border-radius: 50%;
+  animation: flockstand-spin .6s linear infinite;
+  vertical-align: middle;
+}
+
+.stand-auth .foot-note {
+  margin-top: 24px;
+  color: var(--ink-muted, #334155);
+  font-size: .73rem;
+  text-align: center;
+}
+
+.stand-auth .return-home-link {
+  display: block;
+  margin-top: 14px;
+  color: var(--ink-muted, #334155);
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity .15s;
+}
+
+.stand-auth .return-home-link:hover {
+  opacity: .75;
+}
+
+@media (max-width: 460px) {
+  .stand-auth .card {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    padding: 32px 24px 30px;
+    border-radius: var(--herald-radius-lg, 18px);
+  }
+
+  .stand-auth .brand {
+    align-items: flex-start;
+  }
+}
+
+/* App shell */
+.stand-app {
+  --stand-accent: #a855f7;
+  --stand-accent-deep: #4c1d95;
+  --stand-accent-soft: rgba(168,85,247,.14);
+  --stand-accent-line: rgba(168,85,247,.28);
+  --stand-accent-glow: rgba(168,85,247,.30);
+  --stand-shell-w: min(1540px, calc(100vw - 56px));
+  --ms-bg: var(--bg, #f8fafc);
+  --ms-bg-card: #ffffff;
+  --ms-bg-card-hi: #f8fafc;
+  --ms-bg-raised: #ffffff;
+  --ms-ink: var(--ink, #111827);
+  --ms-ink-muted: var(--ink-muted, #334155);
+  --ms-ink-faint: var(--ink-faint, #64748b);
+  --ms-line: var(--line, rgba(15,23,42,.10));
+  --ms-gold: var(--stand-accent);
+  --ms-gold-soft: var(--stand-accent-soft);
+  --ms-gold-glow: var(--stand-accent-glow);
+  --ms-card-ink: var(--ink, #111827);
+  --ms-card-ink-muted: var(--ink-muted, #334155);
+  --ms-card-line: var(--line, rgba(15,23,42,.10));
+  color: var(--ms-ink);
+}
+
+.stand-app #ms-app {
+  grid-template-rows: auto 1fr;
+  background:
+    radial-gradient(circle at top left, rgba(168,85,247,.14), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+}
+
+.stand-app .unity-header {
+  position: sticky;
+  top: 12px;
+  z-index: 200;
+  width: var(--stand-shell-w);
+  height: 56px;
+  min-height: 56px;
+  margin: 12px auto 1.35rem;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--herald-radius-lg, 18px);
+  background: linear-gradient(180deg, var(--herald-navy, #0f172a), var(--herald-navy-2, #162235));
+  color: #f8fafc;
+  box-shadow: 0 14px 30px rgba(15,23,42,.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  gap: .75rem;
+}
+
+.stand-app .unity-header::after {
+  display: none;
+}
+
+.stand-app .unity-brand {
+  min-height: 42px;
+  gap: .6rem;
+  padding: .35rem .8rem .35rem .35rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: transparent;
+  color: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+  font-size: .98rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.stand-app .unity-brand:hover {
+  background: rgba(255,255,255,.08);
+  color: #ffffff;
+}
+
+.stand-app .unity-brand-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--stand-accent-deep), var(--stand-accent)) !important;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.stand-app .unity-brand-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stand-app .unity-brand-icon .unity-brand-logo-img,
+.stand-app .unity-brand-icon .unity-brand-logo-svg {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.stand-app .unity-brand-text {
+  color: #f8fafc;
+  font-size: .98rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.stand-app .unity-action,
+.stand-app .unity-avatar,
+.stand-app .unity-header .nc-switcher-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,.08);
+  color: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+.stand-app .unity-action:hover,
+.stand-app .unity-avatar:hover,
+.stand-app .unity-header .nc-switcher-btn:hover {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(168,85,247,.42);
+  color: #ffffff;
+}
+
+.stand-app .ms-body {
+  display: grid;
+  grid-template-columns: 238px minmax(0, 1fr);
+  gap: 0 1.35rem;
+  width: var(--stand-shell-w);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.stand-app .ms-main {
+  min-width: 0;
+  background: transparent;
+}
+
+.stand-app .ms-view {
+  width: 100%;
+  padding-top: 0;
+}
+
+.stand-app .ms-sidebar {
+  width: 238px;
+  height: 100%;
+  padding: 12px 10px;
+  gap: 8px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.13), transparent 10rem),
+    var(--side-bg, linear-gradient(180deg, #0f172a 0%, #162235 55%, #0a1128 100%)) !important;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(15,23,42,.14);
+  overflow: hidden auto;
+  scrollbar-color: rgba(168,85,247,.24) transparent;
+}
+
+.stand-app .ms-nav-section {
+  gap: 4px;
+  padding: 2px 0;
+}
+
+.stand-app .ms-nav-section + .ms-nav-section {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.stand-app .ms-nav-section--bottom {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.stand-app .ms-nav-label {
+  padding: 4px 10px 7px;
+  color: rgba(255,255,255,.40);
+  font: 800 .64rem var(--font-ui, Inter, sans-serif);
+  letter-spacing: .14em;
+}
+
+.stand-app .ms-nav-item {
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: rgba(255,255,255,.72);
+  font: 700 .86rem var(--font-ui, Inter, sans-serif);
+  letter-spacing: 0;
+}
+
+.stand-app .ms-nav-item svg {
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  stroke-width: 2.15;
+  color: var(--nav-tone, #c4b5fd);
+  background: color-mix(in srgb, var(--nav-tone, #a855f7) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-tone, #a855f7) 24%, transparent);
+  opacity: .98;
+}
+
+.stand-app .ms-nav-item:hover {
+  background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.10);
+  color: #fff;
+}
+
+.stand-app .ms-nav-item:hover svg {
+  background: color-mix(in srgb, var(--nav-tone, #a855f7) 28%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--nav-tone, #a855f7) 38%, transparent);
+}
+
+.stand-app .ms-nav-item.is-active {
+  background: var(--stand-accent-soft);
+  border-color: var(--stand-accent-line);
+  color: #f2e9ff;
+  box-shadow: inset 0 0 0 1px rgba(168,85,247,.10);
+}
+
+.stand-app .ms-nav-item.is-active svg {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--stand-accent-deep), var(--stand-accent));
+  box-shadow: none;
+}
+
+.stand-app .ms-nav-item--live {
+  color: #fecaca;
+}
+
+.stand-app .ms-nav-item--live:hover,
+.stand-app .ms-nav-item--live.is-active {
+  background: rgba(248,113,113,.13);
+  border-color: rgba(248,113,113,.28);
+  color: #fecaca;
+}
+
+.stand-app .ms-card,
+.stand-app .ms-song-card,
+.stand-app .ms-song-row,
+.stand-app .ms-service-card,
+.stand-app .ms-setlist-item,
+.stand-app .ms-song-pick-btn,
+.stand-app .ms-capo-panel,
+.stand-app .ms-import-result,
+.stand-app .ms-content-preview,
+.stand-app .ms-metro {
+  color: var(--ms-ink);
+  background: rgba(255,255,255,.86);
+  border-color: rgba(15,23,42,.10);
+  box-shadow: 0 10px 28px rgba(15,23,42,.06);
+}
+
+.stand-app .ms-card--clickable:hover,
+.stand-app .ms-song-card:hover,
+.stand-app .ms-song-row:hover,
+.stand-app .ms-service-card:hover,
+.stand-app .ms-song-pick-btn:hover {
+  background: #ffffff;
+  border-color: rgba(168,85,247,.34);
+  box-shadow: 0 16px 34px rgba(15,23,42,.10);
+}
+
+.stand-app .ms-dash .ms-service-card,
+.stand-app .ms-dash .ms-upcoming-list .ms-service-card,
+.stand-app .ms-dash-action,
+.stand-app .ms-import-source {
+  color: #fff;
+  background: linear-gradient(135deg, #0f172a 0%, #162235 100%);
+  border-color: rgba(255,255,255,.10);
+}
+
+.stand-app .ms-dash .ms-service-card:hover,
+.stand-app .ms-dash .ms-upcoming-list .ms-service-card:hover,
+.stand-app .ms-dash-action:hover,
+.stand-app .ms-import-source:hover {
+  background: linear-gradient(135deg, #162235 0%, #1e2f4a 100%);
+  border-color: rgba(168,85,247,.48);
+}
+
+.stand-app .ms-dash .ms-stats-grid {
+  gap: 14px;
+}
+
+.stand-app .ms-dash .ms-stat-card {
+  position: relative;
+  min-height: 118px;
+  padding: 20px 20px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(15,23,42,.10);
+  border-top: 3px solid var(--stat-color, var(--stand-accent));
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.10), transparent 11rem),
+    rgba(255,255,255,.82);
+  box-shadow: 0 14px 30px rgba(15,23,42,.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.stand-app .ms-dash .ms-stat-card::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  top: -46px;
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.035);
+  pointer-events: none;
+}
+
+.stand-app .ms-dash .ms-stat-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(168,85,247,.26);
+  box-shadow: 0 18px 40px rgba(15,23,42,.11);
+}
+
+.stand-app .ms-dash .ms-stat-num {
+  position: relative;
+  z-index: 1;
+  color: var(--stat-color, var(--stand-accent));
+  font-family: var(--font-serif, Merriweather, Georgia, serif);
+  font-size: clamp(2.15rem, 3vw, 2.75rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.stand-app .ms-dash .ms-stat-label {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  color: var(--ink-muted, #334155);
+  font: 900 .72rem var(--font-ui, Inter, sans-serif);
+  letter-spacing: .12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.stand-app .ms-dash .ms-section-title {
+  color: var(--ink-muted, #334155);
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.stand-app .ms-dash .ms-upcoming-list .ms-empty-state {
+  min-height: 226px;
+  border-style: solid;
+  border-color: rgba(168,85,247,.18);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.08), transparent 14rem),
+    rgba(255,255,255,.72);
+  box-shadow: 0 14px 32px rgba(15,23,42,.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.stand-app .ms-empty-state-title {
+  color: var(--ink, #111827);
+  font-family: var(--font-serif, Merriweather, Georgia, serif);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.stand-app .ms-empty-state-body {
+  color: var(--ink-muted, #334155);
+}
+
+.stand-app .ms-dash-action {
+  min-height: 64px;
+  border-radius: 18px;
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-weight: 800;
+  box-shadow: 0 14px 30px rgba(15,23,42,.12);
+}
+
+.stand-app .ms-dash-action-ico {
+  background: var(--stand-accent-soft);
+  color: #ddd6fe;
+  border: 1px solid rgba(168,85,247,.18);
+}
+
+.stand-app .ms-dash-action:hover .ms-dash-action-chev {
+  color: #ddd6fe;
+}
+
+.stand-app .ms-page-hero,
+.stand-app .ms-dash-hero,
+.stand-app .ms-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 142px;
+  margin-bottom: 24px;
+  padding: 24px 28px !important;
+  border: 1px solid rgba(168,85,247,.32) !important;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.20), transparent 18rem),
+    radial-gradient(circle at bottom left, rgba(72,211,217,.12), transparent 20rem),
+    linear-gradient(135deg, #0f172a 0%, #162235 100%);
+  box-shadow: 0 18px 38px -22px rgba(15,23,42,.70);
+  overflow: hidden;
+}
+
+.stand-app .ms-page-hero::before,
+.stand-app .ms-dash-hero::before,
+.stand-app .ms-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #48d3d9 0%, #818cf8 32%, #a855f7 62%, #34d399 100%);
+  opacity: .96;
+}
+
+.stand-app .ms-page-hero::after,
+.stand-app .ms-dash-hero::after,
+.stand-app .ms-hero::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  top: -62px;
+  width: 190px;
+  height: 190px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.045);
+  pointer-events: none;
+}
+
+.stand-app .ms-page-hero > *,
+.stand-app .ms-dash-hero > *,
+.stand-app .ms-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.stand-app .ms-page-hero-text {
+  min-width: 0;
+}
+
+.stand-app .ms-dash-eyebrow {
+  color: #c4b5fd;
+  font-family: var(--font-ui, Inter, sans-serif);
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.stand-app .ms-page-hero-text h1,
+.stand-app .ms-dash-hero .ms-page-hero-text h1,
+.stand-app .ms-hero-title {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--font-serif, Merriweather, Georgia, serif) !important;
+  font-size: clamp(1.65rem, 2.4vw, 2.25rem) !important;
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+.stand-app .ms-page-hero-text p,
+.stand-app .ms-dash-hero .ms-page-hero-text p,
+.stand-app .ms-hero-lede,
+.stand-app .ms-hero-verse {
+  max-width: 68ch;
+  margin-top: 8px;
+  color: rgba(255,255,255,.78) !important;
+  font-size: .95rem;
+  line-height: 1.55;
+}
+
+.stand-app .ms-hero-ref,
+.stand-app .ms-hero-pillars strong {
+  color: #ddd6fe;
+}
+
+.stand-app .ms-hero-pillars {
+  background: rgba(168,85,247,.16);
+  border: 1px solid rgba(168,85,247,.30);
+  color: rgba(255,255,255,.78);
+}
+
+.stand-app .ms-hero-dot {
+  color: #c4b5fd;
+}
+
+.stand-app .ms-page-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stand-app .ms-page-hero .ms-btn--primary,
+.stand-app .ms-dash-hero .ms-btn--primary,
+.stand-app .ms-hero .ms-btn--primary {
+  background: linear-gradient(135deg, #f5f3ff, #ddd6fe);
+  color: var(--stand-accent-deep);
+  border-color: rgba(255,255,255,.24);
+  box-shadow: 0 10px 22px rgba(76,29,149,.22);
+}
+
+.stand-app .ms-page-hero .ms-btn--primary:hover,
+.stand-app .ms-dash-hero .ms-btn--primary:hover,
+.stand-app .ms-hero .ms-btn--primary:hover {
+  background: #ffffff;
+  color: var(--stand-accent-deep);
+}
+
+.stand-app .ms-page-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger),
+.stand-app .ms-dash-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger),
+.stand-app .ms-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger) {
+  background: rgba(255,255,255,.08);
+  color: #ffffff;
+  border-color: rgba(255,255,255,.20);
+}
+
+.stand-app .ms-page-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger):hover,
+.stand-app .ms-dash-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger):hover,
+.stand-app .ms-hero .ms-btn:not(.ms-btn--primary):not(.ms-btn--danger):hover {
+  background: rgba(255,255,255,.14);
+  border-color: rgba(221,214,254,.42);
+}
+
+.stand-app .ms-btn--primary,
+.stand-app .ms-metro-play {
+  background: var(--stand-accent);
+  color: #ffffff;
+  border: 1px solid rgba(76,29,149,.20);
+}
+
+.stand-app .ms-btn--primary:hover,
+.stand-app .ms-metro-play:hover {
+  background: #9333ea;
+}
+
+.stand-app .ms-btn--ghost {
+  background: rgba(255,255,255,.64);
+  color: var(--ms-ink);
+  border-color: rgba(15,23,42,.12);
+}
+
+.stand-app .ms-btn--ghost:hover {
+  background: #ffffff;
+  color: var(--ms-ink);
+  border-color: rgba(168,85,247,.32);
+}
+
+.stand-app .ms-dash .ms-btn--ghost,
+.stand-app .ms-modal .ms-btn--ghost,
+.stand-app .ms-sheet .ms-btn--ghost {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,.24);
+}
+
+.stand-app .ms-dash .ms-btn--ghost:hover,
+.stand-app .ms-modal .ms-btn--ghost:hover,
+.stand-app .ms-sheet .ms-btn--ghost:hover {
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+
+.stand-app .ms-section-title,
+.stand-app .ms-settings-section h2 {
+  color: var(--ink-muted, #334155);
+}
+
+.stand-app .ms-empty-state {
+  background: rgba(255,255,255,.56);
+  border-color: rgba(15,23,42,.10);
+}
+
+.stand-app #ms-auth-overlay,
+.stand-app #ms-boot {
+  background:
+    radial-gradient(circle at top left, rgba(168,85,247,.14), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+}
+
+.stand-app .ms-auth-card,
+.stand-app .ms-modal,
+.stand-app .ms-sheet {
+  background: #ffffff;
+  color: var(--ink, #111827);
+  border-color: rgba(15,23,42,.10);
+}
+
+.stand-app .ms-auth-card p,
+.stand-app .ms-modal .ms-confirm-text {
+  color: var(--ink-muted, #334155);
+}
+
+.stand-app .ms-pair-lyric,
+.stand-app .ms-lyric-line {
+  color: var(--ink, #111827);
+}
+
+.stand-app .ms-live-content .ms-pair-lyric,
+.stand-app .ms-live-content .ms-lyric-line {
+  color: #fff;
+}
+
+.stand-app .ms-bottom-nav {
+  left: 50%;
+  right: auto;
+  bottom: 10px;
+  width: min(560px, calc(100vw - 20px));
+  height: calc(62px + var(--ms-safe-bot, 0px));
+  transform: translateX(-50%);
+  padding: 6px 8px calc(6px + var(--ms-safe-bot, 0px));
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.14), transparent 12rem),
+    linear-gradient(180deg, #0f172a, #162235);
+  box-shadow: 0 18px 36px rgba(15,23,42,.24);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.stand-app .ms-bnav-item {
+  min-width: 0;
+  border-radius: 14px;
+  color: rgba(255,255,255,.56);
+  font: 800 .62rem var(--font-ui, Inter, sans-serif);
+  letter-spacing: .08em;
+}
+
+.stand-app .ms-bnav-item svg {
+  width: 19px;
+  height: 19px;
+  color: var(--nav-tone, currentColor);
+}
+
+.stand-app .ms-bnav-item:hover,
+.stand-app .ms-bnav-item.is-active {
+  background: var(--stand-accent-soft);
+  color: #f2e9ff;
+}
+
+.stand-app .ms-bnav-item--live {
+  color: #fecaca;
+}
+
+.stand-app .ms-bnav-item--live svg {
+  width: 22px;
+  height: 22px;
+}
+
+.stand-app .ms-bnav-item--live:hover,
+.stand-app .ms-bnav-item--live.is-active {
+  background: rgba(248,113,113,.14);
+  color: #fecaca;
+}
+
+/* Inner work surfaces */
+.stand-app .ms-view {
+  width: 100%;
+}
+
+.stand-app .ms-search-bar,
+.stand-app .ms-songs-toolbar,
+.stand-app .ms-song-detail-header,
+.stand-app .ms-song-controls,
+.stand-app .ms-stand-header,
+.stand-app .ms-stand-nav,
+.stand-app .ms-modal-header,
+.stand-app .ms-modal-actions {
+  gap: 10px;
+}
+
+.stand-app .ms-search-bar {
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 18px;
+  background: rgba(255,255,255,.68);
+  box-shadow: 0 12px 30px rgba(15,23,42,.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.stand-app .ms-search-input,
+.stand-app .ms-input,
+.stand-app .ms-select,
+.stand-app .ms-textarea {
+  border-radius: 14px;
+  border-color: rgba(15,23,42,.12);
+  background: rgba(255,255,255,.92);
+  color: var(--ink, #111827);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+}
+
+.stand-app .ms-search-input:focus,
+.stand-app .ms-input:focus,
+.stand-app .ms-select:focus,
+.stand-app .ms-textarea:focus {
+  border-color: var(--stand-accent);
+  box-shadow: 0 0 0 3px rgba(168,85,247,.14);
+}
+
+.stand-app .ms-btn-primary,
+.stand-app .ms-btn--primary {
+  background: linear-gradient(135deg, var(--stand-accent-deep), var(--stand-accent));
+  color: #ffffff;
+  border: 1px solid rgba(76,29,149,.18);
+  box-shadow: 0 12px 24px rgba(76,29,149,.18);
+}
+
+.stand-app .ms-btn-primary:hover,
+.stand-app .ms-btn--primary:hover {
+  background: linear-gradient(135deg, #5b21b6, #9333ea);
+  filter: none;
+}
+
+.stand-app .ms-btn-secondary,
+.stand-app .ms-btn--ghost {
+  background: rgba(255,255,255,.68);
+  color: var(--ink, #111827);
+  border: 1px solid rgba(15,23,42,.12);
+}
+
+.stand-app .ms-btn-secondary:hover,
+.stand-app .ms-btn--ghost:hover {
+  background: #ffffff;
+  color: var(--ink, #111827);
+  border-color: rgba(168,85,247,.30);
+}
+
+.stand-app .ms-btn-danger,
+.stand-app .ms-btn--danger {
+  background: rgba(192,57,43,.10);
+  color: #b42318;
+  border: 1px solid rgba(192,57,43,.22);
+}
+
+.stand-app .ms-btn-danger:hover,
+.stand-app .ms-btn--danger:hover {
+  background: rgba(192,57,43,.15);
+}
+
+.stand-app .ms-song-table-wrap {
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 18px;
+  background: rgba(255,255,255,.78);
+  box-shadow: 0 18px 40px rgba(15,23,42,.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.stand-app .ms-table thead {
+  background: rgba(15,23,42,.04);
+}
+
+.stand-app .ms-table th {
+  color: var(--ink-muted, #334155);
+  border-bottom: 1px solid rgba(15,23,42,.10);
+}
+
+.stand-app .ms-table td {
+  color: var(--ink, #111827);
+  border-bottom: 1px solid rgba(15,23,42,.08);
+}
+
+.stand-app .ms-table tr:hover td {
+  background: rgba(168,85,247,.06);
+}
+
+.stand-app .ms-table a,
+.stand-app .ms-song-card-title,
+.stand-app .ms-service-card-title,
+.stand-app .ms-setlist-title {
+  color: var(--ink, #111827);
+}
+
+.stand-app .ms-stand-badge,
+.stand-app .ms-key-badge,
+.stand-app .ms-tag,
+.stand-app .ms-card-badge {
+  background: var(--stand-accent-soft);
+  color: var(--stand-accent-deep);
+  border: 1px solid var(--stand-accent-line);
+}
+
+.stand-app .ms-song-card,
+.stand-app .ms-service-card,
+.stand-app .ms-setlist-item,
+.stand-app .ms-song-pick-btn,
+.stand-app .ms-card {
+  border-radius: 18px;
+}
+
+.stand-app .ms-song-card,
+.stand-app .ms-song-row {
+  background: rgba(255,255,255,.78);
+}
+
+.stand-app .ms-song-card-artist,
+.stand-app .ms-song-row-artist,
+.stand-app .ms-song-card-meta,
+.stand-app .ms-song-card-meta span:not(.ms-stand-badge),
+.stand-app .ms-card-meta,
+.stand-app .ms-setlist-artist,
+.stand-app .ms-service-song-row,
+.stand-app .ms-stand-counter {
+  color: var(--ink-muted, #334155);
+}
+
+.stand-app .ms-overlay,
+.stand-app .ms-modal-backdrop,
+.stand-app .ms-sheet-backdrop {
+  background: rgba(15,23,42,.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.stand-app .ms-modal,
+.stand-app .ms-sheet {
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(168,85,247,.10), transparent 16rem),
+    rgba(255,255,255,.94);
+  color: var(--ink, #111827);
+  box-shadow: 0 28px 80px rgba(15,23,42,.22);
+}
+
+.stand-app .ms-modal-title,
+.stand-app .ms-stand-song-title,
+.stand-app .ms-song-detail-title {
+  color: var(--ink, #111827);
+  font-family: var(--font-serif, Merriweather, Georgia, serif);
+  letter-spacing: 0;
+}
+
+.stand-app .ms-chord-display,
+.stand-app .ms-content-preview {
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92), rgba(248,250,252,.92));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 16px 36px rgba(15,23,42,.07);
+}
+
+.stand-app .ms-cp-title,
+.stand-app .ms-cp-word,
+.stand-app .ms-cp-lyric-only {
+  color: var(--ink, #111827);
+}
+
+.stand-app .ms-cp-subtitle,
+.stand-app .ms-cp-section-label {
+  color: var(--ink-muted, #334155);
+}
+
+.stand-app .ms-cp-chord,
+.stand-app .ms-pair-chord,
+.stand-app .ms-chord--inline {
+  color: var(--stand-accent);
+}
+
+.stand-app .ms-live-topbar,
+.stand-app .ms-live-bottombar {
+  background: rgba(15,23,42,.78);
+  border-color: rgba(255,255,255,.10);
+}
+
+body.stand-app #ms-live-overlay {
+  --ms-gold: var(--herald-gold, #f7c756);
+  --ms-gold-soft: rgba(247,199,86,.16);
+  --ms-gold-glow: rgba(247,199,86,.35);
+  background:
+    radial-gradient(circle at 18% 8%, rgba(247,199,86,.10), transparent 30rem),
+    radial-gradient(circle at 82% 18%, rgba(72,211,217,.08), transparent 28rem),
+    linear-gradient(180deg, #06101f 0%, #0f172a 42%, #030712 100%);
+}
+
+body.stand-app #ms-live-overlay .ms-live-content .ms-pair-chord,
+body.stand-app #ms-live-overlay .ms-live-content .ms-chord--inline,
+body.stand-app #ms-live-overlay .ms-live-key-display,
+body.stand-app #ms-live-overlay .ms-cp-chord,
+body.stand-app #ms-live-overlay .ms-pair-chord,
+body.stand-app #ms-live-overlay .ms-chord--inline {
+  color: var(--ms-gold);
+}
+
+body.stand-app #ms-live-overlay .ms-live-content .ms-pair-lyric,
+body.stand-app #ms-live-overlay .ms-live-content .ms-lyric-line {
+  color: #ffffff;
+}
+
+.stand-app .ms-live-progress-bar,
+.stand-app .ms-autoscroll-btn.is-on {
+  background: var(--herald-gold, #f7c756);
+}
+
+@media (max-width: 860px) {
+  .stand-app {
+    --stand-shell-w: calc(100vw - 24px);
+  }
+
+  .stand-app .unity-header {
+    top: 8px;
+    width: var(--stand-shell-w);
+    min-height: 56px;
+    height: 56px;
+    margin: 8px auto 1rem;
+    padding: 7px 10px;
+    border-radius: 18px;
+  }
+
+  .stand-app .unity-brand {
+    min-height: 42px;
+    padding-right: .75rem;
+  }
+
+  .stand-app .unity-brand-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .stand-app .unity-action,
+  .stand-app .unity-avatar,
+  .stand-app .unity-header .nc-switcher-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .stand-app .ms-body {
+    display: block;
+    width: var(--stand-shell-w);
+    margin: 0 auto;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .stand-app .ms-main {
+    height: 100%;
+  }
+
+  .stand-app .ms-sidebar.is-open {
+    top: calc(78px + var(--ms-safe-top, 0px));
+    left: 12px;
+    bottom: auto;
+    width: min(310px, calc(100vw - 24px));
+    max-height: calc(100dvh - var(--ms-safe-top, 0px) - 104px);
+    border-radius: 20px;
+    padding: 14px 10px;
+  }
+
+  .stand-app .ms-view {
+    padding: 0 0 calc(var(--ms-bnav-h, 62px) + 96px);
+  }
+
+  .stand-app .ms-page-hero,
+  .stand-app .ms-dash-hero,
+  .stand-app .ms-hero {
+    min-height: 0;
+    padding: 22px 20px !important;
+    border-radius: 18px;
+  }
+
+  .stand-app .ms-page-hero-actions {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .stand-app {
+    --stand-shell-w: calc(100vw - 16px);
+  }
+
+  .stand-app .unity-header {
+    gap: 6px;
+  }
+
+  .stand-app .unity-brand-text {
+    max-width: 6.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stand-app .ms-page-hero,
+  .stand-app .ms-dash-hero,
+  .stand-app .ms-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .stand-app .unity-brand {
+    padding-right: .45rem;
+  }
+
+  .stand-app .unity-brand-text {
+    max-width: 5.35rem;
+  }
+
+  .stand-app .unity-action,
+  .stand-app .unity-avatar,
+  .stand-app .unity-header .nc-switcher-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .stand-app .ms-bottom-nav {
+    width: calc(100vw - 12px);
+    bottom: 6px;
+    border-radius: 18px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .stand-app .ms-bnav-item {
+    font-size: .56rem;
+    letter-spacing: .04em;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}

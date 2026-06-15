@@ -102,6 +102,12 @@ export function mount(root, ctx) {
       if (where && ctx && ctx.go) ctx.go(where);
     });
   });
+  root.querySelectorAll('[data-pasture-jump]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const where = button.getAttribute('data-pasture-jump');
+      if (where && ctx && ctx.go) ctx.go(where);
+    });
+  });
 
   const stops = [];
   stops.push(mountTodayWord(root.querySelector('[data-bind="todays-word"]'),    ctx));

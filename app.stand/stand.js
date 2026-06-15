@@ -609,7 +609,7 @@ async function _loadDashboardData(main) {
 
 function _renderSongs(main) {
   // The Shofar expects a container with id="ms-app-container".
-  // Wrap it in .ms-view.ms-dash for navy/gold theme consistency across all FlockStand views.
+  // Wrap it in .ms-view.ms-dash for Herald-style theme consistency across all FlockStand views.
   main.innerHTML = `<div class="ms-view ms-dash"><div id="ms-app-container"></div></div>`;
   // Give the DOM a tick to settle, then let The Shofar take over
   requestAnimationFrame(() => {
