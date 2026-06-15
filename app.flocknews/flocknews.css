@@ -3392,3 +3392,63 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   box-shadow: 0 0 0 5px rgba(247,199,86,.14);
   outline: none;
 }
+
+/* Unity header bridge for Herald / Invite.
+   Loaded late so it wins over the legacy .fn-back-bar shell rules. */
+.fn-back-bar.unity-header {
+  position: sticky !important;
+  top: var(--fn-shell-top, 12px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  width: min(1540px, calc(100vw - 32px));
+  height: 56px;
+  min-height: 56px;
+  margin: 0 auto 1.35rem;
+  padding: 6px 14px 6px 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--herald-radius-lg, 18px);
+  background: linear-gradient(180deg, var(--herald-navy, #0f172a), var(--herald-navy-2, #162235));
+  color: #f8fafc;
+  box-shadow: 0 14px 30px rgba(15,23,42,.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  gap: .75rem;
+}
+
+.fn-back-bar.unity-header .unity-brand {
+  min-height: 42px;
+  gap: .6rem;
+  padding: .35rem .8rem .35rem .35rem;
+}
+
+.fn-back-bar.unity-header .unity-brand-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(247,199,86,.95) !important;
+  color: #111827;
+}
+
+.fn-back-bar.unity-header .unity-brand-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.fn-back-bar.unity-header .unity-action,
+.fn-back-bar.unity-header .unity-avatar,
+.fn-back-bar.unity-header .nc-switcher-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 16px;
+}
+
+@media (max-width: 640px) {
+  .fn-back-bar.unity-header {
+    top: var(--fn-shell-top, 8px);
+    width: calc(100vw - 16px);
+    margin-bottom: 1rem;
+  }
+}

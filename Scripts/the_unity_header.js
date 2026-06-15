@@ -25,7 +25,7 @@
      });
    ══════════════════════════════════════════════════════════════════════════════ */
 
-import { mountSwitcher } from './the_app_switcher.js';
+import { mountSwitcher, NC_APPS, NC_APP_ICONS } from './the_app_switcher.js';
 import { openUnitySearch, registerFeatures } from './the_unity_search.js';
 import { openUnityProfile } from './the_unity_profile.js';
 
@@ -63,7 +63,7 @@ export function mountUnityHeader(host, cfg = {}) {
     `<button class="unity-action unity-extra" data-extra-idx="${i}" aria-label="${(x.aria || '').replace(/"/g, '&quot;')}" title="${(x.title || x.aria || '').replace(/"/g, '&quot;')}">${x.html || ''}</button>`
   ).join('');
 
-  const hamburgerHtml = hideHamburger ? '' : `<button class="unity-action unity-hamburger" data-act="menu" aria-label="Open menu">${ICONS.hamburger}</button>`;
+  const hamburgerHtml = hideHamburger ? '' : `<button class="unity-action unity-hamburger" data-act="menu" aria-label="Open navigation" aria-expanded="false" aria-controls="unity-nav-drawer">${ICONS.hamburger}</button>`;
 
   host.innerHTML = `
     ${hamburgerHtml}
@@ -98,8 +98,10 @@ export function mountUnityHeader(host, cfg = {}) {
     const act = btn.dataset.act;
     if (act === 'menu') {
       e.preventDefault(); // Prevent double-fire in PWA
-      if (typeof onHamburger === 'function') onHamburger();
-      else document.body.classList.toggle('veil-side-open');
+      let open;
+      if (typeof onHamburger === 'function') open = onHamburger();
+      else open = toggleUnityNavDrawer(appId);
+      if (typeof open === 'boolean') btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     } else if (act === 'home') {
       // Native anchor handles navigation; nothing to do
     } else if (act === 'search') {
@@ -145,4 +147,87 @@ function escapeHtml(s) {
 }
 function escapeAttr(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+function toggleUnityNavDrawer(currentId) {
+  let drawer = document.getElementById('unity-nav-drawer');
+  let backdrop = document.getElementById('unity-nav-backdrop');
+  if (!drawer || !backdrop) {
+    ({ drawer, backdrop } = buildUnityNavDrawer(currentId));
+  }
+  const open = !drawer.classList.contains('is-open');
+  drawer.classList.toggle('is-open', open);
+  backdrop.classList.toggle('is-open', open);
+  drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+  document.body.classList.toggle('unity-nav-open', open);
+  if (open) {
+    const first = drawer.querySelector('a,button');
+    setTimeout(() => first?.focus?.(), 0);
+  }
+  return open;
+}
+
+function closeUnityNavDrawer() {
+  const drawer = document.getElementById('unity-nav-drawer');
+  const backdrop = document.getElementById('unity-nav-backdrop');
+  if (!drawer || !backdrop) return false;
+  drawer.classList.remove('is-open');
+  backdrop.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('unity-nav-open');
+  document.querySelectorAll('.unity-hamburger[aria-expanded="true"]').forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+  return false;
+}
+
+function buildUnityNavDrawer(currentId) {
+  const backdrop = document.createElement('div');
+  backdrop.id = 'unity-nav-backdrop';
+  backdrop.className = 'unity-nav-backdrop';
+  backdrop.addEventListener('click', closeUnityNavDrawer);
+
+  const drawer = document.createElement('aside');
+  drawer.id = 'unity-nav-drawer';
+  drawer.className = 'unity-nav-drawer';
+  drawer.setAttribute('aria-hidden', 'true');
+  drawer.setAttribute('aria-label', 'App navigation');
+  drawer.innerHTML = `
+    <div class="unity-nav-drawer-head">
+      <span>FlockOS Apps</span>
+      <button class="unity-nav-close" type="button" aria-label="Close navigation">&times;</button>
+    </div>
+    <nav class="unity-nav-list">
+      ${NC_APPS.map(app => {
+        const isCurrent = app.id === currentId;
+        const tag = isCurrent ? 'span' : 'a';
+        const href = isCurrent ? '' : ` href="${escapeAttr(resolveAppHref(app.href))}"`;
+        return `
+          <${tag} class="unity-nav-item${isCurrent ? ' is-current' : ''}"${href}>
+            <span class="unity-nav-icon tone-${escapeAttr(app.tone)}">${NC_APP_ICONS[app.id] || ''}</span>
+            <span class="unity-nav-copy"><strong>${escapeHtml(app.name)}</strong><small>${escapeHtml(app.sub)}</small></span>
+          </${tag}>`;
+      }).join('')}
+    </nav>`;
+
+  drawer.querySelector('.unity-nav-close')?.addEventListener('click', closeUnityNavDrawer);
+  drawer.addEventListener('click', (e) => {
+    if (e.target.closest('a')) closeUnityNavDrawer();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeUnityNavDrawer();
+  });
+  document.body.append(backdrop, drawer);
+  return { drawer, backdrop };
+}
+
+function resolveAppHref(href) {
+  try {
+    const u = new URL(location.href);
+    let p = u.pathname;
+    p = p.replace(/\/[^/]*\.[^/]+$/, '/');
+    if (!p.endsWith('/')) p += '/';
+    p = p.replace(/\/app\.[^/]+\/.*$/, '/');
+    return new URL(href, u.origin + p).href;
+  } catch (_) {
+    return href;
+  }
 }

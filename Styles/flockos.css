@@ -38,10 +38,10 @@ body.veil-app .veil-wrap {
 body.veil-app .veil-top,
 body.veil-app .unity-header {
   align-self: start;
-  min-height: 68px;
-  height: 68px;
+  min-height: 56px;
+  height: 56px;
   margin: 12px 22px 0;
-  padding: 8px 18px 8px 10px;
+  padding: 6px 14px 6px 8px;
   gap: 0.75rem;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--flockos-radius-lg);
@@ -57,10 +57,10 @@ body.veil-app .unity-header::after {
 }
 
 body.veil-app .unity-brand {
-  min-height: 48px;
-  gap: 0.7rem;
+  min-height: 42px;
+  gap: 0.6rem;
   margin-right: auto;
-  padding: 0.45rem 0.95rem 0.45rem 0.45rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.35rem;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
   background: transparent;
@@ -78,13 +78,13 @@ body.veil-app .unity-header .nc-switcher-btn:hover {
 }
 
 body.veil-app .unity-brand-icon {
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 13px;
-  background: rgba(255,255,255,0.08) !important;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(247,199,86,.95) !important;
   box-shadow: none;
-  color: var(--flockos-gold);
+  color: #111827;
 }
 
 body.veil-app .unity-brand-text {
@@ -94,8 +94,8 @@ body.veil-app .unity-brand-text {
 
 body.veil-app .unity-action,
 body.veil-app .unity-header .nc-switcher-btn {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
   background: rgba(255,255,255,0.08);
@@ -104,8 +104,8 @@ body.veil-app .unity-header .nc-switcher-btn {
 }
 
 body.veil-app .unity-avatar {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border: 1px solid rgba(247,199,86,0.34);
   border-radius: 16px;
   background: rgba(247,199,86,0.12);
@@ -634,8 +634,8 @@ body.veil-app .gen-view--embedded .way-section-header {
 
   body.veil-app .veil-top,
   body.veil-app .unity-header {
-    min-height: 62px;
-    height: 62px;
+    min-height: 56px;
+    height: 56px;
     margin: 8px 10px 0;
     padding: 7px 12px 7px 8px;
   }

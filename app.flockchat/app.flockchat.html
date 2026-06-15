@@ -1978,7 +1978,10 @@
         appAccent: '#0f172a',
         appAccentDk: '#162235',
         homeHref: 'app.flockchat/',
-        hideHamburger: true,
+        onHamburger: () => {
+          document.getElementById('fc-thread')?.classList.remove('active');
+          return false;
+        },
         features: [
           { id: 'fc-conversations', label: 'All Conversations', hint: 'Browse all channels', run: () => document.getElementById('fc-back')?.click() },
           { id: 'fc-announcements', label: 'Announcements',     hint: 'Church announcements', run: () => window._openConversation?.('announcements') },

@@ -93,10 +93,11 @@ body {
   position: sticky;
   top: 12px;
   z-index: 200;
-  min-height: 68px;
+  min-height: 56px;
+  height: 56px;
   width: var(--feed-shell-w);
   margin: 12px auto 1.35rem;
-  padding: 8px 18px 8px 10px;
+  padding: 6px 14px 6px 8px;
   border: 1px solid rgba(255,255,255,.08);
   border-radius: var(--herald-radius-lg);
   background: linear-gradient(180deg, var(--herald-navy), var(--herald-navy-2));
@@ -109,9 +110,9 @@ body {
 .bm-feed-shell .unity-header::after { display: none; }
 
 .bm-feed-shell .unity-brand {
-  min-height: 48px;
-  gap: .7rem;
-  padding: .45rem .95rem .45rem .45rem;
+  min-height: 42px;
+  gap: .6rem;
+  padding: .35rem .8rem .35rem .35rem;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 999px;
   background: transparent;
@@ -128,8 +129,8 @@ body {
 }
 
 .bm-feed-shell .unity-brand-icon {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
   background: rgba(247,199,86,.95) !important;
   color: #111827;
@@ -150,8 +151,8 @@ body {
 .bm-feed-shell .unity-action,
 .bm-feed-shell .unity-avatar,
 .bm-feed-shell .unity-header .nc-switcher-btn {
-  width: 48px;
-  height: 48px;
+  width: 42px;
+  height: 42px;
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 16px;
   background: rgba(255,255,255,.08);
@@ -1759,7 +1760,8 @@ body {
 
   .bm-feed-shell .unity-header {
     top: 8px;
-    min-height: 62px;
+    min-height: 56px;
+    height: 56px;
     margin-top: 8px;
     margin-bottom: 1rem;
     padding: 7px 10px;
@@ -1767,7 +1769,7 @@ body {
   }
 
   .bm-feed-shell .unity-brand {
-    min-height: 44px;
+    min-height: 42px;
     padding-right: .75rem;
   }
 
@@ -1779,8 +1781,8 @@ body {
   .bm-feed-shell .unity-action,
   .bm-feed-shell .unity-avatar,
   .bm-feed-shell .unity-header .nc-switcher-btn {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 14px;
   }
 
