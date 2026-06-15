@@ -21,9 +21,9 @@ import { mountUnityHeader } from '../Scripts/the_unity_header.js';
 const FS_KEY = 'flockshow_shows_v1';
 
 const SLIDE_TYPES = {
-  lyrics:    { bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)', text: '#7dd3fc', label: 'Lyrics',       icon: '🎵' },
-  scripture: { bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)', text: '#7dd3fc', label: 'Scripture',    icon: '📖' },
-  announce:  { bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)', text: '#7dd3fc', label: 'Announcement', icon: '📣' },
+  lyrics:    { bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)', text: '#dbeafe', label: 'Lyrics',       icon: '🎵' },
+  scripture: { bg: 'linear-gradient(135deg,#fff7ed,#fef3c7)', text: '#2e2820', label: 'Scripture',    icon: '📖' },
+  announce:  { bg: 'linear-gradient(135deg,#f0f9ff,#dbeafe)', text: '#0f172a', label: 'Announcement', icon: '📣' },
   blank:     { bg: '#000000',                                   text: '#ffffff',  label: 'Blank',        icon: '⬛' },
 };
 
@@ -45,22 +45,25 @@ const _SOURCE_BADGE = {
 // ── Gradient / colour presets ─────────────────────────────────────────────────
 const GRADIENTS = [
   { label: 'Default',      bg: '',                                                tc: '' },
+  { label: 'Warm Paper',   bg: 'linear-gradient(135deg,#fffaf0,#fef3c7)',         tc: '#2e2820' },
+  { label: 'Parchment',    bg: 'linear-gradient(135deg,#f8f1df,#ead8af)',         tc: '#261d12' },
+  { label: 'Soft Gold',    bg: 'linear-gradient(135deg,#fff7d6,#f7c756)',         tc: '#1f1600' },
+  { label: 'Morning Sky',  bg: 'linear-gradient(135deg,#f0f9ff,#bae6fd)',         tc: '#0f172a' },
+  { label: 'Clear Blue',   bg: 'linear-gradient(135deg,#dbeafe,#93c5fd)',         tc: '#0b1f3a' },
+  { label: 'Sea Glass',    bg: 'linear-gradient(135deg,#ecfeff,#99f6e4)',         tc: '#083344' },
+  { label: 'Garden Light', bg: 'linear-gradient(135deg,#f0fdf4,#bbf7d0)',         tc: '#052e16' },
+  { label: 'Rose Dawn',    bg: 'linear-gradient(135deg,#fff1f2,#fecdd3)',         tc: '#4c0519' },
+  { label: 'Lavender',     bg: 'linear-gradient(135deg,#f5f3ff,#ddd6fe)',         tc: '#2e1065' },
+  { label: 'Cloud White',  bg: 'linear-gradient(135deg,#ffffff,#e2e8f0)',         tc: '#111827' },
+  { label: 'Clean White',  bg: '#ffffff',                                         tc: '#111827' },
+  { label: 'Charcoal Ink', bg: '#1f2937',                                         tc: '#f9fafb' },
   { label: 'Pure Black',   bg: '#000000',                                         tc: '#ffffff' },
   { label: 'Deep Navy',    bg: '#0b0d14',                                         tc: '#f0f1f8' },
   { label: 'Midnight',     bg: 'linear-gradient(135deg,#0b0d14,#1a0e3c)',         tc: '#e8d5fc' },
-  { label: 'Ocean',        bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)',         tc: '#7dd3fc' },
-  { label: 'Deep Sea',     bg: 'linear-gradient(180deg,#060a14,#0d2040)',         tc: '#bfdbfe' },
-  { label: 'Forest',       bg: 'linear-gradient(135deg,#0a1a0f,#0d2a15)',         tc: '#86efac' },
-  { label: 'Emerald',      bg: 'linear-gradient(135deg,#001a0a,#002a10)',         tc: '#6ee7b7' },
-  { label: 'Holy Fire',    bg: 'linear-gradient(135deg,#1a0500,#3d1200)',         tc: '#fbbf24' },
-  { label: 'Amber',        bg: 'linear-gradient(135deg,#1a1200,#2d1f00)',         tc: '#fde68a' },
-  { label: 'Crimson',      bg: 'linear-gradient(135deg,#1a0e0e,#2d0808)',         tc: '#fca5a5' },
-  { label: 'Deep Purple',  bg: 'linear-gradient(135deg,#0a0a1e,#1e0a3c)',         tc: '#c4b5fd' },
-  { label: 'Royal',        bg: 'linear-gradient(135deg,#0a0040,#1a0060)',         tc: '#a5b4fc' },
-  { label: 'Dawn',         bg: 'linear-gradient(135deg,#1a0e1a,#2d0b35)',         tc: '#f9a8d4' },
-  { label: 'Night Sky',    bg: 'linear-gradient(180deg,#0d1a2b,#060a12)',         tc: '#bfdbfe' },
-  { label: 'Teal',         bg: 'linear-gradient(135deg,#001a1a,#003333)',         tc: '#5eead4' },
-  { label: 'Dusk',         bg: 'linear-gradient(180deg,#0a0a1a,#1a0a0a)',         tc: '#fdba74' },
+  { label: 'Ocean',        bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)',         tc: '#dbeafe' },
+  { label: 'Forest',       bg: 'linear-gradient(135deg,#0a1a0f,#0d2a15)',         tc: '#bbf7d0' },
+  { label: 'Crimson',      bg: 'linear-gradient(135deg,#1a0e0e,#2d0808)',         tc: '#fecaca' },
+  { label: 'Royal Purple', bg: 'linear-gradient(135deg,#0a0a1e,#1e0a3c)',         tc: '#ddd6fe' },
   { label: 'Slate',        bg: 'linear-gradient(135deg,#0f1215,#1a2030)',         tc: '#cbd5e1' },
 ];
 
@@ -266,7 +269,7 @@ function _makeShow(name = 'New Show') {
     sermonTitle: '',
     slides:      [_makeSlide('blank', '')],
 
-    theme:       { bg: 'linear-gradient(135deg,#0d1a2b,#0a2040)', tc: '#7dd3fc' },
+    theme:       { bg: '', tc: '' },
     createdAt:   now,
     updatedAt:   now,
   };
