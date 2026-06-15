@@ -3043,7 +3043,7 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 /* ── Stationary Herald shell ───────────────────────────────────────────── */
 :root {
   --fn-shell-top: 12px;
-  --fn-shell-bar-height: 68px;
+  --fn-shell-bar-height: 56px;
   --fn-shell-gap: 1.35rem;
   --fn-shell-below-bar: calc(var(--fn-shell-top) + var(--fn-shell-bar-height) + var(--fn-shell-gap));
 }
@@ -3064,7 +3064,7 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 @media (max-width: 640px) {
   :root {
     --fn-shell-top: 8px;
-    --fn-shell-bar-height: 62px;
+    --fn-shell-bar-height: 56px;
     --fn-shell-gap: 1rem;
     --fn-mobile-rail-width: 64px;
     --fn-mobile-rail-offset: 74px;
@@ -3430,7 +3430,8 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   color: #111827;
 }
 
-.fn-back-bar.unity-header .unity-brand-logo-img {
+.fn-back-bar.unity-header .unity-brand-logo-img,
+.fn-back-bar.unity-header .unity-brand-logo-svg {
   width: 100%;
   height: 100%;
   border-radius: inherit;
