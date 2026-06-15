@@ -105,6 +105,7 @@ import { mountQuill }       from '../Scripts/the_quill.js';
         appAccent: '#fbbf24',
         appAccentDk: '#a16207',
         homeHref: 'app.flockshamar/app.flockshamar.html',
+        signInHref: 'app.flockshamar/index.html',
         onHamburger: () => {
           const sidebar = document.getElementById('fs-sidebar');
           if (sidebar) {

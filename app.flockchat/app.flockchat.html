@@ -1971,6 +1971,19 @@
     import { mountUnityHeader } from './Scripts/the_unity_header.js';
 
     window.addEventListener('load', () => {
+      let user = null;
+      try {
+        const raw = sessionStorage.getItem('flock_auth_session') || sessionStorage.getItem('flock_auth_profile');
+        const s = raw ? JSON.parse(raw) : null;
+        if (s && s.email) {
+          user = {
+            displayName: s.displayName || s.name || s.email.split('@')[0],
+            email:       s.email,
+            photoURL:    s.photoURL || '',
+          };
+        }
+      } catch (_) {}
+
       mountUnityHeader(document.getElementById('fc-topbar'), {
         appId: 'flockchat',
         appName: 'FlockChat',
@@ -1978,6 +1991,8 @@
         appAccent: '#0f172a',
         appAccentDk: '#162235',
         homeHref: 'app.flockchat/',
+        user,
+        signInHref: 'app.flockchat/',
         onHamburger: () => {
           document.getElementById('fc-thread')?.classList.remove('active');
           return false;

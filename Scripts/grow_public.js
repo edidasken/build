@@ -134,10 +134,7 @@ mountUnityHeader(topbar, {
   homeHref:    'app.grow/',
   user:        null,                             // GROW is public — no auth at this layer
   avatarSrc:   'Images/icon-grow.svg',
-  onAccount:   () => {                           // override: open marketing sign-in dropdown
-    if (_signinDropdown && _signinDropdown.hidden) _openSigninDropdown();
-    else _closeSigninDropdown();
-  },
+  signInHref:  'app.flockos/',
   onHamburger: () => _toggleSidebar(),
   features:    ALL_MODULES.map(m => ({
     id:    `nav-${m.name}`,

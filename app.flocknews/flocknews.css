@@ -3446,6 +3446,17 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   border-radius: 16px;
 }
 
+.fn-back-bar.unity-header .unity-avatar.unity-avatar--herald {
+  border-radius: 999px;
+  padding: 3px;
+  overflow: hidden;
+}
+
+.fn-back-bar.unity-header .unity-avatar--herald .unity-avatar-img {
+  border-radius: 999px;
+  object-fit: cover;
+}
+
 @media (max-width: 640px) {
   .fn-back-bar.unity-header {
     top: var(--fn-shell-top, 8px);

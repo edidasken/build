@@ -212,6 +212,7 @@ function _mountHeader() {
     appAccent: '#3b82f6',
     appAccentDk: '#1e3a8a',
     homeHref: 'app.flockdocs/app.flockdocs.html',
+    signInHref: 'app.flockdocs/index.html',
     user: S.user,
     onSignOut: async () => {
       try {

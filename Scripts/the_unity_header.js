@@ -4,7 +4,7 @@
 
    Every New Covenant app mounts this header. Strict canonical layout:
      [☰ hamburger] [App Name] [...app extras...] [spacer]
-     [🔍 search-btn] [⚏ app-switcher] [● gold-glow avatar]
+     [🔍 search-btn] [⚏ app-switcher] [● Herald account icon]
 
    All buttons (search / switcher / avatar) share size + radius for visual
    parity. Avatar opens the unified profile sheet (the_unity_profile.js) which
@@ -34,6 +34,8 @@ const ICONS = {
   search:    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
 };
 
+export const UNITY_HERALD_ICON_SRC = new URL('../Images/icon-herald.svg', import.meta.url).href;
+
 export function mountUnityHeader(host, cfg = {}) {
   if (!host) return;
   const {
@@ -49,8 +51,7 @@ export function mountUnityHeader(host, cfg = {}) {
     onHamburger= null,
     hideHamburger = false,
     extras     = [],
-    avatarSrc  = 'Images/FlockIcon-512.webp',
-    signInHref = null,    // public/unauth apps: where to send the avatar click when no user
+    signInHref = null,    // public/unauth apps: destination for the Sign In row inside the profile sheet
     onAccount  = null,    // optional override for avatar click; if set, takes precedence over the profile sheet
   } = cfg;
 
@@ -75,8 +76,8 @@ export function mountUnityHeader(host, cfg = {}) {
     <div class="unity-spacer"></div>
     <button class="unity-action unity-search-btn" data-act="search" aria-label="Search ${escapeAttr(appName)}" title="Search (⌘K)">${ICONS.search}</button>
     <button class="unity-action unity-switcher" data-app-switcher data-app-switcher-current="${escapeAttr(appId)}" aria-label="Switch app" title="Switch app"></button>
-    <button class="unity-avatar" data-act="account" aria-label="Account">
-      <img class="unity-avatar-img" alt="" src="${escapeAttr(avatarSrc)}" onerror="this.style.display='none'">
+    <button class="unity-avatar unity-avatar--herald" data-act="account" aria-label="Herald account" title="Herald account">
+      <img class="unity-avatar-img" alt="" src="${escapeAttr(UNITY_HERALD_ICON_SRC)}" onerror="this.style.display='none'">
     </button>
   `;
 

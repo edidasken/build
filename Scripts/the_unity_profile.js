@@ -17,6 +17,7 @@
 let _sheet      = null;   // single DOM node, persists for the page lifetime
 let _opts       = {};     // last openUnityProfile() options (user, callbacks…)
 let _activeView = 'main';
+const HERALD_ICON_SRC = new URL('../Images/icon-herald.svg', import.meta.url).href;
 
 // ── Menu item registry ─────────────────────────────────────────────────────────
 const ITEMS = [
@@ -54,19 +55,9 @@ const IC = {
 // ── Public API ─────────────────────────────────────────────────────────────────
 
 export function openUnityProfile(opts = {}) {
-  const { user = null, signInHref = null } = opts;
-
-  // Unauthenticated guard
-  if (!user || !user.email) {
-    if (signInHref) { location.assign(signInHref); return; }
-    try { sessionStorage.removeItem('flock_auth_session'); } catch (_) {}
-    try { sessionStorage.removeItem('flock_auth_profile'); } catch (_) {}
-    location.reload();
-    return;
-  }
-
   _opts = { ...opts };
   ensureSheet();
+  _renderMainList();
   _populateMainHeader();
   _showView('main');
   _sheet.classList.add('is-open');
@@ -137,16 +128,7 @@ function ensureSheet() {
             <div class="unity-pp-email"></div>
           </div>
         </header>
-        <div class="unity-pp-list">
-          ${ITEMS.map(it => it.divider
-            ? `<div class="unity-pp-divider"></div>`
-            : `<button class="unity-pp-item${it.danger ? ' unity-pp-item--danger' : ''}" role="menuitem" data-id="${it.id}">
-                 <span class="unity-pp-item-icon">${IC[it.icon] || ''}</span>
-                 <span class="unity-pp-item-label">${it.label}</span>
-                 ${it.subview ? `<span class="unity-pp-item-chevron" aria-hidden="true">${IC.chevron}</span>` : ''}
-               </button>`
-          ).join('')}
-        </div>
+        <div class="unity-pp-list"></div>
       </div>
 
       <!-- ── sub-view slots (rendered on demand) ─────────────────────── -->
@@ -181,14 +163,39 @@ function ensureSheet() {
 function _populateMainHeader() {
   if (!_sheet) return;
   const { user } = _opts;
-  if (!user) return;
-  const display = user.displayName || user.name || user.email.split('@')[0];
-  const photo   = user.photoURL || '';
+  const signedIn = !!(user && user.email);
+  const display = signedIn
+    ? (user.displayName || user.name || user.email.split('@')[0])
+    : 'Herald Account';
+  const email = signedIn
+    ? user.email
+    : 'Sign in to access profile tools';
   const av = _sheet.querySelector('.unity-pp-avatar');
-  if (photo) { av.style.backgroundImage = `url("${photo.replace(/"/g, '%22')}")`;  av.textContent = ''; }
-  else        { av.style.backgroundImage = ''; av.textContent = (display[0] || '?').toUpperCase(); }
+  if (av) {
+    av.classList.add('unity-pp-avatar--herald');
+    av.style.backgroundImage = `url("${HERALD_ICON_SRC}")`;
+    av.textContent = '';
+  }
   _sheet.querySelector('.unity-pp-name').textContent  = display;
-  _sheet.querySelector('.unity-pp-email').textContent = user.email;
+  _sheet.querySelector('.unity-pp-email').textContent = email;
+}
+
+function _renderMainList() {
+  if (!_sheet) return;
+  const signedIn = !!(_opts.user && _opts.user.email);
+  const items = signedIn ? ITEMS : [
+    { id: 'signin',       label: 'Sign In',       icon: 'user' },
+    { id: 'settings',     label: 'Settings',      icon: 'gear',   subview: 'settings' },
+    { id: 'switch-church', label: 'Switch Church', icon: 'church', href: '../' },
+  ];
+  _sheet.querySelector('.unity-pp-list').innerHTML = items.map(it => it.divider
+    ? `<div class="unity-pp-divider"></div>`
+    : `<button class="unity-pp-item${it.danger ? ' unity-pp-item--danger' : ''}" role="menuitem" data-id="${it.id}">
+         <span class="unity-pp-item-icon">${IC[it.icon] || ''}</span>
+         <span class="unity-pp-item-label">${it.label}</span>
+         ${it.subview ? `<span class="unity-pp-item-chevron" aria-hidden="true">${IC.chevron}</span>` : ''}
+       </button>`
+  ).join('');
 }
 
 function _wireMainItems() {
@@ -204,6 +211,12 @@ function _wireMainItems() {
       const { onSignOut } = _opts;
       if (typeof onSignOut === 'function') Promise.resolve().then(onSignOut);
       else _toast('Sign-out not configured for this app.');
+      return;
+    }
+    if (id === 'signin') {
+      closeUnityProfile();
+      if (_opts.signInHref) location.assign(_opts.signInHref);
+      else _toast('Sign-in not configured for this app.');
       return;
     }
     if (item.href) {

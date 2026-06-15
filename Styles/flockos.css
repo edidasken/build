@@ -107,9 +107,16 @@ body.veil-app .unity-avatar {
   width: 42px;
   height: 42px;
   border: 1px solid rgba(247,199,86,0.34);
-  border-radius: 16px;
+  border-radius: 999px;
   background: rgba(247,199,86,0.12);
   box-shadow: inset 0 -2px 0 rgba(247,199,86,0.85);
+  overflow: hidden;
+  padding: 3px;
+}
+
+body.veil-app .unity-avatar--herald .unity-avatar-img {
+  border-radius: 999px;
+  object-fit: cover;
 }
 
 body.veil-app .veil-side {
@@ -1715,6 +1722,10 @@ body.veil-app :is(
     border-radius: 14px;
   }
 
+  body.veil-app .unity-avatar.unity-avatar--herald {
+    border-radius: 999px;
+  }
+
   body.veil-app .veil-side {
     margin: 10px 0 0 10px;
     width: min(310px, calc(100vw - 20px));
@@ -1934,6 +1945,13 @@ body.veil-app .unity-pp-avatar {
   background: linear-gradient(135deg, var(--flockos-gold), #f59e0b);
   color: #111827;
   box-shadow: 0 0 0 1px rgba(247,199,86,0.34), 0 10px 24px rgba(247,199,86,0.20);
+}
+
+body.veil-app .unity-pp-avatar.unity-pp-avatar--herald {
+  background-color: #0f172a;
+  background-size: cover;
+  background-position: center;
+  color: transparent;
 }
 
 body.veil-app .nc-switcher-icon.tone-green {

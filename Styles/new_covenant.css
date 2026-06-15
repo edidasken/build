@@ -15927,6 +15927,27 @@ body:not(.veil-app):not([class*="-app"]) .ptr-indicator {
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
 }
 
+.unity-avatar.unity-avatar--herald {
+  border-radius: 999px;
+  padding: 3px;
+  border-color: rgba(247,199,86,.58);
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,.18), transparent 38%),
+    linear-gradient(135deg, rgba(247,199,86,.24), rgba(34,211,238,.16)),
+    rgba(15,23,42,.82);
+  box-shadow: 0 0 18px rgba(247,199,86,.32), inset 0 0 0 1px rgba(255,255,255,.08);
+  overflow: hidden;
+}
+
+.unity-avatar--herald .unity-avatar-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  object-fit: cover;
+  background: #0f172a;
+}
+
 .unity-action:hover,
 .unity-avatar:hover,
 .unity-header .nc-switcher-btn:hover {
@@ -16183,6 +16204,13 @@ body:not(.veil-app):not([class*="-app"]) .ptr-indicator {
   display: flex; align-items: center; justify-content: center;
   font: 700 1rem 'Plus Jakarta Sans', system-ui, sans-serif;
   color: #e8a838; flex-shrink: 0;
+}
+.unity-pp-avatar.unity-pp-avatar--herald {
+  background-color: #0f172a;
+  background-size: cover;
+  background-position: center;
+  color: transparent;
+  box-shadow: 0 0 18px rgba(247,199,86,.42), inset 0 0 0 1px rgba(255,255,255,.08);
 }
 .unity-pp-id { min-width: 0; }
 .unity-pp-name {

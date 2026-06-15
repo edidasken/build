@@ -2492,6 +2492,7 @@ function _renderUserChip(N) {
     appAccent:   '#ef4444',
     appAccentDk: '#7f1d1d',
     homeHref:    'app.flockshow/',
+    signInHref:  'app.flockshow/',
     user,
     onSignOut: () => {
       _openConfirmModal('Sign Out', `Sign out of FlockShow?`, 'Sign Out', () => {

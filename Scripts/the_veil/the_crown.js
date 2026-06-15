@@ -42,6 +42,7 @@ export function mountCrown(host) {
     appAccentDk: '#0f172a',
     homeHref:    '?covenant=new&view=the_good_shepherd',
     user:        profile() || null,
+    signInHref:  'app.flockos/',
     onSignOut:   async () => {
       const m = await import('../the_priesthood/index.js');
       return m.depart();
