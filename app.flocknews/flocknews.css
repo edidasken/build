@@ -1987,13 +1987,15 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   white-space: nowrap;
 }
 
-.fn-app-switcher {
-  top: calc(100% + 12px);
-  min-width: 310px;
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--herald-radius-lg);
-  background: linear-gradient(180deg, var(--herald-navy), var(--herald-navy-2));
-  box-shadow: 0 28px 70px rgba(15,23,42,.28);
+@media (min-width: 641px) {
+  .fn-app-switcher {
+    top: calc(100% + 12px);
+    min-width: 310px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: var(--herald-radius-lg);
+    background: linear-gradient(180deg, var(--herald-navy), var(--herald-navy-2));
+    box-shadow: 0 28px 70px rgba(15,23,42,.28);
+  }
 }
 
 .fn-sw-name { color: #f8fafc; }
