@@ -1,35 +1,63 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   THE FLOCK HERALD — flocknews.css  v2
-   Herald-shell typography and public desk layout.
+   HERALD DESIGN SOURCE OF TRUTH
+
+   This file carries the current Herald shell treatment. Keep future edits in
+   the Herald visual system: navy shell, gold/cyan accents, glassy panels,
+   soft borders, and modern rounded app surfaces.
+
+   Do not reintroduce the earlier FlockNews newspaper treatment: no beige
+   palette, no heavy black rule system, and no square mobile tile language.
+   The `.fn-*` class names remain for markup compatibility only.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --paper:          #f7f2e7;
-  --paper-white:    #fdfaf4;
-  --paper-tint:     #ede7d6;
-  --ink:            #1a1a1a;
-  --ink-mid:        #2e2820;
-  --ink-label:      #5a4e42;    /* ONLY for small-caps labels & metadata */
-  --rule:           #1a1a1a;
-  --rule-soft:      #bfb8a8;
-  --rule-faint:     #ddd7c8;
+  --paper: #f8fafc;
+  --paper-white: #ffffff;
+  --paper-tint: #f1f5f9;
+  --ink: #111827;
+  --ink-mid: #334155;
+  --ink-label: #64748b;
+  --rule: rgba(15, 23, 42, .1);
+  --rule-soft: rgba(15, 23, 42, .1);
+  --rule-faint: rgba(15, 23, 42, .08);
   --serif:          "Merriweather", Georgia, "Times New Roman", serif;
   --body-serif:     Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --masthead-font:  "Merriweather", Georgia, "Times New Roman", serif;
   --sans:           Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --herald-navy: #0f172a;
+  --herald-navy-2: #162235;
+  --herald-gold: #f7c756;
+  --herald-gold-deep: #b8871e;
+  --herald-cyan: #48d3d9;
+  --herald-panel: rgba(255,255,255,.72);
+  --herald-panel-strong: #ffffff;
+  --herald-shadow: 0 22px 60px rgba(15,23,42,.1);
+  --herald-shadow-soft: 0 12px 30px rgba(15,23,42,.08);
+  --herald-radius-xl: 24px;
+  --herald-radius-lg: 18px;
+  --herald-radius-md: 14px;
 }
 
 html, body {
-  background: var(--paper);
+  background:
+    radial-gradient(circle at top left, rgba(247,199,86,.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 18px;
-  line-height: 1.72;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-text-size-adjust: 100%;
   min-height: 100%;
 }
+
+html {
+  font-size: calc(16px * var(--reader-scale, 1));
+}
+
+a { color: inherit; }
 
 
 /* ── Page wrapper ─────────────────────────────────────────────────────────── */
@@ -136,23 +164,24 @@ html, body {
 /* ── Mobile layout ────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   /* Darken muted label color on mobile for readability */
-  :root { --ink-label: #2e2820; }
+  :root { --ink-label: #475569; }
 
   /* ═════════════════════════════════════════════════════════════════════
-     IN THIS EDITION — stacked cards instead of cramped dotted leaders
+     IN THIS EDITION — compact Herald cards for mobile
      ═════════════════════════════════════════════════════════════════════ */
   .fn-index-box {
-    border: 2px solid var(--rule);
-    border-radius: 0;            /* chunky square — brutalist */
+    border: 1px solid rgba(15,23,42,.1);
+    border-radius: var(--herald-radius-lg);
     padding: 10px 0 0;
     margin-top: 18px;
-    background: var(--paper);
+    background: var(--herald-panel);
+    box-shadow: var(--herald-shadow-soft);
   }
   .fn-index-box-label {
     font-size: 12px; letter-spacing: .24em;
     padding: 0 14px 10px;
     margin-bottom: 0;
-    border-bottom: 2px solid var(--rule);
+    border-bottom: 1px solid rgba(15,23,42,.08);
   }
   .fn-index-list {
     display: grid;
@@ -190,9 +219,10 @@ html, body {
     font-size: 10px;
     color: var(--ink-label);
     font-weight: 900;
-    background: var(--paper-tint);
+    background: rgba(247,199,86,.14);
     padding: 1px 7px;
-    border: 1px solid var(--rule-soft);
+    border: 1px solid rgba(247,199,86,.18);
+    border-radius: 999px;
     margin-top: 2px;
   }
 
@@ -206,16 +236,16 @@ html, body {
   }
   .fn-suite-tile {
     padding: 16px 6px 14px;
-    border: 2px solid var(--rule);
-    border-radius: 0;
-    background: var(--paper-white);
-    box-shadow: 4px 4px 0 var(--ink);
+    border: 1px solid rgba(15,23,42,.1);
+    border-radius: var(--herald-radius-md);
+    background: var(--herald-panel-strong);
+    box-shadow: var(--herald-shadow-soft);
     gap: 8px;
     position: relative;
   }
   .fn-suite-tile:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--ink);
+    transform: translateY(1px);
+    box-shadow: 0 8px 18px rgba(15,23,42,.08);
   }
   .fn-suite-tile-icon svg {
     width: 28px; height: 28px;
@@ -231,29 +261,30 @@ html, body {
     letter-spacing: .04em;
     line-height: 1.25;
     padding: 3px 6px;
-    background: var(--paper-tint);
-    border: 1px solid var(--rule-soft);
+    background: rgba(72,211,217,.12);
+    border: 1px solid rgba(72,211,217,.18);
+    border-radius: 999px;
     color: var(--ink-label);
     font-weight: 700;
   }
 
   /* ═════════════════════════════════════════════════════════════════════
-     MULTIPLY APP CARDS (§ 10) — strip out cruft, dress as brutalist tiles
+     MULTIPLY APP CARDS (§ 10) — compact Herald app cards
      ═════════════════════════════════════════════════════════════════════ */
   .fn-multiply-apps {
     grid-template-columns: 1fr;
-    border: 2px solid var(--rule);
-    border-radius: 0;
-    background: var(--paper-white);
-    box-shadow: 6px 6px 0 var(--ink);
+    border: 1px solid rgba(15,23,42,.1);
+    border-radius: var(--herald-radius-lg);
+    background: var(--herald-panel-strong);
+    box-shadow: var(--herald-shadow-soft);
     margin-top: 18px;
   }
   .fn-multiply-app-card {
     min-height: auto;
     padding: 14px 14px 16px;
     border-right: none;
-    border-bottom: 2px solid var(--rule);
-    background: var(--paper-white);
+    border-bottom: 1px solid rgba(15,23,42,.08);
+    background: transparent;
   }
   .fn-multiply-app-card:last-child { border-bottom: none; }
   .fn-multiply-app-card-name {
@@ -262,7 +293,7 @@ html, body {
     letter-spacing: .01em;
     padding-bottom: 8px;
     margin-bottom: 8px;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid rgba(15,23,42,.08);
     line-height: 1.2;
   }
   .fn-multiply-app-card-desc {
@@ -450,7 +481,7 @@ html, body {
 
 
 /* ════════════════════════════════════════════════════════════════════════════
-   FRONT PAGE — 3-column broadsheet
+   FRONT PAGE — responsive feature grid
    ════════════════════════════════════════════════════════════════════════════ */
 .fn-front-grid {
   display: grid;
@@ -546,7 +577,7 @@ html, body {
   font-size: 15px; line-height: 1.4; color: var(--ink);
 }
 
-/* Legacy psalm box (kept for any fallback use) */
+/* Structural fallback psalm box. */
 .fn-psalm-box { display: none; }
 
 
@@ -1661,62 +1692,6 @@ html, body {
   .fn-back-btn, .fn-share-btn,
   .fn-motto, .fn-footer { font-size: 14px; }
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   HERALD PUBLIC SHELL REFRESH
-   Mirrors the /Deployments/herald public shell while preserving this app's
-   existing FlockNews markup and data-loading behavior.
-   ═══════════════════════════════════════════════════════════════════════════ */
-:root {
-  --paper: #f8fafc;
-  --paper-white: #ffffff;
-  --paper-tint: #f1f5f9;
-  --ink: #111827;
-  --ink-mid: #334155;
-  --ink-label: #64748b;
-  --rule: rgba(15, 23, 42, .1);
-  --rule-soft: rgba(15, 23, 42, .1);
-  --rule-faint: rgba(15, 23, 42, .08);
-  --serif: "Merriweather", Georgia, "Times New Roman", serif;
-  --body-serif: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --masthead-font: "Merriweather", Georgia, "Times New Roman", serif;
-  --sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --herald-navy: #0f172a;
-  --herald-navy-2: #162235;
-  --herald-gold: #f7c756;
-  --herald-gold-deep: #b8871e;
-  --herald-cyan: #48d3d9;
-  --herald-panel: rgba(255,255,255,.72);
-  --herald-panel-strong: #ffffff;
-  --herald-shadow: 0 22px 60px rgba(15,23,42,.1);
-  --herald-shadow-soft: 0 12px 30px rgba(15,23,42,.08);
-  --herald-radius-xl: 24px;
-  --herald-radius-lg: 18px;
-  --herald-radius-md: 14px;
-}
-
-html,
-body {
-  background:
-    radial-gradient(circle at top left, rgba(247,199,86,.16), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
-  color: var(--ink);
-  font-family: var(--sans);
-  line-height: 1.6;
-  -webkit-text-size-adjust: 100%;
-  min-height: 100%;
-}
-
-html {
-  font-size: calc(16px * var(--reader-scale, 1));
-}
-
-body {
-  font-size: 1rem;
-}
-
-a { color: inherit; }
 
 .fn-page {
   max-width: 1540px;
