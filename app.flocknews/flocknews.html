@@ -782,7 +782,8 @@ function goBack() {
 
   // Backdrop overlay for mobile — light tint, not heavy blackout
   var backdrop = document.createElement('div');
-  backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(12,20,69,.4);z-index:9998;-webkit-tap-highlight-color:transparent;';
+  backdrop.className = 'fn-app-switcher-backdrop';
+  backdrop.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(12,20,69,.4);z-index:75;-webkit-tap-highlight-color:transparent;';
   document.body.appendChild(backdrop);
 
   // Prevent body scroll when touching the backdrop on mobile

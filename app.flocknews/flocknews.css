@@ -2590,6 +2590,25 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
     padding: .85rem;
   }
 
+  .fn-side-icon {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .fn-side-icon svg,
+  .fn-side-icon img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .fn-side-link-active .fn-side-icon,
+  .fn-side-link-active .fn-side-icon img {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
   .fn-side-label,
   .fn-btn-label {
     display: none;
@@ -3047,8 +3066,8 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
     --fn-shell-top: 8px;
     --fn-shell-bar-height: 62px;
     --fn-shell-gap: 1rem;
-    --fn-mobile-rail-width: 58px;
-    --fn-mobile-rail-offset: 68px;
+    --fn-mobile-rail-width: 64px;
+    --fn-mobile-rail-offset: 74px;
   }
 
   .fn-back-bar {
@@ -3081,16 +3100,33 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   }
 
   html[data-fn-sidebar="open"] .fn-side-link {
-    min-height: 44px;
+    min-height: 54px;
     justify-content: center;
     padding: 0;
     border-radius: 12px;
   }
 
   html[data-fn-sidebar="open"] .fn-side-icon {
-    width: 22px;
-    height: 22px;
-    flex-basis: 22px;
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  html[data-fn-sidebar="open"] .fn-side-icon svg,
+  html[data-fn-sidebar="open"] .fn-side-icon img {
+    width: 34px;
+    height: 34px;
+  }
+
+  html[data-fn-sidebar="open"] .fn-side-link-active {
+    min-height: 60px;
+  }
+
+  html[data-fn-sidebar="open"] .fn-side-link-active .fn-side-icon,
+  html[data-fn-sidebar="open"] .fn-side-link-active .fn-side-icon img {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
   }
 
   html[data-fn-sidebar="open"] .fn-side-label {
