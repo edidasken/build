@@ -6,6 +6,7 @@
 
 import { pageHero } from '../_frame.js';
 import { buildAdapter } from '../../Scripts/the_living_water_adapter.js';
+import { renderGenerations, mount as mountGenerations } from '../the_generations/index.js';
 
 export const name  = 'the_seasons';
 export const title = 'Seasons';
@@ -91,6 +92,7 @@ export function render() {
         ${_tabBtn('church',   '📅 Church Events', true)}
         ${_tabBtn('personal', '🔒 My Events',      false)}
         ${_tabBtn('todos',    '✅ To-Dos',          false)}
+        ${_tabBtn('generations', '🕰️ Generations', false)}
       </div>
 
       <!-- Panel: Church Events -->
@@ -165,6 +167,11 @@ export function render() {
         </div>
       </div>
 
+      <!-- Panel: Generations / Church History -->
+      <div data-panel="generations" hidden>
+        ${renderGenerations({ embedded: true })}
+      </div>
+
     </section>
   `;
 }
@@ -173,6 +180,8 @@ export function mount(root) {
   // ── Tab switching ──────────────────────────────────────────────────────
   let _personalLoaded = false;
   let _todosLoaded    = false;
+  let _generationsLoaded = false;
+  let _stopGenerations = null;
 
   root.querySelectorAll('[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -195,6 +204,10 @@ export function mount(root) {
       if (tab === 'todos' && !_todosLoaded) {
         _todosLoaded = true;
         _loadTodos(root);
+      }
+      if (tab === 'generations' && !_generationsLoaded) {
+        _generationsLoaded = true;
+        _stopGenerations = mountGenerations(root.querySelector('[data-panel="generations"]'));
       }
     });
   });
@@ -234,6 +247,7 @@ export function mount(root) {
     _closeRsvpSheet();
     _closePersonalSheet();
     _closeTodoSheet();
+    try { _stopGenerations && _stopGenerations(); } catch (_) {}
   };
 }
 

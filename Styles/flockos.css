@@ -1,0 +1,706 @@
+/* FlockOS app theme
+   App-specific Herald treatment for the_good_shepherd and the FlockOS shell.
+   Shared reset/base rules stay in new_covenant.css. */
+
+body.veil-app {
+  --flockos-navy: #0f172a;
+  --flockos-navy-2: #162235;
+  --flockos-gold: #f7c756;
+  --flockos-gold-deep: #b8871e;
+  --flockos-cyan: #48d3d9;
+  --flockos-panel: rgba(255,255,255,0.74);
+  --flockos-panel-strong: #ffffff;
+  --flockos-rule: rgba(15,23,42,0.10);
+  --flockos-shadow: 0 22px 60px rgba(15,23,42,0.10);
+  --flockos-shadow-soft: 0 12px 30px rgba(15,23,42,0.08);
+  --flockos-radius-lg: 18px;
+  --flockos-radius-md: 14px;
+  --top-bg: linear-gradient(180deg, var(--flockos-navy), var(--flockos-navy-2));
+  --side-bg: linear-gradient(180deg, var(--flockos-navy), var(--flockos-navy-2));
+  --gold: var(--flockos-gold);
+  --gold-text: var(--flockos-gold-deep);
+  --gold-glow: rgba(247,199,86,0.35);
+  background:
+    radial-gradient(circle at top left, rgba(247,199,86,0.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,0.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+}
+
+body.veil-app .veil-wrap {
+  --topbar-h: 92px;
+  --sidebar-w: 238px;
+  background:
+    radial-gradient(circle at top left, rgba(247,199,86,0.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,0.12), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+}
+
+body.veil-app .veil-top,
+body.veil-app .unity-header {
+  align-self: start;
+  min-height: 68px;
+  height: 68px;
+  margin: 12px 22px 0;
+  padding: 8px 18px 8px 10px;
+  gap: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--flockos-radius-lg);
+  background: var(--top-bg);
+  color: #f8fafc;
+  box-shadow: 0 14px 30px rgba(15,23,42,0.14);
+  backdrop-filter: blur(10px);
+}
+
+body.veil-app .veil-top::after,
+body.veil-app .unity-header::after {
+  display: none;
+}
+
+body.veil-app .unity-brand {
+  min-height: 48px;
+  gap: 0.7rem;
+  margin-right: auto;
+  padding: 0.45rem 0.95rem 0.45rem 0.45rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  background: transparent;
+  color: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  font-size: 0.98rem;
+  font-weight: 900;
+}
+
+body.veil-app .unity-brand:hover,
+body.veil-app .unity-action:hover,
+body.veil-app .unity-header .nc-switcher-btn:hover {
+  background: rgba(255,255,255,0.11);
+  border-color: rgba(247,199,86,0.34);
+}
+
+body.veil-app .unity-brand-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 13px;
+  background: rgba(255,255,255,0.08) !important;
+  box-shadow: none;
+  color: var(--flockos-gold);
+}
+
+body.veil-app .unity-brand-text {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+body.veil-app .unity-action,
+body.veil-app .unity-header .nc-switcher-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  color: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+body.veil-app .unity-avatar {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(247,199,86,0.34);
+  border-radius: 16px;
+  background: rgba(247,199,86,0.12);
+  box-shadow: inset 0 -2px 0 rgba(247,199,86,0.85);
+}
+
+body.veil-app .veil-side {
+  margin: 12px 0 0 22px;
+  height: calc(100dvh - 126px);
+  padding: 0.75rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  background: var(--side-bg) !important;
+  color: #f8fafc;
+  box-shadow: 0 14px 30px rgba(15,23,42,0.14);
+  backdrop-filter: blur(14px);
+  scrollbar-width: none;
+}
+
+body.veil-app .veil-side::-webkit-scrollbar {
+  display: none;
+}
+
+body.veil-app .pillars-section {
+  padding: 18px 12px 7px;
+  color: rgba(255,255,255,0.32);
+  font: 900 0.64rem var(--font-ui);
+  letter-spacing: 0.12em;
+}
+
+body.veil-app .pillars-item {
+  min-height: 48px;
+  gap: 0.8rem;
+  margin: 0.1rem 0;
+  padding: 0.85rem 0.9rem;
+  border-radius: 14px;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+body.veil-app .pillars-item:hover,
+body.veil-app .pillars-item:focus-visible {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+body.veil-app .pillars-item[aria-current="page"],
+body.veil-app .pillars-item.is-active {
+  background: rgba(247,199,86,0.16);
+  color: #fff !important;
+  box-shadow: inset 0 -2px 0 rgba(247,199,86,0.85);
+}
+
+body.veil-app .pillars-item[aria-current="page"]::before,
+body.veil-app .pillars-item.is-active::before {
+  display: none;
+}
+
+body.veil-app .pillars-icon {
+  width: 22px;
+  height: 22px;
+}
+
+body.veil-app .pillars-item[data-section="home"] .pillars-icon,
+body.veil-app .pillars-item[data-section="mission"] .pillars-icon {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .pillars-item[data-section="fellowship"] .pillars-icon,
+body.veil-app .pillars-item[data-section="admin"] .pillars-icon {
+  color: var(--flockos-cyan);
+}
+
+body.veil-app .veil-main {
+  padding: 24px 34px calc(var(--safe-bottom, 0px) + 48px);
+}
+
+body.veil-app .veil-main > * {
+  max-width: 1180px;
+}
+
+body.veil-app .pasture-hero h1 {
+  background: linear-gradient(135deg, var(--flockos-navy) 10%, var(--flockos-cyan) 55%, var(--flockos-gold) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+body.veil-app .pasture-date {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app flock-card,
+body.veil-app .stat-card,
+body.veil-app .page-hero {
+  border-color: var(--flockos-rule);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.08), transparent 9rem),
+    var(--flockos-panel);
+  box-shadow: var(--flockos-shadow-soft);
+  backdrop-filter: blur(12px);
+}
+
+body.veil-app .pasture .stat-card {
+  border-top: 3px solid var(--flockos-gold);
+}
+
+body.veil-app .devo-dark-card,
+body.veil-app .pray-liturgy-card {
+  border-color: rgba(247,199,86,0.22);
+  background: linear-gradient(135deg, var(--flockos-navy), var(--flockos-navy-2));
+  box-shadow: 0 18px 44px rgba(15,23,42,0.20);
+}
+
+body.veil-app .today-row:hover,
+body.veil-app .bday-row:hover,
+body.veil-app .feed-row:hover {
+  background: rgba(247,199,86,0.08);
+}
+
+body.veil-app .today-time,
+body.veil-app .bday-when {
+  color: var(--flockos-gold-deep);
+  background: rgba(247,199,86,0.14);
+}
+
+/* Fellowship embeds the local app.flockchat surface as the whole main frame. */
+body.veil-app .fellowship-frame-view {
+  width: 100%;
+  max-width: none;
+  height: calc(100dvh - var(--topbar-h, 92px) - 72px);
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+}
+
+body.veil-app .fellowship-panel--flockchat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+body.veil-app .fc-pane {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--flockos-radius-lg);
+  background: #ffffff;
+  box-shadow: var(--flockos-shadow-soft);
+  overflow: hidden;
+}
+
+body.veil-app .fc-pane-frame {
+  flex: 1;
+  min-height: 0;
+}
+
+body.veil-app .fc-pane-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+body.veil-app .garments-overlay {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+body.veil-app .garments-card {
+  width: min(360px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  min-width: 0;
+  margin: auto;
+  border: 1px solid rgba(247,199,86,0.20);
+  border-radius: var(--flockos-radius-lg);
+  background: linear-gradient(180deg, var(--flockos-navy), #11143f);
+  box-shadow: 0 24px 70px rgba(15,23,42,0.35);
+}
+
+body.veil-app .garments-title {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .garments-btn-submit {
+  background: linear-gradient(135deg, var(--flockos-gold), #d86d1e);
+}
+
+/* The Upper Room view */
+body.veil-app .upper-room {
+  padding-bottom: 34px;
+  --bg-raised: var(--flockos-panel);
+  --bg-card: var(--flockos-panel-strong);
+  --bg: #f8fafc;
+  --line: var(--flockos-rule);
+  --ink: #111827;
+  --ink-muted: #64748b;
+  --ink-faint: #94a3b8;
+  --c-violet: var(--flockos-cyan);
+  --c-violet-bg: rgba(72,211,217,0.10);
+  --c-amber: var(--flockos-gold);
+  --c-amber-bg: rgba(247,199,86,0.14);
+  --c-emerald: #22c55e;
+  --c-emerald-bg: rgba(34,197,94,0.10);
+  --ur-accent: var(--flockos-gold);
+}
+
+body.veil-app .upper-room .page-hero {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0;
+  padding: 30px 32px 28px;
+  border: 1px solid rgba(247,199,86,0.26);
+  border-radius: var(--flockos-radius-lg);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(72,211,217,0.20), transparent 18rem),
+    radial-gradient(circle at 12% 92%, rgba(247,199,86,0.18), transparent 18rem),
+    linear-gradient(135deg, var(--flockos-navy), var(--flockos-navy-2));
+  color: #f8fafc;
+  box-shadow: var(--flockos-shadow);
+}
+
+body.veil-app .upper-room .page-hero::before {
+  display: none;
+}
+
+body.veil-app .upper-room .page-hero-title {
+  color: #fff;
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+}
+
+body.veil-app .upper-room .page-hero-sub {
+  color: rgba(248,250,252,0.78);
+}
+
+body.veil-app .upper-room .page-hero-scripture {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .ur-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 22px;
+  padding: 7px;
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--flockos-radius-lg);
+  background: rgba(255,255,255,0.74);
+  box-shadow: var(--flockos-shadow-soft);
+  backdrop-filter: blur(12px);
+}
+
+body.veil-app .ur-tab {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  background: transparent;
+  color: #334155;
+  font: 800 0.9rem var(--font-ui);
+  cursor: pointer;
+  transition: background 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease), box-shadow 150ms var(--ease);
+}
+
+body.veil-app .ur-tab:hover,
+body.veil-app .ur-tab:focus-visible {
+  background: rgba(15,23,42,0.05);
+  border-color: rgba(15,23,42,0.10);
+  color: var(--flockos-navy);
+  outline: none;
+}
+
+body.veil-app .ur-tab.is-active,
+body.veil-app .ur-tab[data-ur-tab].is-active {
+  background: linear-gradient(135deg, var(--flockos-gold), #d86d1e);
+  color: #111827;
+  box-shadow: 0 10px 22px rgba(247,199,86,0.24);
+}
+
+body.veil-app .ur-tab-icon {
+  font-size: 1rem;
+}
+
+body.veil-app .ur-panel {
+  display: block;
+}
+
+body.veil-app .ur-panel[hidden] {
+  display: none;
+}
+
+body.veil-app .ur-section-title {
+  margin: 24px 0 10px;
+  color: var(--flockos-gold-deep);
+  font: 900 0.72rem var(--font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+body.veil-app .ur-empty,
+body.veil-app .ur-empty-soft {
+  color: #64748b;
+}
+
+body.veil-app .ur-devo-card,
+body.veil-app .ur-read-hero,
+body.veil-app .ur-journal-form,
+body.veil-app .ur-journal-entry,
+body.veil-app .ur-read-table,
+body.veil-app .ur-recent-row {
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.08), transparent 9rem),
+    #ffffff;
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app .ur-devo-card,
+body.veil-app .ur-read-hero,
+body.veil-app .ur-journal-form {
+  padding: 24px;
+}
+
+body.veil-app .ur-devo-card::before {
+  background: linear-gradient(90deg, var(--flockos-cyan), var(--flockos-gold));
+}
+
+body.veil-app .ur-devo-meta,
+body.veil-app .ur-devo-date,
+body.veil-app .ur-save-status,
+body.veil-app .ur-read-day-date,
+body.veil-app .ur-je-meta {
+  color: #64748b;
+}
+
+body.veil-app .ur-devo-theme,
+body.veil-app .ur-recent-theme,
+body.veil-app .ur-je-cat {
+  background: rgba(247,199,86,0.16);
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .ur-devo-title,
+body.veil-app .ur-je-title {
+  color: var(--flockos-navy);
+}
+
+body.veil-app .ur-devo-scripture,
+body.veil-app .ur-je-scrip {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .ur-devo-scripture {
+  border-left-color: var(--flockos-gold);
+  background: rgba(247,199,86,0.12);
+}
+
+body.veil-app .ur-devo-body,
+body.veil-app .ur-devo-question p,
+body.veil-app .ur-devo-prayer p,
+body.veil-app .ur-je-body {
+  color: #334155;
+}
+
+body.veil-app .ur-devo-question {
+  border-left-color: var(--flockos-gold);
+  background: rgba(247,199,86,0.12);
+}
+
+body.veil-app .ur-devo-question h4,
+body.veil-app .ur-devo-prayer h4,
+body.veil-app .ur-passage-label,
+body.veil-app .ur-read-day-num {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .ur-devo-prayer {
+  border-left-color: var(--flockos-cyan);
+  background: rgba(72,211,217,0.10);
+}
+
+body.veil-app .ur-devo-foot {
+  border-top-color: rgba(15,23,42,0.10);
+}
+
+body.veil-app .ur-recent-row {
+  grid-template-columns: 150px 1fr auto;
+  color: #334155;
+}
+
+body.veil-app .ur-recent-row:hover {
+  background:
+    radial-gradient(circle at top right, rgba(247,199,86,0.10), transparent 9rem),
+    #ffffff;
+  transform: translateX(2px);
+}
+
+body.veil-app .ur-recent-date {
+  color: #64748b;
+}
+
+body.veil-app .ur-recent-title,
+body.veil-app .ur-passage-ref {
+  color: #1e293b;
+}
+
+body.veil-app .ur-passage {
+  border-left-color: var(--flockos-gold);
+  background: rgba(15,23,42,0.04);
+}
+
+body.veil-app .upper-room .flock-btn--ghost {
+  border: 1.5px solid rgba(15,23,42,0.18);
+  background: rgba(255,255,255,0.74);
+  color: var(--flockos-navy);
+}
+
+body.veil-app .upper-room .flock-btn--ghost:hover {
+  border-color: rgba(247,199,86,0.55);
+  background: rgba(247,199,86,0.10);
+  color: var(--flockos-navy);
+}
+
+body.veil-app .ur-read-table {
+  overflow: auto;
+}
+
+body.veil-app .ur-read-tbl th,
+body.veil-app .ur-read-tbl td {
+  border-bottom-color: rgba(15,23,42,0.08);
+  color: #334155;
+}
+
+body.veil-app .ur-read-tbl th {
+  background: rgba(15,23,42,0.04);
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .ur-read-tbl tbody tr:hover {
+  background: rgba(247,199,86,0.08);
+}
+
+body.veil-app .ur-read-tbl tbody tr.is-active {
+  background: rgba(247,199,86,0.14);
+}
+
+body.veil-app .ur-read-tbl tbody tr.is-active td {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .ur-input,
+body.veil-app .ur-textarea {
+  border: 1px solid rgba(15,23,42,0.12);
+  background: #ffffff;
+  color: #111827;
+}
+
+body.veil-app .ur-input::placeholder,
+body.veil-app .ur-textarea::placeholder {
+  color: #94a3b8;
+}
+
+body.veil-app .ur-input:focus,
+body.veil-app .ur-textarea:focus {
+  outline: 2px solid rgba(247,199,86,0.55);
+  outline-offset: -1px;
+}
+
+body.veil-app .ur-check {
+  color: #64748b;
+}
+
+/* Generations inside Seasons */
+body.veil-app .gen-view--embedded {
+  padding-top: 2px;
+}
+
+body.veil-app .gen-view--embedded .gen-stats {
+  margin-top: 0;
+}
+
+body.veil-app .gen-view--embedded .gen-stat-card,
+body.veil-app .gen-view--embedded .gen-milestone-body {
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.08), transparent 8rem),
+    #ffffff;
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app .gen-view--embedded .gen-stat-n {
+  color: var(--flockos-navy);
+}
+
+body.veil-app .gen-view--embedded .gen-stat-label,
+body.veil-app .gen-view--embedded .gen-milestone-desc {
+  color: #64748b;
+}
+
+body.veil-app .gen-view--embedded .gen-milestone-title {
+  color: var(--flockos-navy);
+}
+
+body.veil-app .gen-view--embedded .way-section-header {
+  align-items: center;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  body.veil-app .veil-wrap {
+    --topbar-h: 74px;
+  }
+
+  body.veil-app .veil-top,
+  body.veil-app .unity-header {
+    min-height: 62px;
+    height: 62px;
+    margin: 8px 10px 0;
+    padding: 7px 12px 7px 8px;
+  }
+
+  body.veil-app .unity-brand {
+    min-height: 42px;
+    padding: 0.2rem 0.55rem 0.2rem 0.2rem;
+  }
+
+  body.veil-app .unity-brand-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  body.veil-app .unity-action,
+  body.veil-app .unity-header .nc-switcher-btn,
+  body.veil-app .unity-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  body.veil-app .veil-side {
+    margin: 10px 0 0 10px;
+    width: min(310px, calc(100vw - 20px));
+    height: calc(100dvh - 94px);
+  }
+
+  body.veil-app .veil-main {
+    padding: 18px 14px calc(var(--safe-bottom, 0px) + 34px);
+  }
+
+  body.veil-app .fellowship-frame-view {
+    height: calc(100dvh - var(--topbar-h, 74px) - 52px);
+    min-height: 460px;
+  }
+
+  body.veil-app .fc-pane {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  body.veil-app .upper-room .page-hero,
+  body.veil-app .ur-devo-card,
+  body.veil-app .ur-read-hero,
+  body.veil-app .ur-journal-form {
+    padding: 20px 16px;
+  }
+
+  body.veil-app .ur-tabs {
+    gap: 6px;
+  }
+
+  body.veil-app .ur-tab {
+    flex: 1 1 calc(50% - 6px);
+    justify-content: center;
+    padding: 9px 10px;
+  }
+
+  body.veil-app .ur-recent-row {
+    grid-template-columns: 105px minmax(0, 1fr);
+  }
+
+  body.veil-app .ur-recent-theme {
+    display: none;
+  }
+}

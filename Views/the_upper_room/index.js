@@ -11,7 +11,6 @@
        • Devotional — today's reflection + scripture + question + prayer
        • Reading    — daily reading plan (OT / NT / Psalms / Proverbs)
        • Journal    — personal entries (Firestore: church/{id}/journal)
-       • Prayer     — quick jump to the Prayer Chain
 
    Data sources:
      • UpperRoom.listAppContent('devotionals') — Firestore (preferred)
@@ -24,7 +23,6 @@ import { pageHero }        from '../_frame.js';
 import { mountDevotional } from './the_devotional.js';
 import { mountReading }    from './the_reading.js';
 import { mountJournal }    from './the_journal.js';
-import { mountPrayer }     from './the_prayer.js';
 
 export const name  = 'the_upper_room';
 export const title = 'The Upper Room';
@@ -33,7 +31,6 @@ const TABS = [
   { id: 'devotional', label: "Today's Word",   icon: '🕯️' },
   { id: 'reading',    label: 'Reading Plan',   icon: '📖' },
   { id: 'journal',    label: 'Journal',        icon: '✍️' },
-  { id: 'prayer',     label: 'Prayer',         icon: '🙏' },
 ];
 
 export function render(params = {}) {
@@ -42,7 +39,7 @@ export function render(params = {}) {
     <section class="upper-room ms-dash">
       ${pageHero({
         title: 'The Upper Room',
-        subtitle: 'A daily place for the Word — devotion, reading, journal, and prayer.',
+        subtitle: 'A daily place for the Word — devotion, reading, and journal.',
         scripture: 'Thy word is a lamp unto my feet, and a light unto my path. — Psalm 119:105',
       })}
 
@@ -65,16 +62,13 @@ export function render(params = {}) {
       <div class="ur-panel" data-ur-panel="journal" ${initial !== 'journal' ? 'hidden' : ''}>
         <flock-skeleton rows="4"></flock-skeleton>
       </div>
-      <div class="ur-panel" data-ur-panel="prayer" ${initial !== 'prayer' ? 'hidden' : ''}>
-        <flock-skeleton rows="4"></flock-skeleton>
-      </div>
     </section>
   `;
 }
 
 export function mount(root, ctx) {
   const stops = [];
-  const mounted = { devotional: false, reading: false, journal: false, prayer: false };
+  const mounted = { devotional: false, reading: false, journal: false };
 
   const activate = (tabId) => {
     root.querySelectorAll('[data-ur-tab]').forEach((el) => {
@@ -97,10 +91,6 @@ export function mount(root, ctx) {
     if (tabId === 'journal' && !mounted.journal) {
       stops.push(mountJournal(root.querySelector('[data-ur-panel="journal"]'), ctx));
       mounted.journal = true;
-    }
-    if (tabId === 'prayer' && !mounted.prayer) {
-      mountPrayer(root.querySelector('[data-ur-panel="prayer"]'), ctx);
-      mounted.prayer = true;
     }
   };
 

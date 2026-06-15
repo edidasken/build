@@ -63,13 +63,11 @@ const SECTIONS = [
       { name: 'the_growth',            label: 'Grow',               icon: ICON.sprout },
     ],
   },
-  /* ── Comms ───────────────────────────────────────────────────────────── */
+  /* ── Fellowship ──────────────────────────────────────────────────────── */
   {
-    title: 'Comms',
+    title: 'Fellowship',
     items: [
       { name: 'the_fellowship',        label: 'Fellowship',         icon: ICON.chat,      badge: 'fellowship' },
-      { name: 'the_announcements',     label: 'Announcements',      icon: ICON.bullhorn },
-      { name: 'the_prayer_chain',      label: 'Prayer Chain',       icon: ICON.hands },
     ],
   },
   /* ── Care ────────────────────────────────────────────────────────────── */
@@ -78,8 +76,6 @@ const SECTIONS = [
     items: [
       { name: 'the_fold',              label: 'The Fold',           icon: ICON.fold },
       { name: 'the_life',              label: 'Pastoral Care',      icon: ICON.heart,     badge: 'care' },
-      { name: 'the_call_to_forgive',   label: 'Reconciliation',     icon: ICON.scales },
-      { name: 'prayerful_action',      label: 'Prayer Journal',     icon: ICON.notebook },
       { name: 'the_seasons',           label: 'Seasons',            icon: ICON.calendar },
     ],
   },
@@ -88,10 +84,8 @@ const SECTIONS = [
     title: 'Worship',
     items: [
       { name: 'the_anatomy_of_worship', label: 'Service Order',     icon: ICON.clipboard },
-      { name: 'quarterly_worship',       label: 'Worship Plan',      icon: ICON.music },
-      { name: 'the_pentecost',           label: 'Special Services',  icon: ICON.flame },
+      { name: 'quarterly_worship',       label: 'Quarterly Planner', icon: ICON.music },
       { name: 'music_stand',             label: 'FlockStand',       icon: ICON.music, href: 'app.stand/' },
-      { name: 'the_feed',                label: 'Sermon Builder',    icon: ICON.pen,   href: 'app.feed/feed.html' },
       { name: 'flockshow',               label: 'FlockShow',         icon: ICON.screen, href: 'app.flockshow/app.flockshow.html' },
     ],
   },
@@ -104,8 +98,6 @@ const SECTIONS = [
       { name: 'the_harvest',           label: 'Harvest',            icon: ICON.harvest },
       { name: 'the_way',               label: 'The Way',            icon: ICON.cross },
       { name: 'the_truth',             label: 'Content',            icon: ICON.pen },
-      { name: 'fishing_for_men',       label: 'Outreach',           icon: ICON.fish },
-      { name: 'fishing_for_data',      label: 'Analytics',          icon: ICON.chart },
     ],
   },
   /* ── Stewardship ─────────────────────────────────────────────────────── */
@@ -116,24 +108,11 @@ const SECTIONS = [
       { name: 'the_weavers_plan',      label: "The Weaver's Plan",  icon: ICON.target },
     ],
   },
-  /* ── Legacy ──────────────────────────────────────────────────────────── */
+  /* ── Admin ───────────────────────────────────────────────────────────── */
   {
-    title: 'Legacy',
-    items: [
-      { name: 'the_generations',       label: 'The Generations',    icon: ICON.clock },
-    ],
-  },
-  /* ── Build ───────────────────────────────────────────────────────────── */
-  {
-    title: 'Build',
+    title: 'Admin',
     items: [
       { name: 'the_wall',                    label: 'Admin',          icon: ICON.shield },
-      { name: 'bezalel',                     label: 'Bezalel',        icon: ICON.hammer },
-      { name: 'content-admin',               label: 'Truth Editor',   icon: ICON.pen },
-      { name: 'the_invitation',              label: 'Invitations',    icon: ICON.userplus },
-      { name: 'software_deployment_referral', label: 'Deploy & Refer', icon: ICON.upload },
-      { name: 'learn_more',                  label: 'Learn More',     icon: ICON.info },
-      { name: 'about_flockos',               label: 'The Why',        icon: ICON.question },
     ],
   },
 ];

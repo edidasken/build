@@ -53,7 +53,7 @@
 
        Inherits HTML bg/font from new_covenant.css + herald-tokens.css.
        Visual language matches feed.css and flocknews.css:
-         • Cream paper background with gold/cyan radial halos
+         • Herald light background with gold/cyan radial halos
          • Floating elevated unity header (FEED style)
          • Glass backdropped subbar panel
          • Navy sidebar for editor (always-dark cathedral palette)
@@ -63,10 +63,10 @@
 
     :root {
       /* ── Paper surfaces (FEED / Herald match) ─────────────────────────── */
-      --paper:          #f7f2e7;
-      --paper-white:    #fdfaf4;
-      --paper-tint:     #ede7d6;
-      --paper-soft:     #fbf7ee;
+      --paper:          #f8fafc;
+      --paper-white:    #ffffff;
+      --paper-tint:     #f1f5f9;
+      --paper-soft:     #f8fafc;
       --ink-news:       #1a1a1a;
       --ink-mid-news:   #2e2820;
       --ink-label:      #5a4e42;
@@ -125,8 +125,8 @@
     body {
       background:
         radial-gradient(circle at top left,  rgba(247,199,86,.16), transparent 32rem),
-        radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 28rem),
-        linear-gradient(180deg, #fffdf7 0%, var(--paper) 100%);
+        radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
     }
 
     /* ── Root grid ─────────────────────────────────────────────────────── */

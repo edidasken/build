@@ -26,10 +26,14 @@ const CAT_META = {
 
 const CURRENT_YEAR = new Date().getFullYear();
 
-export function render() {
+export function render(opts = {}) {
+  return renderGenerations(opts);
+}
+
+export function renderGenerations({ embedded = false } = {}) {
   return /* html */`
-    <section class="gen-view">
-      ${pageHero({
+    <section class="gen-view${embedded ? ' gen-view--embedded' : ''}">
+      ${embedded ? '' : pageHero({
         title:    'The Generations',
         subtitle: 'The long story of the church — founding, growth, missions, and covenant moments.',
         scripture: 'One generation shall praise thy works to another. — Psalm 145:4',
@@ -280,4 +284,3 @@ function _openMilestoneSheet(m, onReload) {
     } catch (_) { btn.disabled = false; btn.textContent = 'Delete'; }
   });
 }
-

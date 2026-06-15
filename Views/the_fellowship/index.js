@@ -2,36 +2,22 @@
    VIEW: THE FELLOWSHIP — Unified comms surface inside FlockOS
    "And they continued stedfastly… in fellowship." — Acts 2:42
 
-   One page, three tabs, two comms sources (see Scripts/the_comms.js):
-     • Channels      — Firebase / TheUpperRoom (per-church)
-     • Direct        — Firebase DMs
-     • Interactions  — GAS interaction ledger (TheScrolls)
+   One page, one comms source of truth:
+     • Embedded FlockChat — channels, direct messages, prayer chain, and live updates
    ══════════════════════════════════════════════════════════════════════════════ */
 
-import { pageHero, ensureVessels } from '../_frame.js';
-import { renderChannelsPane }     from './the_channel_list.js';
-import { renderDmsPane }          from './the_dm_drawer.js';
-import { renderInteractionsPane } from './the_interactions_pane.js';
+import { ensureVessels } from '../_frame.js';
+import { renderFlockchatPane }     from './the_flockchat_pane.js';
 
 export const name  = 'the_fellowship';
 export const title = 'Fellowship';
 
 export function render(/* params */) {
   return `
-    <section>
-      ${pageHero({
-        title: 'Fellowship',
-        subtitle: 'Channels, direct messages, and the pastoral ledger — all in one room.',
-        scripture: 'And they continued stedfastly… in fellowship. — Acts 2:42',
-      })}
-      <flock-tabs id="fellowship-tabs">
-        <button slot="tab" type="button">Channels</button>
-        <button slot="tab" type="button">Direct</button>
-        <button slot="tab" type="button">Interactions</button>
-        <section slot="panel" data-pane="channels" class="fellowship-panel"><flock-skeleton rows="4"></flock-skeleton></section>
-        <section slot="panel" data-pane="dms" class="fellowship-panel"><flock-skeleton rows="4"></flock-skeleton></section>
-        <section slot="panel" data-pane="interactions" class="fellowship-panel"><flock-skeleton rows="6"></flock-skeleton></section>
-      </flock-tabs>
+    <section class="fellowship-frame-view">
+      <section data-pane="flockchat" class="fellowship-panel fellowship-panel--flockchat">
+        <flock-skeleton rows="6"></flock-skeleton>
+      </section>
     </section>
   `;
 }
@@ -43,9 +29,7 @@ export function mount(root, ctx) {
   const stops = [];
   const grab  = (k) => root.querySelector(`[data-pane="${k}"]`);
 
-  stops.push(renderChannelsPane(grab('channels'),       ctx));
-  stops.push(renderDmsPane(grab('dms'),                  ctx));
-  stops.push(renderInteractionsPane(grab('interactions'), ctx));
+  stops.push(renderFlockchatPane(grab('flockchat'), ctx));
 
   return () => stops.forEach((fn) => { try { fn && fn(); } catch (_) {} });
 }
