@@ -299,7 +299,7 @@ html, body {
     /* Force compositing layer so backdrop with solid background doesn't obscure
        the panel on iOS Safari (backdrop-filter removal creates a stacking issue) */
     will-change: transform;
-    -webkit-transform: translate3d(0,0,0);
+    -webkit-transform: translateX(-50%);
     isolation: isolate;
   }
   .fn-sw-item { padding: 13px 18px; min-height: 56px; gap: 14px; }
@@ -1704,6 +1704,8 @@ body {
   color: var(--ink);
   font-family: var(--sans);
   line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  min-height: 100%;
 }
 
 html {
