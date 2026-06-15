@@ -296,6 +296,11 @@ html, body {
     z-index: 9999;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    /* Force compositing layer so backdrop with solid background doesn't obscure
+       the panel on iOS Safari (backdrop-filter removal creates a stacking issue) */
+    will-change: transform;
+    -webkit-transform: translate3d(0,0,0);
+    isolation: isolate;
   }
   .fn-sw-item { padding: 13px 18px; min-height: 56px; gap: 14px; }
   .fn-sw-icon svg { width: 24px; height: 24px; }
