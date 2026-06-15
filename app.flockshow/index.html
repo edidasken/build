@@ -10,17 +10,17 @@
   <!-- PWA -->
   <link rel="manifest" href="app.flockshow/manifest.json">
   <link rel="icon" type="image/svg+xml" href="Images/icon-show.svg">
-  <link rel="apple-touch-icon" href="Images/Show.png">
-  <meta name="theme-color" content="#ef4444">
+  <link rel="apple-touch-icon" href="Images/icon-show.svg">
+  <meta name="theme-color" content="#e8a838">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="FlockShow">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <!-- Fonts -->
+  <!-- Fonts — Inter + Merriweather (Herald system) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="Styles/new_covenant.css">
 
@@ -28,54 +28,42 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Dark navy palette for FlockShow */
-      --bg:         #1a1d2e;
-      --bg-raised:  #1a1d2e;
-      --bg-input:   #151827;
-      --line:       rgba(255,255,255,0.1);
-      --ink:        #ffffff;
-      --ink-muted:  rgba(255,255,255,0.65);
-      --ink-faint:  rgba(255,255,255,0.45);
-      --border:     rgba(255,255,255,0.1);
-      --muted:      rgba(255,255,255,0.65);
-      --accent:     #e8a838;
-      --accent-dk:  #c48a20;
-      --danger:     #ef4444;
-      --radius:     18px;
+      --fs-accent:     #e8a838;
+      --fs-accent-dk:  #c48a20;
+      --fs-danger:     #ef4444;
+      --fs-radius-xl:  24px;
+      --fs-radius-md:  14px;
+      --fs-border:     rgba(15,23,42,.1);
+      --fs-ink:        #111827;
+      --fs-ink-muted:  #64748b;
+      --fs-ink-faint:  #94a3b8;
     }
 
     html, body {
       height: 100%;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: Inter, system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 24px 16px;
-    }
-
-    .bg-glow {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 80% 50% at 15% 10%,  rgba(232,168,56,.13)  0%, transparent 55%),
-        radial-gradient(ellipse 60% 50% at 85% 85%,  rgba(168,85,247,.15)  0%, transparent 55%),
-        radial-gradient(ellipse 100% 60% at 50% 50%, rgba(26,14,60,.7)     0%, transparent 80%);
+        radial-gradient(circle at top left, rgba(247,199,86,.16), transparent 32rem),
+        radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
     }
 
     .card {
       position: relative; z-index: 1;
-      background: var(--bg-raised);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+      background: #ffffff;
+      border: 1px solid var(--fs-border);
+      border-radius: var(--fs-radius-xl);
       padding: 44px 40px 40px;
       width: 100%;
       max-width: 420px;
       box-shadow:
-        0 0 0 1px rgba(0,0,0,.04),
-        0 24px 64px rgba(0,0,0,.15),
-        0 4px 16px rgba(0,0,0,.08);
+        0 22px 60px rgba(15,23,42,.1),
+        0 4px 16px rgba(15,23,42,.06);
     }
 
     .brand {
@@ -85,20 +73,20 @@
     .brand-icon {
       width: 54px; height: 54px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #ef4444, #f97316);
+      background: linear-gradient(135deg, var(--fs-accent), #f97316);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0,0,0,.4);
+      box-shadow: 0 4px 12px rgba(232,168,56,.35);
     }
     .brand-name {
       font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: -.02em;
-      color: var(--ink);
+      color: var(--fs-ink);
     }
     .brand-sub {
       font-size: .75rem;
-      color: var(--muted);
+      color: var(--fs-ink-muted);
       margin-top: 3px;
     }
 
@@ -107,7 +95,7 @@
       font-weight: 700;
       letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--fs-accent);
       margin-bottom: 22px;
     }
 
@@ -116,16 +104,16 @@
       display: block;
       font-size: .78rem;
       font-weight: 600;
-      color: var(--muted);
+      color: var(--fs-ink-muted);
       margin-bottom: 7px;
     }
     input[type="email"],
     input[type="password"] {
       width: 100%;
-      background: var(--bg-input);
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      color: var(--ink);
+      background: #f8fafc;
+      border: 1px solid var(--fs-border);
+      border-radius: var(--fs-radius-md);
+      color: var(--fs-ink);
       font-family: inherit;
       font-size: .9rem;
       padding: 12px 15px;
@@ -134,17 +122,17 @@
       -webkit-appearance: none;
     }
     input:focus {
-      border-color: var(--accent);
+      border-color: var(--fs-accent);
       box-shadow: 0 0 0 3px rgba(232,168,56,.18);
     }
-    input::placeholder { color: var(--ink-faint); }
+    input::placeholder { color: var(--fs-ink-faint); }
 
     .btn-signin {
       width: 100%;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dk) 100%);
+      background: linear-gradient(135deg, var(--fs-accent) 0%, var(--fs-accent-dk) 100%);
       color: #1a0f00;
       border: none;
-      border-radius: 10px;
+      border-radius: var(--fs-radius-md);
       font-family: inherit;
       font-size: .9rem;
       font-weight: 800;
@@ -163,7 +151,7 @@
       background: rgba(248,113,113,.08);
       border: 1px solid rgba(248,113,113,.25);
       border-radius: 8px;
-      color: var(--danger);
+      color: var(--fs-danger);
       font-size: .82rem;
       padding: 10px 14px;
       margin-top: 16px;
@@ -185,21 +173,19 @@
 
     .foot-note {
       text-align: center;
-      color: var(--muted);
+      color: var(--fs-ink-muted);
       font-size: .73rem;
       margin-top: 24px;
     }
     .return-home-link {
       display: block; text-align: center; margin-top: 14px;
-      font-size: .73rem; color: var(--muted);
+      font-size: .73rem; color: var(--fs-ink-muted);
       text-decoration: none; transition: opacity .15s;
     }
     .return-home-link:hover { opacity: .75; }
   </style>
 </head>
 <body>
-
-  <div class="bg-glow"></div>
 
   <div class="card">
     <div class="brand">
@@ -211,7 +197,7 @@
       </div>
       <div>
         <div class="brand-name">FlockShow</div>
-        <div class="brand-sub">Worship Presentation &amp; Display</div>
+        <div class="brand-sub">Worship Presentation & Display</div>
       </div>
     </div>
 
