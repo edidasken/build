@@ -1,0 +1,397 @@
+/* Shared standalone app login wall.
+   Mirrors the Good Shepherd garments design while preserving each app's auth flow. */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  height: auto;
+  background: #080a1c;
+  color: #fff;
+  font-family: var(--font-ui, "Noto Sans", "Plus Jakarta Sans", Inter, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232, 168, 56, 0.14), transparent 30rem),
+    radial-gradient(circle at 12% 100%, rgba(192, 80, 20, 0.18), transparent 24rem),
+    linear-gradient(rgba(8, 10, 28, 0.86), rgba(8, 10, 28, 0.86));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  width: min(400px, 92vw);
+  max-width: 400px;
+  overflow: hidden;
+  background: linear-gradient(170deg, #0d1144 0%, #160e38 60%, #0a1025 100%);
+  border: 1px solid rgba(232, 168, 56, 0.20);
+  border-radius: 18px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  padding: 36px 32px 28px;
+  animation: app-login-rise 280ms var(--ease, ease) both;
+}
+
+.card::before {
+  content: none;
+}
+
+@keyframes app-login-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.brand-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 45% 35%, rgba(255, 233, 160, 0.24), rgba(232, 168, 56, 0.08) 48%, rgba(255, 255, 255, 0.04));
+  color: #ffe9a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow:
+    0 0 12px rgba(255, 210, 74, 0.42),
+    0 0 32px rgba(232, 136, 32, 0.28),
+    inset 0 0 0 1px rgba(232, 168, 56, 0.18);
+}
+
+.brand-icon svg {
+  width: 30px;
+  height: 30px;
+  stroke: currentColor;
+}
+
+.brand-name {
+  margin: 0 0 6px;
+  color: #ffe9a0;
+  background: linear-gradient(135deg, #ffe9a0, #e8a838, #c47a10);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font: 700 1.6rem/1.15 var(--font-serif, "Noto Serif", Georgia, serif);
+  letter-spacing: 0;
+}
+
+.brand-sub {
+  color: rgba(255, 255, 255, 0.38);
+  font: italic 0.88rem var(--font-serif, "Noto Serif", Georgia, serif);
+  letter-spacing: 0;
+  text-transform: none;
+  margin: 0;
+}
+
+.form-title {
+  display: block;
+  width: auto;
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.38);
+  font: 700 0.75rem/1 var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0.16em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.field-group {
+  margin: 0 0 14px;
+}
+
+label {
+  display: block;
+  margin: 0 0 6px;
+  color: rgba(255, 255, 255, 0.45);
+  font: 600 0.78rem/1 var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #fff;
+  font: 1rem var(--font-ui, "Noto Sans", sans-serif);
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  -webkit-appearance: none;
+}
+
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input:focus {
+  border-color: rgba(232, 168, 56, 0.60);
+  box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.14);
+}
+
+.btn-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 11px 20px;
+  background: linear-gradient(135deg, var(--gold, #e8a838) 0%, #c05818 100%);
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  font: 700 0.95rem var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
+  transition: opacity 150ms ease, transform 120ms ease;
+}
+
+.btn-signin:hover {
+  opacity: 0.9;
+  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
+  transform: none;
+}
+
+.btn-signin:active {
+  transform: scale(0.97);
+}
+
+.btn-signin:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-msg,
+.role-notice {
+  display: none;
+  margin: 14px 0 0;
+  padding: 0;
+  min-height: 1.2em;
+  background: transparent;
+  border: 0;
+  color: #fca5a5;
+  font: 0.83rem var(--font-ui, "Noto Sans", sans-serif);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.error-msg.visible,
+.role-notice.visible {
+  display: block;
+}
+
+.role-notice {
+  color: #f7d27b;
+}
+
+.spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.30);
+  border-top-color: #fff;
+  animation: spin 700ms linear infinite;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.foot-note {
+  margin: 22px 8px 0;
+  color: rgba(255, 255, 255, 0.62);
+  font: italic 0.95rem/1.5 var(--font-serif, "Noto Serif", Georgia, serif);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.return-home-link {
+  display: block;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.45);
+  font: 0.73rem var(--font-ui, sans-serif);
+  text-align: center;
+  text-decoration: underline;
+  transition: color 150ms ease;
+}
+
+.return-home-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 18px 12px;
+  }
+
+  .card {
+    padding: 32px 24px 24px;
+  }
+}
+
+/* FlockStand ships with stronger .stand-auth selectors, so keep it aligned here. */
+body.stand-auth {
+  min-height: 100%;
+  height: auto;
+  background: #080a1c;
+  color: #fff;
+  font-family: var(--font-ui, "Noto Sans", "Plus Jakarta Sans", Inter, system-ui, sans-serif);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+body.stand-auth .bg-glow {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232, 168, 56, 0.14), transparent 30rem),
+    radial-gradient(circle at 12% 100%, rgba(192, 80, 20, 0.18), transparent 24rem),
+    linear-gradient(rgba(8, 10, 28, 0.86), rgba(8, 10, 28, 0.86));
+}
+
+body.stand-auth .card {
+  width: min(400px, 92vw);
+  max-width: 400px;
+  overflow: hidden;
+  background: linear-gradient(170deg, #0d1144 0%, #160e38 60%, #0a1025 100%);
+  border: 1px solid rgba(232, 168, 56, 0.20);
+  border-radius: 18px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  padding: 36px 32px 28px;
+}
+
+body.stand-auth .card::before {
+  content: none;
+}
+
+body.stand-auth .brand {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+body.stand-auth .brand-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 45% 35%, rgba(255, 233, 160, 0.24), rgba(232, 168, 56, 0.08) 48%, rgba(255, 255, 255, 0.04));
+  color: #ffe9a0;
+  margin: 0 auto 16px;
+  box-shadow:
+    0 0 12px rgba(255, 210, 74, 0.42),
+    0 0 32px rgba(232, 136, 32, 0.28),
+    inset 0 0 0 1px rgba(232, 168, 56, 0.18);
+}
+
+body.stand-auth .brand-icon svg {
+  stroke: currentColor;
+}
+
+body.stand-auth .brand-name {
+  margin: 0 0 6px;
+  background: linear-gradient(135deg, #ffe9a0, #e8a838, #c47a10);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #ffe9a0;
+  font: 700 1.6rem/1.15 var(--font-serif, "Noto Serif", Georgia, serif);
+  letter-spacing: 0;
+}
+
+body.stand-auth .brand-sub {
+  color: rgba(255, 255, 255, 0.38);
+  font: italic 0.88rem var(--font-serif, "Noto Serif", Georgia, serif);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+body.stand-auth .form-title {
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.38);
+  font: 700 0.75rem/1 var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0.16em;
+  text-align: center;
+}
+
+body.stand-auth label {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+body.stand-auth input[type="email"],
+body.stand-auth input[type="password"] {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #fff;
+  font: 1rem var(--font-ui, "Noto Sans", sans-serif);
+}
+
+body.stand-auth input[type="email"]:focus,
+body.stand-auth input[type="password"]:focus {
+  border-color: rgba(232, 168, 56, 0.60);
+  box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.14);
+}
+
+body.stand-auth .btn-signin {
+  background: linear-gradient(135deg, var(--gold, #e8a838) 0%, #c05818 100%);
+  border: 0;
+  border-radius: 10px;
+  color: #fff;
+  font: 700 0.95rem var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
+}
+
+body.stand-auth .foot-note {
+  color: rgba(255, 255, 255, 0.62);
+  font: italic 0.95rem/1.5 var(--font-serif, "Noto Serif", Georgia, serif);
+}
+
+body.stand-auth .return-home-link {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: underline;
+}
+
+body.stand-auth .return-home-link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
