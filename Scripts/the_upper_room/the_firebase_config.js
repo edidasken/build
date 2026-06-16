@@ -48,10 +48,12 @@ export function getVapidKey() {
 }
 
 export function getProjectId() {
+  if (typeof window !== 'undefined' && window.FLOCK_NO_FIREBASE === true) return null;
   const c = getConfig();
   return c && c.projectId ? c.projectId : SHARED_FALLBACK_PROJECT;
 }
 
 export function hasOwnProject() {
-  return getProjectId() !== SHARED_FALLBACK_PROJECT;
+  const projectId = getProjectId();
+  return !!projectId && projectId !== SHARED_FALLBACK_PROJECT;
 }

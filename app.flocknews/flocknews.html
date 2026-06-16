@@ -1761,14 +1761,18 @@ document.addEventListener('keydown', function(e) {
 
 <!-- ── Firebase config — B-Build patches this per deployment ───────── -->
 <script>
-  window.FLOCK_FIREBASE_CONFIG = {
-    apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
-    authDomain:        'flockos-notify.firebaseapp.com',
-    projectId:         'flockos-notify',
-    storageBucket:     'flockos-notify.firebasestorage.app',
-    messagingSenderId: '321766738616',
-    appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d'
-  };
+  window.FLOCK_CHURCH_ID = "flockos";
+window.FLOCK_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo",
+  "authDomain": "flockos-notify.firebaseapp.com",
+  "projectId": "flockos-notify",
+  "storageBucket": "flockos-notify.firebasestorage.app",
+  "messagingSenderId": "321766738616",
+  "appId": "1:321766738616:web:d2c1c53ad7493fcde4c24d",
+  "measurementId": "G-EFMSZE581W"
+};
+window.FLOCK_NO_FIREBASE = false;
+window.FLOCK_DATABASE_URL = "https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec";
 </script>
 <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>

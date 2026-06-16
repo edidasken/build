@@ -8,32 +8,39 @@ self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
 importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js');
 
-firebase.initializeApp({
-  apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
-  authDomain:        'flockos-notify.firebaseapp.com',
-  projectId:         'flockos-notify',
-  storageBucket:     'flockos-notify.firebasestorage.app',
-  messagingSenderId: '321766738616',
-  appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d',
-});
+const FLOCK_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo",
+  "authDomain": "flockos-notify.firebaseapp.com",
+  "projectId": "flockos-notify",
+  "storageBucket": "flockos-notify.firebasestorage.app",
+  "messagingSenderId": "321766738616",
+  "appId": "1:321766738616:web:d2c1c53ad7493fcde4c24d",
+  "measurementId": "G-EFMSZE581W"
+};
 
-const messaging = firebase.messaging();
+if (FLOCK_FIREBASE_CONFIG && FLOCK_FIREBASE_CONFIG.projectId) {
+  firebase.initializeApp(FLOCK_FIREBASE_CONFIG);
+}
+
+const messaging = firebase.apps && firebase.apps.length ? firebase.messaging() : null;
 
 // Background messages: tab is closed or in the background
-messaging.onBackgroundMessage((payload) => {
-  const n     = payload.notification || {};
-  const title = n.title || 'FlockChat';
-  const body  = n.body  || '';
-  const icon  = '/FlockOS/New_Covenant/Images/FlockOS_Angels.png';
+if (messaging) {
+  messaging.onBackgroundMessage((payload) => {
+    const n     = payload.notification || {};
+    const title = n.title || 'FlockChat';
+    const body  = n.body  || '';
+    const icon  = '/FlockOS/New_Covenant/Images/FlockOS_Angels.png';
 
-  self.registration.showNotification(title, {
-    body,
-    icon,
-    badge: icon,
-    tag:   payload.data?.channelId || 'flockchat',
-    data:  payload.data || {},
+    self.registration.showNotification(title, {
+      body,
+      icon,
+      badge: icon,
+      tag:   payload.data?.channelId || 'flockchat',
+      data:  payload.data || {},
+    });
   });
-});
+}
 
 // Tap on notification → focus existing tab or open the app
 self.addEventListener('notificationclick', (event) => {

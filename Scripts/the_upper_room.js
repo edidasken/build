@@ -17,7 +17,9 @@
     messagingSenderId: '321766738616',
     appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d'
   };
-  var FIREBASE_CONFIG = (typeof window.FLOCK_FIREBASE_CONFIG === 'object' && window.FLOCK_FIREBASE_CONFIG)
+  var FIREBASE_CONFIG = (typeof window !== 'undefined' && window.FLOCK_NO_FIREBASE === true)
+    ? null
+    : (typeof window !== 'undefined' && typeof window.FLOCK_FIREBASE_CONFIG === 'object' && window.FLOCK_FIREBASE_CONFIG)
     ? window.FLOCK_FIREBASE_CONFIG
     : _DEFAULT_FIREBASE_CONFIG;
 
@@ -129,6 +131,13 @@
 
     // Accept optional config override
     if (config) FIREBASE_CONFIG = config;
+    if (typeof window !== 'undefined' && window.FLOCK_NO_FIREBASE === true) FIREBASE_CONFIG = null;
+
+    if (!FIREBASE_CONFIG || !FIREBASE_CONFIG.projectId) {
+      console.warn('[FLOCK-DEBUG] UpperRoom.init() — Firebase disabled for this deployment');
+      _initialized = false;
+      return Promise.reject(new Error('Firebase disabled for this deployment'));
+    }
 
     // Firebase SDK must be loaded
     if (typeof firebase === 'undefined' || !firebase.firestore) {
