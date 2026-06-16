@@ -2034,7 +2034,8 @@ body.veil-app .life-sheet-foot {
 
 body.veil-app .life-sheet-body,
 body.veil-app .life-sheet-foot {
-  background: rgba(255,255,255,.95);
+  background: #ffffff;
+  color: var(--flockos-navy);
 }
 
 body.veil-app .life-sheet-drag {
@@ -2106,10 +2107,8 @@ body.veil-app .life-sheet-close:hover {
 
 body.veil-app .life-sheet-foot,
 body.veil-app .bp-tabs {
-  background:
-    linear-gradient(90deg, rgba(247,199,86,.12), rgba(72,211,217,0.08)),
-    rgba(255,255,255,.95);
-  border-color: rgba(15,23,42,0.08);
+  background: #ffffff;
+  border-color: rgba(15,23,42,0.16);
 }
 
 body.veil-app .life-sheet-input,
@@ -2120,9 +2119,10 @@ body.veil-app .bp-input,
 body.veil-app .modal-card input,
 body.veil-app .modal-card textarea,
 body.veil-app .modal-card select {
-  border-color: rgba(15,23,42,0.12);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.9));
+  border-color: rgba(15,23,42,0.22);
+  background: #ffffff;
+  color: var(--flockos-navy);
+  box-shadow: inset 0 1px 0 rgba(15,23,42,0.03);
 }
 
 body.veil-app .life-sheet-input:focus,
@@ -2158,7 +2158,63 @@ body.veil-app .life-priority-pill.is-active {
 body.veil-app .bp-section-title,
 body.veil-app .bp-tab.is-active,
 body.veil-app .life-sheet-label {
-  color: var(--flockos-gold-deep);
+  color: #8a5f0a;
+}
+
+body.veil-app .life-sheet-body [data-care-act] {
+  border: 1px solid rgba(15,23,42,0.16);
+  background: #f8fafc;
+  color: #0f172a;
+  box-shadow: none;
+}
+
+body.veil-app .life-sheet-body [data-care-act]:hover,
+body.veil-app .life-sheet-body [data-care-act]:focus-visible {
+  border-color: rgba(184,135,30,0.55);
+  background: rgba(247,199,86,0.14);
+  color: #0f172a;
+}
+
+body.veil-app .fold-id-row {
+  border: 1px solid rgba(15,23,42,0.10);
+  background: #eef4fb;
+}
+
+body.veil-app .fold-id-label,
+body.veil-app .fold-touches-title,
+body.veil-app .fold-perm-section-title {
+  color: #334155;
+}
+
+body.veil-app .fold-id-code {
+  color: #172554;
+}
+
+body.veil-app .fold-copy-btn {
+  border-color: rgba(15,23,42,0.18);
+  background: #ffffff;
+  color: #172554;
+}
+
+body.veil-app .fold-touches {
+  border-top-color: rgba(15,23,42,0.16);
+  border-bottom-color: rgba(15,23,42,0.16);
+  background: #ffffff;
+}
+
+body.veil-app .life-sheet-body .fold-touches-empty {
+  border: 1px dashed rgba(15,23,42,0.20);
+  border-radius: 10px;
+  background: #ffffff !important;
+  background-image: none !important;
+  color: #475569 !important;
+  padding: 8px 10px;
+}
+
+body.veil-app .fold-perm-section-sub,
+body.veil-app .life-sheet-input::placeholder,
+body.veil-app .life-sheet-ta::placeholder {
+  color: #64748b;
 }
 
 body.veil-app .bp-tab.is-active {
