@@ -1843,8 +1843,17 @@ body {
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
 }
-#fc-app[hidden] { display: none; }
+#fc-app[hidden],
+.fc-mgr-overlay[hidden],
+.fc-mgr-drawer[hidden],
+.fc-info-modal[hidden],
+.fc-modal-backdrop[hidden] {
+  display: none !important;
+  pointer-events: none !important;
+}
 
 /* ─── Top Bar (Herald-styled Unity Header) ────────────────────────── */
 #fc-topbar { z-index: 100; }
@@ -1853,6 +1862,7 @@ body {
 .fc-container {
   flex: 1;
   display: flex;
+  min-height: 0;
   overflow: hidden;
   gap: 1rem;
   padding: 12px 22px 22px;
@@ -1873,6 +1883,7 @@ body {
   backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -1983,6 +1994,7 @@ body {
 
 .fc-list-scroll {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -2381,6 +2393,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
   background: var(--herald-panel);
   border: 1px solid var(--fc-border);
   border-radius: var(--herald-radius-xl);
@@ -3010,6 +3024,7 @@ body {
 /* ─── Message List (paper background) ────────────────────────────── */
 .fc-messages {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
