@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · The Way",
+  "short_name": "The Way",
+  "description": "The Way content and pathways inside FlockOS.",
+  "start_url": "./app.way.html",
+  "id": "./app.way.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#14532d",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-grow.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-grow.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

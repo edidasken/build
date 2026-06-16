@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · The Weaver's Plan",
+  "short_name": "Weaver",
+  "description": "Strategy and stewardship planning inside FlockOS.",
+  "start_url": "./app.weavers.html",
+  "id": "./app.weavers.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#14532d",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-flockos.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-flockos.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

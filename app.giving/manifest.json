@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · Giving",
+  "short_name": "Giving",
+  "description": "Giving and stewardship teaching inside FlockOS.",
+  "start_url": "./app.giving.html",
+  "id": "./app.giving.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#92400e",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-flockos.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-flockos.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

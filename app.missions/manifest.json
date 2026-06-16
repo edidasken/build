@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · Missions",
+  "short_name": "Missions",
+  "description": "Missions and Great Commission work inside FlockOS.",
+  "start_url": "./app.missions.html",
+  "id": "./app.missions.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#065f46",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-grow.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-grow.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
