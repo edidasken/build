@@ -1,5 +1,5 @@
 {
-  "name": "{{CHURCH_NAME}} · FlockShow",
+  "name": "FlockOS · FlockShow",
   "short_name": "FlockShow",
   "description": "Church presentation and worship display — build and present slides for your service.",
   "start_url": "./app.flockshow.html",
