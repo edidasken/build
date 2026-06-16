@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · Truth Editor",
+  "short_name": "Truth Admin",
+  "description": "Truth editor inside FlockOS.",
+  "start_url": "./app.truth-admin.html",
+  "id": "./app.truth-admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1d4ed8",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-flockdocs.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-flockdocs.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

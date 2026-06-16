@@ -1,0 +1,16 @@
+{
+  "name": "FlockOS · Forgiveness",
+  "short_name": "Forgive",
+  "description": "Reconciliation and forgiveness inside FlockOS.",
+  "start_url": "./app.forgive.html",
+  "id": "./app.forgive.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#7f1d1d",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "../Images/icon-grow.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "../Images/icon-grow.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
