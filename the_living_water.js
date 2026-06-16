@@ -12,7 +12,7 @@
    • PUSH        → Show notification; click → focus or open app
    ══════════════════════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'flockos-new-covenant-v1.23';
+const CACHE_NAME = 'flockos-new-covenant-v1.25';
 
 /* Derive base path from SW location (works at root or any subpath) */
 const SW_BASE = self.location.pathname.replace(/\/[^\/]+$/, '/');
@@ -49,11 +49,17 @@ const PRECACHE_URLS = [
   'Images/FlockIcon.png',
   'Images/FlockIcon-512.webp',
   'Images/NewCovenant.png',
+  'Images/icon-herald.svg',
+  'Images/icon-pwa.svg',
   'Images/icon-flockos.svg',
   'Images/icon-grow.svg',
   'Images/icon-invite.svg',
   'Images/icon-chat.svg',
+  'Images/icon-flockdocs.svg',
+  'Images/icon-flockshamar.svg',
   'Images/icon-feed.svg',
+  'Images/icon-wellspring.svg',
+  'Images/icon-melchizedek.svg',
   'Images/icon-show.svg',
   'Images/icon-stand.svg',
 
@@ -67,6 +73,10 @@ const PRECACHE_URLS = [
   'Scripts/fine_linen.js',
   'Scripts/firm_foundation.js',
   'Scripts/the_app_switcher.js',
+  'Scripts/the_unity_header.js',
+  'Scripts/the_unity_profile.js',
+  'Scripts/the_unity_search.js',
+  'Scripts/the_unity_session.js',
 
   /* ── Chrome / shell ───────────────────────────────────────────────────── */
   'Scripts/the_veil/index.js',

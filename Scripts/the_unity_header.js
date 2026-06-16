@@ -25,9 +25,10 @@
      });
    ══════════════════════════════════════════════════════════════════════════════ */
 
-import { mountSwitcher, NC_APPS, NC_APP_ICONS } from './the_app_switcher.js';
+import { mountSwitcher, NC_APPS, NC_APP_ICONS, NC_APP_ICON_SRCS } from './the_app_switcher.js';
 import { openUnitySearch, registerFeatures } from './the_unity_search.js';
 import { openUnityProfile } from './the_unity_profile.js';
+import { canAccessUnityApp, ensureUnityMinted, readUnityUser, signOutUnitySession } from './the_unity_session.js';
 
 const ICONS = {
   hamburger: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
@@ -56,6 +57,7 @@ export function mountUnityHeader(host, cfg = {}) {
   } = cfg;
 
   if (Array.isArray(features) && features.length) registerFeatures(appId, features);
+  cfg.user = readUnityUser(user);
 
   host.classList.add('unity-header');
   host.dataset.app = appId;
@@ -65,11 +67,15 @@ export function mountUnityHeader(host, cfg = {}) {
   ).join('');
 
   const hamburgerHtml = hideHamburger ? '' : `<button class="unity-action unity-hamburger" data-act="menu" aria-label="Open navigation" aria-expanded="false" aria-controls="unity-nav-drawer">${ICONS.hamburger}</button>`;
+  const canonicalIconSrc = NC_APP_ICON_SRCS[appId];
+  const brandIconHtml = canonicalIconSrc
+    ? `<img class="unity-brand-logo-img" src="${escapeAttr(canonicalIconSrc)}" alt="" aria-hidden="true">`
+    : appIconSvg;
 
   host.innerHTML = `
     ${hamburgerHtml}
     <a class="unity-brand" data-act="home" href="${escapeAttr(homeHref)}" aria-label="${escapeAttr(appName)} home">
-      <span class="unity-brand-icon" aria-hidden="true" style="background:linear-gradient(135deg, ${escapeAttr(appAccentDk)}, ${escapeAttr(appAccent)})">${appIconSvg}</span>
+      <span class="unity-brand-icon" aria-hidden="true" style="--nc-app-accent-dk:${escapeAttr(appAccentDk)};--nc-app-accent:${escapeAttr(appAccent)}">${brandIconHtml}</span>
       <span class="unity-brand-text">${escapeHtml(appName)}</span>
     </a>
     ${extrasHtml}
@@ -83,7 +89,11 @@ export function mountUnityHeader(host, cfg = {}) {
 
   // Mount cross-app switcher
   const switcherHost = host.querySelector('[data-app-switcher]');
-  if (switcherHost) mountSwitcher(switcherHost, { current: appId });
+  if (switcherHost) mountSwitcher(switcherHost, { current: appId, signInHref });
+
+  if (cfg.user) {
+    ensureUnityMinted();
+  }
 
   // Click delegation (with touch fallback for PWA)
   function handleAction(e) {
@@ -114,7 +124,13 @@ export function mountUnityHeader(host, cfg = {}) {
     } else if (act === 'account') {
       e.preventDefault();
       if (typeof onAccount === 'function') { onAccount(e); return; }
-      openUnityProfile({ appId, appName, user: cfg.user, onSignOut, signInHref });
+      openUnityProfile({
+        appId,
+        appName,
+        user: readUnityUser(cfg.user),
+        onSignOut: onSignOut || defaultUnitySignOut,
+        signInHref,
+      });
     }
   }
 
@@ -141,9 +157,17 @@ export function mountUnityHeader(host, cfg = {}) {
   }
 
   return {
-    setUser(u) { /* user is captured in closure for profile open; update via remount if needed */ cfg.user = u; },
-    update(partial) { Object.assign(cfg, partial); }
+    setUser(u) { cfg.user = readUnityUser(u); },
+    update(partial) {
+      Object.assign(cfg, partial);
+      if (Object.prototype.hasOwnProperty.call(partial || {}, 'user')) cfg.user = readUnityUser(partial.user);
+    }
   };
+}
+
+async function defaultUnitySignOut() {
+  await signOutUnitySession();
+  location.reload();
 }
 
 function escapeHtml(s) {
@@ -200,13 +224,17 @@ function buildUnityNavDrawer(currentId) {
       <button class="unity-nav-close" type="button" aria-label="Close navigation">&times;</button>
     </div>
     <nav class="unity-nav-list">
-      ${NC_APPS.map(app => {
+      ${NC_APPS.filter(app => canAccessUnityApp(app)).map(app => {
         const isCurrent = app.id === currentId;
         const tag = isCurrent ? 'span' : 'a';
         const href = isCurrent ? '' : ` href="${escapeAttr(resolveAppHref(app.href))}"`;
+        const iconSrc = NC_APP_ICON_SRCS[app.id];
+        const iconHtml = iconSrc
+          ? `<img class="unity-nav-icon-img" src="${escapeAttr(iconSrc)}" alt="" aria-hidden="true">`
+          : (NC_APP_ICONS[app.id] || '');
         return `
           <${tag} class="unity-nav-item${isCurrent ? ' is-current' : ''}"${href}>
-            <span class="unity-nav-icon tone-${escapeAttr(app.tone)}">${NC_APP_ICONS[app.id] || ''}</span>
+            <span class="unity-nav-icon" style="--nc-app-accent-dk:${escapeAttr(app.accentDk)};--nc-app-accent:${escapeAttr(app.accent)}">${iconHtml}</span>
             <span class="unity-nav-copy"><strong>${escapeHtml(app.name)}</strong><small>${escapeHtml(app.sub)}</small></span>
           </${tag}>`;
       }).join('')}

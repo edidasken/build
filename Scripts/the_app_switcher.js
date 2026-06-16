@@ -22,6 +22,8 @@
    identically from any app folder.
    ══════════════════════════════════════════════════════════════════════════════ */
 
+import { canAccessUnityApp, hasUnitySession } from './the_unity_session.js';
+
 /* Canonical SVGs — copied verbatim from New_Covenant/index.html (the launcher).
    These are the SINGLE SOURCE OF TRUTH for app iconography. Do not diverge. */
 export const NC_APP_ICONS = {
@@ -41,20 +43,34 @@ export const NC_APP_ICONS = {
   multiply:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="7.5" y2="7.5"/><line x1="16.5" y1="16.5" x2="19" y2="19"/><line x1="19" y1="5" x2="16.5" y2="7.5"/><line x1="7.5" y1="16.5" x2="5" y2="19"/></svg>',
 };
 
+export const NC_APP_ICON_SRCS = {
+  flocknews:   new URL('../Images/icon-herald.svg', import.meta.url).href,
+  invite:      new URL('../Images/icon-invite.svg', import.meta.url).href,
+  flockos:     new URL('../Images/icon-flockos.svg', import.meta.url).href,
+  stand:       new URL('../Images/icon-stand.svg', import.meta.url).href,
+  flockshow:   new URL('../Images/icon-show.svg', import.meta.url).href,
+  flockchat:   new URL('../Images/icon-chat.svg', import.meta.url).href,
+  flockdocs:   new URL('../Images/icon-flockdocs.svg', import.meta.url).href,
+  flockshamar: new URL('../Images/icon-flockshamar.svg', import.meta.url).href,
+  feed:        new URL('../Images/icon-feed.svg', import.meta.url).href,
+  wellspring:  new URL('../Images/icon-wellspring.svg', import.meta.url).href,
+  melchizedek: new URL('../Images/icon-melchizedek.svg', import.meta.url).href,
+  grow:        new URL('../Images/icon-grow.svg', import.meta.url).href,
+};
+
 /* Canonical app catalog. Order = launcher order (Public first, then Secure). */
 export const NC_APPS = [
-  { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                    tone: 'gold' },
-  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',     tone: 'green'  },
-  { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',   tone: 'blue'   },
-  { id: 'stand',     name: 'FlockStand',    sub: 'Songs, setlists & live',         href: 'app.stand/',                     tone: 'purple' },
-  { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', tone: 'red'  },
-  { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', tone: 'cyan' },
-  { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/',                 tone: 'blue' },
-  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', tone: 'gold' },
-  { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                      tone: 'gold'   },
-  { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database',  href: 'app.wellspring/app.wellspring.html', tone: 'green' },
-  { id: 'melchizedek', name: 'Safety',        sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', tone: 'gold' },
-  { id: 'multiply',    name: 'Multiply',       sub: 'Church planting & multiplication',      href: 'app.multiply/multiply.html',          tone: 'green' },
+  { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                      accent: '#e8a838', accentDk: '#b8871e', public: true },
+  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#22c55e', accentDk: '#14532d', public: true },
+  { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
+  { id: 'stand',     name: 'FlockStand',     sub: 'Songs, setlists & live',         href: 'app.stand/',                       accent: '#a855f7', accentDk: '#4c1d95' },
+  { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d' },
+  { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', accent: '#06b6d4', accentDk: '#0c4a6e' },
+  { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/',                   accent: '#2563eb', accentDk: '#1d4ed8' },
+  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#14b8a6', accentDk: '#0f766e' },
+  { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                        accent: '#d97706', accentDk: '#92400e' },
+  { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database', href: 'app.wellspring/app.wellspring.html', accent: '#059669', accentDk: '#065f46' },
+  { id: 'melchizedek', name: 'Safety',       sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', accent: '#7c3aed', accentDk: '#4c1d95' },
 ];
 
 /* ─── Styles (injected once) ────────────────────────────────────────────── */
@@ -133,14 +149,16 @@ function ensureStyles() {
   width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
   color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.30);
+  background: linear-gradient(135deg, var(--nc-app-accent-dk), var(--nc-app-accent));
+  overflow: hidden;
 }
 .nc-switcher-icon svg { width: 18px; height: 18px; }
-.nc-switcher-icon.tone-gold   { background: linear-gradient(135deg,#c48a20,#e8a838); }
-.nc-switcher-icon.tone-green  { background: linear-gradient(135deg,#14532d,#22c55e); }
-.nc-switcher-icon.tone-blue   { background: linear-gradient(135deg,#1e3a8a,#3b82f6); }
-.nc-switcher-icon.tone-purple { background: linear-gradient(135deg,#4c1d95,#a855f7); }
-.nc-switcher-icon.tone-red    { background: linear-gradient(135deg,#7f1d1d,#ef4444); }
-.nc-switcher-icon.tone-cyan   { background: linear-gradient(135deg,#0c4a6e,#06b6d4); }
+.nc-switcher-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .nc-switcher-label { flex: 1; min-width: 0; }
 .nc-switcher-label strong {
@@ -165,6 +183,9 @@ function ensureStyles() {
   height: 1px; background: rgba(255,255,255,0.08);
   margin: 6px 6px;
 }
+.nc-switcher-item--signin .nc-switcher-icon {
+  background: linear-gradient(135deg, #14532d, #22c55e);
+}
 `;
   const style = document.createElement('style');
   style.id = STYLE_ID;
@@ -177,7 +198,7 @@ function buttonHTML() {
   return `${NC_APP_ICONS.launcher}<span class="nc-switcher-btn-label">Apps</span>`;
 }
 
-function popoverHTML(currentId) {
+function popoverHTML(currentId, opts = {}) {
   // Resolve all app hrefs against the deployment's launcher root (NOT
   // <base href>, which always points at the master source, and NOT the
   // current page directory, which would double-up paths when called from
@@ -191,7 +212,8 @@ function popoverHTML(currentId) {
     p = p.replace(/\/app\.[^/]+\/.*$/, '/');             // climb out of any app.* folder
     launcherUrl = u.origin + p;
   } catch (_) { launcherUrl = './'; }
-  const items = NC_APPS.map((app) => {
+  const visibleApps = NC_APPS.filter(app => canAccessUnityApp(app));
+  const items = visibleApps.map((app) => {
     const isCurrent = app.id === currentId;
     const tag = isCurrent ? 'div' : 'a';
     const resolvedHref = (() => {
@@ -201,16 +223,30 @@ function popoverHTML(currentId) {
     const hrefAttr = isCurrent ? '' : ` href="${resolvedHref}"`;
     const cls = `nc-switcher-item${isCurrent ? ' is-current' : ''}`;
     const pill = isCurrent ? '<span class="nc-switcher-current-pill">Current</span>' : '';
+    const iconSrc = NC_APP_ICON_SRCS[app.id];
+    const iconHTML = iconSrc
+      ? `<img class="nc-switcher-icon-img" src="${escapeAttr(iconSrc)}" alt="" aria-hidden="true">`
+      : (NC_APP_ICONS[app.id] || '');
     return `
       <${tag} class="${cls}"${hrefAttr} data-app-id="${app.id}">
-        <span class="nc-switcher-icon tone-${app.tone}">${NC_APP_ICONS[app.id] || ''}</span>
+        <span class="nc-switcher-icon" style="--nc-app-accent-dk:${escapeAttr(app.accentDk)};--nc-app-accent:${escapeAttr(app.accent)}">${iconHTML}</span>
         <span class="nc-switcher-label"><strong>${app.name}</strong><span>${app.sub}</span></span>
         ${pill}
       </${tag}>`;
   }).join('');
+  const signInHref = (() => {
+    try { return new URL(opts.signInHref || 'app.flockos/', launcherUrl).href; }
+    catch (_) { return opts.signInHref || 'app.flockos/'; }
+  })();
+  const signin = hasUnitySession() ? '' : `
+    <div class="nc-switcher-divider"></div>
+    <a class="nc-switcher-item nc-switcher-item--signin" href="${escapeAttr(signInHref)}" data-app-id="signin">
+      <span class="nc-switcher-icon">${NC_APP_ICONS.launcher}</span>
+      <span class="nc-switcher-label"><strong>Sign In</strong><span>Access your church apps</span></span>
+    </a>`;
   return `
     <div class="nc-switcher-title">Switch app</div>
-    <div class="nc-switcher-grid">${items}</div>`;
+    <div class="nc-switcher-grid">${items}${signin}</div>`;
 }
 
 /* ─── Open / close ─────────────────────────────────────────────────────── */
@@ -244,7 +280,7 @@ function _onScroll(e) {
   closeSwitcher();
 }
 
-function openSwitcher(btn, currentId) {
+function openSwitcher(btn, currentId, opts = {}) {
   if (_open) { closeSwitcher(); return; }
   ensureStyles();
 
@@ -261,7 +297,7 @@ function openSwitcher(btn, currentId) {
   pop.className = 'nc-switcher-pop';
   pop.setAttribute('role', 'dialog');
   pop.setAttribute('aria-label', 'Switch app');
-  pop.innerHTML = popoverHTML(currentId);
+  pop.innerHTML = popoverHTML(currentId, opts);
 
   document.body.appendChild(backdrop);
   document.body.appendChild(pop);
@@ -311,7 +347,7 @@ export function mountSwitcher(host, opts = {}) {
     host.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      openSwitcher(host, current);
+      openSwitcher(host, current, opts);
     });
     host.dataset.appSwitcherWired = '1';
     host.dataset.appSwitcherCurrent = current;
@@ -339,6 +375,10 @@ function fixLauncherLinks() {
       a.href = launcherUrl;
     });
   } catch (_) { /* noop */ }
+}
+
+function escapeAttr(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 
 if (document.readyState === 'loading') {

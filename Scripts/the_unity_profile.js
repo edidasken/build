@@ -1,3 +1,5 @@
+import { readUnityUser, signOutUnitySession } from './the_unity_session.js';
+
 /* ══════════════════════════════════════════════════════════════════════════════
    THE UNITY PROFILE — Shared account sheet v2
    "Ye are a chosen generation, a royal priesthood." — 1 Peter 2:9
@@ -63,6 +65,7 @@ const IC = {
 
 export function openUnityProfile(opts = {}) {
   _opts = { ...opts };
+  _opts.user = readUnityUser(_opts.user);
   ensureSheet();
   _renderMainList();
   _populateMainHeader();
@@ -214,7 +217,10 @@ function _wireMainItems() {
       closeUnityProfile();
       const { onSignOut } = _opts;
       if (typeof onSignOut === 'function') Promise.resolve().then(onSignOut);
-      else _toast('Sign-out not configured for this app.');
+      else Promise.resolve()
+        .then(signOutUnitySession)
+        .then(() => location.reload())
+        .catch(() => _toast('Could not sign out.'));
       return;
     }
     if (id === 'signin') {

@@ -3507,8 +3507,9 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  background: rgba(247,199,86,.95) !important;
-  color: #111827;
+  background: linear-gradient(135deg, var(--nc-app-accent-dk, #b8871e), var(--nc-app-accent, #e8a838));
+  color: #fff;
+  overflow: hidden;
 }
 
 .fn-back-bar.unity-header .unity-brand-logo-img,
