@@ -1,5 +1,5 @@
 /* Shared standalone app login wall.
-   Mirrors the Good Shepherd garments design while preserving each app's auth flow. */
+   Matches the FlockOS garments login screen: scenic backdrop + glass card. */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -9,45 +9,70 @@ html,
 body {
   min-height: 100%;
   height: auto;
-  background: #080a1c;
-  color: #fff;
+  color: #ffffff;
   font-family: var(--font-ui, "Noto Sans", "Plus Jakarta Sans", Inter, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
+}
+
+body,
+body.stand-auth {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  margin: 0;
+  padding: 20px;
+  overflow-y: auto;
+  background: #0f172a;
 }
 
-.bg-glow {
+.bg-glow,
+body.stand-auth .bg-glow {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 0%, rgba(232, 168, 56, 0.14), transparent 30rem),
-    radial-gradient(circle at 12% 100%, rgba(192, 80, 20, 0.18), transparent 24rem),
-    linear-gradient(rgba(8, 10, 28, 0.86), rgba(8, 10, 28, 0.86));
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+    linear-gradient(90deg, rgba(8, 13, 33, 0.96) 0%, rgba(15, 23, 42, 0.82) 48%, rgba(15, 23, 42, 0.58) 100%),
+    linear-gradient(0deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.20) 45%),
+    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover !important;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
-.card {
+.card,
+body.stand-auth .card {
   position: relative;
   z-index: 1;
-  width: min(400px, 92vw);
-  max-width: 400px;
+  width: min(420px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  min-width: 0;
+  margin: auto;
   overflow: hidden;
-  background: linear-gradient(170deg, #0d1144 0%, #160e38 60%, #0a1025 100%);
-  border: 1px solid rgba(232, 168, 56, 0.20);
-  border-radius: 18px;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.04);
   padding: 36px 32px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 42%),
+    linear-gradient(135deg, rgba(247, 199, 86, 0.18), transparent 36%),
+    rgba(15, 23, 42, 0.74);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
   animation: app-login-rise 280ms var(--ease, ease) both;
 }
 
-.card::before {
-  content: none;
+.card::before,
+body.stand-auth .card::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.card > *,
+body.stand-auth .card > * {
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes app-login-rise {
@@ -61,140 +86,123 @@ body {
   }
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin: 0 0 28px;
+.brand,
+body.stand-auth .brand {
+  display: block;
+  margin: 0 0 26px;
   text-align: center;
 }
 
-.brand-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 45% 35%, rgba(255, 233, 160, 0.24), rgba(232, 168, 56, 0.08) 48%, rgba(255, 255, 255, 0.04));
-  color: #ffe9a0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  box-shadow:
-    0 0 12px rgba(255, 210, 74, 0.42),
-    0 0 32px rgba(232, 136, 32, 0.28),
-    inset 0 0 0 1px rgba(232, 168, 56, 0.18);
+.brand-icon,
+body.stand-auth .brand-icon {
+  display: none;
 }
 
-.brand-icon svg {
-  width: 30px;
-  height: 30px;
-  stroke: currentColor;
-}
-
-.brand-name {
-  margin: 0 0 6px;
-  color: #ffe9a0;
-  background: linear-gradient(135deg, #ffe9a0, #e8a838, #c47a10);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font: 700 1.6rem/1.15 var(--font-serif, "Noto Serif", Georgia, serif);
+.brand-name,
+body.stand-auth .brand-name {
+  margin: 0;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #ffffff;
+  font: 700 2rem/1.12 var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
   letter-spacing: 0;
 }
 
-.brand-sub {
-  color: rgba(255, 255, 255, 0.38);
-  font: italic 0.88rem var(--font-serif, "Noto Serif", Georgia, serif);
+.brand-sub,
+body.stand-auth .brand-sub {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.76);
+  font: italic 0.9rem var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
   letter-spacing: 0;
   text-transform: none;
-  margin: 0;
 }
 
-.form-title {
-  display: block;
-  width: auto;
-  margin: 0 0 18px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: rgba(255, 255, 255, 0.38);
-  font: 700 0.75rem/1 var(--font-ui, "Noto Sans", sans-serif);
-  letter-spacing: 0.16em;
-  text-align: center;
-  text-transform: uppercase;
+.form-title,
+body.stand-auth .form-title {
+  display: none;
 }
 
-.field-group {
+.field-group,
+body.stand-auth .field-group {
   margin: 0 0 14px;
 }
 
-label {
+label,
+body.stand-auth label {
   display: block;
-  margin: 0 0 6px;
-  color: rgba(255, 255, 255, 0.45);
-  font: 600 0.78rem/1 var(--font-ui, "Noto Sans", sans-serif);
-  letter-spacing: 0.04em;
+  margin: 0 0 7px;
+  color: rgba(255, 255, 255, 0.72);
+  font: 700 0.78rem/1 var(--font-ui, "Noto Sans", sans-serif);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+body.stand-auth input[type="email"],
+body.stand-auth input[type="password"] {
   width: 100%;
-  padding: 11px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 10px;
-  color: #fff;
+  color: #ffffff;
   font: 1rem var(--font-ui, "Noto Sans", sans-serif);
   outline: none;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
   -webkit-appearance: none;
 }
 
 input[type="email"]::placeholder,
 input[type="password"]::placeholder {
-  color: rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.28);
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus,
-input:focus {
-  border-color: rgba(232, 168, 56, 0.60);
-  box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.14);
+input:focus,
+body.stand-auth input[type="email"]:focus,
+body.stand-auth input[type="password"]:focus {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(247, 199, 86, 0.82);
+  box-shadow: 0 0 0 3px rgba(247, 199, 86, 0.18);
 }
 
-.btn-signin {
+.btn-signin,
+body.stand-auth .btn-signin {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  margin-top: 4px;
-  padding: 11px 20px;
-  background: linear-gradient(135deg, var(--gold, #e8a838) 0%, #c05818 100%);
+  margin-top: 48px;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #f7c756 0%, #e97916 100%);
   border: 0;
-  border-radius: 10px;
-  color: #fff;
+  border-radius: 9px;
+  color: #080a1c;
   cursor: pointer;
-  font: 700 0.95rem var(--font-ui, "Noto Sans", sans-serif);
+  font: 800 0.95rem var(--font-ui, "Noto Sans", sans-serif);
   letter-spacing: 0;
   text-transform: none;
-  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
-  transition: opacity 150ms ease, transform 120ms ease;
+  box-shadow: 0 12px 30px rgba(232, 168, 56, 0.25);
+  transition: opacity 150ms ease, transform 120ms ease, box-shadow 150ms ease;
 }
 
-.btn-signin:hover {
-  opacity: 0.9;
-  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
+.btn-signin:hover,
+body.stand-auth .btn-signin:hover {
+  opacity: 0.94;
   transform: none;
+  box-shadow: 0 14px 34px rgba(232, 168, 56, 0.30);
 }
 
-.btn-signin:active {
-  transform: scale(0.97);
+.btn-signin:active,
+body.stand-auth .btn-signin:active {
+  transform: scale(0.98);
 }
 
-.btn-signin:disabled {
+.btn-signin:disabled,
+body.stand-auth .btn-signin:disabled {
   opacity: 0.55;
   cursor: not-allowed;
   transform: none;
@@ -203,7 +211,7 @@ input:focus {
 .error-msg,
 .role-notice {
   display: none;
-  margin: 14px 0 0;
+  margin: 14px 0 -24px;
   padding: 0;
   min-height: 1.2em;
   background: transparent;
@@ -227,171 +235,51 @@ input:focus {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.30);
-  border-top-color: #fff;
+  border: 2px solid rgba(8, 10, 28, 0.25);
+  border-top-color: #080a1c;
   animation: spin 700ms linear infinite;
   flex-shrink: 0;
   margin: 0;
 }
 
-.foot-note {
+.foot-note,
+body.stand-auth .foot-note {
   margin: 22px 8px 0;
-  color: rgba(255, 255, 255, 0.62);
-  font: italic 0.95rem/1.5 var(--font-serif, "Noto Serif", Georgia, serif);
+  color: rgba(255, 255, 255, 0.78);
+  font: italic 0.95rem/1.45 var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
   letter-spacing: 0.01em;
   text-align: center;
 }
 
-.return-home-link {
+.return-home-link,
+body.stand-auth .return-home-link {
   display: block;
   margin-top: 14px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.68);
   font: 0.73rem var(--font-ui, sans-serif);
   text-align: center;
   text-decoration: underline;
   transition: color 150ms ease;
 }
 
-.return-home-link:hover {
-  color: rgba(255, 255, 255, 0.75);
+.return-home-link:hover,
+body.stand-auth .return-home-link:hover {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 @media (max-width: 480px) {
-  body {
-    padding: 18px 12px;
+  body,
+  body.stand-auth {
+    padding: 16px;
   }
 
-  .card {
+  .card,
+  body.stand-auth .card {
     padding: 32px 24px 24px;
   }
-}
 
-/* FlockStand ships with stronger .stand-auth selectors, so keep it aligned here. */
-body.stand-auth {
-  min-height: 100%;
-  height: auto;
-  background: #080a1c;
-  color: #fff;
-  font-family: var(--font-ui, "Noto Sans", "Plus Jakarta Sans", Inter, system-ui, sans-serif);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
-}
-
-body.stand-auth .bg-glow {
-  background:
-    radial-gradient(circle at 50% 0%, rgba(232, 168, 56, 0.14), transparent 30rem),
-    radial-gradient(circle at 12% 100%, rgba(192, 80, 20, 0.18), transparent 24rem),
-    linear-gradient(rgba(8, 10, 28, 0.86), rgba(8, 10, 28, 0.86));
-}
-
-body.stand-auth .card {
-  width: min(400px, 92vw);
-  max-width: 400px;
-  overflow: hidden;
-  background: linear-gradient(170deg, #0d1144 0%, #160e38 60%, #0a1025 100%);
-  border: 1px solid rgba(232, 168, 56, 0.20);
-  border-radius: 18px;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.60), 0 0 0 1px rgba(255, 255, 255, 0.04);
-  padding: 36px 32px 28px;
-}
-
-body.stand-auth .card::before {
-  content: none;
-}
-
-body.stand-auth .brand {
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin: 0 0 28px;
-  text-align: center;
-}
-
-body.stand-auth .brand-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
-  background: radial-gradient(circle at 45% 35%, rgba(255, 233, 160, 0.24), rgba(232, 168, 56, 0.08) 48%, rgba(255, 255, 255, 0.04));
-  color: #ffe9a0;
-  margin: 0 auto 16px;
-  box-shadow:
-    0 0 12px rgba(255, 210, 74, 0.42),
-    0 0 32px rgba(232, 136, 32, 0.28),
-    inset 0 0 0 1px rgba(232, 168, 56, 0.18);
-}
-
-body.stand-auth .brand-icon svg {
-  stroke: currentColor;
-}
-
-body.stand-auth .brand-name {
-  margin: 0 0 6px;
-  background: linear-gradient(135deg, #ffe9a0, #e8a838, #c47a10);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: #ffe9a0;
-  font: 700 1.6rem/1.15 var(--font-serif, "Noto Serif", Georgia, serif);
-  letter-spacing: 0;
-}
-
-body.stand-auth .brand-sub {
-  color: rgba(255, 255, 255, 0.38);
-  font: italic 0.88rem var(--font-serif, "Noto Serif", Georgia, serif);
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-body.stand-auth .form-title {
-  margin: 0 0 18px;
-  color: rgba(255, 255, 255, 0.38);
-  font: 700 0.75rem/1 var(--font-ui, "Noto Sans", sans-serif);
-  letter-spacing: 0.16em;
-  text-align: center;
-}
-
-body.stand-auth label {
-  color: rgba(255, 255, 255, 0.45);
-}
-
-body.stand-auth input[type="email"],
-body.stand-auth input[type="password"] {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  color: #fff;
-  font: 1rem var(--font-ui, "Noto Sans", sans-serif);
-}
-
-body.stand-auth input[type="email"]:focus,
-body.stand-auth input[type="password"]:focus {
-  border-color: rgba(232, 168, 56, 0.60);
-  box-shadow: 0 0 0 3px rgba(232, 168, 56, 0.14);
-}
-
-body.stand-auth .btn-signin {
-  background: linear-gradient(135deg, var(--gold, #e8a838) 0%, #c05818 100%);
-  border: 0;
-  border-radius: 10px;
-  color: #fff;
-  font: 700 0.95rem var(--font-ui, "Noto Sans", sans-serif);
-  letter-spacing: 0;
-  text-transform: none;
-  box-shadow: 0 4px 18px rgba(232, 168, 56, 0.38);
-}
-
-body.stand-auth .foot-note {
-  color: rgba(255, 255, 255, 0.62);
-  font: italic 0.95rem/1.5 var(--font-serif, "Noto Serif", Georgia, serif);
-}
-
-body.stand-auth .return-home-link {
-  color: rgba(255, 255, 255, 0.45);
-  text-decoration: underline;
-}
-
-body.stand-auth .return-home-link:hover {
-  color: rgba(255, 255, 255, 0.75);
+  .brand-name,
+  body.stand-auth .brand-name {
+    font-size: 1.72rem;
+  }
 }

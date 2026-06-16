@@ -846,16 +846,35 @@ function goBack() {
   });
 })();
 
+function _buildHeraldShareUrl(date) {
+  var url = new URL(window.location.href);
+  var path = url.pathname || '/';
+  url.hash = '';
+  url.search = '';
+
+  if (/\/app\.embeds\/embed-flocknews\.html$/i.test(path)) {
+    url.pathname = path.replace(/\/app\.embeds\/embed-flocknews\.html$/i, '/app.flocknews/flocknews.html');
+  } else if (/\/$/.test(path)) {
+    url.pathname = path + 'index.html';
+  } else if (!/\/(index|flocknews)\.html$/i.test(path)) {
+    url.pathname = path.replace(/\/[^/]*$/, '/index.html');
+  }
+
+  url.searchParams.set('date', date);
+  return url.href;
+}
+
 function shareHerald() {
   var date = (window._FN_TODAY || new Date().toISOString().slice(0,10));
-  var url = new URL('app.flocknews/flocknews.html?date=' + date, window.location.href).href;
+  var url = _buildHeraldShareUrl(date);
   if (navigator.share) navigator.share({ title:'The Flock Herald — ' + date, text:'Daily discipleship, devotions & missions.', url: url }).catch(function(){});
-  else navigator.clipboard.writeText(url).then(function(){
+  else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function(){
     var b = document.getElementById('fn-share-btn');
     if (!b) return;
     var o = b.innerHTML; b.textContent = 'Link Copied!';
     setTimeout(function(){ b.innerHTML = o; }, 2200);
   }).catch(function(){ prompt('Copy to share:', url); });
+  else prompt('Copy to share:', url);
 }
 
 // ── Listen for editor postMessage updates ─────────────────────────────────
