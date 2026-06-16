@@ -2013,6 +2013,30 @@ body.veil-app .modal-card {
     0 -24px 70px rgba(15,23,42,.25);
 }
 
+body.veil-app .life-sheet-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 172px;
+  z-index: 0;
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,0.18), transparent 12rem),
+    linear-gradient(90deg, rgba(15,23,42,.95), rgba(15,23,42,.95));
+  pointer-events: none;
+}
+
+body.veil-app .life-sheet-hd,
+body.veil-app .life-sheet-body,
+body.veil-app .life-sheet-foot {
+  position: relative;
+  z-index: 1;
+}
+
+body.veil-app .life-sheet-body,
+body.veil-app .life-sheet-foot {
+  background: rgba(255,255,255,.95);
+}
+
 body.veil-app .life-sheet-drag {
   position: absolute;
   top: 20px;
