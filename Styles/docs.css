@@ -335,11 +335,273 @@ body.docs-auth {
   color: #64748b !important;
 }
 
+.fd-doc-menu-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(15,23,42,.10) !important;
+  color: #475569 !important;
+  box-shadow: 0 4px 12px rgba(15,23,42,.08);
+}
+
+.fd-doc-menu-btn:hover,
+.fd-doc-menu-btn:focus-visible {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  outline: none;
+}
+
+.fd-doc-icon {
+  border-radius: 14px !important;
+}
+
+.fd-doc-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.fd-doc-icon--document {
+  background: linear-gradient(135deg, #2563eb, #60a5fa) !important;
+  box-shadow: 0 10px 22px rgba(37,99,235,.20) !important;
+}
+
+.fd-doc-icon--note {
+  background: linear-gradient(135deg, #b8871e, #f7c756) !important;
+  box-shadow: 0 10px 22px rgba(184,135,30,.22) !important;
+}
+
+.fd-doc-icon--prayer {
+  background: linear-gradient(135deg, #be123c, #fb7185) !important;
+  box-shadow: 0 10px 22px rgba(190,18,60,.18) !important;
+}
+
+.fd-doc-icon--journal {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa) !important;
+  box-shadow: 0 10px 22px rgba(124,58,237,.18) !important;
+}
+
+.fd-doc-icon--calendar {
+  background: linear-gradient(135deg, #0891b2, #22d3ee) !important;
+  box-shadow: 0 10px 22px rgba(8,145,178,.18) !important;
+}
+
+.fd-doc-icon--spreadsheet {
+  background: linear-gradient(135deg, #15803d, #4ade80) !important;
+  box-shadow: 0 10px 22px rgba(21,128,61,.18) !important;
+}
+
+.fd-doc-type-pill {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0 0 .55rem;
+  padding: .18rem .48rem;
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #475569;
+  font: 800 .65rem/1 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.fd-doc-card[data-doc-type="note"] .fd-doc-type-pill {
+  border-color: rgba(184,135,30,.28);
+  background: rgba(247,199,86,.18);
+  color: #6b4605;
+}
+
+.fd-doc-card[data-doc-type="spreadsheet"] .fd-doc-type-pill {
+  border-color: rgba(21,128,61,.22);
+  background: rgba(34,197,94,.12);
+  color: #166534;
+}
+
+.fd-doc-card[data-doc-type="prayer"] .fd-doc-type-pill {
+  border-color: rgba(190,18,60,.22);
+  background: rgba(251,113,133,.12);
+  color: #9f1239;
+}
+
+.fd-doc-card[data-doc-type="journal"] .fd-doc-type-pill {
+  border-color: rgba(124,58,237,.22);
+  background: rgba(167,139,250,.14);
+  color: #5b21b6;
+}
+
+.fd-doc-card[data-doc-type="calendar"] .fd-doc-type-pill {
+  border-color: rgba(8,145,178,.22);
+  background: rgba(34,211,238,.13);
+  color: #155e75;
+}
+
 #fd-footer {
   margin: 0 -22px;
   border-top: 1px solid rgba(15,23,42,.08) !important;
   background: rgba(255,255,255,.82) !important;
   color: #64748b !important;
+}
+
+/* Colorful Docs navigation accents. */
+#fd-topbar .unity-hamburger svg {
+  color: #7dd3fc;
+  stroke: currentColor;
+}
+
+#fd-topbar .unity-search-btn svg {
+  color: #f7c756;
+  stroke: currentColor;
+}
+
+#fd-topbar .unity-switcher svg,
+#fd-topbar .nc-switcher-btn svg {
+  color: #a78bfa;
+  stroke: currentColor;
+}
+
+#fd-topbar .fd-new-btn svg:first-child {
+  color: #f7c756;
+  stroke: currentColor;
+}
+
+#fd-topbar .fd-new-btn svg:last-child {
+  color: #7dd3fc;
+  stroke: currentColor;
+}
+
+.fd-sidebar-btn svg,
+.fd-folder-item svg {
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  color: #e2e8f0;
+  stroke: currentColor;
+}
+
+.fd-sidebar-btn[data-view="all-docs"] svg {
+  background: rgba(37,99,235,.22);
+  color: #93c5fd;
+}
+
+.fd-sidebar-btn[data-view="notes"] svg {
+  background: rgba(247,199,86,.20);
+  color: #fcd34d;
+}
+
+.fd-sidebar-btn[data-view="prayers"] svg {
+  background: rgba(251,113,133,.18);
+  color: #fda4af;
+}
+
+.fd-sidebar-btn[data-view="journal"] svg {
+  background: rgba(167,139,250,.18);
+  color: #c4b5fd;
+}
+
+.fd-sidebar-btn[data-view="calendar"] svg {
+  background: rgba(34,211,238,.18);
+  color: #67e8f9;
+}
+
+.fd-sidebar-btn[data-view="my-docs"] svg {
+  background: rgba(72,211,217,.18);
+  color: #67e8f9;
+}
+
+.fd-sidebar-btn[data-view="shared-docs"] svg {
+  background: rgba(34,197,94,.16);
+  color: #86efac;
+}
+
+.fd-sidebar-btn[data-view="recent"] svg {
+  background: rgba(167,139,250,.18);
+  color: #c4b5fd;
+}
+
+.fd-sidebar-btn[data-view="trash"] svg {
+  background: rgba(248,113,113,.16);
+  color: #fca5a5;
+}
+
+.fd-folder-item svg {
+  background: rgba(247,199,86,.16);
+  color: #fde68a;
+}
+
+.fd-sidebar-btn.is-active svg {
+  background: rgba(247,199,86,.24);
+  color: #fff7cc;
+}
+
+.fd-sidebar-btn.is-active[data-view="all-docs"] svg {
+  background: rgba(37,99,235,.28);
+  color: #bfdbfe;
+}
+
+.fd-sidebar-btn.is-active[data-view="notes"] svg {
+  background: rgba(247,199,86,.24);
+  color: #fff7cc;
+}
+
+.fd-sidebar-btn.is-active[data-view="prayers"] svg {
+  background: rgba(251,113,133,.24);
+  color: #ffe4e6;
+}
+
+.fd-sidebar-btn.is-active[data-view="journal"] svg {
+  background: rgba(167,139,250,.24);
+  color: #ede9fe;
+}
+
+.fd-sidebar-btn.is-active[data-view="calendar"] svg {
+  background: rgba(34,211,238,.24);
+  color: #cffafe;
+}
+
+.fd-sidebar-btn.is-active[data-view="my-docs"] svg {
+  background: rgba(72,211,217,.24);
+  color: #cffafe;
+}
+
+.fd-sidebar-btn.is-active[data-view="shared-docs"] svg {
+  background: rgba(34,197,94,.22);
+  color: #bbf7d0;
+}
+
+.fd-sidebar-btn.is-active[data-view="recent"] svg {
+  background: rgba(167,139,250,.24);
+  color: #ddd6fe;
+}
+
+.fd-sidebar-btn.is-active[data-view="trash"] svg {
+  background: rgba(248,113,113,.22);
+  color: #fecaca;
+}
+
+.fd-new-menu-item[data-doc-type="document"] svg {
+  color: #2563eb !important;
+}
+
+.fd-new-menu-item[data-doc-type="spreadsheet"] svg {
+  color: #15803d !important;
+}
+
+.fd-new-menu-item[data-doc-type="note"] svg {
+  color: #b8871e !important;
+}
+
+.fd-new-menu-item[data-doc-type="prayer"] svg {
+  color: #be123c !important;
+}
+
+.fd-new-menu-item[data-doc-type="journal"] svg {
+  color: #7c3aed !important;
+}
+
+.fd-new-menu-item[data-doc-type="calendar"] svg {
+  color: #0891b2 !important;
+}
+
+.fd-system-field:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
 }
 
 /* Docs editor controls: remove dark-era washed-out transparent whites. */
@@ -498,6 +760,21 @@ body.docs-auth {
 .fd-editor-page {
   border: 1px solid rgba(15,23,42,.10);
   box-shadow: 0 18px 44px rgba(15,23,42,.14) !important;
+}
+
+.fd-editor-view.is-note-editor .fd-editor-container {
+  align-items: stretch;
+  padding: 24px min(6vw, 56px) 80px;
+}
+
+.fd-editor-page--note {
+  width: min(760px, 100%) !important;
+  min-height: 620px !important;
+  padding: clamp(28px, 5vw, 56px) !important;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(247,199,86,.12), transparent 16rem),
+    #ffffff !important;
 }
 
 .fd-editor-content,

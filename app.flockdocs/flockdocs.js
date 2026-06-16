@@ -27,7 +27,7 @@ const COLLECTION_FOLDERS = 'flockFolders';
 /* ── State ────────────────────────────────────────────────────────────────── */
 const S = {
   user: null,              // { uid, displayName, email, role }
-  currentView: 'all-docs', // 'all-docs' | 'my-docs' | 'shared-docs' | 'recent' | 'trash'
+  currentView: 'all-docs', // 'all-docs' | 'notes' | 'prayers' | 'journal' | 'calendar' | 'my-docs' | 'shared-docs' | 'recent' | 'trash'
   currentDoc: null,        // Currently open document
   documents: [],           // All documents (filtered based on view)
   folders: [],             // Folder list
@@ -44,6 +44,10 @@ const S = {
 window.FlockDocs = {
   init,
   createNewDocument,
+  createNewNote,
+  createNewPrayerRequest,
+  createNewJournalEntry,
+  createNewCalendarEvent,
   createNewSpreadsheet,
   openDocument,
   saveDocument,
@@ -65,17 +69,11 @@ window.FlockDocs = {
 // on a fresh tab where sessionStorage is empty.
 function _waitForReady() {
   return new Promise((resolve, reject) => {
-    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const TIMEOUT_MS = 8000;
     const startedAt = Date.now();
 
     function decide() {
       if (Nehemiah.isAuthenticated()) {
-        resolve();
-        return;
-      }
-      if (isLocalhost) {
-        console.warn('[FlockDocs] User not authenticated (localhost — allowing for development)');
         resolve();
         return;
       }
@@ -102,14 +100,9 @@ function _waitForReady() {
       if (typeof firebase !== 'undefined' && firebase.auth && typeof Nehemiah !== 'undefined') {
         waitForAuthState();
       } else if (Date.now() - startedAt >= TIMEOUT_MS) {
-        if (!isLocalhost) {
-          console.error('[FlockDocs] Timeout waiting for firebase/Nehemiah, redirecting to login');
-          window.location.replace('app.flockdocs/index.html');
-          reject(new Error('Timeout'));
-        } else {
-          console.warn('[FlockDocs] Timeout waiting for firebase/Nehemiah (localhost — continuing)');
-          resolve();
-        }
+        console.error('[FlockDocs] Timeout waiting for firebase/Nehemiah, redirecting to login');
+        window.location.replace('app.flockdocs/index.html');
+        reject(new Error('Timeout'));
       } else {
         setTimeout(tick, 100);
       }
@@ -119,33 +112,25 @@ function _waitForReady() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   try {
     await _waitForReady();
-    // Auth passed — reveal the app shell (was hidden to block guest access)
-    const appEl = document.getElementById('fd-app');
-    if (appEl) appEl.style.display = 'grid';
     // Mint Firebase custom token so Firestore reads are authenticated
     if (typeof UpperRoom !== 'undefined') {
       await UpperRoom.init();
-      try {
-        await UpperRoom.authenticate();
-      } catch (authErr) {
-        if (!isLocalhost) throw authErr;
-        console.warn('[FlockDocs] UpperRoom.authenticate() skipped on localhost:', authErr.message);
-      }
+      await UpperRoom.authenticate();
     }
+    // Auth passed — reveal the app shell (was hidden to block guest access)
+    const appEl = document.getElementById('fd-app');
+    if (appEl) appEl.style.display = 'grid';
     init();
   } catch (err) {
-    // Already redirected in _waitForReady
     console.error('[FlockDocs] Auth check failed:', err.message);
+    window.location.replace('app.flockdocs/index.html');
   }
 });
 
 function init() {
   console.log('[FlockDocs] Initializing...');
-
-  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
   // Get authenticated user from Nehemiah
   let profile = (typeof Nehemiah !== 'undefined' && Nehemiah.getProfile) ? Nehemiah.getProfile() : null;
@@ -175,14 +160,6 @@ function init() {
       displayName: profile.displayName || profile.email,
       email: profile.email,
       role: profile.role || 'member',
-    };
-  } else if (isLocalhost) {
-    console.warn('[FlockDocs] No authenticated user (localhost - using mock user)');
-    S.user = {
-      uid: 'dev-user',
-      displayName: 'Dev User',
-      email: 'dev@localhost',
-      role: 'admin'
     };
   } else {
     console.error('[FlockDocs] No authenticated user found');
@@ -227,6 +204,10 @@ function _mountHeader() {
     },
     features: [
       { id: 'fd-all-docs',  label: 'All Documents',  hint: 'Browse all docs',        run: () => document.querySelector('[data-view="all-docs"]')?.click() },
+      { id: 'fd-notes',     label: 'Notes',          hint: 'Quick notes in Docs',    run: () => document.querySelector('[data-view="notes"]')?.click() },
+      { id: 'fd-prayers',   label: 'Prayer Requests', hint: 'Your prayer requests',  run: () => document.querySelector('[data-view="prayers"]')?.click() },
+      { id: 'fd-journal',   label: 'Journal',         hint: 'Your journal entries',  run: () => document.querySelector('[data-view="journal"]')?.click() },
+      { id: 'fd-calendar',  label: 'Calendar',        hint: 'Your calendar records', run: () => document.querySelector('[data-view="calendar"]')?.click() },
       { id: 'fd-my-docs',   label: 'My Documents',   hint: 'Docs you created',       run: () => document.querySelector('[data-view="my-docs"]')?.click() },
       { id: 'fd-shared',    label: 'Shared with Me', hint: 'Docs shared with you',   run: () => document.querySelector('[data-view="shared-docs"]')?.click() },
       { id: 'fd-recent',    label: 'Recent',         hint: 'Recently viewed docs',   run: () => document.querySelector('[data-view="recent"]')?.click() },
@@ -280,6 +261,33 @@ function _mountNewButton() {
       </svg>
       <span><strong>Spreadsheet</strong><small>Tables & calculations</small></span>
     </button>
+    <button type="button" class="fd-new-menu-item" data-doc-type="note" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h8M8 10h8M8 14h5"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14a2 2 0 012 2v10.5L15.5 21H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+      </svg>
+      <span><strong>Note</strong><small>Fast thoughts & care notes</small></span>
+    </button>
+    <button type="button" class="fd-new-menu-item" data-doc-type="prayer" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s-7-4.35-7-10a7 7 0 1114 0c0 5.65-7 10-7 10z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 10.5h5M12 8v5"/>
+      </svg>
+      <span><strong>Prayer Request</strong><small>Add a care record</small></span>
+    </button>
+    <button type="button" class="fd-new-menu-item" data-doc-type="journal" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6M9 12h5"/>
+      </svg>
+      <span><strong>Journal Entry</strong><small>Record a reflection</small></span>
+    </button>
+    <button type="button" class="fd-new-menu-item" data-doc-type="calendar" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2v4m8-4v4M4 10h16M6 5h12a2 2 0 012 2v13H4V7a2 2 0 012-2z"/>
+      </svg>
+      <span><strong>Calendar Event</strong><small>Add time and place</small></span>
+    </button>
   `;
   header.appendChild(menu);
 
@@ -298,6 +306,10 @@ function _mountNewButton() {
       const item = e.target.closest('[data-doc-type]');
       if (!item) return;
       if (item.dataset.docType === 'spreadsheet') createNewSpreadsheet();
+      else if (item.dataset.docType === 'note') createNewNote();
+      else if (item.dataset.docType === 'prayer') createNewPrayerRequest();
+      else if (item.dataset.docType === 'journal') createNewJournalEntry();
+      else if (item.dataset.docType === 'calendar') createNewCalendarEvent();
       else createNewDocument('document');
       setOpen(false);
     });
@@ -410,25 +422,17 @@ function _bindEvents() {
 /* ── Documents CRUD ───────────────────────────────────────────────────────── */
 async function _loadDocuments() {
   if (!_checkFirebase()) return;
+  const systemOnly = _isSystemOnlyView(S.currentView);
+  const systemDocs = await _loadSystemDocumentsForCurrentView();
 
   // Use localStorage for mock user (development mode)
   if (_isMockUser()) {
     try {
       let allDocs = _loadFromLocalStorage();
       
-      // Filter based on current view
-      if (S.currentView === 'my-docs') {
-        S.documents = allDocs.filter(doc => doc.ownerId === S.user.uid && !doc.deleted);
-      } else if (S.currentView === 'shared-docs') {
-        S.documents = allDocs.filter(doc => doc.shared && !doc.deleted);
-      } else if (S.currentView === 'trash') {
-        S.documents = allDocs.filter(doc => doc.deleted);
-      } else {
-        S.documents = allDocs.filter(doc => !doc.deleted);
-      }
+      S.documents = _filterDocsForCurrentView(allDocs.concat(systemDocs));
       
-      // Sort by updatedAt
-      S.documents.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+      S.documents = _sortDocs(S.documents);
       
       _renderDocuments();
       console.log('[FlockDocs] Loaded', S.documents.length, 'documents from localStorage');
@@ -442,6 +446,12 @@ async function _loadDocuments() {
 
   // Use Firestore for authenticated users
   try {
+    if (systemOnly) {
+      S.documents = _sortDocs(_filterDocsForCurrentView(systemDocs));
+      _renderDocuments();
+      return;
+    }
+
     const db = firebase.firestore();
     let query = db.collection(COLLECTION_DOCS);
 
@@ -460,10 +470,11 @@ async function _loadDocuments() {
     query = query.orderBy('updatedAt', 'desc');
 
     const snapshot = await query.get();
-    S.documents = snapshot.docs.map(doc => ({
+    const docs = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     }));
+    S.documents = _sortDocs(_filterDocsForCurrentView(docs.concat(systemDocs)));
 
     _renderDocuments();
   } catch (err) {
@@ -493,21 +504,344 @@ async function _loadFolders() {
   }
 }
 
+function _filterDocsForCurrentView(docs) {
+  const allDocs = Array.isArray(docs) ? docs : [];
+  if (S.currentView === 'my-docs') {
+    return allDocs.filter(doc => doc.ownerId === S.user.uid && !doc.deleted);
+  }
+  if (S.currentView === 'notes') {
+    return allDocs.filter(doc => _normalizeDocType(doc.type) === 'note' && !doc.deleted);
+  }
+  if (S.currentView === 'prayers') {
+    return allDocs.filter(doc => _normalizeDocType(doc.type) === 'prayer' && !doc.deleted);
+  }
+  if (S.currentView === 'journal') {
+    return allDocs.filter(doc => _normalizeDocType(doc.type) === 'journal' && !doc.deleted);
+  }
+  if (S.currentView === 'calendar') {
+    return allDocs.filter(doc => _normalizeDocType(doc.type) === 'calendar' && !doc.deleted);
+  }
+  if (S.currentView === 'shared-docs') {
+    return allDocs.filter(doc => doc.shared && !doc.deleted);
+  }
+  if (S.currentView === 'trash') {
+    return allDocs.filter(doc => doc.deleted);
+  }
+  return allDocs.filter(doc => !doc.deleted);
+}
+
+function _sortDocs(docs) {
+  return (Array.isArray(docs) ? docs : []).sort((a, b) => _dateValue(b.updatedAt) - _dateValue(a.updatedAt));
+}
+
+function _dateValue(value) {
+  if (!value) return 0;
+  if (value && typeof value.toDate === 'function') return value.toDate().getTime();
+  const date = value instanceof Date ? value : new Date(value);
+  const time = date.getTime();
+  return Number.isFinite(time) ? time : 0;
+}
+
+function _isSystemOnlyView(viewName) {
+  return viewName === 'prayers' || viewName === 'journal' || viewName === 'calendar';
+}
+
+function _shouldLoadSystemDocs(viewName) {
+  return viewName === 'all-docs' || viewName === 'recent' || _isSystemOnlyView(viewName);
+}
+
+async function _loadSystemDocumentsForCurrentView() {
+  if (!_shouldLoadSystemDocs(S.currentView) || typeof UpperRoom === 'undefined') return [];
+
+  const loaders = [];
+  if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'prayers') {
+    loaders.push(_loadPrayerDocs());
+  }
+  if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'journal') {
+    loaders.push(_loadJournalDocs());
+  }
+  if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'calendar') {
+    loaders.push(_loadCalendarDocs());
+  }
+
+  const settled = await Promise.allSettled(loaders);
+  return settled.flatMap(result => {
+    if (result.status === 'fulfilled') return result.value;
+    console.warn('[FlockDocs] System docs source failed:', result.reason);
+    return [];
+  });
+}
+
+async function _loadPrayerDocs() {
+  if (!UpperRoom.listPrayers) return [];
+  const rows = _unwrapResults(await UpperRoom.listPrayers({ limit: 200 }));
+  return rows.map(_mapPrayerToDoc).filter(Boolean);
+}
+
+async function _loadJournalDocs() {
+  if (!UpperRoom.listJournal) return [];
+  const rows = _unwrapResults(await UpperRoom.listJournal({ limit: 200 }));
+  return rows.map(_mapJournalToDoc).filter(Boolean);
+}
+
+async function _loadCalendarDocs() {
+  if (!UpperRoom.listCalendarEvents) return [];
+  const rows = _unwrapResults(await UpperRoom.listCalendarEvents({ limit: 200 }));
+  return rows.map(_mapCalendarToDoc).filter(Boolean);
+}
+
+function _unwrapResults(value) {
+  if (Array.isArray(value)) return value;
+  if (value && Array.isArray(value.results)) return value.results;
+  if (value && Array.isArray(value.events)) return value.events;
+  return [];
+}
+
+function _mapPrayerToDoc(row) {
+  if (!row || !row.id) return null;
+  const category = row.category || 'Prayer Request';
+  const name = category === 'Prayer Request' ? 'Prayer Request' : `Prayer: ${category}`;
+  return {
+    id: _systemDocId('prayer', row.id),
+    source: 'prayer',
+    sourceId: row.id,
+    type: 'prayer',
+    name,
+    content: _buildPrayerContent(row),
+    sourceData: row,
+    ownerId: row.createdBy || row.submitterEmail || S.user?.uid,
+    ownerName: row.submitterName || S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    updatedAt: row.lastUpdated || row.submittedAt || row.createdAt,
+    createdAt: row.submittedAt || row.createdAt,
+  };
+}
+
+function _mapJournalToDoc(row) {
+  if (!row || !row.id) return null;
+  const title = _firstValue(row, ['title', 'Title', 'name', 'subject']) || 'Journal Entry';
+  const bodyKey = _firstKey(row, ['content', 'entry', 'journalText', 'text', 'body', 'notes', 'reflection']);
+  const body = bodyKey ? row[bodyKey] : '';
+  return {
+    id: _systemDocId('journal', row.id),
+    source: 'journal',
+    sourceId: row.id,
+    type: 'journal',
+    name: title,
+    content: _buildJournalContent({ ...row, title, body, __bodyKey: bodyKey || 'content' }),
+    sourceData: { ...row, __bodyKey: bodyKey || 'content' },
+    ownerId: row.createdBy || S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    updatedAt: row.updatedAt || row.createdAt || row.date,
+    createdAt: row.createdAt || row.date,
+  };
+}
+
+function _mapCalendarToDoc(row) {
+  if (!row || !(row.id || row.EventID)) return null;
+  const id = row.id || row.EventID;
+  const title = row.Title || row.title || 'Calendar Event';
+  return {
+    id: _systemDocId('calendar', id),
+    source: 'calendar',
+    sourceId: id,
+    type: 'calendar',
+    name: title,
+    content: _buildCalendarContent(row),
+    sourceData: row,
+    ownerId: row.email || row.CreatedBy || S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    updatedAt: row.UpdatedAt || row.StartDateTime || row.CreatedAt,
+    createdAt: row.CreatedAt || row.StartDateTime,
+  };
+}
+
+function _systemDocId(source, id) {
+  return `${source}:${id}`;
+}
+
+function _isSystemDoc(doc) {
+  return !!(doc && doc.source && doc.type);
+}
+
+function _firstKey(obj, keys) {
+  return keys.find(key => obj[key] !== undefined && obj[key] !== null && String(obj[key]).trim() !== '');
+}
+
+function _firstValue(obj, keys) {
+  const key = _firstKey(obj, keys);
+  return key ? obj[key] : '';
+}
+
+function _field(tag, name, value, fallback = '') {
+  return `<${tag} class="fd-system-field" data-field="${_e(name)}" data-placeholder="${_e(fallback)}">${_e(value || fallback)}</${tag}>`;
+}
+
+function _buildPrayerContent(row = {}) {
+  return [
+    _field('h1', 'category', row.category || 'Prayer Request', 'Prayer Request'),
+    _field('p', 'prayerText', row.prayerText || '', 'Write the request here...'),
+    '<h2>Admin Notes</h2>',
+    _field('p', 'adminNotes', row.adminNotes || '', 'Add private care notes here...'),
+  ].join('');
+}
+
+function _buildJournalContent(row = {}) {
+  return [
+    _field('h1', 'title', row.title || 'Journal Entry', 'Journal Entry'),
+    _field('p', 'body', row.body || '', 'Start writing...'),
+  ].join('');
+}
+
+function _buildCalendarContent(row = {}) {
+  return [
+    _field('h1', 'Title', row.Title || row.title || 'Calendar Event', 'Calendar Event'),
+    _field('p', 'Description', row.Description || row.description || '', 'Describe the event...'),
+    '<h2>Start</h2>',
+    _field('p', 'StartDateTime', row.StartDateTime || '', _defaultCalendarStart()),
+    '<h2>End</h2>',
+    _field('p', 'EndDateTime', row.EndDateTime || '', _defaultCalendarEnd()),
+    '<h2>Location</h2>',
+    _field('p', 'Location', row.Location || '', 'Add a location...'),
+  ].join('');
+}
+
+function _defaultCalendarStart() {
+  const start = new Date();
+  start.setMinutes(0, 0, 0);
+  start.setHours(start.getHours() + 1);
+  return start.toISOString().slice(0, 16);
+}
+
+function _defaultCalendarEnd() {
+  const end = new Date();
+  end.setMinutes(0, 0, 0);
+  end.setHours(end.getHours() + 2);
+  return end.toISOString().slice(0, 16);
+}
+
 function createNewDocument(type = 'document') {
   if (type === 'spreadsheet') {
     createNewSpreadsheet();
     return;
   }
 
+  const isNote = type === 'note';
   S.currentDoc = {
     id: null,
-    name: 'Untitled Document',
-    type: 'document',
-    content: '<h1>Untitled Document</h1><p>Start typing...</p>',
+    name: isNote ? 'Untitled Note' : 'Untitled Document',
+    type: isNote ? 'note' : 'document',
+    content: isNote
+      ? '<h1>Untitled Note</h1><p>Capture a thought, reminder, or care note...</p>'
+      : '<h1>Untitled Document</h1><p>Start typing...</p>',
     ownerId: S.user.uid,
     ownerName: S.user.displayName,
     shared: false,
     folderId: null,
+    deleted: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  _openEditor();
+}
+
+function createNewNote() {
+  createNewDocument('note');
+}
+
+function createNewPrayerRequest() {
+  const row = {
+    id: null,
+    category: 'Prayer Request',
+    prayerText: '',
+    adminNotes: '',
+    submitterName: S.user?.displayName || '',
+    submitterEmail: S.user?.email || '',
+    createdBy: S.user?.email || S.user?.uid,
+    submittedAt: new Date(),
+    lastUpdated: new Date(),
+  };
+
+  S.currentDoc = {
+    id: null,
+    source: 'prayer',
+    sourceId: null,
+    type: 'prayer',
+    name: 'Prayer Request',
+    content: _buildPrayerContent(row),
+    sourceData: row,
+    ownerId: S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  _openEditor();
+}
+
+function createNewJournalEntry() {
+  const row = {
+    id: null,
+    title: 'Journal Entry',
+    body: '',
+    __bodyKey: 'content',
+    createdBy: S.user?.email || S.user?.uid,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  S.currentDoc = {
+    id: null,
+    source: 'journal',
+    sourceId: null,
+    type: 'journal',
+    name: 'Journal Entry',
+    content: _buildJournalContent(row),
+    sourceData: row,
+    ownerId: S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  _openEditor();
+}
+
+function createNewCalendarEvent() {
+  const row = {
+    id: null,
+    Title: 'Calendar Event',
+    Description: '',
+    StartDateTime: _defaultCalendarStart(),
+    EndDateTime: _defaultCalendarEnd(),
+    Location: '',
+    email: S.user?.email || '',
+    CreatedBy: S.user?.email || '',
+    CreatedAt: new Date(),
+    UpdatedAt: new Date(),
+  };
+
+  S.currentDoc = {
+    id: null,
+    source: 'calendar',
+    sourceId: null,
+    type: 'calendar',
+    name: 'Calendar Event',
+    content: _buildCalendarContent(row),
+    sourceData: row,
+    ownerId: S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
     deleted: false,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -543,6 +877,14 @@ function createNewSpreadsheet() {
 
 async function openDocument(docId) {
   if (!_checkFirebase()) return;
+
+  const loadedDoc = S.documents.find(d => d.id === docId);
+  if (_isSystemDoc(loadedDoc)) {
+    S.currentDoc = { ...loadedDoc };
+    _openEditor();
+    console.log('[FlockDocs] Opened system document:', docId);
+    return;
+  }
 
   // Use localStorage for mock user (development mode)
   if (_isMockUser()) {
@@ -609,6 +951,11 @@ async function saveDocument() {
         S.currentDoc.name = firstHeading.textContent.trim() || 'Untitled Document';
       }
     }
+  }
+
+  if (_isSystemDoc(S.currentDoc)) {
+    await _saveSystemDocument();
+    return;
   }
 
   const saveStatus = document.getElementById('fd-save-status');
@@ -694,9 +1041,98 @@ async function saveDocument() {
   }
 }
 
+async function _saveSystemDocument() {
+  const saveStatus = document.getElementById('fd-save-status');
+  if (saveStatus) saveStatus.textContent = 'Saving...';
+
+  try {
+    if (typeof UpperRoom === 'undefined') throw new Error('UpperRoom is unavailable');
+    const fields = _collectSystemFields();
+    let savedId = S.currentDoc.sourceId;
+
+    if (S.currentDoc.source === 'prayer') {
+      const payload = {
+        category: fields.category || S.currentDoc.name || 'Prayer Request',
+        prayerText: fields.prayerText || '',
+        adminNotes: fields.adminNotes || '',
+        submitterName: S.user?.displayName || S.currentDoc.sourceData?.submitterName || '',
+        submitterEmail: S.user?.email || S.currentDoc.sourceData?.submitterEmail || '',
+      };
+      if (savedId) {
+        await UpperRoom.updatePrayer(savedId, payload);
+      } else {
+        savedId = await UpperRoom.createPrayer(payload);
+      }
+      S.currentDoc.name = payload.category === 'Prayer Request' ? 'Prayer Request' : `Prayer: ${payload.category}`;
+    } else if (S.currentDoc.source === 'journal') {
+      const bodyKey = S.currentDoc.sourceData?.__bodyKey || 'content';
+      const payload = {
+        title: fields.title || S.currentDoc.name || 'Journal Entry',
+        [bodyKey]: fields.body || '',
+      };
+      if (savedId) {
+        await UpperRoom.updateJournal({ id: savedId, ...payload });
+      } else {
+        const result = await UpperRoom.createJournal(payload);
+        savedId = result?.id || result;
+      }
+      S.currentDoc.name = payload.title;
+    } else if (S.currentDoc.source === 'calendar') {
+      const payload = {
+        Title: fields.Title || S.currentDoc.name || 'Calendar Event',
+        Description: fields.Description || '',
+        StartDateTime: fields.StartDateTime || _defaultCalendarStart(),
+        EndDateTime: fields.EndDateTime || _defaultCalendarEnd(),
+        Location: fields.Location || '',
+      };
+      if (savedId) {
+        await UpperRoom.updateCalendarEvent(savedId, payload);
+      } else {
+        savedId = await UpperRoom.createCalendarEvent(payload);
+      }
+      S.currentDoc.name = payload.Title;
+    }
+
+    if (savedId) {
+      S.currentDoc.sourceId = savedId;
+      S.currentDoc.id = _systemDocId(S.currentDoc.source, savedId);
+    }
+    S.currentDoc.updatedAt = new Date();
+    if (saveStatus) saveStatus.textContent = 'All changes saved';
+    _toast(`${_getDocTypeLabel(S.currentDoc.type)} saved`, 'success');
+  } catch (err) {
+    console.error('[FlockDocs] Error saving system document:', err);
+    if (saveStatus) saveStatus.textContent = 'Error saving';
+    _toast('Failed to save document', 'error');
+  }
+}
+
+function _collectSystemFields() {
+  const editor = document.getElementById('fd-editor-content');
+  if (!editor) return {};
+  const fields = {};
+  editor.querySelectorAll('[data-field]').forEach(el => {
+    const key = el.getAttribute('data-field');
+    if (key) fields[key] = el.textContent.trim();
+  });
+  return fields;
+}
+
 async function deleteDocument(docId) {
   const doc = S.documents.find(d => d.id === docId);
   if (!doc) return;
+
+  if (_isSystemDoc(doc)) {
+    const confirmed = await _showConfirmDialog(
+      'Delete Record',
+      `Are you sure you want to delete "${doc.name}"? This removes it from ${_getDocTypeLabel(doc.type)} records.`,
+      'Delete',
+      'Cancel'
+    );
+    if (!confirmed) return;
+    await _deleteSystemDocument(doc);
+    return;
+  }
 
   // Show confirmation dialog
   const confirmed = await _showConfirmDialog(
@@ -746,6 +1182,27 @@ async function deleteDocument(docId) {
   } catch (err) {
     console.error('[FlockDocs] Error deleting document:', err);
     _toast('Failed to delete document', 'error');
+  }
+}
+
+async function _deleteSystemDocument(doc) {
+  if (!doc?.sourceId || typeof UpperRoom === 'undefined') return;
+
+  try {
+    if (doc.source === 'prayer' && UpperRoom.deletePrayer) {
+      await UpperRoom.deletePrayer(doc.sourceId);
+    } else if (doc.source === 'journal' && UpperRoom.deleteJournal) {
+      await UpperRoom.deleteJournal({ id: doc.sourceId });
+    } else if (doc.source === 'calendar' && UpperRoom.deleteCalendarEvent) {
+      await UpperRoom.deleteCalendarEvent(doc.sourceId);
+    } else {
+      throw new Error(`Unsupported system document source: ${doc.source}`);
+    }
+    _toast('Record deleted', 'success');
+    _loadDocuments();
+  } catch (err) {
+    console.error('[FlockDocs] Error deleting system document:', err);
+    _toast('Failed to delete record', 'error');
   }
 }
 
@@ -1004,6 +1461,10 @@ function switchView(viewName) {
   // Update library title
   const titles = {
     'all-docs': 'All Documents',
+    'notes': 'Notes',
+    'prayers': 'Prayer Requests',
+    'journal': 'Journal',
+    'calendar': 'Calendar',
     'my-docs': 'My Documents',
     'shared-docs': 'Shared with Church',
     'recent': 'Recent Documents',
@@ -1027,23 +1488,22 @@ function _renderDocuments() {
   let docs = S.documents;
   if (S.searchQuery) {
     docs = docs.filter(doc => 
-      doc.name.toLowerCase().includes(S.searchQuery)
+      (doc.name || '').toLowerCase().includes(S.searchQuery)
     );
   }
 
   if (docs.length === 0) {
+    const empty = _getEmptyStateConfig();
     container.innerHTML = `
       <div class="fd-empty-state">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        <h3>${S.searchQuery ? 'No documents found' : 'No documents yet'}</h3>
-        <p>${S.searchQuery ? 'Try a different search term' : 'Create your first document to get started'}</p>
-        ${!S.searchQuery ? `<button class="fd-btn fd-btn--primary" onclick="FlockDocs.createNewDocument()">
+        ${_getDocIcon(empty.type)}
+        <h3>${S.searchQuery ? `No ${empty.plural} found` : empty.title}</h3>
+        <p>${S.searchQuery ? 'Try a different search term' : empty.body}</p>
+        ${!S.searchQuery ? `<button class="fd-btn fd-btn--primary" onclick="${empty.action}">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
           </svg>
-          Create Document
+          ${empty.button}
         </button>` : ''}
       </div>
     `;
@@ -1053,20 +1513,73 @@ function _renderDocuments() {
   container.innerHTML = `<div class="fd-doc-grid">${docs.map(_renderDocCard).join('')}</div>`;
 }
 
+function _getEmptyStateConfig() {
+  if (S.currentView === 'notes') {
+    return {
+      type: 'note',
+      plural: 'notes',
+      title: 'No notes yet',
+      body: 'Capture your first note inside Docs.',
+      button: 'Create Note',
+      action: 'FlockDocs.createNewNote()',
+    };
+  }
+  if (S.currentView === 'prayers') {
+    return {
+      type: 'prayer',
+      plural: 'prayer requests',
+      title: 'No prayer requests yet',
+      body: 'Add your first prayer request from Docs.',
+      button: 'Add Prayer Request',
+      action: 'FlockDocs.createNewPrayerRequest()',
+    };
+  }
+  if (S.currentView === 'journal') {
+    return {
+      type: 'journal',
+      plural: 'journal entries',
+      title: 'No journal entries yet',
+      body: 'Start your first journal entry from Docs.',
+      button: 'Add Journal Entry',
+      action: 'FlockDocs.createNewJournalEntry()',
+    };
+  }
+  if (S.currentView === 'calendar') {
+    return {
+      type: 'calendar',
+      plural: 'calendar events',
+      title: 'No calendar events yet',
+      body: 'Add your first calendar event from Docs.',
+      button: 'Add Calendar Event',
+      action: 'FlockDocs.createNewCalendarEvent()',
+    };
+  }
+  return {
+    type: 'document',
+    plural: 'documents',
+    title: 'No documents yet',
+    body: 'Create your first document to get started',
+    button: 'Create Document',
+    action: 'FlockDocs.createNewDocument()',
+  };
+}
+
 function _renderDocCard(doc) {
   const icon = _getDocIcon(doc.type);
   const date = _formatDate(doc.updatedAt);
   const size = _getDocSize(doc);
+  const type = _normalizeDocType(doc.type);
   
   return `
-    <div class="fd-doc-card" onclick="FlockDocs.openDocument('${doc.id}')">
+    <div class="fd-doc-card" data-doc-type="${type}" onclick="FlockDocs.openDocument('${doc.id}')">
       <button class="fd-doc-menu-btn" onclick="event.stopPropagation(); _showContextMenu(event, '${doc.id}')">
         <svg fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
           <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       </button>
-      <div class="fd-doc-icon">${icon}</div>
+      <div class="fd-doc-icon fd-doc-icon--${type}">${icon}</div>
       <div class="fd-doc-name">${_e(doc.name)}</div>
+      <div class="fd-doc-type-pill">${_getDocTypeLabel(type)}</div>
       <div class="fd-doc-meta">
         ${doc.shared ? `
           <div class="fd-doc-meta-row">
@@ -1139,6 +1652,7 @@ function _openEditor() {
     if (spreadsheetView) spreadsheetView.classList.add('hidden');
     if (editorView) {
       editorView.classList.remove('hidden');
+      editorView.classList.toggle('is-note-editor', S.currentDoc.type === 'note');
       const editor = document.getElementById('fd-editor-content');
       if (editor) {
         editor.innerHTML = S.currentDoc.content;
@@ -1148,8 +1662,9 @@ function _openEditor() {
       if (S._quill) S._quill.destroy();
       const toolbarHost = document.getElementById('fd-quill-bar');
       const pageEl      = document.getElementById('fd-editor-page');
+      pageEl?.classList.toggle('fd-editor-page--note', S.currentDoc.type === 'note');
       S._quill = mountQuill(editor, {
-        mode:     'document',
+        mode:     S.currentDoc.type === 'note' ? 'note' : 'document',
         toolbar:  toolbarHost,
         pageEl,
         onBack:   _closeEditor,
@@ -1168,6 +1683,8 @@ function _closeEditor() {
   if (libraryView) libraryView.classList.remove('hidden');
   if (editorView) editorView.classList.add('hidden');
   if (spreadsheetView) spreadsheetView.classList.add('hidden');
+  editorView?.classList.remove('is-note-editor');
+  document.getElementById('fd-editor-page')?.classList.remove('fd-editor-page--note');
 
   S.currentDoc = null;
   _loadDocuments();
@@ -1746,12 +2263,35 @@ function _saveToLocalStorage(documents) {
 }
 
 function _getDocIcon(type) {
+  const kind = _normalizeDocType(type);
   const icons = {
     document: `<svg fill="white" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/></svg>`,
+    note: `<svg fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h8M8 10h8M8 14h5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3h14a2 2 0 012 2v10.5L15.5 21H5a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>`,
+    prayer: `<svg fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s-7-4.35-7-10a7 7 0 1114 0c0 5.65-7 10-7 10z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 10.5h5M12 8v5"/></svg>`,
+    journal: `<svg fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6M9 12h5"/></svg>`,
+    calendar: `<svg fill="none" stroke="white" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2v4m8-4v4M4 10h16M6 5h12a2 2 0 012 2v13H4V7a2 2 0 012-2z"/></svg>`,
     spreadsheet: `<svg fill="white" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm0-4H7v-2h2v2zm0-4H7V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>`,
     presentation: `<svg fill="white" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>`,
   };
-  return icons[type] || icons.document;
+  return icons[kind] || icons.document;
+}
+
+function _normalizeDocType(type) {
+  if (type === 'spreadsheet' || type === 'note' || type === 'presentation' || type === 'prayer' || type === 'journal' || type === 'calendar') return type;
+  return 'document';
+}
+
+function _getDocTypeLabel(type) {
+  const labels = {
+    document: 'Document',
+    note: 'Note',
+    prayer: 'Prayer Request',
+    journal: 'Journal Entry',
+    calendar: 'Calendar Event',
+    spreadsheet: 'Spreadsheet',
+    presentation: 'Presentation',
+  };
+  return labels[_normalizeDocType(type)] || 'Document';
 }
 
 function _formatDate(date) {
@@ -1940,7 +2480,22 @@ function _showContextMenu(event, docId) {
   const menu = document.getElementById('fd-context-menu');
   if (!menu) return;
   
-  const menuHtml = `
+  const menuHtml = _isSystemDoc(doc) ? `
+    <button class="fd-context-item" onclick="_contextAction('open', '${docId}')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+      </svg>
+      Open
+    </button>
+    <div class="fd-context-divider"></div>
+    <button class="fd-context-item is-danger" onclick="_contextAction('delete', '${docId}')">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+      Delete record
+    </button>
+  ` : `
     <button class="fd-context-item" onclick="_contextAction('open', '${docId}')">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
