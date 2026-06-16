@@ -454,7 +454,7 @@
   function insertImage() {
     const url = prompt('Enter image URL:');
     if (url) {
-      const img = `<img src="${url}" alt="Image" style="max-width: 100%; height: auto;">`;
+      const img = `<img class="fd-doc-image" src="${url}" alt="Image">`;
       document.execCommand('insertHTML', false, img);
       focusEditor();
     }
@@ -473,11 +473,11 @@
     const cols = prompt('Number of columns:', '3');
     
     if (rows && cols) {
-      let tableHTML = '<table border="1" style="border-collapse: collapse; width: 100%;"><tbody>';
+      let tableHTML = '<table class="fd-doc-table" border="1"><tbody>';
       for (let r = 0; r < parseInt(rows); r++) {
         tableHTML += '<tr>';
         for (let c = 0; c < parseInt(cols); c++) {
-          tableHTML += '<td style="padding: 8px; border: 1px solid #ddd;">&nbsp;</td>';
+          tableHTML += '<td class="fd-doc-table-cell">&nbsp;</td>';
         }
         tableHTML += '</tr>';
       }

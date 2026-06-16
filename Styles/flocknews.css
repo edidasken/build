@@ -148,6 +148,34 @@ a { color: inherit; }
   height: 28px;
   display: block;
 }
+.fn-tone-gold { color: #e8a838; }
+.fn-tone-blue { color: #3b82f6; }
+.fn-tone-green { color: #22c55e; }
+.fn-tone-violet { color: #a855f7; }
+.fn-tone-red { color: #ef4444; }
+.fn-tone-cyan { color: #06b6d4; }
+.fn-tone-amber { color: #d97706; }
+.fn-hide { display: none; }
+.fn-clickable { cursor: pointer; }
+.fn-position-context { position: relative; }
+.fn-heart-rule {
+  border: none;
+  border-top: 2px solid var(--rule);
+  margin: 24px 0 18px;
+}
+.fn-soft-rule {
+  border: none;
+  border-top: 1px solid var(--rule-soft);
+  margin: 12px 0;
+}
+.rule-double.fn-section-rule { margin-top: 30px; }
+.fn-spot-meta--flush { margin-top: 0; }
+.fn-spot-country--spaced { margin-bottom: 10px; }
+.fn-spot-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .fn-sw-text { display: flex; flex-direction: column; gap: 3px; }
 .fn-sw-name {
   font-family: var(--sans); font-size: 14px; font-weight: 700;

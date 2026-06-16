@@ -92,7 +92,7 @@
       <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-back-btn">← Library</button>
       <input id="fs-show-title" class="fs-show-title-input" type="text" placeholder="Show name…" maxlength="80">
       <span class="fs-slide-count" id="fs-slide-count"></span>
-      <div style="margin-left:auto;display:flex;gap:5px">
+      <div class="fs-editor-actions">
         <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-dup-slide-btn">Duplicate</button>
         <button class="fs-btn fs-btn--danger fs-btn--sm" id="fs-del-slide-btn">Delete</button>
       </div>
@@ -131,14 +131,14 @@
           <button class="fs-nav-btn" id="fs-next-btn" title="Next slide">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
           </button>
-          <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-go-live-btn" style="margin-left:8px" title="Go to this slide in present window">Go Live</button>
+          <button class="fs-btn fs-btn--ghost fs-btn--sm fs-spaced-left" id="fs-go-live-btn" title="Go to this slide in present window">Go Live</button>
         </div>
       </div>
 
       <!-- Right: properties -->
       <div id="fs-slide-props">
         <div class="fs-prop-section">
-          <div class="fs-prop-label">Show Info <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.60rem;opacity:0.6">— watermark on all slides</span></div>
+          <div class="fs-prop-label">Show Info <span class="fs-label-note">— watermark on all slides</span></div>
           <input class="fs-show-info-input" id="fs-show-sermon-title" type="text" placeholder="Sermon title (shown faintly on screen)…" maxlength="80">
           <input class="fs-show-info-input" id="fs-show-speaker" type="text" placeholder="Preacher name…" maxlength="60">
         </div>
@@ -181,22 +181,22 @@
         <hr class="fs-prop-divider">
 
         <div class="fs-prop-section" id="fs-prop-text-section">
-          <div class="fs-prop-label">Slide Label <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.60rem;opacity:0.6">— shown top-left on slide</span></div>
+          <div class="fs-prop-label">Slide Label <span class="fs-label-note">— shown top-left on slide</span></div>
           <input class="fs-prop-input" id="fs-prop-slide-label" type="text" placeholder="e.g. Point 1, Chorus, Intro…" maxlength="60">
 
-          <div class="fs-prop-label" style="margin-top:8px">Text Alignment</div>
+          <div class="fs-prop-label fs-prop-label--spaced">Text Alignment</div>
           <div class="fs-align-row">
             <button class="fs-align-btn" data-align="left" title="Align left"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="21" y1="6" x2="3" y2="6"/><line x1="15" y1="12" x2="3" y2="12"/><line x1="17" y1="18" x2="3" y2="18"/></svg></button>
             <button class="fs-align-btn fs-align-btn--active" data-align="center" title="Align center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="21" y1="6" x2="3" y2="6"/><line x1="17" y1="12" x2="7" y2="12"/><line x1="19" y1="18" x2="5" y2="18"/></svg></button>
             <button class="fs-align-btn" data-align="right" title="Align right"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="12" x2="9" y2="12"/><line x1="21" y1="18" x2="7" y2="18"/></svg></button>
           </div>
 
-          <div class="fs-prop-label" style="margin-top:8px">Text</div>
+          <div class="fs-prop-label fs-prop-label--spaced">Text</div>
           <div class="fs-fmt-toolbar">
             <button type="button" class="fs-fmt-btn" data-fmt-open="**" data-fmt-close="**" title="Bold — select text first"><strong>B</strong></button>
             <button type="button" class="fs-fmt-btn" data-fmt-open="_" data-fmt-close="_" title="Italic — select text first"><em>I</em></button>
             <button type="button" class="fs-fmt-btn" data-fmt-open="__" data-fmt-close="__" title="Underline — select text first"><u>U</u></button>
-            <button type="button" class="fs-fmt-btn" data-fmt-open="==" data-fmt-close="==" title="Highlight — select text first" style="color:rgba(247,199,86,.85)">H</button>
+            <button type="button" class="fs-fmt-btn fs-fmt-btn--highlight" data-fmt-open="==" data-fmt-close="==" title="Highlight — select text first">H</button>
             <span class="fs-fmt-hint">Select → B / I / U / H &nbsp;·&nbsp; ⌘B / ⌘I / ⌘U</span>
           </div>
           <textarea class="fs-prop-input fs-prop-textarea" id="fs-prop-text" placeholder="Type slide text…" rows="5"></textarea>
@@ -260,7 +260,7 @@
             <input type="range" class="fs-range" id="fs-prop-font-size" min="12" max="120" step="4" value="0">
             <input type="number" class="fs-font-num" id="fs-prop-font-size-num" min="12" max="120" step="4" placeholder="Auto">
           </div>
-          <button class="fs-color-reset" id="fs-prop-font-reset" style="align-self:flex-start;margin-top:3px">Reset to Auto</button>
+          <button class="fs-color-reset fs-reset-inline" id="fs-prop-font-reset">Reset to Auto</button>
         </div>
 
         <div class="fs-prop-section">
@@ -269,9 +269,9 @@
         </div>
 
         <div class="fs-prop-section" id="fs-show-theme-section">
-          <div class="fs-prop-label">Show Theme <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.62rem;opacity:0.65">— default for all slides</span></div>
+          <div class="fs-prop-label">Show Theme <span class="fs-label-note fs-label-note--theme">— default for all slides</span></div>
           <div class="fs-show-theme-bar">
-            <div class="fs-theme-chip" id="fs-show-theme-chip" style="background:#0b0d14"></div>
+            <div class="fs-theme-chip fs-theme-chip--default" id="fs-show-theme-chip"></div>
             <span class="fs-show-theme-label" id="fs-show-theme-label">None set</span>
             <button class="fs-color-reset" id="fs-clear-show-theme-btn">Clear</button>
           </div>
@@ -292,17 +292,17 @@
 
         <div class="fs-prop-section">
           <div class="fs-prop-label">Import Lyrics</div>
-          <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-from-stand-btn" style="align-self:flex-start;margin-bottom:8px">
+          <button class="fs-btn fs-btn--ghost fs-btn--sm fs-import-source-btn" id="fs-from-stand-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 17V7m0 10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m0 10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m0 10V7m0 10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2"/></svg>
             From FlockStand…
           </button>
-          <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-from-sermon-btn" style="align-self:flex-start;margin-bottom:8px">
+          <button class="fs-btn fs-btn--ghost fs-btn--sm fs-import-source-btn" id="fs-from-sermon-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             From Sermon…
           </button>
           <textarea class="fs-import-area" id="fs-import-area"
             placeholder="Paste full lyrics — blank lines become separate slides…" rows="5"></textarea>
-          <button class="fs-btn fs-btn--ghost fs-btn--sm" id="fs-import-btn" style="margin-top:4px;align-self:flex-start">Split into slides</button>
+          <button class="fs-btn fs-btn--ghost fs-btn--sm fs-import-submit" id="fs-import-btn">Split into slides</button>
         </div>
       </div>
 

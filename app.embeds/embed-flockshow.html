@@ -140,7 +140,7 @@
   <!-- ── Auth overlay (shown by default; hidden after successful sign-in) ── -->
   <div id="embed-auth-overlay">
     <div class="embed-auth-card">
-      <img class="embed-auth-icon" src="Images/icon-show.svg" alt="FlockShow" onerror="this.style.display='none'">
+      <img class="embed-auth-icon" src="Images/icon-show.svg" alt="FlockShow" onerror="this.hidden=true">
       <h1>FlockShow</h1>
       <p>Sign in with your FlockOS account to access worship presentations.</p>
       <form id="embed-login-form" class="embed-auth-field" novalidate>
@@ -160,38 +160,25 @@
         <div    id="embed-login-err" class="embed-auth-err" hidden></div>
       </form>
       <p class="embed-auth-verse">"Praise Him with strings and pipe." — Psalm 150:4</p>
-      <a href="index.html" style="display:block;text-align:center;margin-top:12px;font-size:0.73rem;color:rgba(212,175,55,0.55);text-decoration:none;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.75'" onmouseout="this.style.opacity='1'">← Return to Home</a>
+      <a class="embed-auth-home-link" href="index.html">← Return to Home</a>
     </div>
   </div>
 
   <!-- ── FlockShow shell (mirrors app.flockshow.html; populated by flockshow.js) ── -->
-  <div id="fs-root" style="
-    display:grid;
-    grid-template-rows:calc(54px + env(safe-area-inset-top, 0px)) 1fr;
-    height:100dvh;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Plus Jakarta Sans',system-ui,sans-serif;
-    -webkit-font-smoothing:antialiased;
-    overflow:hidden;
-  ">
-    <header id="fs-topbar" style="
-      display:flex;align-items:center;gap:10px;padding:env(safe-area-inset-top, 0px) 18px 0;
-      background:var(--top-bg);border-bottom:1px solid var(--top-line);
-      z-index:200;position:relative;
-    ">
-      <div class="fs-logo" style="display:flex;align-items:center;gap:8px;font:700 0.95rem 'Plus Jakarta Sans',sans-serif;color:var(--top-ink);flex-shrink:0;margin-right:6px;">
-        <div style="width:30px;height:30px;border-radius:7px;background:linear-gradient(135deg,#a78bfa,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:15px;">🎬</div>
+  <div id="fs-root" class="fs-embed-root">
+    <header id="fs-topbar" class="fs-embed-topbar">
+      <div class="fs-logo fs-embed-logo">
+        <div class="fs-embed-logo-icon">🎬</div>
         <span>FlockShow</span>
       </div>
-      <div class="fs-tab-bar" id="fs-tabs" style="display:flex;gap:2px;background:rgba(255,255,255,0.05);border-radius:8px;padding:3px;"></div>
-      <div id="fs-topbar-right" style="margin-left:auto;display:flex;align-items:center;gap:8px;">
-        <button id="fs-present-btn" disabled style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:8px;font:600 0.78rem 'Plus Jakarta Sans',sans-serif;cursor:pointer;border:none;background:var(--gold,#e8a838);color:#0c0a00;white-space:nowrap;">▶ Present</button>
+      <div class="fs-tab-bar fs-embed-tabs" id="fs-tabs"></div>
+      <div id="fs-topbar-right" class="fs-embed-actions">
+        <button id="fs-present-btn" class="fs-embed-present-btn" disabled>▶ Present</button>
       </div>
     </header>
 
-    <div id="fs-library" style="overflow-y:auto;padding:28px 32px 80px;"></div>
-    <div id="fs-editor" hidden style="display:grid;grid-template-rows:46px 1fr;overflow:hidden;"></div>
+    <div id="fs-library" class="fs-embed-library"></div>
+    <div id="fs-editor" class="fs-embed-editor" hidden></div>
   </div>
 
   <!-- flockshow.js is dynamically imported by the embed auth controller above -->

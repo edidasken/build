@@ -46,6 +46,44 @@
   box-shadow: var(--shadow-glow, 0 0 0 3px rgba(247,199,86,.18));
 }
 
+.fd-create-folder-btn {
+  float: right;
+  margin: -2px 0 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--fd-gold);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.fd-hidden-control {
+  display: none;
+}
+
+.fd-empty-folders {
+  padding: 12px;
+  color: var(--ink-muted);
+  font-size: 0.813rem;
+  text-align: center;
+}
+
+.fd-doc-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.fd-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fd-doc-table-cell {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
 /* FlockNews is the standard: light paper body, floating navy chrome. */
 body:has(#fd-app),
 body.docs-auth {

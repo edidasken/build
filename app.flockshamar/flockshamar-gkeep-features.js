@@ -1045,7 +1045,7 @@
       content += '<ul class="fs-note-list">';
       note.items.forEach(item => {
         content += `
-          <li class="fs-list-item" style="margin-left: ${item.indent * 20}px">
+          <li class="fs-list-item" data-indent="${item.indent || 0}">
             <input type="checkbox" ${item.checked ? 'checked' : ''} 
                    onchange="toggleListItem('${note.id}', ${item.id})">
             <span class="${item.checked ? 'checked' : ''}">${item.text}</span>
@@ -1099,6 +1099,9 @@
     `;
 
     noteElement.innerHTML = content;
+    noteElement.querySelectorAll('.fs-list-item[data-indent]').forEach(item => {
+      item.style.marginLeft = `${(Number(item.dataset.indent) || 0) * 20}px`;
+    });
   }
 
   function renderFilteredNotes(notes, title = 'Search Results') {

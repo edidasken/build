@@ -1618,7 +1618,7 @@ function _renderFolders() {
   if (!container) return;
 
   if (S.folders.length === 0) {
-    container.innerHTML = '<div style="padding:12px;font-size:0.813rem;color:var(--ink-muted);text-align:center;">No folders</div>';
+    container.innerHTML = '<div class="fd-empty-folders">No folders</div>';
     return;
   }
 
@@ -1722,14 +1722,14 @@ function _renderSpreadsheet() {
   for (let c = 0; c < cols; c++) {
     const col = String.fromCharCode(65 + c); // A, B, C, ...
     const width = S.currentDoc.columnWidths?.[col] || 100;
-    html += `<th class="fd-cell-header" data-col="${col}" style="width:${width}px;min-width:${width}px">${col}<div class="fd-col-resize-handle" data-col="${col}"></div></th>`;
+    html += `<th class="fd-cell-header" data-col="${col}" data-width="${width}">${col}<div class="fd-col-resize-handle" data-col="${col}"></div></th>`;
   }
   html += '</tr></thead><tbody>';
 
   // Rows with height and row-resize handles
   for (let r = 1; r <= rows; r++) {
     const rowH = S.currentDoc.rowHeights?.[r] || 28;
-    html += `<tr style="height:${rowH}px"><th class="fd-cell-header" data-row="${r}">${r}<div class="fd-row-resize-handle" data-row="${r}"></div></th>`;
+    html += `<tr data-row-height="${rowH}"><th class="fd-cell-header" data-row="${r}">${r}<div class="fd-row-resize-handle" data-row="${r}"></div></th>`;
     for (let c = 0; c < cols; c++) {
       const col = String.fromCharCode(65 + c);
       const cellId = `${col}${r}`;
@@ -1744,6 +1744,15 @@ function _renderSpreadsheet() {
   html += '</tbody></table>';
 
   container.innerHTML = html;
+
+  container.querySelectorAll('th[data-col][data-width]').forEach(th => {
+    const width = Number(th.dataset.width) || 100;
+    th.style.width = `${width}px`;
+    th.style.minWidth = `${width}px`;
+  });
+  container.querySelectorAll('tr[data-row-height]').forEach(row => {
+    row.style.height = `${Number(row.dataset.rowHeight) || 28}px`;
+  });
 
   // Bind cell click events
   container.querySelectorAll('.fd-cell').forEach(cell => {

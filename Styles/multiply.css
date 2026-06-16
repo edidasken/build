@@ -47,6 +47,14 @@ body {
 a { color: inherit; }
 button { font: inherit; }
 
+.rule-thin.herald-form-rule {
+  margin-bottom: 24px;
+}
+
+.herald-required {
+  color: var(--red);
+}
+
 /* ── Flocknews shell ─────────────────────────────────────────────────── */
 .fn-page {
   width: 100%;

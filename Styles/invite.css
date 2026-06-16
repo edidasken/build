@@ -199,3 +199,26 @@ html, body {
   background: var(--bg);
   color: var(--ink);
 }
+
+.inv-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.inv-loading-icon {
+  margin-bottom: 16px;
+  font-size: 3rem;
+}
+
+.inv-loading-title {
+  color: var(--ink);
+  font: 700 1.4rem var(--font-ui, sans-serif);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}

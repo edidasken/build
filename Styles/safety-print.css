@@ -1,0 +1,197 @@
+@page { size: letter; margin: .85in 1in; }
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 24px 32px;
+  background: #fff;
+  color: #111;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 11pt;
+  line-height: 1.55;
+}
+
+.header {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #111;
+  text-align: center;
+}
+
+.org-name {
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.doc-title {
+  margin-top: 6px;
+  font-size: 13pt;
+  font-weight: bold;
+}
+
+.doc-sub,
+.doc-subtitle {
+  margin-top: 2px;
+  color: #444;
+  font-size: 10pt;
+}
+
+.member-box,
+.member-info {
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f8f8f8;
+  line-height: 1.8;
+}
+
+.section { margin-bottom: 18px; }
+
+.sec-title,
+.section-title {
+  margin-bottom: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #aaa;
+  font-size: 11pt;
+  font-weight: bold;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.statutory {
+  margin: 10px 0;
+  padding: 8px 12px;
+  border-left: 3px solid #aaa;
+  background: #f4f4f4;
+  color: #333;
+  font-size: 9.5pt;
+  line-height: 1.6;
+}
+
+.indent-copy { margin-left: 20px; }
+.indent { margin-left: 24px; }
+
+.sign-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sign-label {
+  min-width: 160px;
+  flex-shrink: 0;
+  font-size: 10pt;
+}
+
+.sign-rule {
+  flex: 1;
+  margin-bottom: 2px;
+  border-bottom: 1px solid #111;
+}
+
+.esig-block {
+  margin-top: 8px;
+  padding: 12px 16px;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  background: #f0fdf4;
+}
+
+.esig-label {
+  margin-bottom: 6px;
+  color: #059669;
+  font-size: 8.5pt;
+  font-weight: bold;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.esig-img {
+  display: block;
+  max-width: 280px;
+  max-height: 60px;
+  margin: 4px 0;
+}
+
+.esig-name {
+  margin-top: 6px;
+  font-size: 9.5pt;
+}
+
+.esig-date { font-size: 9.5pt; }
+
+.esig-note {
+  margin-top: 4px;
+  color: #555;
+  font-size: 8.5pt;
+}
+
+.manual-signatures,
+.sign-block {
+  margin-top: 8px;
+}
+
+.admin-box {
+  padding: 12px 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: #fcfcfc;
+}
+
+.admin-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 10px;
+}
+
+.admin-field {
+  min-height: 22px;
+  flex: 1;
+  border-bottom: 1px solid #aaa;
+}
+
+.admin-notes-field { flex: 1; }
+
+.admin-label {
+  color: #555;
+  font-size: 9pt;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.footer {
+  margin-top: 30px;
+  padding-top: 8px;
+  border-top: 1px solid #ccc;
+  color: #666;
+  font-size: 8.5pt;
+  text-align: center;
+}
+
+.print-actions {
+  margin-bottom: 14px;
+  text-align: right;
+}
+
+.print-button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #1b264f;
+  color: #fff;
+  cursor: pointer;
+  font: bold 11pt sans-serif;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body {
+    padding: 0;
+    font-size: 10.5pt;
+  }
+}

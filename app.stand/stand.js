@@ -96,9 +96,9 @@ function _openConfirmModal(title, msg, okLabel, onConfirm) {
   const id = 'ms-confirm-' + Date.now();
   host.insertAdjacentHTML('beforeend', `
     <div class="ms-modal-backdrop" id="${id}-backdrop">
-      <div class="ms-modal ms-dash" id="${id}" style="max-width:420px;">
+      <div class="ms-modal ms-dash ms-modal--narrow" id="${id}">
         <div class="ms-modal-title">${title}</div>
-        <div style="font-size:.88rem;color:rgba(255,255,255,0.78);line-height:1.5;margin-bottom:16px;">${msg}</div>
+        <div class="ms-confirm-copy">${msg}</div>
         <div class="ms-modal-actions">
           <button class="ms-btn ms-btn--ghost" id="${id}-cancel">Cancel</button>
           <button class="ms-btn ms-btn--danger" id="${id}-ok">${okLabel || 'Delete'}</button>
@@ -175,7 +175,7 @@ function _renderChordPro(text, opts = {}) {
         if (inSection) html += '</div></div>';
         const label = val || k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         const col = _secColor(label);
-        html += `<div class="ms-section"><div class="ms-section-label" style="--sc:var(${col})">${_e(label)}</div><div class="ms-section-body">`;
+        html += `<div class="ms-section"><div class="ms-section-label ${col.replace('--', 'ms-section-label--')}">${_e(label)}</div><div class="ms-section-body">`;
         inSection = true;
       }
       continue;
@@ -188,7 +188,7 @@ function _renderChordPro(text, opts = {}) {
       const secType  = sovMatch[1].toLowerCase().replace(/_/g, '-');
       const secLabel = sovMatch[2] || (secType.charAt(0).toUpperCase() + secType.slice(1));
       const col = _secColor(secLabel);
-      html += `<div class="ms-section"><div class="ms-section-label" style="--sc:var(${col})">${_e(secLabel)}</div><div class="ms-section-body">`;
+      html += `<div class="ms-section"><div class="ms-section-label ${col.replace('--', 'ms-section-label--')}">${_e(secLabel)}</div><div class="ms-section-body">`;
       inSection = true;
       continue;
     }
@@ -199,8 +199,8 @@ function _renderChordPro(text, opts = {}) {
 
     // Empty line
     if (!line.trim()) {
-      if (inSection) html += '<div class="ms-chord-lyric-pair" style="height:0.8em"></div>';
-      else { if (i > 0) html += '<div style="height:1.1em"></div>'; }
+      if (inSection) html += '<div class="ms-chord-lyric-pair ms-section-break--small"></div>';
+      else { if (i > 0) html += '<div class="ms-section-break--large"></div>'; }
       continue;
     }
 
@@ -304,9 +304,9 @@ function _renderAuthGate(N) {
       <img src="Images/icon-stand.svg" alt="FlockStand">
       <h1>FlockStand</h1>
       <p>Sign in with your FlockOS account to access the worship team music stand.</p>
-      <button class="ms-btn ms-btn--primary" id="ms-signin-btn" style="margin-bottom:12px;">Sign In to FlockOS</button>
-      <p style="font-size:.75rem;color:var(--ms-ink-muted);">Access is limited to authenticated FlockOS users.</p>
-      <p style="font-size:.7rem;color:var(--ms-ink-faint);margin-top:20px;font-style:italic;">"Praise Him with the sound of the trumpet." — Psalm 150:3</p>
+      <button class="ms-btn ms-btn--primary ms-auth-submit" id="ms-signin-btn">Sign In to FlockOS</button>
+      <p class="ms-auth-note">Access is limited to authenticated FlockOS users.</p>
+      <p class="ms-auth-verse">"Praise Him with the sound of the trumpet." — Psalm 150:3</p>
     </div>
   `;
   document.getElementById('ms-signin-btn').addEventListener('click', () => {
@@ -540,19 +540,19 @@ async function _loadDashboardData(main) {
       try { return new Date(p.serviceDate) >= new Date(); } catch { return false; }
     }).length;
     statsEl.innerHTML = `
-      <div class="ms-stat-card" style="--stat-color:var(--ms-gold)">
+      <div class="ms-stat-card ms-stat-card--gold">
         <div class="ms-stat-num">${S.songs.length || '—'}</div>
         <div class="ms-stat-label">Songs in Library</div>
       </div>
-      <div class="ms-stat-card" style="--stat-color:var(--ms-blue)">
+      <div class="ms-stat-card ms-stat-card--blue">
         <div class="ms-stat-num">${S.plans.length || '—'}</div>
         <div class="ms-stat-label">Service Plans</div>
       </div>
-      <div class="ms-stat-card" style="--stat-color:var(--ms-emerald)">
+      <div class="ms-stat-card ms-stat-card--emerald">
         <div class="ms-stat-num">${upcoming || '—'}</div>
         <div class="ms-stat-label">Upcoming Services</div>
       </div>
-      <div class="ms-stat-card" style="--stat-color:var(--ms-violet)">
+      <div class="ms-stat-card ms-stat-card--violet">
         <div class="ms-stat-num">∞</div>
         <div class="ms-stat-label">Keys Available</div>
       </div>
@@ -570,14 +570,14 @@ async function _loadDashboardData(main) {
 
     if (!upcoming.length) {
       upcomingEl.innerHTML = `
-        <div class="ms-empty-state" style="padding:32px 16px;">
+        <div class="ms-empty-state ms-empty-state--padded">
           <div class="ms-empty-state-icon">📅</div>
           <div class="ms-empty-state-title">No upcoming services</div>
           <div class="ms-empty-state-body">Create a service plan to start building your setlist.</div>
         </div>`;
     } else {
       upcomingEl.innerHTML = upcoming.map(p => `
-        <button class="ms-service-card" data-plan-id="${_e(p.id)}" style="text-align:left;width:100%;font-family:inherit;border:none;cursor:pointer;">
+        <button class="ms-service-card ms-service-card--button" data-plan-id="${_e(p.id)}">
           <div class="ms-service-card-header">
             <div class="ms-service-card-title">${_e(p.serviceType || 'Service')}</div>
             <div class="ms-service-card-date">${_fmtDate(p.serviceDate)}</div>
@@ -589,8 +589,8 @@ async function _loadDashboardData(main) {
                 <span class="ms-key-badge">${_e((s.key||s.defaultKey||'—').substring(0,2))}</span>
                 <span>${_e(s.title||s.songTitle||'Untitled')}</span>
               </div>`).join('')}
-            ${(p.songs||p.setlist||[]).length > 4 ? `<div style="font-size:.75rem;color:rgba(255,255,255,0.45);padding:2px 0">+${(p.songs||p.setlist||[]).length-4} more</div>` : ''}
-          </div>` : '<div style="font-size:.8rem;color:rgba(255,255,255,0.45);margin-top:8px;">No songs added yet</div>'}
+            ${(p.songs||p.setlist||[]).length > 4 ? `<div class="ms-service-more">+${(p.songs||p.setlist||[]).length-4} more</div>` : ''}
+          </div>` : '<div class="ms-service-none">No songs added yet</div>'}
         </button>
       `).join('');
       upcomingEl.querySelectorAll('.ms-service-card').forEach(card => {
@@ -668,42 +668,41 @@ async function _loadAndRenderPlans(main) {
           <div class="ms-empty-state-icon">📅</div>
           <div class="ms-empty-state-title">No service plans yet</div>
           <div class="ms-empty-state-body">Create your first service plan to start building a setlist with chord charts, keys, and team notes.</div>
-          <button class="ms-btn ms-btn--primary" style="margin-top:8px" id="svc-empty-new">Create First Plan</button>
+          <button class="ms-btn ms-btn--primary ms-top-space-sm" id="svc-empty-new">Create First Plan</button>
         </div>`;
       listEl.querySelector('#svc-empty-new')?.addEventListener('click', () => _openServiceEditor(null));
       return;
     }
     const sorted = [...plans].sort((a, b) => new Date(b.serviceDate||0) - new Date(a.serviceDate||0));
-    listEl.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%, 280px),1fr));gap:14px;">
+    listEl.innerHTML = `<div class="ms-service-grid">
       ${sorted.map(p => {
         const songs = p.songs || p.setlist || [];
         const isActive = p.id === S.activePlanId;
-        return `<div class="ms-service-card ms-dash-action${isActive ? ' is-active' : ''}" data-plan-id="${_e(p.id)}"
-          style="cursor:pointer;text-align:left;padding:20px;${isActive ? 'border-color:var(--ms-gold);' : ''}">
+        return `<div class="ms-service-card ms-dash-action ms-service-card--dash${isActive ? ' is-active' : ''}" data-plan-id="${_e(p.id)}">
           <div class="ms-service-card-header">
-            <div style="flex:1;min-width:0;">
+            <div class="ms-flex-fill">
               <div class="ms-service-card-title">${_e(p.serviceType || 'Service')}</div>
-              <div style="font-size:.75rem;color:rgba(255,255,255,0.58);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${_e(p.theme||p.seriesTitle||'')}</div>
+              <div class="ms-service-theme">${_e(p.theme||p.seriesTitle||'')}</div>
             </div>
-            <div style="text-align:right;flex-shrink:0;">
+            <div class="ms-service-date-stack">
               <div class="ms-service-card-date">${_fmtDate(p.serviceDate)}</div>
-              ${isActive ? '<div style="font-size:.68rem;color:var(--ms-gold);font-weight:700;margin-top:2px;white-space:nowrap;">ACTIVE</div>' : ''}
+              ${isActive ? '<div class="ms-active-label">ACTIVE</div>' : ''}
             </div>
           </div>
           <div class="ms-service-card-songs">
             ${songs.slice(0,5).map(s => `
               <div class="ms-service-song-row">
                 <span class="ms-key-badge">${_e((s.key||s.defaultKey||'?').substring(0,2))}</span>
-                <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_e(s.title||s.songTitle||'Untitled')}</span>
+                <span class="ms-service-song-title">${_e(s.title||s.songTitle||'Untitled')}</span>
                 ${s.tempoBpm||s.bpm ? `<span class="ms-tempo-badge">${s.tempoBpm||s.bpm} bpm</span>` : ''}
               </div>`).join('')}
-            ${songs.length > 5 ? `<div style="font-size:.73rem;color:rgba(255,255,255,0.45)">+${songs.length-5} more songs</div>` : ''}
-            ${!songs.length ? '<div style="font-size:.78rem;color:rgba(255,255,255,0.45);padding:4px 0">No songs yet — tap to add</div>' : ''}
+            ${songs.length > 5 ? `<div class="ms-service-more">+${songs.length-5} more songs</div>` : ''}
+            ${!songs.length ? '<div class="ms-service-none">No songs yet — tap to add</div>' : ''}
           </div>
-          ${(() => { const sr = p.sermonId && S.sermons.find(s => s.id === p.sermonId); return sr ? `<div style="font-size:.75rem;color:rgba(255,255,255,0.65);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.08);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><span style="filter:brightness(0) invert(1) opacity(0.85);">📖</span> ${_e(sr.title||'Sermon')}${sr.passage ? ' · ' + _e(sr.passage) : ''}</div>` : ''; })()}
-          <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center;">
+          ${(() => { const sr = p.sermonId && S.sermons.find(s => s.id === p.sermonId); return sr ? `<div class="ms-service-sermon"><span class="ms-service-sermon-icon">📖</span> ${_e(sr.title||'Sermon')}${sr.passage ? ' · ' + _e(sr.passage) : ''}</div>` : ''; })()}
+          <div class="ms-service-actions">
             <button class="ms-btn ms-btn--ghost ms-btn--sm svc-edit-btn" data-plan-id="${_e(p.id)}">Edit</button>
-            <button class="ms-btn ms-btn--ghost ms-btn--sm svc-live-btn" data-plan-id="${_e(p.id)}" style="color:var(--ms-rose);">▶ Live</button>
+            <button class="ms-btn ms-btn--ghost ms-btn--sm svc-live-btn ms-live-btn-accent" data-plan-id="${_e(p.id)}">▶ Live</button>
             <button class="ms-btn ms-btn--danger ms-btn--sm svc-del-btn" data-plan-id="${_e(p.id)}">Delete</button>
           </div>
         </div>`;
@@ -770,9 +769,9 @@ function _openServiceEditor(plan) {
 
   host.innerHTML = `
     <div class="ms-modal-backdrop" id="svc-editor-backdrop">
-      <div class="ms-modal ms-dash" style="max-width:680px;">
+      <div class="ms-modal ms-dash ms-modal--wide">
         <div class="ms-modal-title">${isEdit ? 'Edit Service Plan' : 'New Service Plan'}</div>
-        <div class="ms-row" style="margin-bottom:12px;">
+        <div class="ms-row ms-spaced-sm">
           <div class="ms-field">
             <div class="ms-label">Date</div>
             <input class="ms-input" type="date" id="svc-f-date" value="${_e(p.serviceDate||'')}">
@@ -786,24 +785,24 @@ function _openServiceEditor(plan) {
             </select>
           </div>
         </div>
-        <div class="ms-field" style="margin-bottom:12px;">
+        <div class="ms-field ms-spaced-sm">
           <div class="ms-label">Theme / Series</div>
           <input class="ms-input" type="text" id="svc-f-theme" value="${_e(p.theme||p.seriesTitle||'')}" placeholder="e.g. Kingdom Come — Week 3">
         </div>
-        <div class="ms-field" style="margin-bottom:20px;">
+        <div class="ms-field ms-spaced-lg">
           <div class="ms-label">Linked Sermon</div>
           <select class="ms-select" id="svc-f-sermon">
             <option value="">— None —</option>
             ${S.sermons.map(sr => `<option value="${_e(sr.id)}"${(p.sermonId||''===sr.id)?' selected':''}>${_e(sr.title||'Untitled')}${sr.date?' ('+_fmtDate(sr.date)+')':''}</option>`).join('')}
           </select>
-          <div id="svc-sermon-preview" style="margin-top:6px;font-size:.78rem;color:var(--ms-ink-muted)"></div>
+          <div id="svc-sermon-preview" class="ms-sermon-preview"></div>
         </div>
-        <div class="ms-label" style="margin-bottom:8px;">Songs</div>
+        <div class="ms-label ms-label-spaced">Songs</div>
         <div class="ms-setlist" id="svc-setlist">
           ${songs.map((s, i) => _setlistItemHtml(s, i)).join('')}
         </div>
-        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-          <div class="ms-search-wrap" style="flex:1">
+        <div class="ms-inline-row ms-spaced-lg">
+          <div class="ms-search-wrap ms-search-wrap--fill">
             <svg class="ms-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             <input class="ms-search" type="text" id="svc-song-search" placeholder="Search songs to add…">
           </div>
@@ -840,12 +839,12 @@ function _openServiceEditor(plan) {
     resultsEl.innerHTML = matches.map(s => `
       <button class="ms-song-pick-btn" data-song-id="${_e(s.id)}">
         <span class="ms-key-badge">${_e((s.defaultKey||'?').substring(0,2))}</span>
-        <span style="flex:1">
-          <span style="font-weight:600">${_e(s.title)}</span>
-          <span style="color:var(--ms-ink-muted);font-size:.78rem;margin-left:6px">${_e(s.artist||'')}</span>
+        <span class="ms-song-pick-main">
+          <span class="ms-song-pick-title">${_e(s.title)}</span>
+          <span class="ms-song-pick-artist">${_e(s.artist||'')}</span>
         </span>
-        <span style="color:var(--ms-ink-faint);font-size:.75rem">${s.tempoBpm ? s.tempoBpm+' bpm' : ''}</span>
-      </button>`).join('') || '<div style="color:var(--ms-ink-muted);padding:10px;font-size:.85rem">No songs found</div>';
+        <span class="ms-song-pick-bpm">${s.tempoBpm ? s.tempoBpm+' bpm' : ''}</span>
+      </button>`).join('') || '<div class="ms-picker-empty">No songs found</div>';
     resultsEl.querySelectorAll('.ms-song-pick-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const song = S.songs.find(s => s.id === btn.dataset.songId);
@@ -950,10 +949,10 @@ function _renderImport(main) {
   main.innerHTML = `
     <div class="ms-view ms-dash">
       <!-- Navy card header matching FlockStand dashboard theme -->
-      <div class="ms-dash-hero" style="margin-bottom:24px;">
+      <div class="ms-dash-hero ms-hero-spaced">
         <div class="ms-page-hero-text">
           <div class="ms-dash-eyebrow">FlockStand · Import</div>
-          <h1 style="font-size:1.6rem;margin-bottom:8px;">📥 Import Songs</h1>
+          <h1 class="ms-import-title">📥 Import Songs</h1>
           <p>Import ChordPro files from SongSelect, Planning Center, or any other source.</p>
         </div>
       </div>
@@ -966,17 +965,17 @@ function _renderImport(main) {
 
       <!-- ChordPro -->
       <div class="ms-import-panel is-active" id="imp-panel-chordpro">
-        <p style="color:var(--ms-ink-muted);font-size:.9rem;margin-bottom:18px;">
+        <p class="ms-import-copy">
           Download ChordPro files from CCLI SongSelect, Planning Center, or any other source and paste them below.
         </p>
 
-        <div class="ms-field" style="margin-bottom:16px;">
+        <div class="ms-field ms-spaced-md">
           <div class="ms-label">Paste ChordPro Content</div>
           <textarea class="ms-input ms-textarea ms-content-editor" id="imp-cp-text" rows="16"
             placeholder="{title: Amazing Grace}&#10;{artist: John Newton}&#10;{key: G}&#10;{ccli: 4768151}&#10;&#10;{comment: Verse 1}&#10;[G]Amazing [C]grace how [G]sweet the sound&#10;That [G]saved a [Em]wretch like [D]me&#10;&#10;{comment: Chorus}&#10;[G]My chains are [D]gone..."></textarea>
         </div>
-        <div id="imp-cp-preview" hidden style="margin-bottom:16px;"></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div id="imp-cp-preview" class="ms-preview-spaced" hidden></div>
+        <div class="ms-inline-row">
           <button class="ms-btn ms-btn--ghost" id="imp-cp-parse">Preview</button>
           <button class="ms-btn ms-btn--primary" id="imp-cp-save" hidden>Save to Library</button>
         </div>
@@ -984,57 +983,57 @@ function _renderImport(main) {
 
       <!-- Planning Center Direct Connection -->
       <div class="ms-import-panel" id="imp-panel-planning-center">
-        <div class="ms-dash-action" style="max-width:520px;margin-bottom:24px;display:block;cursor:default;">
-          <div style="font-size:1.4rem;margin-bottom:12px;filter:brightness(0) invert(1) opacity(0.9);">📋</div>
-          <div style="font-weight:700;font-size:1rem;margin-bottom:8px;color:#fff;">Planning Center Online</div>
-          <p style="color:rgba(255,255,255,0.78);font-size:.88rem;line-height:1.6;margin-bottom:16px;">
+        <div class="ms-dash-action ms-pco-card">
+          <div class="ms-pco-icon">📋</div>
+          <div class="ms-pco-title">Planning Center Online</div>
+          <p class="ms-pco-copy">
             Connect your Planning Center account to import service plans and songs directly.
           </p>
           <div id="pco-connect-form" hidden>
-            <p style="font-size:.82rem;color:rgba(255,255,255,0.72);margin-bottom:12px;line-height:1.5;">
-              Generate a Personal Access Token from your PCO account: <a href="https://api.planningcenteronline.com/oauth/applications" target="_blank" style="color:var(--ms-violet)">PCO Developer Apps</a>
+            <p class="ms-pco-help">
+              Generate a Personal Access Token from your PCO account: <a class="ms-pco-link" href="https://api.planningcenteronline.com/oauth/applications" target="_blank">PCO Developer Apps</a>
             </p>
-            <div class="ms-field" style="margin-bottom:12px;">
+            <div class="ms-field ms-spaced-sm">
               <div class="ms-label">Application ID</div>
               <input class="ms-input" type="text" id="pco-app-id" placeholder="Your PCO App ID">
             </div>
-            <div class="ms-field" style="margin-bottom:16px;">
+            <div class="ms-field ms-spaced-md">
               <div class="ms-label">Secret</div>
               <input class="ms-input" type="password" id="pco-secret" placeholder="Your PCO Secret">
             </div>
-            <div style="display:flex;gap:10px;">
+            <div class="ms-inline-row">
               <button class="ms-btn ms-btn--primary" id="pco-connect-btn">Connect</button>
               <button class="ms-btn ms-btn--ghost" id="pco-cancel-btn">Cancel</button>
             </div>
-            <p style="font-size:.72rem;color:rgba(255,255,255,0.5);margin-top:12px;">Your credentials are stored locally and used only to access your PCO library.</p>
+            <p class="ms-pco-privacy">Your credentials are stored locally and used only to access your PCO library.</p>
           </div>
           <div id="pco-connected-view" hidden>
-            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:10px;margin-bottom:16px;">
+            <div class="ms-pco-connected">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-              <div style="flex:1;">
-                <div style="font-weight:600;font-size:.88rem;">Connected to Planning Center</div>
-                <div style="font-size:.78rem;color:rgba(255,255,255,0.65);"><span id="pco-user-display"></span></div>
+              <div class="ms-flex-fill">
+                <div class="ms-pco-connected-title">Connected to Planning Center</div>
+                <div class="ms-pco-connected-sub"><span id="pco-user-display"></span></div>
               </div>
               <button class="ms-btn ms-btn--ghost ms-btn--sm" id="pco-disconnect-btn">Disconnect</button>
             </div>
-            <div class="ms-field" style="margin-bottom:12px;">
+            <div class="ms-field ms-spaced-sm">
               <div class="ms-label">Search Planning Center Songs</div>
               <input class="ms-input" type="text" id="pco-search" placeholder="Search by title...">
             </div>
-            <button class="ms-btn ms-btn--primary" id="pco-search-btn" style="margin-bottom:16px;">Search</button>
+            <button class="ms-btn ms-btn--primary ms-spaced-md" id="pco-search-btn">Search</button>
             <div id="pco-results" hidden></div>
           </div>
           <button class="ms-btn ms-btn--primary" id="pco-show-connect" hidden>Connect Planning Center</button>
         </div>
 
-        <div style="margin-top:28px;">
-          <div class="ms-label" style="margin-bottom:12px;">Or paste a Planning Center chord sheet</div>
+        <div class="ms-top-space-lg">
+          <div class="ms-label ms-spaced-sm">Or paste a Planning Center chord sheet</div>
           <textarea class="ms-input ms-textarea ms-content-editor" id="pco-text" rows="10" placeholder="Paste the chord chart text from Planning Center here…"></textarea>
-          <div style="margin-top:10px;display:flex;gap:10px;">
+          <div class="ms-inline-row ms-top-space-md">
             <button class="ms-btn ms-btn--ghost" id="pco-parse">Parse &amp; Preview</button>
           </div>
-          <div id="pco-preview" hidden style="margin-top:12px;"></div>
-          <button class="ms-btn ms-btn--primary" id="pco-save" hidden style="margin-top:10px;">Save to Library</button>
+          <div id="pco-preview" class="ms-top-space-md" hidden></div>
+          <button class="ms-btn ms-btn--primary ms-top-space-md" id="pco-save" hidden>Save to Library</button>
         </div>
       </div>
 
@@ -1088,14 +1087,14 @@ function _renderImport(main) {
               <div class="ms-label">Notes</div>
               <textarea class="ms-input ms-textarea" id="imp-m-notes" rows="3" placeholder="Performance notes, key recommendations, etc."></textarea>
             </div>
-            <div style="display:flex;gap:10px;">
+            <div class="ms-inline-row">
               <button class="ms-btn ms-btn--ghost" id="imp-m-preview-btn">Preview</button>
               <button class="ms-btn ms-btn--primary" id="imp-m-save">Save to Library</button>
             </div>
           </div>
           <div class="ms-editor-col">
-            <div class="ms-label" style="margin-bottom:8px">Live Preview</div>
-            <div class="ms-content-preview ms-song-content" id="imp-m-preview" style="min-height:500px;--ms-song-fs:15px">
+            <div class="ms-label ms-label-spaced">Live Preview</div>
+            <div class="ms-content-preview ms-song-content ms-manual-preview" id="imp-m-preview">
               <div class="ms-empty-content">Click "Preview" to see the rendered chart</div>
             </div>
           </div>
@@ -1310,14 +1309,14 @@ function _initPlanningCenterConnection(main) {
     btn.disabled = true;
     btn.textContent = 'Searching...';
     resultsEl.hidden = false;
-    resultsEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ms-ink-muted);">Searching Planning Center...</div>';
+    resultsEl.innerHTML = '<div class="ms-searching-state">Searching Planning Center...</div>';
 
     try {
       const credentials = _getPlanningCenterCredentials();
       const results = await _searchPlanningCenter(query, credentials);
       _renderPlanningCenterResults(resultsEl, results);
     } catch (err) {
-      resultsEl.innerHTML = `<div style="padding:20px;text-align:center;color:var(--ms-danger);">Search failed: ${_e(err.message)}</div>`;
+      resultsEl.innerHTML = `<div class="ms-search-error">Search failed: ${_e(err.message)}</div>`;
     } finally {
       btn.disabled = false;
       btn.textContent = 'Search';
@@ -1370,25 +1369,25 @@ async function _searchPlanningCenter(query, credentials) {
 
 function _renderPlanningCenterResults(el, results) {
   if (!results || results.length === 0) {
-    el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--ms-ink-muted);">No results found</div>';
+    el.innerHTML = '<div class="ms-results-empty">No results found</div>';
     return;
   }
 
   el.innerHTML = `
-    <div style="margin-bottom:12px;">
+    <div class="ms-pco-result-spaced">
       <div class="ms-label">${results.length} song${results.length === 1 ? '' : 's'} found</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
+    <div class="ms-pco-results-stack">
       ${results.map((song, idx) => `
-        <div class="ms-card" style="cursor:pointer;" data-pco-song-idx="${idx}">
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div style="flex:1;min-width:0;">
-              <div style="font-weight:700;font-size:.95rem;margin-bottom:4px;">${_e(song.title)}</div>
-              <div style="font-size:.82rem;color:var(--ms-ink-muted);">
+        <div class="ms-card ms-pco-song-card" data-pco-song-idx="${idx}">
+          <div class="ms-pco-song-row">
+            <div class="ms-flex-fill">
+              <div class="ms-pco-song-title">${_e(song.title)}</div>
+              <div class="ms-pco-song-meta">
                 ${song.artist ? _e(song.artist) : ''}
                 ${song.ccliNumber ? (song.artist ? ' • ' : '') + 'CCLI ' + _e(song.ccliNumber) : ''}
               </div>
-              ${song.themes ? `<div style="font-size:.75rem;color:var(--ms-violet);margin-top:4px;">${_e(song.themes)}</div>` : ''}
+              ${song.themes ? `<div class="ms-pco-song-themes">${_e(song.themes)}</div>` : ''}
             </div>
             <button class="ms-btn ms-btn--primary ms-btn--sm" data-pco-import="${idx}">Import</button>
           </div>
@@ -1468,18 +1467,18 @@ async function _importPlanningCenterSong(song, btn) {
 function _showImportPreview(el, parsed, rawText) {
   el.hidden = false;
   el.innerHTML = `
-    <div style="background:var(--ms-gold-soft);border:1px solid var(--ms-gold-glow);border-radius:var(--ms-r-lg);padding:16px;margin-bottom:12px;">
-      <div style="font-size:.75rem;font-weight:700;color:var(--ms-gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;">Parsed</div>
-      <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-size:.88rem;">
-        <span style="color:var(--ms-ink-muted)">Title</span><span style="font-weight:700">${_e(parsed.title||'—')}</span>
-        <span style="color:var(--ms-ink-muted)">Artist</span><span>${_e(parsed.artist||'—')}</span>
-        <span style="color:var(--ms-ink-muted)">Key</span><span style="color:var(--ms-gold);font-weight:700">${_e(parsed.key||'—')}</span>
-        <span style="color:var(--ms-ink-muted)">CCLI</span><span>${_e(parsed.ccliNumber||'—')}</span>
-        <span style="color:var(--ms-ink-muted)">Sections</span><span>${parsed.sections||0}</span>
+    <div class="ms-parsed-card">
+      <div class="ms-parsed-title">Parsed</div>
+      <div class="ms-parsed-grid">
+        <span class="ms-parsed-label">Title</span><span class="ms-parsed-strong">${_e(parsed.title||'—')}</span>
+        <span class="ms-parsed-label">Artist</span><span>${_e(parsed.artist||'—')}</span>
+        <span class="ms-parsed-label">Key</span><span class="ms-parsed-key">${_e(parsed.key||'—')}</span>
+        <span class="ms-parsed-label">CCLI</span><span>${_e(parsed.ccliNumber||'—')}</span>
+        <span class="ms-parsed-label">Sections</span><span>${parsed.sections||0}</span>
       </div>
     </div>
-    <div style="font-size:.8rem;color:var(--ms-ink-muted);margin-bottom:8px;">Chart preview</div>
-    <div class="ms-song-content" style="--ms-song-fs:14px;max-height:300px;overflow-y:auto;background:var(--ms-bg-card);padding:14px;border-radius:var(--ms-r-md);">
+    <div class="ms-chart-preview-label">Chart preview</div>
+    <div class="ms-song-content ms-chart-preview-box">
       ${_renderChordPro(rawText)}
     </div>`;
 }
@@ -1529,7 +1528,7 @@ function _keyOptions(selected = 'C') {
 
 function _renderSettings(main) {
   main.innerHTML = `
-    <div class="ms-view ms-dash" style="max-width:640px;">
+    <div class="ms-view ms-dash ms-settings-wrap">
       <div class="ms-page-hero ms-dash-hero">
         <div class="ms-page-hero-text">
           <div class="ms-dash-eyebrow">FlockStand · Settings</div>
@@ -1538,59 +1537,59 @@ function _renderSettings(main) {
         </div>
       </div>
 
-      <div class="ms-dash-action" style="display:block;cursor:default;margin-bottom:20px;">
-        <h2 style="color:var(--dash-gold);font-size:1.1rem;margin-bottom:16px;letter-spacing:0.06em;">Display</h2>
-        <div class="ms-field" style="margin-bottom:16px;">
+      <div class="ms-dash-action ms-dash-action--plain ms-settings-card">
+        <h2 class="ms-settings-heading">Display</h2>
+        <div class="ms-field ms-spaced-md">
           <div class="ms-label">Default Song Font Size</div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <input type="range" id="set-fs" min="13" max="30" step="1" value="${S.prefs.defaultFontSize}" style="flex:1;accent-color:var(--ms-gold)">
-            <span id="set-fs-val" style="min-width:32px;font-family:var(--ms-mono);color:var(--ms-gold);font-weight:700">${S.prefs.defaultFontSize}px</span>
+          <div class="ms-setting-row">
+            <input class="ms-setting-range" type="range" id="set-fs" min="13" max="30" step="1" value="${S.prefs.defaultFontSize}">
+            <span id="set-fs-val" class="ms-setting-value">${S.prefs.defaultFontSize}px</span>
           </div>
         </div>
-        <div class="ms-field" style="margin-bottom:16px;">
-          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
-            <input type="checkbox" id="set-show-chords" ${S.prefs.showChords ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--ms-gold)">
+        <div class="ms-field ms-spaced-md">
+          <label class="ms-setting-label">
+            <input class="ms-setting-check" type="checkbox" id="set-show-chords" ${S.prefs.showChords ? 'checked' : ''}>
             <span>Show chord names above lyrics</span>
           </label>
         </div>
-        <div class="ms-field" style="margin-bottom:16px;">
-          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
-            <input type="checkbox" id="set-show-diagrams" ${S.prefs.showDiagrams ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--ms-gold)">
+        <div class="ms-field ms-spaced-md">
+          <label class="ms-setting-label">
+            <input class="ms-setting-check" type="checkbox" id="set-show-diagrams" ${S.prefs.showDiagrams ? 'checked' : ''}>
             <span>Show chord diagrams (guitar)</span>
           </label>
         </div>
-        <div class="ms-field" style="margin-bottom:16px;">
-          <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
-            <input type="checkbox" id="set-nns" ${S.prefs.nnsMode ? 'checked' : ''} style="width:18px;height:18px;accent-color:var(--ms-gold)">
+        <div class="ms-field ms-spaced-md">
+          <label class="ms-setting-label">
+            <input class="ms-setting-check" type="checkbox" id="set-nns" ${S.prefs.nnsMode ? 'checked' : ''}>
             <span>Nashville Number System (NNS) mode</span>
           </label>
         </div>
       </div>
 
-      <div class="ms-dash-action" style="display:block;cursor:default;margin-bottom:20px;">
-        <h2 style="color:var(--dash-gold);font-size:1.1rem;margin-bottom:16px;letter-spacing:0.06em;">Live Presenter</h2>
-        <div class="ms-field" style="margin-bottom:16px;">
+      <div class="ms-dash-action ms-dash-action--plain ms-settings-card">
+        <h2 class="ms-settings-heading">Live Presenter</h2>
+        <div class="ms-field ms-spaced-md">
           <div class="ms-label">Live Mode Font Size</div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <input type="range" id="set-live-fs" min="18" max="60" step="2" value="${S.liveFontSize}" style="flex:1;accent-color:var(--ms-gold)">
-            <span id="set-live-fs-val" style="min-width:32px;font-family:var(--ms-mono);color:var(--ms-gold);font-weight:700">${S.liveFontSize}px</span>
+          <div class="ms-setting-row">
+            <input class="ms-setting-range" type="range" id="set-live-fs" min="18" max="60" step="2" value="${S.liveFontSize}">
+            <span id="set-live-fs-val" class="ms-setting-value">${S.liveFontSize}px</span>
           </div>
         </div>
       </div>
 
-      <div class="ms-dash-action" style="display:block;cursor:default;">
-        <h2 style="color:var(--dash-gold);font-size:1.1rem;margin-bottom:16px;letter-spacing:0.06em;">Account</h2>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:var(--ms-r-lg);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div class="ms-dash-action ms-dash-action--plain">
+        <h2 class="ms-settings-heading">Account</h2>
+        <div class="ms-account-box">
           <div>
-            <div style="font-weight:700">${_e(S.user?.displayName || 'Worship Team')}</div>
-            <div style="font-size:.82rem;color:rgba(255,255,255,0.65)">${_e(S.user?.email || '')}</div>
-            <div style="font-size:.75rem;color:rgba(255,255,255,0.45);margin-top:2px;text-transform:capitalize">${_e(S.user?.role || 'member')}</div>
+            <div class="ms-account-name">${_e(S.user?.displayName || 'Worship Team')}</div>
+            <div class="ms-account-email">${_e(S.user?.email || '')}</div>
+            <div class="ms-account-role">${_e(S.user?.role || 'member')}</div>
           </div>
           <button class="ms-btn ms-btn--danger ms-btn--sm" id="set-signout">Sign Out</button>
         </div>
       </div>
 
-      <div style="margin-top:4px;">
+      <div class="ms-top-space-xs">
         <button class="ms-btn ms-btn--primary" id="set-save">Save Settings</button>
       </div>
     </div>
@@ -1692,11 +1691,11 @@ function _renderLiveOverlay(overlay) {
     const full = S.songs.find(s => s.id === song.songId || s.title === song.title);
     const rawText = full?.chordSheet || song.chordSheet || song.lyricsWithChords || '';
     const transposed = rawText ? _transposeChordPro(rawText, S.liveSemitones) : '';
-    chordHtml = transposed ? _renderChordPro(transposed, { showChords: S.prefs.showChords }) : `<div class="ms-empty-content" style="color:rgba(255,255,255,.4)">No chord chart for this song.</div>`;
+    chordHtml = transposed ? _renderChordPro(transposed, { showChords: S.prefs.showChords }) : `<div class="ms-empty-content ms-empty-content--muted">No chord chart for this song.</div>`;
   } else if (!plan) {
-    chordHtml = `<div class="ms-empty-content" style="color:rgba(255,255,255,.4);padding:60px 20px;text-align:center;">
+    chordHtml = `<div class="ms-empty-content ms-empty-content--muted ms-empty-content--center">
       No active service plan.<br>
-      <button class="ms-btn ms-btn--ghost" id="live-go-services" style="margin-top:16px;">Select a Service Plan</button>
+      <button class="ms-btn ms-btn--ghost ms-top-space-md" id="live-go-services">Select a Service Plan</button>
     </div>`;
   }
 
@@ -1708,8 +1707,8 @@ function _renderLiveOverlay(overlay) {
     <div class="ms-live-topbar" id="live-topbar">
       <button class="ms-live-close" id="live-close">✕ Exit</button>
       <div class="ms-live-title">${song ? _e(song.title||song.songTitle||'') : (plan ? _e(plan.serviceType||'Service') : 'FlockStand')}</div>
-      ${song ? `<div class="ms-live-key-display" id="live-key-display">${_e(currentKey)}${S.liveSemitones !== 0 ? ` <span style="font-size:.6em;color:rgba(255,255,255,.5)">(orig ${_e(origKey)})</span>` : ''}</div>` : ''}
-      ${total > 0 ? `<div style="color:rgba(255,255,255,.5);font-size:.8rem;white-space:nowrap">${idx+1} / ${total}</div>` : ''}
+      ${song ? `<div class="ms-live-key-display" id="live-key-display">${_e(currentKey)}${S.liveSemitones !== 0 ? ` <span class="ms-live-orig-key">(orig ${_e(origKey)})</span>` : ''}</div>` : ''}
+      ${total > 0 ? `<div class="ms-live-count">${idx+1} / ${total}</div>` : ''}
     </div>
 
     <!-- Chord / lyric content -->
@@ -1721,19 +1720,19 @@ function _renderLiveOverlay(overlay) {
     <div class="ms-live-bottombar">
       <!-- Prev / Next -->
       ${total > 1 ? `
-        <button class="ms-live-fs-btn" id="live-prev" title="Previous song (←)" ${idx === 0 ? 'disabled style="opacity:.4"' : ''}>◀</button>
+        <button class="ms-live-fs-btn${idx === 0 ? ' is-dimmed' : ''}" id="live-prev" title="Previous song (←)" ${idx === 0 ? 'disabled' : ''}>◀</button>
       ` : ''}
 
       <!-- Transpose -->
-      <div style="display:flex;align-items:center;gap:6px;">
+      <div class="ms-live-control-group">
         <button class="ms-live-fs-btn" id="live-trans-down" title="Transpose down (↓)">♭</button>
-        <span style="font-family:var(--ms-mono);color:var(--ms-gold);font-size:.85rem;min-width:20px;text-align:center">${S.liveSemitones > 0 ? '+'+S.liveSemitones : S.liveSemitones || '0'}</span>
+        <span class="ms-live-transpose-value">${S.liveSemitones > 0 ? '+'+S.liveSemitones : S.liveSemitones || '0'}</span>
         <button class="ms-live-fs-btn" id="live-trans-up" title="Transpose up (↑)">♯</button>
-        <button class="ms-live-fs-btn" id="live-trans-reset" title="Reset transpose" style="${S.liveSemitones === 0 ? 'opacity:.4' : ''}">✕</button>
+        <button class="ms-live-fs-btn${S.liveSemitones === 0 ? ' is-dimmed' : ''}" id="live-trans-reset" title="Reset transpose">✕</button>
       </div>
 
       <!-- Font size -->
-      <div style="display:flex;align-items:center;gap:4px;">
+      <div class="ms-live-control-group ms-live-control-group--tight">
         <button class="ms-live-fs-btn" id="live-font-down" title="Smaller text">A-</button>
         <button class="ms-live-fs-btn" id="live-font-up" title="Larger text">A+</button>
       </div>
@@ -1748,12 +1747,16 @@ function _renderLiveOverlay(overlay) {
 
       <!-- Progress bar -->
       <div class="ms-live-progress">
-        <div class="ms-live-progress-bar" style="width:${total > 0 ? ((idx/(total-1||1))*100).toFixed(1) : 0}%"></div>
+        <div class="ms-live-progress-bar" data-progress="${total > 0 ? ((idx/(total-1||1))*100).toFixed(1) : 0}"></div>
       </div>
 
-      ${total > 1 ? `<button class="ms-live-fs-btn" id="live-next" title="Next song (→)" ${idx >= total-1 ? 'disabled style="opacity:.4"' : ''}>▶</button>` : ''}
+      ${total > 1 ? `<button class="ms-live-fs-btn${idx >= total-1 ? ' is-dimmed' : ''}" id="live-next" title="Next song (→)" ${idx >= total-1 ? 'disabled' : ''}>▶</button>` : ''}
     </div>
   `;
+
+  overlay.querySelectorAll('.ms-live-progress-bar[data-progress]').forEach(bar => {
+    bar.style.width = `${Number(bar.dataset.progress) || 0}%`;
+  });
 
   // Wire controls
   overlay.querySelector('#live-close')?.addEventListener('click', _closeLiveMode);

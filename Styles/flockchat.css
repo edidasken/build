@@ -2131,10 +2131,6 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; line-height: 1;
 }
-/* Dark mode overrides */
-[data-theme="dark"] .fc-pinned-section { background: var(--fc-panel); }
-[data-theme="dark"] .fc-pinned-badge { border-color: var(--fc-panel); }
-
 .fc-conv-icon {
   width: 50px; height: 50px;
   border-radius: 16px;
@@ -2575,6 +2571,29 @@ body {
 }
 .fc-mgr-add-btn:disabled { opacity: 0.4; cursor: default; }
 .fc-mgr-add-btn:not(:disabled):hover { opacity: 0.88; }
+.fc-mgr-mode-pad { padding: 14px 20px 0; }
+.fc-mgr-section--spaced { margin-top: 10px; }
+.fc-mgr-section-count {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.7;
+  text-transform: none;
+}
+.fc-mgr-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px 8px;
+}
+.fc-mgr-add-row { padding: 10px 20px 4px; }
+.fc-mgr-avatar--small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+}
+.fc-mgr-avatar--banned {
+  background: linear-gradient(135deg, #3b0d1e, #f43f5e);
+}
 
 /* ─── Info Channel Pins ──────────────────────────────────────────── */
 .fc-pinned-bubble.info-flockchat { background: linear-gradient(145deg, #0f172a, #1e3a5f); border-color: rgba(59,130,246,.2); }
@@ -2626,6 +2645,11 @@ body {
 }
 .fc-flocknews-card.fc-flocknews-empty {
   opacity: 0.6;
+}
+.fc-flocknews-empty-copy {
+  padding: 20px;
+  color: var(--ink-muted);
+  font-size: 14px;
 }
 .fc-flocknews-header {
   display: flex;
@@ -2843,6 +2867,7 @@ body {
 .fc-sct-reply-btn      { padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--fc-divider); background: transparent; color: var(--fc-text-muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
 .fc-sct-reply-btn:hover { background: rgba(0,0,0,0.05); }
 .fc-sct-reply-block    { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+.fc-sct-reply-block.fc-hidden { display: none; }
 .fc-sct-reply-area     { width: 100%; border-radius: 12px; border: 1.5px solid var(--fc-divider); padding: 10px 12px; font-size: 0.9rem; line-height: 1.5; color: var(--fc-text); background: var(--fc-bg); resize: vertical; font-family: inherit; box-sizing: border-box; }
 .fc-sct-reply-area:focus { outline: none; border-color: var(--herald-gold-deep); }
 .fc-sct-reply-actions  { display: flex; gap: 8px; justify-content: flex-end; }
@@ -2852,6 +2877,11 @@ body {
 .fc-sct-word-empty   { text-align: center; padding: 32px 16px; }
 .fc-sct-word-icon    { margin-bottom: 12px; }
 .fc-sct-word-empty p { color: var(--fc-text-muted); font-size: 0.9rem; }
+.fc-sct-word-empty-note {
+  margin-top: 8px;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
 .fc-sct-passages      { display: flex; flex-direction: column; gap: 8px; }
 .fc-sct-passage       { background: rgba(0,0,0,0.03); border-radius: 10px; border-left: 4px solid var(--herald-cyan); padding: 10px 12px; }
 .fc-sct-passage-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--herald-cyan); margin-bottom: 3px; }

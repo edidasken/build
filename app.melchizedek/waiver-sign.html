@@ -42,7 +42,7 @@
     </div>
 
     <!-- Sign pad view -->
-    <div id="view-sign" style="display:none">
+    <div id="view-sign" class="ws-hidden">
       <div class="ws-card-title" id="sign-title">Sign Annual Waiver</div>
 
       <!-- Waiver text -->
@@ -51,8 +51,8 @@
       </div>
 
       <!-- Signature pad -->
-      <div style="margin-bottom:4px">
-        <label style="display:block;font:600 0.75rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">
+      <div class="ws-signature-pad-field">
+        <label class="ws-signature-label">
           Signature — draw below
         </label>
         <div class="sig-wrap" id="sig-wrap">
@@ -89,13 +89,13 @@
     </div>
 
     <!-- Already signed view -->
-    <div id="view-already" style="display:none">
+    <div id="view-already" class="ws-hidden">
       <div class="ws-already">
         <div class="ws-icon">✅</div>
         <div class="ws-done-title">Waiver Already Signed</div>
         <p class="ws-subtitle">This member has already completed their annual authorization.</p>
         <div class="ws-meta-row" id="already-meta"></div>
-        <div id="already-sig" class="ws-sig-preview" style="display:none"></div>
+        <div id="already-sig" class="ws-sig-preview ws-hidden"></div>
         <div class="ws-btn-row">
           <button class="ws-btn ws-btn--primary" id="download-pdf-already" type="button">Download PDF</button>
           <button class="ws-btn ws-btn--ghost" id="re-sign-btn" type="button">Re-Sign (Renewal)</button>
@@ -104,7 +104,7 @@
     </div>
 
     <!-- Success view -->
-    <div id="view-done" style="display:none">
+    <div id="view-done" class="ws-hidden">
       <div class="ws-done">
         <div class="ws-icon">🎉</div>
         <div class="ws-done-title">Waiver Signed & Recorded</div>
@@ -114,15 +114,15 @@
         <div class="ws-btn-row">
           <button class="ws-btn ws-btn--primary" id="download-pdf-done" type="button">Download Signed PDF</button>
         </div>
-        <div id="email-status" class="ws-email-note" style="display:none">
+        <div id="email-status" class="ws-email-note ws-hidden">
           ✉️ Confirmation email sent
         </div>
-        <p class="ws-notice" style="margin-top:16px">You may close this tab. The signed record is stored in Safety.</p>
+        <p class="ws-notice ws-notice--spaced">You may close this tab. The signed record is stored in Safety.</p>
       </div>
     </div>
 
     <!-- Error view -->
-    <div id="view-error" style="display:none">
+    <div id="view-error" class="ws-hidden">
       <div class="ws-error">
         <div class="ws-icon">⚠️</div>
         <div class="ws-error-title" id="error-title">Something went wrong</div>
@@ -173,7 +173,7 @@
   // ── Show/hide views ───────────────────────────────────────────────────────
   function _show(id) {
     ['view-loading','view-sign','view-already','view-done','view-error']
-      .forEach(v => document.getElementById(v).style.display = v === id ? '' : 'none');
+      .forEach(v => _setHidden(document.getElementById(v), v !== id));
   }
 
   function _err(title, msg) {
@@ -312,6 +312,10 @@
     return d.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
   }
 
+  function _setHidden(el, hidden) {
+    if (el) el.classList.toggle('ws-hidden', !!hidden);
+  }
+
   // ── Build signed PDF ──────────────────────────────────────────────────────
   function _buildSignedPDF(member, check, org) {
     const dname     = member.firstName
@@ -319,40 +323,19 @@
       : member.displayName || member.name || member.email || 'Member';
     const today     = _fmtDate(check.waiverSignedDate) || new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
     const sigImg    = check.waiverSignature
-      ? `<img src="${check.waiverSignature}" style="max-height:60px;max-width:280px;display:block;margin:4px 0">`
+      ? `<img class="esig-img" src="${check.waiverSignature}" alt="Signature">`
       : '';
     const sigName   = check.waiverSignedName || dname;
     const memberNo  = member.memberNumber || member.id || '';
     const dob       = check.dateOfBirth || member.dateOfBirth || member.dob || '';
+    const printCssHref = new URL('Styles/safety-print.css', document.baseURI).href;
 
     return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <title>AB-506 Annual Waiver — ${_e(dname)}</title>
-<style>
-  @page { size:letter; margin:.85in 1in; }
-  *{box-sizing:border-box}
-  body{font-family:'Times New Roman',Times,serif;font-size:11pt;line-height:1.55;color:#111;background:#fff;margin:0;padding:24px 32px}
-  .header{text-align:center;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:20px}
-  .org-name{font-size:16pt;font-weight:bold;letter-spacing:.04em;text-transform:uppercase}
-  .doc-title{font-size:13pt;font-weight:bold;margin-top:6px}
-  .doc-sub{font-size:10pt;color:#444;margin-top:2px}
-  .member-box{background:#f8f8f8;border:1px solid #ccc;border-radius:4px;padding:12px 16px;margin-bottom:18px;line-height:1.8}
-  .section{margin-bottom:18px}
-  .sec-title{font-weight:bold;font-size:11pt;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #aaa;margin-bottom:8px;padding-bottom:3px}
-  .statutory{font-size:9.5pt;color:#333;background:#f4f4f4;border-left:3px solid #aaa;padding:8px 12px;margin:10px 0;line-height:1.6}
-  .sign-line{display:flex;align-items:flex-end;gap:8px;margin-bottom:12px}
-  .sign-label{flex-shrink:0;min-width:160px;font-size:10pt}
-  .sign-rule{flex:1;border-bottom:1px solid #111;margin-bottom:2px}
-  .esig-block{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:12px 16px;margin-top:8px}
-  .esig-label{font-size:8.5pt;color:#059669;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-  .admin-box{border:1px solid #aaa;border-radius:4px;padding:12px 16px;background:#fcfcfc}
-  .admin-row{display:flex;gap:24px;margin-bottom:10px}
-  .admin-field{flex:1;border-bottom:1px solid #aaa;min-height:22px}
-  .admin-label{font-size:9pt;color:#555;text-transform:uppercase;letter-spacing:.04em}
-  .footer{margin-top:30px;font-size:8.5pt;color:#666;text-align:center;border-top:1px solid #ccc;padding-top:8px}
-  @media print{.no-print{display:none!important}body{padding:0}}
-</style></head><body>
-<div class="no-print" style="text-align:right;margin-bottom:14px">
-  <button onclick="window.print()" style="padding:8px 20px;font:bold 11pt sans-serif;background:#1b264f;color:#fff;border:none;border-radius:6px;cursor:pointer">Save as PDF / Print</button>
+<link rel="stylesheet" href="${printCssHref}">
+</head><body>
+<div class="no-print print-actions">
+  <button class="print-button" onclick="window.print()">Save as PDF / Print</button>
 </div>
 <div class="header">
   <div class="org-name">${_e(org)}</div>
@@ -370,7 +353,7 @@
 <p>This authorization is required under California AB 506 (BPC §18975) for any person with direct contact with minors in a youth-serving organization. This authorization is valid for one (1) year and must be renewed annually.</p></div>
 <div class="section"><div class="sec-title">2. Statutory Disclosure (BPC §18975)</div>
 <div class="statutory">California BPC §18975 requires youth-serving organizations to conduct criminal background checks on employees and volunteers who have direct contact with minors. A disqualifying offense may result in prohibition from direct contact with minors.</div>
-<p style="margin-left:20px">I understand and acknowledge the above disclosure and consent to the background check described herein.</p></div>
+<p class="indent-copy">I understand and acknowledge the above disclosure and consent to the background check described herein.</p></div>
 <div class="section"><div class="sec-title">3. DOJ Subsequent Arrest Notification (SAN)</div>
 <p>I consent to enrollment in the California DOJ SAN program for the duration of my service, which provides notifications to the Organization if I am arrested for a qualifying offense.</p></div>
 <div class="section"><div class="sec-title">4. Child Safety Policy Acknowledgment</div>
@@ -382,11 +365,11 @@ ${sigImg ? `
 <div class="esig-block">
   <div class="esig-label">✅ Electronically Signed</div>
   ${sigImg}
-  <div style="font-size:9.5pt;margin-top:6px"><strong>Printed Name:</strong> ${_e(sigName)}</div>
-  <div style="font-size:9.5pt"><strong>Date:</strong> ${_e(today)}</div>
-  <div style="font-size:8.5pt;color:#555;margin-top:4px">This electronic signature was captured and recorded via the Safety compliance system. The signature image and timestamp are stored in the Organization's secure database.</div>
+  <div class="esig-name"><strong>Printed Name:</strong> ${_e(sigName)}</div>
+  <div class="esig-date"><strong>Date:</strong> ${_e(today)}</div>
+  <div class="esig-note">This electronic signature was captured and recorded via the Safety compliance system. The signature image and timestamp are stored in the Organization's secure database.</div>
 </div>` : `
-<div style="margin-top:8px">
+<div class="manual-signatures">
   <div class="sign-line"><span class="sign-label">Volunteer/Staff Signature:</span><span class="sign-rule"></span></div>
   <div class="sign-line"><span class="sign-label">Printed Name:</span><span class="sign-rule"></span></div>
   <div class="sign-line"><span class="sign-label">Date:</span><span class="sign-rule"></span></div>
@@ -441,7 +424,7 @@ ${sigImg ? `
       fetch(url.toString(), { method: 'GET', mode: 'no-cors' })
         .then(() => {
           const el = document.getElementById('email-status');
-          if (el) el.style.display = 'inline-flex';
+          _setHidden(el, false);
         })
         .catch(() => {});
     } catch (_) {}
@@ -505,7 +488,7 @@ ${sigImg ? `
 
       const sigEl = document.getElementById('already-sig');
       sigEl.innerHTML = `<img src="${checkDoc.waiverSignature}" alt="Signature">`;
-      sigEl.style.display = 'inline-block';
+      _setHidden(sigEl, false);
 
       document.getElementById('download-pdf-already').addEventListener('click', () =>
         _openPDF(memberDoc, checkDoc, org));
@@ -591,7 +574,7 @@ ${sigImg ? `
           <div class="value">${_e(org)}</div>
         </div>`;
 
-      document.getElementById('done-sig').innerHTML = `<img src="${sig}" alt="Signature" style="max-height:60px">`;
+      document.getElementById('done-sig').innerHTML = `<img class="ws-sig-img-small" src="${sig}" alt="Signature">`;
 
       document.getElementById('download-pdf-done').addEventListener('click', () =>
         _openPDF(memberDoc, { ...checkDoc, waiverSignature: sig, waiverSignedName: name }, org));

@@ -2473,7 +2473,7 @@
               <button class="fc-sct-complete-btn${done ? ' done' : ''}" onclick="window._sctCompleteDevo('${key}',this)">${done ? '\u2713 Completed' : 'Mark Complete'}</button>
               <button class="fc-sct-reply-btn" onclick="window._sctReplyOpen('devo','${key}')">+ Add Note</button>
             </div>
-            <div class="fc-sct-reply-block" id="fc-sct-reply-devo-${key}" data-title="${_e(title)}" style="display:none">
+            <div class="fc-sct-reply-block fc-hidden" id="fc-sct-reply-devo-${key}" data-title="${_e(title)}">
               <textarea class="fc-sct-reply-area" placeholder="Write your reflection for your journal..." rows="3"></textarea>
               <div class="fc-sct-reply-actions">
                 <button class="fc-sct-reply-save" onclick="window._sctReplySave('devo','${key}')">Save to Journal</button>
@@ -2574,7 +2574,7 @@
               <button class="fc-sct-complete-btn fc-sct-complete-read${done ? ' done' : ''}" onclick="window._sctCompleteRead(${dayNum},this)">${done ? '\u2713 Completed' : 'Mark Complete'}</button>
               <button class="fc-sct-reply-btn" onclick="window._sctReplyOpen('read','${dayNum}')">+ Add Note</button>
             </div>
-            <div class="fc-sct-reply-block" id="fc-sct-reply-read-${dayNum}" data-title="${_e(dayLabel)}" style="display:none">
+            <div class="fc-sct-reply-block fc-hidden" id="fc-sct-reply-read-${dayNum}" data-title="${_e(dayLabel)}">
               <textarea class="fc-sct-reply-area" placeholder="Write your reading notes for your journal..." rows="3"></textarea>
               <div class="fc-sct-reply-actions">
                 <button class="fc-sct-reply-save" onclick="window._sctReplySave('read','${dayNum}')">Save to Journal</button>
@@ -2682,14 +2682,14 @@
   window._sctReplyOpen = function(type, key) {
     const block = document.getElementById('fc-sct-reply-' + type + '-' + key);
     if (!block) return;
-    block.style.display = '';
+    block.classList.remove('fc-hidden');
     block.querySelector('.fc-sct-reply-area').focus();
   };
 
   window._sctReplyCancel = function(type, key) {
     const block = document.getElementById('fc-sct-reply-' + type + '-' + key);
     if (!block) return;
-    block.style.display = 'none';
+    block.classList.add('fc-hidden');
     block.querySelector('.fc-sct-reply-area').value = '';
   };
 
@@ -3445,7 +3445,7 @@
 
     // ── Access mode toggle ──
     html += `
-      <div style="padding:14px 20px 0;">
+      <div class="fc-mgr-mode-pad">
         <div class="fc-mgr-mode-row">
           <button class="fc-mgr-mode-btn${accessMode === 'open' ? ' active' : ''}"
                   onclick="window._setChannelMode('open')">🌐 Open</button>
@@ -3460,7 +3460,7 @@
       </div>`;
 
     // ── Current members ──
-    html += `<div class="fc-mgr-section" style="margin-top:10px">Current Members ${memberUids.length > 0 ? `<span style="font-weight:400;text-transform:none;font-size:0.8rem;opacity:0.7">(${memberUids.length})</span>` : ''}</div>`;
+    html += `<div class="fc-mgr-section fc-mgr-section--spaced">Current Members ${memberUids.length > 0 ? `<span class="fc-mgr-section-count">(${memberUids.length})</span>` : ''}</div>`;
     if (memberUsers.length === 0) {
       html += `<div class="fc-mgr-empty">${accessMode === 'private' ? 'No members added yet — channel is hidden from all.' : 'No explicit members. Channel is open to all.'}</div>`;
     } else {
@@ -3483,8 +3483,8 @@
     // ── Add members picker ──
     const addable = allUsers.filter(u => !memberUids.includes(u.uid) && !bannedUids.includes(u.uid));
     html += `
-      <div class="fc-mgr-section" style="margin-top:10px">Add Members</div>
-      <div style="padding:6px 20px 8px; display:flex; gap:8px; align-items:center;">
+      <div class="fc-mgr-section fc-mgr-section--spaced">Add Members</div>
+      <div class="fc-mgr-search-row">
         <input id="fc-mgr-search" class="fc-mgr-search" type="search"
                placeholder="Search by name or email…"
                oninput="window._filterMgrList(this)">
@@ -3499,7 +3499,7 @@
           <label class="fc-mgr-user-item" data-name="${_e(u.name.toLowerCase())}" data-email="${_e(u.email.toLowerCase())}" data-pin="${_e(u.pin||'')}">
             <input type="checkbox" class="fc-mgr-check"
                    onchange="window._toggleMgrSelect('${_e(u.uid)}')" value="${_e(u.uid)}">
-            <div class="fc-mgr-avatar" style="width:32px;height:32px;font-size:0.75rem">${_initials(u.name)}</div>
+            <div class="fc-mgr-avatar fc-mgr-avatar--small">${_initials(u.name)}</div>
             <div class="fc-mgr-member-info">
               <div class="fc-mgr-member-name">${_e(u.name)}</div>
               <div class="fc-mgr-member-sub">${u.pin ? 'PIN ' + _e(u.pin) : _e(u.email || '')}</div>
@@ -3508,7 +3508,7 @@
       });
     }
     html += `</div>
-      <div style="padding:10px 20px 4px;">
+      <div class="fc-mgr-add-row">
         <button id="fc-mgr-add-btn" class="fc-mgr-add-btn" disabled
                 onclick="window._adminAddSelected()">
           Add Members
@@ -3516,14 +3516,14 @@
       </div>`;
 
     // ── Banned members ──
-    html += `<div class="fc-mgr-section" style="margin-top:10px">Removed / Banned</div>`;
+    html += `<div class="fc-mgr-section fc-mgr-section--spaced">Removed / Banned</div>`;
     if (bannedUsers.length === 0) {
       html += `<div class="fc-mgr-empty">No one has been banned.</div>`;
     } else {
       bannedUsers.forEach(u => {
         html += `
           <div class="fc-mgr-member">
-            <div class="fc-mgr-avatar" style="background:linear-gradient(135deg,#3b0d1e,#f43f5e)">${_initials(u.name)}</div>
+            <div class="fc-mgr-avatar fc-mgr-avatar--banned">${_initials(u.name)}</div>
             <div class="fc-mgr-member-info">
               <div class="fc-mgr-member-name">${_e(u.name)}</div>
               <div class="fc-mgr-member-sub">${u.pin ? 'PIN ' + _e(u.pin) : _e(u.email || '')}</div>
@@ -3876,7 +3876,7 @@
               </svg>
             </div>
             <p>No FlockNews content available for the last 7 days.</p>
-            <p style="font-size: 14px; color: var(--ink-muted); margin-top: 8px;">
+            <p class="fc-sct-word-empty-note">
               Check back later for daily spiritual content.
             </p>
           </div>
@@ -3896,7 +3896,7 @@
         return `
           <div class="fc-flocknews-card fc-flocknews-empty">
             <div class="fc-flocknews-date">${dateStr}</div>
-            <p style="color: var(--ink-muted); font-size: 14px; padding: 20px;">No content available for this day.</p>
+            <p class="fc-flocknews-empty-copy">No content available for this day.</p>
           </div>`;
       }
 

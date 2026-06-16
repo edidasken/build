@@ -258,6 +258,115 @@ body.ws-pin-locked .ws-shell {
   gap: 1.5rem;
 }
 
+.ws-copy {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.ws-info-spaced {
+  margin-top: 1.25rem;
+}
+
+.ws-info-list {
+  margin-top: 0.5rem;
+  padding-left: 1.25rem;
+  line-height: 1.7;
+}
+
+.ws-info-list li {
+  margin-bottom: 0.5rem;
+}
+
+.ws-info-list li:last-child {
+  margin-bottom: 0;
+}
+
+.ws-quote-callout {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--ws-gold);
+  border-radius: 0 12px 12px 0;
+  background: rgba(232,168,56,0.06);
+  color: rgba(238,241,251,0.92);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.75;
+}
+
+.ws-hidden {
+  display: none;
+}
+
+.ws-loading-text,
+.ws-top-space {
+  margin-top: 1rem;
+}
+
+.ws-vault-info {
+  margin-bottom: 1rem;
+}
+
+.ws-inline-form {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ws-stack-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ws-url-input,
+.ws-vault-input {
+  padding: 0.75rem;
+  border: 1px solid var(--color-line, #e2e8f0);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.ws-url-input,
+.ws-vault-input--flex {
+  flex: 1;
+}
+
+.ws-no-shrink {
+  flex-shrink: 0;
+}
+
+.ws-muted-copy {
+  margin-bottom: 1rem;
+  color: var(--ws-ink-muted);
+  font-size: 0.9rem;
+}
+
+.ws-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--bg);
+  transition: opacity 400ms, visibility 400ms;
+}
+
+.ws-boot-icon {
+  margin-bottom: 16px;
+  font-size: 3rem;
+}
+
+.ws-boot-title {
+  color: var(--ink);
+  font: 700 1.4rem var(--font-ui, sans-serif);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
 /* ── Hero ───────────────────────────────────────────────────── */
 .ws-hero {
   position: relative;

@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Mount app
-    document.getElementById('melch-boot').style.display = 'none';
+    document.getElementById('melch-boot')?.classList.add('ws-hidden');
     document.getElementById('melch-app').hidden = false;
 
     _wireNav();
@@ -102,13 +102,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 /* ── Boot error ─────────────────────────────────────────────────────────── */
 function _showBootError(err) {
-  document.getElementById('melch-boot').style.display = 'none';
+  document.getElementById('melch-boot')?.classList.add('ws-hidden');
   document.body.insertAdjacentHTML('beforeend', `
-    <div style="position:fixed;inset:0;z-index:9000;display:flex;align-items:center;justify-content:center;background:var(--bg,#0e1628);padding:24px">
-      <div style="background:var(--bg-raised,#fff);border-radius:16px;padding:36px 28px;max-width:360px;width:100%;text-align:center;box-shadow:0 4px 32px rgba(0,0,0,.18)">
-        <div style="font-size:2.4rem;margin-bottom:12px">⚠️</div>
-        <div style="font:700 1.1rem/1.3 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:8px">Could not load app</div>
-        <div style="font:400 0.87rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:20px">${_e(err?.message || String(err))}</div>
+    <div class="melch-boot-error">
+      <div class="melch-boot-card">
+        <div class="melch-boot-icon">⚠️</div>
+        <div class="melch-boot-title">Could not load app</div>
+        <div class="melch-boot-message">${_e(err?.message || String(err))}</div>
         <button class="flock-btn flock-btn--primary" onclick="location.reload()">Try Again</button>
       </div>
     </div>`);
@@ -278,31 +278,31 @@ function _viewOverview() {
   const lsNone     = total - Object.values(_checksMap).filter(c => c.liveScan?.result).length;
 
   return `
-    <div style="margin-bottom:24px">
-      <div style="font:700 1.4rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Background Checks</div>
-      <div style="font:400 0.88rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">Background checks, waivers, and compliance records for safer ministry.</div>
+    <div class="melch-section-head">
+      <div class="melch-section-title melch-section-title--large">Background Checks</div>
+      <div class="melch-section-subtitle melch-section-subtitle--large">Background checks, waivers, and compliance records for safer ministry.</div>
     </div>
 
-    <div style="font:600 0.82rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">Checkr</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px">
-      ${_statCard('Total Members', total, 'var(--accent,#4a7fa5)')}
-      ${_statCard('Approved', approved, '#059669')}
-      ${_statCard('Not Approved', notApproved, '#dc2626')}
-      ${_statCard('Pending', pending, '#d97706')}
-      ${_statCard('No Check', noCheck, 'var(--ink-muted,#7a7f96)')}
+    <div class="melch-kicker">Checkr</div>
+    <div class="melch-stat-grid">
+      ${_statCard('Total Members', total, 'accent')}
+      ${_statCard('Approved', approved, 'ok')}
+      ${_statCard('Not Approved', notApproved, 'error')}
+      ${_statCard('Pending', pending, 'warn')}
+      ${_statCard('No Check', noCheck, 'muted')}
     </div>
 
-    <div style="font:600 0.82rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">
-      Live Scan <span style="font-weight:400;font-size:.72rem;text-transform:none;letter-spacing:0">— CA DOJ Fingerprint (manual record)</span>
+    <div class="melch-kicker">
+      Live Scan <span class="melch-kicker-note">— CA DOJ Fingerprint (manual record)</span>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:28px">
-      ${_statCard('LS Cleared', lsCleared, '#059669')}
-      ${_statCard('LS Pending', lsPending, '#d97706')}
-      ${_statCard('LS Failed', lsFailed, '#dc2626')}
-      ${_statCard('No Live Scan', lsNone, 'var(--ink-muted,#7a7f96)')}
+    <div class="melch-stat-grid melch-stat-grid--loose">
+      ${_statCard('LS Cleared', lsCleared, 'ok')}
+      ${_statCard('LS Pending', lsPending, 'warn')}
+      ${_statCard('LS Failed', lsFailed, 'error')}
+      ${_statCard('No Live Scan', lsNone, 'muted')}
     </div>
 
-    <div style="font:600 0.82rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted,#7a7f96);margin-bottom:12px">Members Without a Checkr Check</div>
+    <div class="melch-kicker melch-kicker--roomy">Members Without a Checkr Check</div>
     ${_renderMemberList(_allMembers.filter(m => {
       const uid = m.id || m.memberNumber || m.email || '';
       return !_checksMap[uid];
@@ -311,17 +311,17 @@ function _viewOverview() {
   `;
 }
 
-function _statCard(label, count, color) {
+function _statCard(label, count, tone = 'accent') {
   return `
-    <div class="ms-stat-card" style="text-align:center">
-      <div style="font:700 2rem/1 var(--font-ui,sans-serif);color:${color}">${count}</div>
-      <div style="font:500 0.78rem/1.3 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-top:4px">${_e(label)}</div>
+    <div class="ms-stat-card melch-stat-card">
+      <div class="melch-stat-count melch-stat-count--${tone}">${count}</div>
+      <div class="melch-stat-label">${_e(label)}</div>
     </div>`;
 }
 
 function _viewMembers(members) {
   return `
-    <div style="font:700 1.2rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:16px">All Members</div>
+    <div class="melch-section-title melch-section-head--compact">All Members</div>
     ${_renderMemberList(members, { showInitiateBtn: true })}
   `;
 }
@@ -332,18 +332,17 @@ function _viewFiltered(status, title, subtitle) {
     return (_checksMap[uid]?.status || '') === status;
   });
   const parentNotifBanner = status === 'consider' && members.length ? `
-    <div style="padding:14px 16px;background:#fff7ed;border-radius:10px;border-left:4px solid #d97706;
-      margin-bottom:18px;font:400 0.9rem/1.6 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">
-      <strong style="color:#92400e">⚠ Pen. Code §11105.3(c)(1) — Mandatory Parent Notification</strong><br>
+    <div class="melch-warning-banner">
+      <strong class="melch-warning-strong">⚠ Pen. Code §11105.3(c)(1) — Mandatory Parent Notification</strong><br>
       If your organization proceeds with placing any of these individuals in a role supervising minors,
       you are legally required to notify affected parents/guardians in writing at least
       <strong>10 days before that person begins duties</strong>. Use the "Document Notification" button
       on each record to log compliance.
     </div>` : '';
   return `
-    <div style="margin-bottom:20px">
-      <div style="font:700 1.2rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">${_e(title)}</div>
-      <div style="font:400 0.85rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">${_e(subtitle)}</div>
+    <div class="melch-section-head melch-section-head--compact">
+      <div class="melch-section-title">${_e(title)}</div>
+      <div class="melch-section-subtitle">${_e(subtitle)}</div>
     </div>
     ${parentNotifBanner}
     ${members.length
@@ -353,23 +352,22 @@ function _viewFiltered(status, title, subtitle) {
 }
 
 /* ── Member list renderer ────────────────────────────────────────────────── */
-const _AVATAR_COLORS = ['#7c3aed','#0ea5e9','#059669','#c05818','#db2777','#6366f1','#0891b2','#b45309','#be185d','#4f46e5'];
+const _AVATAR_COLORS = ['c0','c1','c2','c3','c4','c5','c6','c7','c8','c9'];
 
 function _viewAbout() {
   return `
-<div style="max-width:780px;padding-bottom:48px">
+<div class="melch-about">
 
   <!-- Header -->
-  <div style="margin-bottom:28px">
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
-      <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#92400e,#e8a838);
-        display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+  <div class="melch-about-hero">
+    <div class="melch-about-hero-row">
+      <div class="melch-about-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/></svg>
       </div>
       <div>
-        <div style="font:700 1.9rem/1.1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">Safety</div>
-        <div style="font:500 1.05rem/1.4 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">
+        <div class="melch-about-title">Safety</div>
+        <div class="melch-about-subtitle">
           Background Check &amp; AB-506 Compliance Management
         </div>
       </div>
@@ -377,18 +375,16 @@ function _viewAbout() {
   </div>
 
   <!-- Safety mandate -->
-  <div style="background:linear-gradient(135deg,#1b264f 0%,#2d3a6b 100%);border-radius:14px;
-    padding:22px 24px;margin-bottom:28px;border-left:4px solid #e8a838">
-    <div style="font:700 0.88rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-      letter-spacing:.1em;color:#e8a838;margin-bottom:10px">The Safety Mandate</div>
-    <p style="font:400 1.15rem/1.75 Georgia,serif;color:#f0f2f8;margin:0 0 12px">
+  <div class="melch-mandate">
+    <div class="melch-mandate-kicker">The Safety Mandate</div>
+    <p class="melch-mandate-copy">
       Ministry care includes wise safeguards for the vulnerable, clear records for leaders, and accountable workflows for everyone who serves.
     </p>
-    <p style="font:400 1.05rem/1.7 Georgia,serif;color:#c9cde0;margin:0">
+    <p class="melch-mandate-copy melch-mandate-copy--secondary">
       Safety brings background checks, annual waivers, mandated reporter training, LiveScan records, and Checkr status into one auditable place.
     </p>
-    <div style="margin-top:14px;font:400 0.95rem/1.6 var(--font-ui,sans-serif);color:#8892b0">
-      <strong style="color:#e8a838">Why it matters:</strong> every worker's fitness to serve should be verified through objective, documented evidence, not assumption.
+    <div class="melch-mandate-note">
+      <strong>Why it matters:</strong> every worker's fitness to serve should be verified through objective, documented evidence, not assumption.
     </div>
   </div>
 
@@ -399,7 +395,7 @@ function _viewAbout() {
     requires every qualifying youth-serving organization to implement a comprehensive child abuse prevention
     program. The transitional exemption previously granted to legacy organizations has expired. Full compliance
     is now mandatory with no exceptions.</p>
-    <div style="display:grid;gap:10px;margin-top:16px">
+    <div class="melch-about-grid">
       ${_aboutCallout('⏱ The Regular Volunteer Threshold',
         '<strong>§18975(e)(1):</strong> A &ldquo;regular volunteer&rdquo; is any person <strong>18 or older</strong> who has direct contact with, or supervision of, children for more than <strong>16 hours per month</strong> or <strong>32 hours per year</strong>. Administrators and paid employees are subject to all requirements regardless of hours.')}
       ${_aboutCallout('📋 Mandated Reporter Training',
@@ -426,14 +422,12 @@ function _viewAbout() {
   ${_aboutSection('2', 'Why Automation — The Case for Safety',
     `<p>Manually tracking AB-506 compliance introduces serious operational and legal risk. Safety
     eliminates that risk by converting every manual step into an automated, auditable workflow.</p>
-    <div style="overflow-x:auto;margin-top:16px">
-      <table style="width:100%;border-collapse:collapse;font:400 0.95rem/1.6 var(--font-ui,sans-serif)">
+    <div class="melch-about-table-wrap">
+      <table class="melch-about-table">
         <thead>
-          <tr style="background:var(--bg-raised,#f5f6fa)">
-            <th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--ink,#1b264f);
-              border-bottom:2px solid var(--line,#e5e7ef);width:50%">Manual Challenge</th>
-            <th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--ink,#1b264f);
-              border-bottom:2px solid var(--line,#e5e7ef)">Safety Solution</th>
+          <tr>
+            <th>Manual Challenge</th>
+            <th>Safety Solution</th>
           </tr>
         </thead>
         <tbody>
@@ -462,19 +456,15 @@ function _viewAbout() {
   ${_aboutSection('3', 'Checkr API &amp; LiveScan Integration',
     `<p>LiveScan satisfies California\'s DOJ fingerprint requirement. Pairing it with the Checkr API delivers
     a comprehensive, modern trust-and-safety framework that goes far beyond a one-time check.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px">
-      <div style="background:var(--bg-raised,#f5f6fa);border-radius:10px;padding:16px;
-        border-top:3px solid #e8a838">
-        <div style="font:700 0.9rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-          letter-spacing:.07em;color:#e8a838;margin-bottom:10px">Checkr API</div>
+    <div class="melch-about-grid melch-about-grid--two">
+      <div class="melch-about-card melch-about-card--gold">
+        <div class="melch-about-card-title">Checkr API</div>
         ${_aboutBullet('Instant Initiation', 'Only a candidate email address is needed to kickstart screening natively from the FlockOS dashboard.')}
         ${_aboutBullet('Continuous Monitoring', 'Checkr\'s data network monitors for post-hire offenses and pushes real-time webhook updates back to FlockOS.')}
         ${_aboutBullet('AI-Powered Adjudication', 'Machine learning classifiers filter non-reportable information per local law, delivering clean Clear / Review statuses.')}
       </div>
-      <div style="background:var(--bg-raised,#f5f6fa);border-radius:10px;padding:16px;
-        border-top:3px solid #4a7fa5">
-        <div style="font:700 0.9rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-          letter-spacing:.07em;color:#4a7fa5;margin-bottom:10px">LiveScan Workflow</div>
+      <div class="melch-about-card melch-about-card--blue">
+        <div class="melch-about-card-title melch-about-card-title--blue">LiveScan Workflow</div>
         ${_aboutBullet('ORI Integration', 'Little Flock\'s DOJ-issued ORI is stored securely; every initiated check outputs a customized BCIA 8016 Request for Live Scan Service form pre-filled with the correct agency data.')}
         ${_aboutBullet('Applicant Tracking', 'Volunteers visit an authorized Live Scan operator with provided documentation. The ATI (Applicant Tracking Identifier) is logged in the Safety record.')}
         ${_aboutBullet('DOJ Clearance Syncing', 'Once the DOJ issues a clearance, Safety updates the worker\'s compliance status, unlocking youth-event scheduling assignments.')}
@@ -486,16 +476,16 @@ function _viewAbout() {
   <!-- Section 4 -->
   ${_aboutSection('4', 'Technical Architecture — The Onboarding Pipeline',
     `<p>Safety transforms a high-risk administrative chore into a seamless, fully auditable pipeline.</p>
-    <div style="margin-top:16px;display:flex;flex-direction:column;gap:0">
-      ${_aboutStep('1', '#e8a838', 'Trigger',
+    <div class="melch-about-steps">
+      ${_aboutStep('1', 'gold', 'Trigger',
         'A FlockOS member is assigned to a youth ministry role, or their attendance tracking hits the AB-506 hour threshold. Safety flags the profile automatically.')}
-      ${_aboutStep('2', '#4a7fa5', 'API Call',
+      ${_aboutStep('2', 'blue', 'API Call',
         'Safety pings the Checkr API via <code>/v1/candidates</code> to initiate the national check and enroll the candidate in continuous monitoring.')}
-      ${_aboutStep('3', '#059669', 'Document Generation',
+      ${_aboutStep('3', 'green', 'Document Generation',
         'A pre-filled LiveScan Form 8016 is generated with Little Flock\'s ORI. Instructions and a link to the California state Mandated Reporter Training portal are sent to the candidate.')}
-      ${_aboutStep('4', '#7c3aed', 'Status Webhooks',
+      ${_aboutStep('4', 'purple', 'Status Webhooks',
         'As Checkr completes screening, it sends a secure <code>check.completed</code> webhook to FlockOS, automatically updating the member\'s dashboard record in real time.')}
-      ${_aboutStep('5', '#1b264f', 'Final Adjudication',
+      ${_aboutStep('5', 'navy', 'Final Adjudication',
         'Leadership reviews the consolidated Safety dashboard — Checkr result and DOJ LiveScan clearance in one view — and approves or flags the worker for follow-up.')}
     </div>`
   )}
@@ -504,7 +494,7 @@ function _viewAbout() {
   ${_aboutSection('5', 'Going Further — How FlockOS Cares for the Little Flock',
     `<p>AB-506 sets the legal floor. Safety is built to go well beyond it — transforming compliance
     from a checklist into a living, breathing layer of pastoral care for every person who serves.</p>
-    <div style="display:grid;gap:10px;margin-top:16px">
+    <div class="melch-about-grid">
       ${_aboutCallout('📡 Hour Threshold Watchdog',
         'FlockOS tracks every member\'s ministry involvement hours in real time. When a volunteer approaches the 16 hr/month or 32 hr/year threshold, Safety flags the profile and opens the compliance workflow — <em>before</em> the legal line is crossed, not after.')}
       ${_aboutCallout('🔔 Dual Continuous Monitoring',
@@ -523,10 +513,8 @@ function _viewAbout() {
   )}
 
   <!-- Footer note -->
-  <div style="margin-top:32px;padding:18px 20px;background:var(--bg-raised,#f5f6fa);
-    border-radius:10px;border-left:3px solid #e8a838;
-    font:400 0.95rem/1.7 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">
-    <strong style="color:var(--ink,#1b264f)">A note on security:</strong> The Checkr API key is
+  <div class="melch-about-footer">
+    <strong>A note on security:</strong> The Checkr API key is
     <em>never</em> called client-side. All Checkr API calls route through a Firebase Cloud Function
     that reads the key server-side, ensuring credentials are never exposed in the browser.
     Access to this module is restricted to pastor and admin roles only.
@@ -537,71 +525,63 @@ function _viewAbout() {
 
 function _aboutSection(num, title, body) {
   return `
-    <div style="margin-bottom:28px">
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px">
-        <span style="font:700 0.88rem/1 var(--font-ui,sans-serif);background:#e8a838;color:#1b264f;
-          border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;
-          justify-content:center;flex-shrink:0">${_e(num)}</span>
-        <span style="font:700 1.2rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${title}</span>
+    <div class="melch-about-section">
+      <div class="melch-about-section-heading">
+        <span class="melch-about-section-num">${_e(num)}</span>
+        <span class="melch-about-section-title">${title}</span>
       </div>
-      <div style="font:400 1rem/1.7 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${body}</div>
+      <div class="melch-about-section-body">${body}</div>
     </div>`;
 }
 
 function _aboutCallout(label, text) {
   return `
-    <div style="background:var(--bg-raised,#f5f6fa);border-radius:8px;padding:12px 14px;
-      display:flex;gap:10px;align-items:flex-start">
-      <span style="font-size:1rem;flex-shrink:0">${label.split(' ')[0]}</span>
+    <div class="melch-about-callout">
+      <span class="melch-about-callout-icon">${label.split(' ')[0]}</span>
       <div>
-        <div style="font:600 0.95rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">
+        <div class="melch-about-callout-title">
           ${_e(label.split(' ').slice(1).join(' '))}
         </div>
-        <div style="font:400 0.92rem/1.55 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">${text}</div>
+        <div class="melch-about-callout-copy">${text}</div>
       </div>
     </div>`;
 }
 
 function _aboutTableRow(challenge, solution) {
   return `
-    <tr style="border-bottom:1px solid var(--line,#e5e7ef)">
-      <td style="padding:10px 14px;color:var(--ink-muted,#7a7f96);vertical-align:top">${challenge}</td>
-      <td style="padding:10px 14px;color:var(--ink,#1b264f);vertical-align:top">${solution}</td>
+    <tr class="melch-about-table-row">
+      <td class="melch-about-table-cell melch-about-table-cell--muted">${challenge}</td>
+      <td class="melch-about-table-cell">${solution}</td>
     </tr>`;
 }
 
 function _aboutBullet(label, text) {
-  return `<div style="margin-bottom:9px">
-    <div style="font:600 0.95rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${_e(label)}</div>
-    <div style="font:400 0.92rem/1.55 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">${text}</div>
+  return `<div class="melch-about-bullet">
+    <div class="melch-about-bullet-title">${_e(label)}</div>
+    <div class="melch-about-bullet-copy">${text}</div>
   </div>`;
 }
 
-function _aboutStep(num, color, label, text) {
+function _aboutStep(num, tone, label, text) {
   const last = num === '5';
   return `
-    <div style="display:flex;gap:14px;align-items:stretch">
-      <div style="display:flex;flex-direction:column;align-items:center;width:36px;flex-shrink:0">
-        <div style="width:36px;height:36px;border-radius:50%;background:${color};
-          display:flex;align-items:center;justify-content:center;flex-shrink:0;
-          font:700 0.92rem var(--font-ui,sans-serif);color:#fff;z-index:1">${_e(num)}</div>
-        ${last ? '' : `<div style="width:2px;flex:1;background:var(--line,#e5e7ef);margin:4px 0"></div>`}
+    <div class="melch-about-step">
+      <div class="melch-about-step-track">
+        <div class="melch-about-step-num melch-about-step-num--${tone}">${_e(num)}</div>
+        ${last ? '' : '<div class="melch-about-step-line"></div>'}
       </div>
-      <div style="padding:4px 0 ${last ? '0' : '20px'};flex:1">
-        <div style="font:700 1rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">${_e(label)}</div>
-        <div style="font:400 0.95rem/1.6 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">${text}</div>
+      <div class="melch-about-step-body${last ? ' melch-about-step-body--last' : ''}">
+        <div class="melch-about-step-title">${_e(label)}</div>
+        <div class="melch-about-step-copy">${text}</div>
       </div>
     </div>`;
 }
 
 function _aboutRefPills(refs) {
-  return `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px">
+  return `<div class="melch-about-ref-list">
     ${refs.map(r =>
       `<a href="${r.url}" target="_blank" rel="noopener"
-        style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;
-          background:var(--bg-raised,#f5f6fa);border:1px solid var(--line,#e5e7ef);
-          border-radius:20px;font:500 0.85rem/1 var(--font-ui,sans-serif);
-          color:#4a7fa5;text-decoration:none;white-space:nowrap">
+        class="melch-about-ref">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
@@ -654,10 +634,10 @@ function _sortBar() {
   const pills = fields.map(f => {
     const active = f.key === _sortField;
     const arrow  = active ? (_sortDir === 'asc' ? ' ↑' : ' ↓') : '';
-    return `<button class="flock-btn flock-btn--sm${active ? ' flock-btn--primary' : ' flock-btn--ghost'}" data-act="sort" data-sort-field="${f.key}" style="min-width:0">${_e(f.label)}${arrow}</button>`;
+    return `<button class="flock-btn flock-btn--sm melch-sort-button${active ? ' flock-btn--primary' : ' flock-btn--ghost'}" data-act="sort" data-sort-field="${f.key}">${_e(f.label)}${arrow}</button>`;
   }).join('');
-  return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:12px">
-    <span style="font:600 0.75rem/1 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);text-transform:uppercase;letter-spacing:.05em;margin-right:4px">Sort:</span>
+  return `<div class="melch-sort-bar">
+    <span class="melch-sort-label">Sort:</span>
     ${pills}
   </div>`;
 }
@@ -665,7 +645,7 @@ function _sortBar() {
 function _renderMemberList(members, opts = {}) {
   if (!members.length) return '<div class="life-empty">No members found.</div>';
   const sorted = _sortedMembers(members);
-  return `${_sortBar()}<div style="display:flex;flex-direction:column;gap:8px">${sorted.map(m => _memberRow(m, opts)).join('')}</div>`;
+  return `${_sortBar()}<div class="melch-member-list">${sorted.map(m => _memberRow(m, opts)).join('')}</div>`;
 }
 
 function _memberRow(p, opts = {}) {
@@ -676,36 +656,27 @@ function _memberRow(p, opts = {}) {
   const email    = (p.email || p.primaryEmail || '').trim();
   const uid      = p.id || p.memberNumber || p.email || '';
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
-  const color    = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
+  const avatar   = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
   const check    = _checksMap[uid] || null;
   const badge    = _statusBadge(check?.status);
 
   return `
-    <div class="melch-member-row" data-member-id="${_e(uid)}" style="
-      display:flex;align-items:center;gap:12px;padding:12px 14px;
-      background:var(--bg-raised,#fff);border-radius:10px;
-      border:1px solid var(--line,#e5e7ef);
-    ">
-      <div style="width:36px;height:36px;border-radius:50%;background:${color};
-        display:flex;align-items:center;justify-content:center;flex-shrink:0;
-        font:700 0.75rem var(--font-ui,sans-serif);color:#fff">
+    <div class="melch-member-row" data-member-id="${_e(uid)}">
+      <div class="melch-avatar melch-avatar--${avatar}">
         ${_e(initials.toUpperCase().slice(0,2))}
       </div>
-      <div style="flex:1;min-width:0">
-        <div style="font:600 0.92rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);
-          white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_e(name)}</div>
-        <div style="font:400 0.78rem/1.4 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);
-          white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${_e(role)}${email ? ' · ' + _e(email) : ''}</div>
+      <div class="melch-member-main">
+        <div class="melch-member-name">${_e(name)}</div>
+        <div class="melch-member-meta">${_e(role)}${email ? ' · ' + _e(email) : ''}</div>
       </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+      <div class="melch-member-actions">
         ${badge}
         ${_liveScanBadge(check?.liveScan)}
-        <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="open-admin-modal"
+        <button class="flock-btn flock-btn--ghost flock-btn--sm melch-manage-btn" data-act="open-admin-modal"
           data-member-id="${_e(uid)}" data-name="${_e(name)}" data-email="${_e(email)}"
           ${opts.showInitiateBtn ? 'data-show-initiate="1"' : ''}
           ${opts.showParentNotif ? 'data-show-parent-notif="1"' : ''}
-          ${check?.invitationUrl ? `data-invitation-url="${_e(check.invitationUrl)}"` : ''}
-          style="font-weight:600">Manage</button>
+          ${check?.invitationUrl ? `data-invitation-url="${_e(check.invitationUrl)}"` : ''}>Manage</button>
       </div>
     </div>`;
 }
@@ -751,9 +722,9 @@ function _ensureAdminModal() {
   if (modal) return modal;
   modal = document.createElement('div');
   modal.id = 'melch-adm-modal';
-  modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:16px';
-  modal.innerHTML = '<div class="melch-adm-card" style="background:var(--surface,#fff);border-radius:16px;width:100%;max-width:400px;max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.22)"></div>';
-  modal.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+  modal.className = 'melch-modal-overlay melch-modal-overlay--admin';
+  modal.innerHTML = '<div class="melch-adm-card"></div>';
+  modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('is-open'); });
   document.body.appendChild(modal);
   return modal;
 }
@@ -774,25 +745,25 @@ function _openAdminModal(btn) {
   const hs    = _hoursStatus(check);
 
   const initials = ((m.firstName?.[0] || dname[0] || '') + (m.lastName?.[0] || dname[1] || '')).toUpperCase().slice(0, 2);
-  const color    = _AVATAR_COLORS[(dname.charCodeAt(0) + (dname.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
-  const san      = check.sanEnrolled ? _statusPill('SAN Enrolled', '#059669') : _statusPill('SAN Not Enrolled', '#7a7f96');
+  const avatar   = _AVATAR_COLORS[(dname.charCodeAt(0) + (dname.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
+  const san      = check.sanEnrolled ? _statusPill('SAN Enrolled', 'ok') : _statusPill('SAN Not Enrolled', 'muted');
   const pn       = check.parentNotif?.sent
-    ? _statusPill('Notif Sent ' + _fmtDate(check.parentNotif.sentDate), '#059669')
-    : _statusPill('No Parent Notif', '#7a7f96');
+    ? _statusPill('Notif Sent ' + _fmtDate(check.parentNotif.sentDate), 'ok')
+    : _statusPill('No Parent Notif', 'muted');
 
   const modal = _ensureAdminModal();
   const card  = modal.querySelector('.melch-adm-card');
 
   card.innerHTML = `
-    <div style="padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border,#e8eaf6)">
-      <div style="width:40px;height:40px;border-radius:50%;background:${color};display:flex;align-items:center;justify-content:center;flex-shrink:0;font:700 0.82rem var(--font-ui,sans-serif);color:#fff">${_e(initials)}</div>
-      <div style="flex:1;min-width:0">
-        <div style="font:700 1rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${_e(dname)}</div>
-        <div style="font:400 0.78rem/1 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.role ? _e(m.role) : ''}${email ? (m.role ? ' · ' : '') + _e(email) : ''}</div>
+    <div class="melch-modal-header">
+      <div class="melch-avatar melch-avatar--large melch-avatar--${avatar}">${_e(initials)}</div>
+      <div class="melch-modal-person">
+        <div class="melch-modal-person-name">${_e(dname)}</div>
+        <div class="melch-modal-person-meta">${m.role ? _e(m.role) : ''}${email ? (m.role ? ' · ' : '') + _e(email) : ''}</div>
       </div>
-      <button data-act="close-adm-modal" style="background:none;border:none;cursor:pointer;font-size:1.2rem;line-height:1;color:var(--ink-muted,#7a7f96);padding:4px 6px;border-radius:6px;flex-shrink:0" aria-label="Close">✕</button>
+      <button class="melch-close-btn" data-act="close-adm-modal" aria-label="Close">✕</button>
     </div>
-    <div style="padding:14px 18px;display:flex;flex-direction:column;gap:0;border-bottom:1px solid var(--border,#e8eaf6)">
+    <div class="melch-adm-rows">
       ${_amRow('Checkr',        _statusBadge(check.status))}
       ${_amRow('Live Scan',     _liveScanBadge(check.liveScan))}
       ${_amRow('Annual Waiver', _statusPill(ws.label, ws.color))}
@@ -801,7 +772,7 @@ function _openAdminModal(btn) {
       ${_amRow('SAN',           san)}
       ${_amRow('Parent Notif',  pn)}
     </div>
-    <div style="padding:14px 18px;display:flex;flex-wrap:wrap;gap:8px">
+    <div class="melch-adm-actions">
       ${showInitiate && email ? `
         <button class="flock-btn flock-btn--primary flock-btn--sm" data-act="modal-initiate-check"
           data-member-id="${_e(uid)}" data-email="${_e(email)}" data-name="${_e(dname)}">
@@ -811,36 +782,34 @@ function _openAdminModal(btn) {
         ${check.liveScan ? 'Update LS' : '+ Live Scan'}
       </button>
       ${(showPNtf || check.status === 'consider') ? `
-        <button class="flock-btn flock-btn--sm" data-act="modal-parent-notif"
-          style="background:${check.parentNotif?.sent ? '#dcfce7' : '#fff7ed'};color:${check.parentNotif?.sent ? '#059669' : '#92400e'};border:1px solid ${check.parentNotif?.sent ? '#bbf7d0' : '#fde68a'}">
+        <button class="flock-btn flock-btn--sm ${check.parentNotif?.sent ? 'melch-notif-btn--sent' : 'melch-notif-btn--needed'}" data-act="modal-parent-notif">
           ${check.parentNotif?.sent ? '✓ Notified ' + _fmtDate(check.parentNotif.sentDate) : '§ Document Notification'}
         </button>` : ''}
       ${invUrl ? `
         <a href="${_e(invUrl)}" target="_blank" rel="noopener noreferrer"
-          class="flock-btn flock-btn--sm" style="text-decoration:none">View Report ↗</a>` : ''}
+          class="flock-btn flock-btn--sm melch-report-link">View Report ↗</a>` : ''}
       ${showComp ? `
         <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="modal-edit-compliance">Edit Compliance</button>
-        <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="modal-generate-waiver"
-          style="color:#059669;border-color:#bbf7d0">Waiver ↓</button>` : ''}
+        <button class="flock-btn flock-btn--ghost flock-btn--sm melch-waiver-btn" data-act="modal-generate-waiver">Waiver ↓</button>` : ''}
     </div>`;
 
   card.querySelector('[data-act="close-adm-modal"]').addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
   });
   card.querySelector('[data-act="modal-record-livescan"]')?.addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
     _showLiveScanModal(uid, dname);
   });
   card.querySelector('[data-act="modal-parent-notif"]')?.addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
     _showParentNotifModal(uid, dname);
   });
   card.querySelector('[data-act="modal-edit-compliance"]')?.addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
     _showComplianceModal(uid, dname);
   });
   card.querySelector('[data-act="modal-generate-waiver"]')?.addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.classList.remove('is-open');
     window.open(`app.melchizedek/waiver-sign.html?uid=${encodeURIComponent(uid)}`, '_blank');
   });
 
@@ -865,14 +834,14 @@ function _openAdminModal(btn) {
     });
   }
 
-  modal.style.display = 'flex';
+  modal.classList.add('is-open');
 }
 
 function _amRow(label, value) {
   return `
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--border,#e8eaf6)">
-      <span style="font:500 0.8rem/1 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);flex-shrink:0">${label}</span>
-      <span style="flex-shrink:0">${value}</span>
+    <div class="melch-am-row">
+      <span class="melch-am-label">${label}</span>
+      <span class="melch-am-value">${value}</span>
     </div>`;
 }
 
@@ -966,40 +935,40 @@ function _showLiveScanModal(memberId, name) {
 
   const modal = document.createElement('div');
   modal.id = 'melch-ls-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);padding:20px';
+  modal.className = 'melch-modal-overlay';
   modal.innerHTML = `
-    <div style="background:var(--bg-raised,#fff);border-radius:14px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 8px 48px rgba(0,0,0,.22)">
-      <div style="font:700 1rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Live Scan Record</div>
-      <div style="font:400 0.82rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:20px">
+    <div class="melch-modal-card">
+      <div class="melch-modal-title">Live Scan Record</div>
+      <div class="melch-modal-subtitle">
         ${_e(name)} — California DOJ Fingerprint (AB 506)
       </div>
 
-      <label style="display:block;margin-bottom:14px">
-        <div style="font:600 0.78rem var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:4px">Result</div>
-        <select id="ls-result" style="width:100%;padding:8px 10px;border:1px solid var(--line,#e5e7ef);border-radius:7px;font:0.88rem var(--font-ui,sans-serif);background:var(--bg,#fff);color:var(--ink,#1b264f)">
+      <label class="melch-form-label">
+        <div class="melch-form-field-title">Result</div>
+        <select id="ls-result" class="melch-select">
           <option value="pending" ${existing.result === 'pending' ? 'selected' : ''}>Pending — submitted, awaiting DOJ response</option>
           <option value="clear"   ${existing.result === 'clear'   ? 'selected' : ''}>Cleared — DOJ returned no disqualifying record</option>
           <option value="failed"  ${existing.result === 'failed'  ? 'selected' : ''}>Failed — DOJ returned disqualifying record</option>
         </select>
       </label>
 
-      <label style="display:block;margin-bottom:14px">
-        <div style="font:600 0.78rem var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:4px">Date Submitted to Live Scan Station</div>
+      <label class="melch-form-label">
+        <div class="melch-form-field-title">Date Submitted to Live Scan Station</div>
         <input type="date" id="ls-submitted" value="${_isoDate(existing.submittedAt)}"
-          style="width:100%;padding:8px 10px;border:1px solid var(--line,#e5e7ef);border-radius:7px;font:0.88rem var(--font-ui,sans-serif);background:var(--bg,#fff);color:var(--ink,#1b264f)">
+          class="melch-input">
       </label>
 
-      <label style="display:block;margin-bottom:20px">
-        <div style="font:600 0.78rem var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:4px">Date Result Received from DOJ</div>
+      <label class="melch-form-label melch-form-label--roomy">
+        <div class="melch-form-field-title">Date Result Received from DOJ</div>
         <input type="date" id="ls-received" value="${_isoDate(existing.clearedAt)}"
-          style="width:100%;padding:8px 10px;border:1px solid var(--line,#e5e7ef);border-radius:7px;font:0.88rem var(--font-ui,sans-serif);background:var(--bg,#fff);color:var(--ink,#1b264f)">
+          class="melch-input">
       </label>
 
-      <div style="font:400 0.74rem/1.55 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);padding:10px 12px;background:var(--bg-alt,#f5f6fa);border-radius:7px;margin-bottom:20px">
+      <div class="melch-form-note">
         Live Scan is done in person at a CA DOJ-approved fingerprint station. Results go directly from DOJ to your organization — record the result here to keep your roster current.
       </div>
 
-      <div style="display:flex;gap:10px;justify-content:flex-end">
+      <div class="melch-form-actions">
         <button id="ls-cancel" class="flock-btn flock-btn--ghost flock-btn--sm">Cancel</button>
         <button id="ls-save"   class="flock-btn flock-btn--primary flock-btn--sm">Save Record</button>
       </div>
@@ -1136,8 +1105,33 @@ function _memberDisplayName(m) {
 }
 
 function _statusPill(label, color) {
-  return `<span style="display:inline-block;padding:2px 9px;border-radius:999px;font:600 0.76rem/1.4 var(--font-ui,sans-serif);
-    background:${color}18;color:${color};white-space:nowrap">${_e(label)}</span>`;
+  const tone = color === '#059669' || color === 'ok'
+    ? 'ok'
+    : color === '#d97706' || color === 'warn'
+      ? 'warn'
+      : color === '#dc2626' || color === 'error'
+        ? 'error'
+        : 'muted';
+  return `<span class="melch-status-pill melch-status-pill--${tone}">${_e(label)}</span>`;
+}
+
+function _toneFromColor(color) {
+  if (color === '#059669' || color === 'ok') return 'ok';
+  if (color === '#d97706' || color === 'warn') return 'warn';
+  if (color === '#dc2626' || color === 'error') return 'error';
+  return 'muted';
+}
+
+function _setFormStatus(el, label, color) {
+  if (!el) return;
+  el.textContent = label;
+  el.classList.remove(
+    'melch-form-status--ok',
+    'melch-form-status--warn',
+    'melch-form-status--error',
+    'melch-form-status--muted',
+  );
+  el.classList.add(`melch-form-status--${_toneFromColor(color)}`);
 }
 
 // ── Compliance alerts (used in Overview) ──────────────────────────────── //
@@ -1165,25 +1159,22 @@ function _complianceAlerts() {
   }
 
   const alerts = [];
-  if (expiring.length)    alerts.push({ icon: '📋', color: '#d97706', bg: '#fffbeb', text: `<strong>${expiring.length} volunteer${expiring.length > 1 ? 's' : ''}</strong> ha${expiring.length > 1 ? 've' : 's'} an annual waiver expiring or already expired.`, link: 'compliance' });
-  if (missingOcap.length) alerts.push({ icon: '📚', color: '#d97706', bg: '#fffbeb', text: `<strong>${missingOcap.length} volunteer${missingOcap.length > 1 ? 's' : ''}</strong> ${missingOcap.length > 1 ? 'are' : 'is'} missing a current OCAP mandated reporter certification.`, link: 'compliance' });
-  if (overHours.length)   alerts.push({ icon: '⏱', color: '#dc2626', bg: '#fef2f2', text: `<strong>${overHours.length} volunteer${overHours.length > 1 ? 's' : ''}</strong> ${overHours.length > 1 ? 'are' : 'is'} at or above the volunteer hour threshold — enhanced screening required.`, link: 'compliance' });
-  if (needsNotif.length)  alerts.push({ icon: '📬', color: '#dc2626', bg: '#fef2f2', text: `<strong>${needsNotif.length} volunteer${needsNotif.length > 1 ? 's' : ''}</strong> with "Consider" status require documented parent/guardian notification (§11105.3(c)(1)).`, link: 'not-approved' });
-  if (notSan.length > 0 && tracked.length > 0) alerts.push({ icon: '🔔', color: '#7a7f96', bg: '#f8f9ff', text: `<strong>${notSan.length} volunteer${notSan.length > 1 ? 's' : ''}</strong> ${notSan.length > 1 ? 'are' : 'is'} not enrolled in DOJ Subsequent Arrest Notification (SAN).`, link: 'compliance' });
+  if (expiring.length)    alerts.push({ icon: '📋', tone: 'warn', text: `<strong>${expiring.length} volunteer${expiring.length > 1 ? 's' : ''}</strong> ha${expiring.length > 1 ? 've' : 's'} an annual waiver expiring or already expired.`, link: 'compliance' });
+  if (missingOcap.length) alerts.push({ icon: '📚', tone: 'warn', text: `<strong>${missingOcap.length} volunteer${missingOcap.length > 1 ? 's' : ''}</strong> ${missingOcap.length > 1 ? 'are' : 'is'} missing a current OCAP mandated reporter certification.`, link: 'compliance' });
+  if (overHours.length)   alerts.push({ icon: '⏱', tone: 'error', text: `<strong>${overHours.length} volunteer${overHours.length > 1 ? 's' : ''}</strong> ${overHours.length > 1 ? 'are' : 'is'} at or above the volunteer hour threshold — enhanced screening required.`, link: 'compliance' });
+  if (needsNotif.length)  alerts.push({ icon: '📬', tone: 'error', text: `<strong>${needsNotif.length} volunteer${needsNotif.length > 1 ? 's' : ''}</strong> with "Consider" status require documented parent/guardian notification (§11105.3(c)(1)).`, link: 'not-approved' });
+  if (notSan.length > 0 && tracked.length > 0) alerts.push({ icon: '🔔', tone: 'muted', text: `<strong>${notSan.length} volunteer${notSan.length > 1 ? 's' : ''}</strong> ${notSan.length > 1 ? 'are' : 'is'} not enrolled in DOJ Subsequent Arrest Notification (SAN).`, link: 'compliance' });
 
   if (!alerts.length) return '';
 
   return `
-    <div style="margin-top:28px">
-      <div style="font:600 0.82rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;
-        color:var(--ink-muted,#7a7f96);margin-bottom:12px">Compliance Alerts</div>
+    <div class="melch-alerts">
+      <div class="melch-kicker melch-kicker--roomy">Compliance Alerts</div>
       ${alerts.map(a => `
-        <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;
-          background:${a.bg};border-left:4px solid ${a.color};border-radius:8px;margin-bottom:10px;cursor:pointer"
-          data-melch-view="${a.link}">
-          <span style="font-size:1.1rem;line-height:1.4">${a.icon}</span>
-          <span style="font:400 0.88rem/1.5 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${a.text}
-            <span style="color:${a.color};font-weight:600;margin-left:4px">View →</span>
+        <div class="melch-alert melch-alert--${a.tone}" data-melch-view="${a.link}">
+          <span class="melch-alert-icon">${a.icon}</span>
+          <span class="melch-alert-copy">${a.text}
+            <span class="melch-alert-link">View →</span>
           </span>
         </div>`).join('')}
     </div>`;
@@ -1207,13 +1198,10 @@ function _viewCompliance() {
   }
 
   const statCard = (label, ok, warn, icon) => `
-    <div style="flex:1;min-width:130px;padding:14px 16px;background:var(--surface,#fff);
-      border-radius:10px;border:1px solid var(--border,#e8eaf6)">
-      <div style="font:600 0.78rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-        letter-spacing:.06em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">${icon} ${label}</div>
-      <div style="font:700 1.4rem/1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${ok}</div>
-      <div style="font:400 0.8rem/1 var(--font-ui,sans-serif);margin-top:4px;
-        color:${warn > 0 ? '#d97706' : '#7a7f96'}">${warn} need attention</div>
+    <div class="melch-compliance-stat">
+      <div class="melch-compliance-stat-label">${icon} ${label}</div>
+      <div class="melch-compliance-stat-count">${ok}</div>
+      <div class="melch-compliance-stat-note${warn > 0 ? ' melch-compliance-stat-note--warn' : ''}">${warn} need attention</div>
     </div>`;
 
   const rows = sorted.map(m => {
@@ -1227,89 +1215,67 @@ function _viewCompliance() {
     const hasCritical = [ws, os].some(s => s.status === 'expired' || s.status === 'missing') ||
                         hs.status === 'over' || check.status === 'consider';
     const hasWarn     = [ws, os].some(s => s.status === 'expiring') || hs.status === 'near';
-    const dotColor    = hasCritical ? '#dc2626' : hasWarn ? '#d97706' : '#059669';
-    return `<tr class="mcvt-row" style="border-bottom:1px solid var(--border,#e8eaf6)">
-      <td class="mcvt-cell" data-label="Member" style="padding:10px 14px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="width:8px;height:8px;border-radius:50%;background:${dotColor};flex-shrink:0" title="${hasCritical ? 'Needs attention' : hasWarn ? 'Expiring soon' : 'All clear'}"></span>
+    const dotTone = hasCritical ? 'error' : hasWarn ? 'warn' : 'ok';
+    return `<tr class="mcvt-row melch-compliance-row">
+      <td class="mcvt-cell melch-compliance-member-cell" data-label="Member">
+        <div class="melch-compliance-person">
+          <span class="melch-status-dot melch-status-dot--${dotTone}" title="${hasCritical ? 'Needs attention' : hasWarn ? 'Expiring soon' : 'All clear'}"></span>
           <div>
-            <div style="font:600 0.9rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${_e(dname)}</div>
-            ${m.role ? `<div style="font:400 0.76rem/1 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-top:2px">${_e(m.role)}</div>` : ''}
+            <div class="melch-compliance-name">${_e(dname)}</div>
+            ${m.role ? `<div class="melch-compliance-role">${_e(m.role)}</div>` : ''}
           </div>
         </div>
       </td>
-      <td class="mcvt-cell" data-label="Manage" style="padding:8px 14px;text-align:right;width:1%">
-        <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="open-admin-modal"
+      <td class="mcvt-cell melch-compliance-manage-cell" data-label="Manage">
+        <button class="flock-btn flock-btn--ghost flock-btn--sm melch-manage-btn" data-act="open-admin-modal"
           data-member-id="${_e(uid)}" data-name="${_e(dname)}"
-          data-show-compliance="1" style="font-weight:600;white-space:nowrap">Manage</button>
+          data-show-compliance="1">Manage</button>
       </td>
     </tr>`;
   }).join('');
 
   return `
     <div id="melch-cc">
-    <style>
-    #melch-cc .mcv-stats{display:flex;flex-wrap:wrap;gap:12px}
-    #melch-cc .mcvt-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border,#e8eaf6)}
-    @media(max-width:640px){
-      #melch-cc .mcv-hdr{flex-direction:column!important;align-items:flex-start!important}
-      #melch-cc .mcv-stats{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
-      #melch-cc .mcvt-wrap{border:none!important;border-radius:0!important}
-      #melch-cc .mcvt-head{display:none!important}
-      #melch-cc .mcvt-row{display:flex!important;align-items:center!important;justify-content:space-between!important;background:var(--surface,#fff);border:1px solid var(--border,#e8eaf6)!important;border-radius:10px;margin-bottom:8px;padding:2px 0;gap:8px}
-      #melch-cc .mcvt-cell[data-label="Member"]{flex:1;min-width:0;padding:10px 12px!important}
-      #melch-cc .mcvt-cell[data-label="Admin"]{padding:8px 12px!important;flex-shrink:0}
-    }
-    @media(max-width:380px){
-      #melch-cc .mcv-stats{grid-template-columns:1fr!important}
-    }
-    </style>
-    <div class="mcv-hdr" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+    <div class="mcv-hdr melch-compliance-header">
       <div>
-        <div style="font:700 1.2rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Compliance Tracker</div>
-        <div style="font:400 0.85rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">
+        <div class="melch-section-title">Compliance Tracker</div>
+        <div class="melch-section-subtitle">
           Annual waivers · OCAP certifications · Hour thresholds · DOJ SAN enrollment · Parent notification records
         </div>
       </div>
-      <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="print-compliance"
-        style="display:flex;align-items:center;gap:6px">
+      <button class="flock-btn flock-btn--ghost flock-btn--sm melch-print-btn" data-act="print-compliance">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
         Print Report
       </button>
     </div>
 
-    <div class="mcv-stats" style="margin-bottom:24px">
+    <div class="mcv-stats melch-section-head">
       ${statCard('Annual Waivers', cntWaiverOk, cntWaiverWarn, '📋')}
       ${statCard('OCAP Certs', cntOcapOk, cntOcapWarn, '📚')}
-      <div style="flex:1;min-width:130px;padding:14px 16px;background:var(--surface,#fff);
-        border-radius:10px;border:1px solid var(--border,#e8eaf6)">
-        <div style="font:600 0.78rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-          letter-spacing:.06em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">🔔 DOJ SAN</div>
-        <div style="font:700 1.4rem/1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">${cntSan}</div>
-        <div style="font:400 0.8rem/1 var(--font-ui,sans-serif);margin-top:4px;
-          color:${(_allMembers.length - cntSan) > 0 ? '#d97706' : '#7a7f96'}">${_allMembers.length - cntSan} not enrolled</div>
+      <div class="melch-compliance-stat">
+        <div class="melch-compliance-stat-label">🔔 DOJ SAN</div>
+        <div class="melch-compliance-stat-count">${cntSan}</div>
+        <div class="melch-compliance-stat-note${(_allMembers.length - cntSan) > 0 ? ' melch-compliance-stat-note--warn' : ''}">${_allMembers.length - cntSan} not enrolled</div>
       </div>
     </div>
 
     ${_sortBar()}
 
-    <div class="mcvt-wrap" style="overflow-x:auto;border-radius:10px;border:1px solid var(--border,#e8eaf6)">
-      <table style="width:100%;border-collapse:collapse;font:400 0.85rem/1.4 var(--font-ui,sans-serif)">
+    <div class="mcvt-wrap">
+      <table class="melch-compliance-table">
         <thead class="mcvt-head">
-          <tr style="background:var(--surface,#f8f9ff)">
-            <th style="padding:10px 14px;text-align:left;font:600 0.78rem/1 var(--font-ui,sans-serif);
-              text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted,#7a7f96)">Member</th>
-            <th style="padding:10px 14px;text-align:right;font:600 0.78rem/1 var(--font-ui,sans-serif);
-              text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted,#7a7f96);width:1%"></th>
+          <tr>
+            <th>Member</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          ${rows || '<tr><td colspan="2" style="padding:20px;text-align:center;color:var(--ink-muted,#7a7f96)">No members loaded.</td></tr>'}
+          ${rows || '<tr><td colspan="2" class="melch-empty-row">No members loaded.</td></tr>'}
         </tbody>
       </table>
     </div>
 
-    <div style="margin-top:14px;font:400 0.78rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">
+    <div class="melch-compliance-footnote">
       Hour thresholds: ≥12 hrs/month or ≥26 hrs/year = near threshold (enhanced screening advised);
       >16 hrs/month or >32 hrs/year = over threshold (required).
       Annual waiver expires 1 year from signing (BPC §18975). OCAP cert renewal: 2-year cycle.
@@ -1325,66 +1291,63 @@ function _showComplianceModal(memberId, name) {
   document.getElementById('melch-compliance-modal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'melch-compliance-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);padding:20px';
+  modal.className = 'melch-modal-overlay';
 
   const fieldLabel = (text) =>
-    `<div style="font:600 0.78rem var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:4px">${text}</div>`;
-  const inputStyle = 'width:100%;padding:8px 10px;border:1px solid var(--line,#e5e7ef);border-radius:7px;font:0.88rem var(--font-ui,sans-serif);background:var(--bg,#fff);color:var(--ink,#1b264f);box-sizing:border-box';
-  const fieldWrap  = 'margin-bottom:16px';
+    `<div class="melch-form-field-title">${text}</div>`;
 
   modal.innerHTML = `
-    <div style="background:var(--bg-raised,#fff);border-radius:14px;padding:28px 24px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 48px rgba(0,0,0,.22)">
-      <div style="font:700 1rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Compliance Record</div>
-      <div style="font:400 0.82rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:20px">${_e(name)}</div>
+    <div class="melch-modal-card melch-modal-card--wide">
+      <div class="melch-modal-title">Compliance Record</div>
+      <div class="melch-modal-subtitle">${_e(name)}</div>
 
-      <label style="display:block;${fieldWrap}">
+      <label class="melch-form-label melch-form-label--wide">
         ${fieldLabel('Annual Waiver Signed Date — BPC §18975(b)(2)(C)')}
-        <input type="date" id="mc-waiver-date" style="${inputStyle}" value="${_isoDate(check.waiverSignedDate) || ''}">
-        <div id="mc-waiver-status" style="margin-top:4px;font:400 0.8rem/1 var(--font-ui,sans-serif)"></div>
+        <input type="date" id="mc-waiver-date" class="melch-input" value="${_isoDate(check.waiverSignedDate) || ''}">
+        <div id="mc-waiver-status" class="melch-form-status"></div>
       </label>
 
-      <label style="display:block;${fieldWrap}">
+      <label class="melch-form-label melch-form-label--wide">
         ${fieldLabel('OCAP Mandated Reporter Cert Date')}
-        <input type="date" id="mc-ocap-date" style="${inputStyle}" value="${_isoDate(check.ocapCertDate) || ''}">
-        <div id="mc-ocap-status" style="margin-top:4px;font:400 0.8rem/1 var(--font-ui,sans-serif)"></div>
+        <input type="date" id="mc-ocap-date" class="melch-input" value="${_isoDate(check.ocapCertDate) || ''}">
+        <div id="mc-ocap-status" class="melch-form-status"></div>
       </label>
 
-      <div style="display:flex;gap:14px;${fieldWrap}">
-        <label style="flex:1;display:block">
+      <div class="melch-form-grid">
+        <label class="melch-form-label">
           ${fieldLabel('Monthly Hours (this month)')}
           <input type="number" id="mc-monthly-hours" min="0" max="744" placeholder="0"
-            style="${inputStyle}" value="${check.monthlyHours ?? ''}">
+            class="melch-input" value="${check.monthlyHours ?? ''}">
         </label>
-        <label style="flex:1;display:block">
+        <label class="melch-form-label">
           ${fieldLabel('Yearly Hours (this year)')}
           <input type="number" id="mc-yearly-hours" min="0" max="8784" placeholder="0"
-            style="${inputStyle}" value="${check.yearlyHours ?? ''}">
+            class="melch-input" value="${check.yearlyHours ?? ''}">
         </label>
       </div>
 
-      <div style="${fieldWrap}">
+      <div class="melch-form-label melch-form-label--wide">
         ${fieldLabel('DOJ Subsequent Arrest Notification (SAN)')}
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-          <input type="checkbox" id="mc-san-enrolled" style="width:16px;height:16px"
+        <label class="melch-check-label">
+          <input type="checkbox" id="mc-san-enrolled"
             ${check.sanEnrolled ? 'checked' : ''}>
-          <span style="font:400 0.88rem/1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">Enrolled in DOJ SAN</span>
+          <span>Enrolled in DOJ SAN</span>
         </label>
-        <div id="mc-san-date-row" style="margin-top:10px;display:${check.sanEnrolled ? 'block' : 'none'}">
+        <div id="mc-san-date-row" class="melch-dynamic-row${check.sanEnrolled ? ' is-open' : ''}">
           ${fieldLabel('SAN Enrollment Date')}
-          <input type="date" id="mc-san-date" style="${inputStyle}" value="${_isoDate(check.sanEnrolledDate) || ''}">
+          <input type="date" id="mc-san-date" class="melch-input" value="${_isoDate(check.sanEnrolledDate) || ''}">
         </div>
       </div>
 
-      <label style="display:block;${fieldWrap}">
+      <label class="melch-form-label melch-form-label--wide">
         ${fieldLabel('Compliance Notes')}
         <textarea id="mc-notes" rows="3" placeholder="Internal notes…"
-          style="${inputStyle};resize:vertical">${_e(check.complianceNotes || '')}</textarea>
+          class="melch-textarea">${_e(check.complianceNotes || '')}</textarea>
       </label>
 
-      <div id="mc-error" style="display:none;padding:10px;background:#fef2f2;border-radius:6px;
-        font:400 0.85rem/1.5 var(--font-ui,sans-serif);color:#dc2626;margin-bottom:14px"></div>
+      <div id="mc-error" class="melch-error"></div>
 
-      <div style="display:flex;gap:10px;justify-content:flex-end">
+      <div class="melch-form-actions">
         <button id="mc-cancel" class="flock-btn flock-btn--ghost flock-btn--sm">Cancel</button>
         <button id="mc-save"   class="flock-btn flock-btn--primary flock-btn--sm">Save Record</button>
       </div>
@@ -1400,18 +1363,18 @@ function _showComplianceModal(memberId, name) {
   const updateWaiverStatus = () => {
     const el = modal.querySelector('#mc-waiver-status');
     const ws = _waiverStatus({ waiverSignedDate: waiverIn.value });
-    el.textContent = ws.label; el.style.color = ws.color;
+    _setFormStatus(el, ws.label, ws.color);
   };
   const updateOcapStatus = () => {
     const el = modal.querySelector('#mc-ocap-status');
     const os = _ocapStatus({ ocapCertDate: ocapIn.value });
-    el.textContent = os.label; el.style.color = os.color;
+    _setFormStatus(el, os.label, os.color);
   };
   waiverIn.addEventListener('change', updateWaiverStatus);
   ocapIn.addEventListener('change', updateOcapStatus);
   updateWaiverStatus(); updateOcapStatus();
 
-  sanCb.addEventListener('change', () => { sanRow.style.display = sanCb.checked ? 'block' : 'none'; });
+  sanCb.addEventListener('change', () => { sanRow.classList.toggle('is-open', sanCb.checked); });
 
   modal.querySelector('#mc-cancel').addEventListener('click', () => modal.remove());
   modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
@@ -1433,7 +1396,7 @@ function _showComplianceModal(memberId, name) {
       modal.remove();
     } catch (err) {
       const errEl = modal.querySelector('#mc-error');
-      errEl.textContent = err.message; errEl.style.display = 'block';
+      errEl.textContent = err.message; errEl.classList.add('is-open');
       btn.disabled = false; btn.textContent = 'Save Record';
     }
   });
@@ -1469,41 +1432,38 @@ function _showParentNotifModal(memberId, name) {
   document.getElementById('melch-parentnotif-modal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'melch-parentnotif-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.45);padding:20px';
-
-  const inputStyle = 'width:100%;padding:8px 10px;border:1px solid var(--line,#e5e7ef);border-radius:7px;font:0.88rem var(--font-ui,sans-serif);background:var(--bg,#fff);color:var(--ink,#1b264f);box-sizing:border-box';
+  modal.className = 'melch-modal-overlay';
   const fieldLabel = (text) =>
-    `<div style="font:600 0.78rem var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:4px">${text}</div>`;
+    `<div class="melch-form-field-title">${text}</div>`;
 
   modal.innerHTML = `
-    <div style="background:var(--bg-raised,#fff);border-radius:14px;padding:28px 24px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 48px rgba(0,0,0,.22)">
-      <div style="font:700 1rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Parent / Guardian Notification</div>
-      <div style="font:400 0.82rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96);margin-bottom:16px">${_e(name)}</div>
+    <div class="melch-modal-card melch-modal-card--wide melch-modal-card--parent">
+      <div class="melch-modal-title">Parent / Guardian Notification</div>
+      <div class="melch-modal-subtitle melch-modal-subtitle--tight">${_e(name)}</div>
 
-      <div style="padding:12px 14px;background:#fff7ed;border-radius:8px;border-left:4px solid #d97706;
-        margin-bottom:20px;font:400 0.82rem/1.5 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">
+      <div class="melch-parent-warning">
         <strong>Pen. Code §11105.3(c)(1)</strong> — If this individual will supervise minors, affected
         parents/guardians must receive written notification at least
         <strong>10 days before they begin duties</strong>.
       </div>
 
-      <label style="display:block;margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:8px;cursor:pointer">
-          <input type="checkbox" id="pn-sent" style="width:16px;height:16px"
+      <label class="melch-form-label melch-form-label--wide">
+        <div class="melch-check-label melch-check-label--strong">
+          <input type="checkbox" id="pn-sent"
             ${pn.sent ? 'checked' : ''}>
-          <span style="font:600 0.88rem/1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">Written notification was sent</span>
+          <span>Written notification was sent</span>
         </div>
       </label>
 
-      <div id="pn-details-row" style="display:${pn.sent ? 'block' : 'none'}">
-        <label style="display:block;margin-bottom:14px">
+      <div id="pn-details-row" class="melch-dynamic-row${pn.sent ? ' is-open' : ''}">
+        <label class="melch-form-label">
           ${fieldLabel('Date Sent')}
-          <input type="date" id="pn-sent-date" style="${inputStyle}" value="${_isoDate(pn.sentDate) || ''}">
+          <input type="date" id="pn-sent-date" class="melch-input" value="${_isoDate(pn.sentDate) || ''}">
         </label>
 
-        <label style="display:block;margin-bottom:14px">
+        <label class="melch-form-label">
           ${fieldLabel('Method')}
-          <select id="pn-method" style="${inputStyle}">
+          <select id="pn-method" class="melch-select">
             <option value="">— select —</option>
             <option value="written-mail"  ${pn.method === 'written-mail'  ? 'selected' : ''}>Written letter (mail)</option>
             <option value="written-email" ${pn.method === 'written-email' ? 'selected' : ''}>Written letter (email)</option>
@@ -1511,16 +1471,15 @@ function _showParentNotifModal(memberId, name) {
           </select>
         </label>
 
-        <label style="display:block;margin-bottom:14px">
+        <label class="melch-form-label">
           ${fieldLabel('Date Confirmed / Acknowledged (optional)')}
-          <input type="date" id="pn-confirmed-date" style="${inputStyle}" value="${_isoDate(pn.confirmedDate) || ''}">
+          <input type="date" id="pn-confirmed-date" class="melch-input" value="${_isoDate(pn.confirmedDate) || ''}">
         </label>
       </div>
 
-      <div id="pn-error" style="display:none;padding:10px;background:#fef2f2;border-radius:6px;
-        font:400 0.85rem/1.5 var(--font-ui,sans-serif);color:#dc2626;margin-bottom:14px"></div>
+      <div id="pn-error" class="melch-error"></div>
 
-      <div style="display:flex;gap:10px;justify-content:flex-end">
+      <div class="melch-form-actions">
         <button id="pn-cancel" class="flock-btn flock-btn--ghost flock-btn--sm">Cancel</button>
         <button id="pn-save"   class="flock-btn flock-btn--primary flock-btn--sm">Save Record</button>
       </div>
@@ -1530,7 +1489,7 @@ function _showParentNotifModal(memberId, name) {
 
   const sentCb = modal.querySelector('#pn-sent');
   const detRow = modal.querySelector('#pn-details-row');
-  sentCb.addEventListener('change', () => { detRow.style.display = sentCb.checked ? 'block' : 'none'; });
+  sentCb.addEventListener('change', () => { detRow.classList.toggle('is-open', sentCb.checked); });
 
   modal.querySelector('#pn-cancel').addEventListener('click', () => modal.remove());
   modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
@@ -1549,7 +1508,7 @@ function _showParentNotifModal(memberId, name) {
       modal.remove();
     } catch (err) {
       const errEl = modal.querySelector('#pn-error');
-      errEl.textContent = err.message; errEl.style.display = 'block';
+      errEl.textContent = err.message; errEl.classList.add('is-open');
       btn.disabled = false; btn.textContent = 'Save Record';
     }
   });
@@ -1565,140 +1524,20 @@ function _generateWaiver(memberId, displayName) {
   const dobLine = dob ? `<strong>Date of Birth:</strong> ${_e(dob)}<br>` : '';
   const memberNo = member.memberNumber || member.id || '';
   const memberNoLine = memberNo ? `<strong>Member ID:</strong> ${_e(memberNo)}<br>` : '';
+  const printCssHref = new URL('Styles/safety-print.css', document.baseURI).href;
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>AB-506 Annual Waiver — ${_e(displayName)}</title>
-  <style>
-    @page { size: letter; margin: 0.85in 1in; }
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      font-size: 11pt;
-      line-height: 1.55;
-      color: #111;
-      background: #fff;
-      margin: 0;
-      padding: 24px 32px;
-    }
-    .header {
-      text-align: center;
-      border-bottom: 2px solid #111;
-      padding-bottom: 12px;
-      margin-bottom: 20px;
-    }
-    .org-name {
-      font-size: 16pt;
-      font-weight: bold;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-    }
-    .doc-title {
-      font-size: 13pt;
-      font-weight: bold;
-      margin-top: 6px;
-    }
-    .doc-subtitle {
-      font-size: 10pt;
-      color: #444;
-      margin-top: 2px;
-    }
-    .section {
-      margin-bottom: 18px;
-    }
-    .section-title {
-      font-weight: bold;
-      font-size: 11pt;
-      text-transform: uppercase;
-      letter-spacing: .05em;
-      border-bottom: 1px solid #aaa;
-      margin-bottom: 8px;
-      padding-bottom: 3px;
-    }
-    .member-info {
-      background: #f8f8f8;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      font-size: 11pt;
-      line-height: 1.8;
-    }
-    .indent {
-      margin-left: 24px;
-    }
-    .sign-block {
-      margin-top: 10px;
-    }
-    .sign-line {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .sign-label {
-      flex-shrink: 0;
-      min-width: 160px;
-      font-size: 10pt;
-    }
-    .sign-rule {
-      flex: 1;
-      border-bottom: 1px solid #111;
-      margin-bottom: 2px;
-    }
-    .admin-box {
-      border: 1px solid #aaa;
-      border-radius: 4px;
-      padding: 12px 16px;
-      margin-top: 6px;
-      background: #fcfcfc;
-    }
-    .admin-row {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 10px;
-    }
-    .admin-field {
-      flex: 1;
-      border-bottom: 1px solid #aaa;
-      min-height: 22px;
-    }
-    .admin-label {
-      font-size: 9pt;
-      color: #555;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    .statutory {
-      font-size: 9.5pt;
-      color: #333;
-      background: #f4f4f4;
-      border-left: 3px solid #aaa;
-      padding: 8px 12px;
-      margin: 10px 0;
-      line-height: 1.6;
-    }
-    .footer {
-      margin-top: 30px;
-      font-size: 8.5pt;
-      color: #666;
-      text-align: center;
-      border-top: 1px solid #ccc;
-      padding-top: 8px;
-    }
-    @media print {
-      body { font-size: 10.5pt; padding: 0; }
-      .no-print { display: none !important; }
-    }
-  </style>
+  <link rel="stylesheet" href="${printCssHref}">
 </head>
 <body>
 
   <!-- PRINT BUTTON (hidden when printing) -->
-  <div class="no-print" style="text-align:right;margin-bottom:14px">
-    <button onclick="window.print()" style="padding:8px 20px;font:bold 11pt sans-serif;background:#1b264f;color:#fff;border:none;border-radius:6px;cursor:pointer">Save as PDF / Print</button>
+  <div class="no-print print-actions">
+    <button class="print-button" onclick="window.print()">Save as PDF / Print</button>
   </div>
 
 <div class="page">
@@ -1793,12 +1632,12 @@ function _generateWaiver(memberId, displayName) {
   <div class="section">
     <div class="section-title">6. Signature</div>
     ${check.waiverSignature ? `
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:14px 16px;margin-top:8px">
-      <div style="font-size:8.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;color:#059669;margin-bottom:8px">✅ Electronically Signed</div>
-      <img src="${check.waiverSignature}" style="max-height:64px;max-width:280px;display:block;margin:4px 0">
-      <div style="font-size:9.5pt;margin-top:6px"><strong>Printed Name:</strong> ${_e(check.waiverSignedName || displayName)}</div>
-      <div style="font-size:9.5pt"><strong>Date:</strong> ${_e(check.waiverSignedDate ? new Date(check.waiverSignedDate?.toDate?.() || check.waiverSignedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : today)}</div>
-      <div style="font-size:8pt;color:#555;margin-top:6px">This electronic signature was captured via the Safety compliance system and is stored securely in the Organization's database.</div>
+    <div class="esig-block">
+      <div class="esig-label">✅ Electronically Signed</div>
+      <img class="esig-img" src="${check.waiverSignature}" alt="Signature">
+      <div class="esig-name"><strong>Printed Name:</strong> ${_e(check.waiverSignedName || displayName)}</div>
+      <div class="esig-date"><strong>Date:</strong> ${_e(check.waiverSignedDate ? new Date(check.waiverSignedDate?.toDate?.() || check.waiverSignedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : today)}</div>
+      <div class="esig-note">This electronic signature was captured via the Safety compliance system and is stored securely in the Organization's database.</div>
     </div>` : `
     <div class="sign-block">
       <div class="sign-line">
@@ -1861,7 +1700,7 @@ function _generateWaiver(memberId, displayName) {
         </div>
       </div>
       <div class="admin-row">
-        <div style="flex:1">
+        <div class="admin-notes-field">
           <div class="admin-field"></div>
           <div class="admin-label">Notes</div>
         </div>

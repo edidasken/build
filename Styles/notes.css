@@ -37,3 +37,27 @@
   border-color: var(--notes-accent);
   box-shadow: var(--shadow-glow, 0 0 0 3px rgba(247,199,86,.18));
 }
+
+.notes-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: var(--bg);
+  transition: opacity 400ms, visibility 400ms;
+}
+
+.notes-boot-icon {
+  margin-bottom: 16px;
+  font-size: 3rem;
+}
+
+.notes-boot-title {
+  color: var(--ink);
+  font: 700 1.4rem var(--font-ui, sans-serif);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}

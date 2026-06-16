@@ -156,6 +156,49 @@ body {
   color: #f8fafc;
 }
 
+.ab-tone-gold { --ab-c: var(--gold); }
+.ab-tone-emerald { --ab-c: var(--emerald); }
+.ab-tone-sky { --ab-c: var(--sky); }
+.ab-tone-violet { --ab-c: var(--violet); }
+.ab-tone-rose { --ab-c: var(--rose); }
+.ab-tone-amber { --ab-c: var(--amber); }
+
+.ab-section-head-icon--gold { background: rgba(232,168,56,.13) !important; }
+.ab-section-head-icon--sky { background: rgba(56,189,248,.13) !important; }
+.ab-section-head-icon--emerald { background: rgba(52,211,153,.13) !important; }
+
+.ab-ws-step-icon--gold {
+  background: rgba(232,168,56,.12) !important;
+  color: var(--gold) !important;
+}
+
+.ab-ws-step-icon--emerald {
+  background: rgba(52,211,153,.12) !important;
+  color: var(--emerald) !important;
+}
+
+.ab-ws-step-icon--violet {
+  background: rgba(167,139,250,.12) !important;
+  color: var(--violet) !important;
+}
+
+.ab-engine-top--sheets {
+  background: linear-gradient(135deg,#0f9d58 0%,#0b7d47 100%);
+}
+
+.ab-engine-top--firebase {
+  background: linear-gradient(135deg,#f57c00 0%,#c35a00 100%);
+}
+
+.ab-engine-top--wellspring {
+  background: linear-gradient(135deg,#38bdf8 0%,#0284c7 100%);
+}
+
+.ab-pillar-num--gold { background: var(--gold); }
+.ab-pillar-num--sky { background: var(--sky); }
+.ab-pillar-num--emerald { background: var(--emerald); }
+.ab-pillar-num--violet { background: var(--violet); }
+
 @media (max-width: 720px) {
   .ab-hero {
     min-height: 560px;

@@ -313,7 +313,7 @@ function _renderFormattedText(text) {
      .replace(/\*\*(.+?)\*\*/gs, '<strong>$1</strong>')
      .replace(/__(.+?)__/gs,     '<u>$1</u>')          // double-underscore BEFORE single
      .replace(/_(.+?)_/gs,       '<em>$1</em>')
-     .replace(/==(.+?)==/gs,     '<mark style="background:rgba(232,168,56,0.38);color:inherit;border-radius:3px;padding:0 3px">$1</mark>');
+     .replace(/==(.+?)==/gs,     '<mark class="fs-inline-highlight">$1</mark>');
   const _alignMap = { l: 'left', c: 'center', r: 'right' };
   const _lineRx   = /^\[(l|c|r)\] ?/;
   const lines = (text || '').split('\n');
@@ -322,8 +322,8 @@ function _renderFormattedText(text) {
   return lines.map(line => {
     const m       = line.match(_lineRx);
     const content = m ? line.slice(m[0].length) : line;
-    const align   = m ? `;text-align:${_alignMap[m[1]]}` : '';
-    return `<span style="display:block${align}">${_inline(content)}</span>`;
+    const align   = m ? ` fs-line-${_alignMap[m[1]]}` : '';
+    return `<span class="fs-line-block${align}">${_inline(content)}</span>`;
   }).join('');
 }
 
@@ -388,30 +388,30 @@ function _buildPresentDoc(show, idx) {
   const col    = _slideCol(sl, show);
   const fs     = _slideFontSize(sl);
   const align   = sl.align || 'center';
-  const flexAlign = align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center';
   const body   = sl.type === 'blank' ? '' : _renderFormattedText(sl.text || '');
+  const presentCssHref = new URL('Styles/flockshow-present.css', document.baseURI).href;
   const refHtml = (sl.type === 'scripture' && sl.reference)
-    ? `<div style="margin-top:1.2rem;font-size:28px;opacity:.65;font-style:italic;letter-spacing:.01em;text-align:${align}">${_esc(sl.reference)}</div>`
+    ? `<div class="fs-present-ref fs-present-ref--${_esc(align)}">${_esc(sl.reference)}</div>`
     : '';
   const labelHtml = sl.label
-    ? `<div style="position:absolute;top:4%;left:5%;font:700 0.62rem 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(232,168,56,0.72);letter-spacing:.10em;text-transform:uppercase;text-align:left;pointer-events:none;user-select:none;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${_esc(sl.label)}</div>`
+    ? `<div class="fs-present-label">${_esc(sl.label)}</div>`
     : '';
   const speakerLine = [show.sermonTitle, show.speaker].filter(Boolean).join('  ·  ');
   const infoHtml = speakerLine
-    ? `<div style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font:500 0.60rem 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(255,255,255,.28);letter-spacing:.06em;white-space:nowrap;pointer-events:none;user-select:none;text-transform:uppercase">${_esc(speakerLine)}</div>`
+    ? `<div class="fs-present-info">${_esc(speakerLine)}</div>`
     : '';
   const next    = show.slides[idx + 1];
   const nextHtml = next
-    ? `<div style="position:fixed;bottom:14px;left:14px;font:500 0.65rem 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(255,255,255,.40);background:rgba(255,255,255,.08);padding:4px 11px;border-radius:6px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.02em">NEXT&nbsp;&nbsp;${_esc((next.text || 'Blank').slice(0, 44))}</div>`
+    ? `<div class="fs-present-next">NEXT&nbsp;&nbsp;${_esc((next.text || 'Blank').slice(0, 44))}</div>`
     : '';
   const noteHtml = sl.notes
-    ? `<div style="position:fixed;bottom:14px;right:14px;font:400 0.65rem 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(255,255,255,.48);background:rgba(255,255,255,.09);padding:4px 11px;border-radius:6px;max-width:280px;text-align:right;line-height:1.4">${_esc(sl.notes)}</div>`
+    ? `<div class="fs-present-notes">${_esc(sl.notes)}</div>`
     : '';
-  const counter = `<div style="position:fixed;top:13px;right:16px;font:600 0.62rem 'Plus Jakarta Sans',system-ui,sans-serif;color:rgba(255,255,255,.25);letter-spacing:.04em">${idx + 1}&thinsp;/&thinsp;${show.slides.length}</div>`;
+  const counter = `<div class="fs-present-counter">${idx + 1}&thinsp;/&thinsp;${show.slides.length}</div>`;
   const _bdef = _SOURCE_BADGE[sl.sourceType];
-  const badgeHtml = _bdef ? `<div style="position:fixed;top:13px;left:16px;font:700 0.58rem 'Plus Jakarta Sans',system-ui,sans-serif;color:${_bdef.ink};background:${_bdef.bg};padding:3px 10px;border-radius:12px;letter-spacing:.06em;text-transform:uppercase">${_bdef.label}</div>` : '';
+  const badgeHtml = _bdef ? `<div class="fs-present-badge fs-present-badge--${_esc(sl.sourceType)}">${_bdef.label}</div>` : '';
   /* Subtle gold top accent line — brand touch without overpowering */
-  const accentBar = `<div style="position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(232,168,56,.55) 20%,rgba(232,168,56,.55) 80%,transparent);pointer-events:none"></div>`;
+  const accentBar = `<div class="fs-present-accent"></div>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -421,35 +421,9 @@ function _buildPresentDoc(show, idx) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  width: 100%; height: 100%; overflow: hidden;
-  background: ${bg};
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  user-select: none; cursor: none;
-}
-.slide {
-  display: flex; flex-direction: column;
-  align-items: ${flexAlign}; justify-content: center;
-  width: 100%; height: 100%;
-  padding: 6vw 12vw; text-align: ${align};
-  color: ${col}; position: relative;
-}
-.slide-text {
-  font-size: ${fs}; font-weight: 500; letter-spacing: 0.01em;
-  white-space: pre-wrap; max-width: 960px; line-height: 1.52;
-  text-align: ${align}; width: 100%;
-  animation: fi .25s ease;
-}
-@keyframes fi {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-</style>
+<link rel="stylesheet" href="${presentCssHref}">
 </head>
-<body>
+<body data-align="${_esc(align)}">
 <div class="slide">
   <div class="slide-text">${body}</div>
   ${refHtml}
@@ -458,6 +432,9 @@ ${labelHtml}${counter}${badgeHtml}${accentBar}${nextHtml}${noteHtml}${infoHtml}
 <script>
 var _bg = ${JSON.stringify(bg)};
 var _blacked = false;
+document.documentElement.style.setProperty('--fsp-bg', ${JSON.stringify(bg)});
+document.documentElement.style.setProperty('--fsp-color', ${JSON.stringify(col)});
+document.documentElement.style.setProperty('--fsp-font-size', ${JSON.stringify(fs)});
 document.addEventListener('keydown', function(e) {
   var o = window.opener;
   // B = black screen toggle
@@ -530,10 +507,10 @@ function _renderLibrary() {
       grid.innerHTML = `
         <div class="fs-empty">
           <div class="fs-empty-icon">🎬</div>
-          <div style="font:600 1rem 'Plus Jakarta Sans',sans-serif;color:var(--fs-ink)">
+          <div class="fs-empty-title">
             No shows match your search
           </div>
-          <div style="font:0.82rem 'Plus Jakarta Sans',sans-serif;color:var(--fs-muted)">
+          <div class="fs-empty-subtitle">
             Try a different search term
           </div>
         </div>`;
@@ -624,7 +601,7 @@ function _renderLibrary() {
       const bg = _slideBg(sl, show);
       const fg = _slideCol(sl, show);
       const icon = _e(SLIDE_TYPES[sl.type] && SLIDE_TYPES[sl.type].icon || '\u2726');
-      return `<div class="fs-slide-pip" style="background:${_e(bg)};color:${_e(fg)}"><span class="fs-slide-pip-icon">${icon}</span></div>`;
+      return `<div class="fs-slide-pip" data-bg="${_e(bg)}" data-fg="${_e(fg)}"><span class="fs-slide-pip-icon">${icon}</span></div>`;
     }).join('');
     const overflow = show.slides.length > 10
       ? `<div class="fs-slide-pip fs-slide-pip--more">+${show.slides.length - 10}</div>`
@@ -645,6 +622,10 @@ function _renderLibrary() {
   }).join('');
 
   grid.innerHTML = banner + cards;
+  grid.querySelectorAll('.fs-slide-pip[data-bg]').forEach(pip => {
+    pip.style.background = pip.dataset.bg || '';
+    pip.style.color = pip.dataset.fg || '';
+  });
 }
 
 // ── Render: slide thumbnails ──────────────────────────────────────────────────
@@ -665,10 +646,14 @@ function _renderSlideList() {
     div.dataset.slideIdx = i;
     div.innerHTML = `
       <div class="fs-slide-num">${i + 1}</div>
-      <div class="fs-slide-thumb" style="background:${_e(_slideBg(sl, show))}">
-        <div class="fs-slide-thumb-text" style="color:${_e(_slideCol(sl, show))}">${_e((sl.text || '').slice(0, 80))}</div>
+      <div class="fs-slide-thumb" data-bg="${_e(_slideBg(sl, show))}">
+        <div class="fs-slide-thumb-text" data-fg="${_e(_slideCol(sl, show))}">${_e((sl.text || '').slice(0, 80))}</div>
         <div class="fs-type-chip">${_e(SLIDE_TYPES[sl.type]?.icon || '')}</div>
       </div>`;
+    const thumb = div.querySelector('.fs-slide-thumb');
+    const thumbText = div.querySelector('.fs-slide-thumb-text');
+    if (thumb) thumb.style.background = thumb.dataset.bg || '';
+    if (thumbText) thumbText.style.color = thumbText.dataset.fg || '';
     fragment.appendChild(div);
   });
 
@@ -1485,8 +1470,11 @@ function _initSwatches() {
   if (!container) return;
   container.innerHTML = GRADIENTS.map(g => {
     const visual = g.bg.includes('gradient') ? g.bg : (g.bg || 'linear-gradient(135deg,#0b0d14 50%,#1a0e3c)');
-    return `<button class="fs-swatch" data-bg="${_e(g.bg)}" data-tc="${_e(g.tc)}" title="${_e(g.label)}" style="background:${visual}"></button>`;
+    return `<button class="fs-swatch" data-bg="${_e(g.bg)}" data-tc="${_e(g.tc)}" data-visual="${_e(visual)}" title="${_e(g.label)}"></button>`;
   }).join('');
+  container.querySelectorAll('.fs-swatch[data-visual]').forEach(btn => {
+    btn.style.background = btn.dataset.visual || '';
+  });
 }
 
 // ── Show theme controls ───────────────────────────────────────────────────────
@@ -1984,7 +1972,7 @@ function _renderSongPickerList(songs) {
   const listEl = document.getElementById('fs-sp-list');
   if (!listEl) return;
   if (!songs.length) {
-    listEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--fs-muted);font-size:0.83rem;">' +
+    listEl.innerHTML = '<div class="fs-picker-empty">' +
       (_spLoaded ? 'No songs match.' : 'Loading…') + '</div>';
     return;
   }
@@ -2149,7 +2137,7 @@ function _renderSermonPickerList(sermons) {
   const listEl = document.getElementById('fs-serm-list');
   if (!listEl) return;
   if (!sermons.length) {
-    listEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--fs-muted);font-size:0.83rem;">' +
+    listEl.innerHTML = '<div class="fs-picker-empty">' +
       (_sermLoaded ? 'No sermons match.' : 'Loading…') + '</div>';
     return;
   }
@@ -2446,16 +2434,16 @@ function _waitFor(predicate, timeout = 6000) {
 function _showAuthGate(N) {
   const overlay = document.getElementById('fs-auth-overlay');
   if (!overlay) return;
-  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:var(--fs-bg);display:flex;align-items:center;justify-content:center;';
+  overlay.classList.add('fs-auth-overlay');
   overlay.innerHTML = `
     <div class="fs-auth-card">
       <img class="fs-auth-icon" src="Images/icon-show.svg" alt="FlockShow">
       <h1>FlockShow</h1>
       <p>Sign in with your FlockOS account to access worship presentations.</p>
-      <button class="fs-btn fs-btn--primary" id="fs-signin-btn" style="width:100%;justify-content:center;padding:10px 0;font-size:0.88rem;">
+      <button class="fs-btn fs-btn--primary fs-auth-submit" id="fs-signin-btn">
         Sign In to FlockOS
       </button>
-      <p style="font-size:.75rem;color:var(--ink-faint)">Access is limited to authenticated FlockOS users.</p>
+      <p class="fs-auth-note">Access is limited to authenticated FlockOS users.</p>
       <p class="fs-auth-verse">"Praise Him with strings and pipe." — Psalm 150:4</p>
     </div>`;
   document.getElementById('fs-signin-btn')?.addEventListener('click', () => {

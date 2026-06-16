@@ -1683,6 +1683,17 @@ body.stand-auth {
   opacity: .98;
 }
 
+.ms-tone-violet { --nav-tone: #a855f7; }
+.ms-tone-sky { --nav-tone: #38bdf8; }
+.ms-tone-emerald { --nav-tone: #34d399; }
+.ms-tone-gold { --nav-tone: #f7c756; }
+.ms-tone-blue { --nav-tone: #3b82f6; }
+.ms-tone-cyan { --nav-tone: #06b6d4; }
+.ms-tone-docs { --nav-tone: #60a5fa; }
+.ms-tone-red { --nav-tone: #ef4444; }
+.ms-tone-rose { --nav-tone: #fb7185; }
+.ms-tone-slate { --nav-tone: #94a3b8; }
+
 .stand-app .ms-nav-item:hover {
   background: rgba(255,255,255,.08);
   border-color: rgba(255,255,255,.12);
@@ -2390,6 +2401,392 @@ body.stand-app #ms-live-overlay .ms-live-content .ms-lyric-line {
 .stand-app .ms-autoscroll-btn.is-on {
   background: var(--herald-gold, #f7c756);
 }
+
+.ms-modal--narrow { max-width: 420px; }
+.ms-modal--wide { max-width: 680px; }
+.ms-confirm-copy {
+  margin-bottom: 16px;
+  color: rgba(255,255,255,0.78);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.ms-auth-submit { margin-bottom: 12px; }
+.ms-auth-note {
+  color: var(--ms-ink-muted);
+  font-size: .75rem;
+}
+.ms-auth-verse {
+  margin-top: 20px;
+  color: var(--ms-ink-faint);
+  font-size: .7rem;
+  font-style: italic;
+}
+.ms-section-break--small { height: 0.8em; }
+.ms-section-break--large { height: 1.1em; }
+.ms-section-label--sc-verse { --sc: var(--sc-verse); }
+.ms-section-label--sc-chorus { --sc: var(--sc-chorus); }
+.ms-section-label--sc-bridge { --sc: var(--sc-bridge); }
+.ms-section-label--sc-intro { --sc: var(--sc-intro); }
+.ms-section-label--sc-outro { --sc: var(--sc-outro); }
+.ms-section-label--sc-pre-chorus { --sc: var(--sc-pre-chorus); }
+.ms-section-label--sc-tag { --sc: var(--sc-tag); }
+.ms-section-label--sc-default { --sc: var(--sc-default); }
+.ms-top-space-sm { margin-top: 8px; }
+.ms-top-space-xs { margin-top: 4px; }
+.ms-stat-card--gold { --stat-color: var(--ms-gold); }
+.ms-stat-card--blue { --stat-color: var(--ms-blue); }
+.ms-stat-card--emerald { --stat-color: var(--ms-emerald); }
+.ms-stat-card--violet { --stat-color: var(--ms-violet); }
+.ms-empty-state--padded { padding: 32px 16px; }
+.ms-service-card--button {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+.ms-service-more,
+.ms-service-none {
+  color: rgba(255,255,255,0.45);
+}
+.ms-service-more {
+  padding: 2px 0;
+  font-size: .75rem;
+}
+.ms-service-none {
+  margin-top: 8px;
+  font-size: .8rem;
+}
+.ms-service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 14px;
+}
+.ms-service-card--dash {
+  cursor: pointer;
+  padding: 20px;
+  text-align: left;
+}
+.ms-service-card--dash.is-active {
+  border-color: var(--ms-gold);
+}
+.ms-flex-fill {
+  flex: 1;
+  min-width: 0;
+}
+.ms-service-theme {
+  margin-top: 2px;
+  overflow: hidden;
+  color: rgba(255,255,255,0.58);
+  font-size: .75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ms-service-date-stack {
+  flex-shrink: 0;
+  text-align: right;
+}
+.ms-active-label {
+  margin-top: 2px;
+  color: var(--ms-gold);
+  font-size: .68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ms-service-song-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ms-service-sermon {
+  margin-top: 8px;
+  padding-top: 8px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.65);
+  font-size: .75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ms-service-sermon-icon {
+  filter: brightness(0) invert(1) opacity(0.85);
+}
+.ms-service-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.ms-live-btn-accent { color: var(--ms-rose); }
+.ms-spaced-sm { margin-bottom: 12px; }
+.ms-spaced-md { margin-bottom: 16px; }
+.ms-spaced-lg { margin-bottom: 20px; }
+.ms-label-spaced { margin-bottom: 8px; }
+.ms-sermon-preview {
+  margin-top: 6px;
+  color: var(--ms-ink-muted);
+  font-size: .78rem;
+}
+.ms-inline-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ms-search-wrap--fill { flex: 1; }
+.ms-song-pick-main { flex: 1; }
+.ms-song-pick-title { font-weight: 600; }
+.ms-song-pick-artist {
+  margin-left: 6px;
+  color: var(--ms-ink-muted);
+  font-size: .78rem;
+}
+.ms-song-pick-bpm {
+  color: var(--ms-ink-faint);
+  font-size: .75rem;
+}
+.ms-picker-empty {
+  padding: 10px;
+  color: var(--ms-ink-muted);
+  font-size: .85rem;
+}
+.ms-searching-state,
+.ms-search-error,
+.ms-results-empty {
+  padding: 20px;
+  text-align: center;
+}
+.ms-searching-state,
+.ms-results-empty {
+  color: var(--ms-ink-muted);
+}
+.ms-search-error { color: var(--ms-danger); }
+.ms-pco-result-spaced { margin-bottom: 12px; }
+.ms-pco-results-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ms-pco-song-card { cursor: pointer; }
+.ms-pco-song-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ms-pco-song-title {
+  margin-bottom: 4px;
+  font-size: .95rem;
+  font-weight: 700;
+}
+.ms-pco-song-meta {
+  color: var(--ms-ink-muted);
+  font-size: .82rem;
+}
+.ms-pco-song-themes {
+  margin-top: 4px;
+  color: var(--ms-violet);
+  font-size: .75rem;
+}
+.ms-parsed-card {
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid var(--ms-gold-glow);
+  border-radius: var(--ms-r-lg);
+  background: var(--ms-gold-soft);
+}
+.ms-parsed-title {
+  margin-bottom: 10px;
+  color: var(--ms-gold);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.ms-parsed-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+  font-size: .88rem;
+}
+.ms-parsed-label { color: var(--ms-ink-muted); }
+.ms-parsed-strong { font-weight: 700; }
+.ms-parsed-key {
+  color: var(--ms-gold);
+  font-weight: 700;
+}
+.ms-chart-preview-label {
+  margin-bottom: 8px;
+  color: var(--ms-ink-muted);
+  font-size: .8rem;
+}
+.ms-chart-preview-box {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 14px;
+  border-radius: var(--ms-r-md);
+  background: var(--ms-bg-card);
+  --ms-song-fs: 14px;
+}
+.ms-hero-spaced { margin-bottom: 24px; }
+.ms-import-title {
+  margin-bottom: 8px;
+  font-size: 1.6rem;
+}
+.ms-import-copy {
+  margin-bottom: 18px;
+  color: var(--ms-ink-muted);
+  font-size: .9rem;
+}
+.ms-preview-spaced { margin-bottom: 16px; }
+.ms-pco-card {
+  display: block;
+  max-width: 520px;
+  margin-bottom: 24px;
+  cursor: default;
+}
+.ms-pco-icon {
+  margin-bottom: 12px;
+  filter: brightness(0) invert(1) opacity(0.9);
+  font-size: 1.4rem;
+}
+.ms-pco-title {
+  margin-bottom: 8px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.ms-pco-copy {
+  margin-bottom: 16px;
+  color: rgba(255,255,255,0.78);
+  font-size: .88rem;
+  line-height: 1.6;
+}
+.ms-pco-help {
+  margin-bottom: 12px;
+  color: rgba(255,255,255,0.72);
+  font-size: .82rem;
+  line-height: 1.5;
+}
+.ms-pco-link { color: var(--ms-violet); }
+.ms-pco-privacy {
+  margin-top: 12px;
+  color: rgba(255,255,255,0.5);
+  font-size: .72rem;
+}
+.ms-pco-connected {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 10px;
+  background: rgba(34,197,94,0.08);
+}
+.ms-pco-connected-title {
+  font-size: .88rem;
+  font-weight: 600;
+}
+.ms-pco-connected-sub {
+  color: rgba(255,255,255,0.65);
+  font-size: .78rem;
+}
+.ms-top-space-md { margin-top: 12px; }
+.ms-top-space-lg { margin-top: 28px; }
+.ms-manual-preview {
+  min-height: 500px;
+  --ms-song-fs: 15px;
+}
+.ms-settings-wrap { max-width: 640px; }
+.ms-dash-action--plain {
+  display: block;
+  cursor: default;
+}
+.ms-settings-card { margin-bottom: 20px; }
+.ms-settings-heading {
+  margin-bottom: 16px;
+  color: var(--dash-gold);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+}
+.ms-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ms-setting-range {
+  flex: 1;
+  accent-color: var(--ms-gold);
+}
+.ms-setting-value {
+  min-width: 32px;
+  color: var(--ms-gold);
+  font-family: var(--ms-mono);
+  font-weight: 700;
+}
+.ms-setting-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ms-gold);
+}
+.ms-setting-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.ms-account-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--ms-r-lg);
+  background: rgba(255,255,255,0.05);
+}
+.ms-account-name { font-weight: 700; }
+.ms-account-email {
+  color: rgba(255,255,255,0.65);
+  font-size: .82rem;
+}
+.ms-account-role {
+  margin-top: 2px;
+  color: rgba(255,255,255,0.45);
+  font-size: .75rem;
+  text-transform: capitalize;
+}
+.ms-empty-content--muted { color: rgba(255,255,255,.4); }
+.ms-empty-content--center {
+  padding: 60px 20px;
+  text-align: center;
+}
+.ms-live-orig-key {
+  color: rgba(255,255,255,.5);
+  font-size: .6em;
+}
+.ms-live-count {
+  color: rgba(255,255,255,.5);
+  font-size: .8rem;
+  white-space: nowrap;
+}
+.ms-live-control-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ms-live-control-group--tight { gap: 4px; }
+.ms-live-transpose-value {
+  min-width: 20px;
+  color: var(--ms-gold);
+  font-family: var(--ms-mono);
+  font-size: .85rem;
+  text-align: center;
+}
+.ms-live-fs-btn.is-dimmed { opacity: .4; }
 
 @media (max-width: 860px) {
   .stand-app {

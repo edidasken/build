@@ -35,6 +35,9 @@ const _e    = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 const _qs   = id => document.getElementById(id);
 const _now  = () => Date.now();
+const _setHidden = (el, hidden) => {
+  if (el) el.classList.toggle('bm-hidden', !!hidden);
+};
 
 function _fmtDate(ts) {
   if (!ts) return '';
@@ -303,7 +306,7 @@ function _renderList() {
   filtered.sort(sortFns[S.sortBy] || sortFns.updated);
 
   if (filtered.length === 0) {
-    container.innerHTML = `<div style="padding:16px 12px;font:0.78rem 'Plus Jakarta Sans',sans-serif;color:var(--bm-faint);text-align:center">${q || S.filterStatus !== 'all' ? 'No results.' : 'No sermons yet. Create one below.'}</div>`;
+    container.innerHTML = `<div class="bm-list-empty">${q || S.filterStatus !== 'all' ? 'No results.' : 'No sermons yet. Create one below.'}</div>`;
     return;
   }
 
@@ -312,20 +315,29 @@ function _renderList() {
   container.innerHTML = filtered.map(s => {
     const pct = _computeCompletion(s);
     const dotColor = statusDot[s.status || 'draft'] || '#60a5fa';
+    const progressClass = pct >= 80 ? 'is-high' : pct >= 40 ? 'is-mid' : 'is-low';
     return `
       <div class="bm-sermon-item${s.id === S.activeId ? ' is-active' : ''}" data-id="${_e(s.id)}">
-        <div style="display:flex;align-items:center;gap:6px;min-width:0">
-          <span style="width:7px;height:7px;border-radius:50%;background:${dotColor};flex-shrink:0" title="${_e(STATUS_LABELS[s.status||'draft'])}"></span>
+        <div class="bm-sermon-title-row">
+          <span class="bm-status-dot" data-dot-color="${dotColor}" title="${_e(STATUS_LABELS[s.status||'draft'])}"></span>
           <div class="bm-sermon-item-title">${_e(s.title || 'Untitled')}</div>
         </div>
         <div class="bm-sermon-item-meta">
           <span>${_fmtDate(s.date ? new Date(s.date + 'T00:00:00').getTime() : s.createdAt)}</span>
           ${s.series ? `<span class="bm-sermon-item-series">${_e(s.series)}</span>` : ''}
         </div>
-        ${pct > 0 ? `<div style="margin-top:4px;height:3px;border-radius:2px;background:rgba(255,255,255,0.07);overflow:hidden"><div style="height:100%;width:${pct}%;background:${pct>=80?'#34d399':pct>=40?'#e8a838':'#60a5fa'};border-radius:2px;transition:width 0.3s"></div></div>` : ''}
+        ${pct > 0 ? `<div class="bm-progress-mini"><div class="bm-progress-mini-bar ${progressClass}" data-pct="${pct}"></div></div>` : ''}
       </div>
     `;
   }).join('');
+
+  container.querySelectorAll('.bm-status-dot[data-dot-color]').forEach(dot => {
+    dot.style.background = dot.dataset.dotColor || '';
+  });
+  container.querySelectorAll('.bm-progress-mini-bar[data-pct]').forEach(bar => {
+    const pct = Math.max(0, Math.min(100, Number(bar.dataset.pct) || 0));
+    bar.style.width = `${pct}%`;
+  });
 
   container.querySelectorAll('.bm-sermon-item').forEach(el => {
     el.addEventListener('click', () => {
@@ -462,7 +474,7 @@ function _renderOutline() {
         <div class="bm-fmt-toolbar">
           <button type="button" class="bm-fmt-btn" data-fmt-open="**" data-fmt-close="**" title="Bold — select text first"><strong>B</strong></button>
           <button type="button" class="bm-fmt-btn" data-fmt-open="__" data-fmt-close="__" title="Underline — select text first"><u>U</u></button>
-          <button type="button" class="bm-fmt-btn" data-fmt-open="==" data-fmt-close="==" title="Highlight — select text first" style="color:rgba(232,168,56,0.85)">H</button>
+          <button type="button" class="bm-fmt-btn bm-fmt-btn--highlight" data-fmt-open="==" data-fmt-close="==" title="Highlight — select text first">H</button>
           <span class="bm-fmt-hint">Select text → B / U / H</span>
         </div>
       </div>
@@ -893,9 +905,8 @@ function _refreshMsPreview() {
     : area.value;
   preview.innerHTML = _buildMsHtml(raw);
   if (pane) pane.classList.toggle('bm-preview-mode', _msPreviewMode);
-  // Use explicit display control instead of element.hidden for reliability
-  if (area) { area.style.display = _msPreviewMode ? 'none' : ''; }
-  preview.style.display = _msPreviewMode ? '' : 'none';
+  _setHidden(area, _msPreviewMode);
+  _setHidden(preview, !_msPreviewMode);
   // Sync toggle button active states
   const editBtn = document.getElementById('bm-ms-edit-btn');
   const viewBtn = document.getElementById('bm-ms-view-btn');
@@ -933,10 +944,10 @@ function _renderResearch() {
     });
     if (words.length > 0) {
       kwEl.innerHTML = words.map(w =>
-        `<span class="bm-chip" style="cursor:default">${_e(w)}</span>`
+        `<span class="bm-chip bm-chip--static">${_e(w)}</span>`
       ).join('');
     } else {
-      kwEl.innerHTML = `<span style="font:0.78rem 'Plus Jakarta Sans',sans-serif;color:var(--bm-faint)">Add scripture passages to the outline to see key references here.</span>`;
+      kwEl.innerHTML = `<span class="bm-faint-inline">Add scripture passages to the outline to see key references here.</span>`;
     }
   }
 }
@@ -992,7 +1003,7 @@ function _renderSeries() {
   });
 
   if (keys.length === 0) {
-    grid.innerHTML = `<div style="font:0.85rem 'Plus Jakarta Sans',sans-serif;color:var(--bm-faint);padding:20px 0">No sermons yet.</div>`;
+    grid.innerHTML = `<div class="bm-series-empty">No sermons yet.</div>`;
     return;
   }
 
@@ -1034,7 +1045,7 @@ function _selectSermon(id) {
 
   // Show close (X) button when a sermon is open
   const closeBtn = _qs('bm-close-sermon-btn');
-  if (closeBtn) closeBtn.style.display = '';
+  _setHidden(closeBtn, false);
 
   // Enable action buttons that require an active sermon
   const dupBtn  = _qs('bm-duplicate-btn');
@@ -1577,6 +1588,7 @@ function _doPrint() {
     if (sec.type === 'prayer') { prayerSections.push(sec); return; }
 
     const t      = _TYPE[sec.type] || _TYPE.point;
+    const typeClass = `bmp-section--${_e(sec.type || 'point')}`;
     const title  = (sec.title       || '').trim();
     const notes  = _cleanNotes(sec.notes);
     const ref    = (sec.scriptureRef|| '').trim();
@@ -1585,11 +1597,11 @@ function _doPrint() {
 
     const isTransition = sec.type === 'transition';
     html += `
-      <div class="bmp-section${isTransition ? ' bmp-transition-section' : ''}">
-        <div class="bmp-section-accent" style="background:${t.color}"></div>
+      <div class="bmp-section ${typeClass}${isTransition ? ' bmp-transition-section' : ''}">
+        <div class="bmp-section-accent"></div>
         <div class="bmp-section-content">
           <div class="bmp-section-head">
-            <span class="bmp-type-pill" style="color:${t.color};border-color:${t.color}">${t.label}</span>
+            <span class="bmp-type-pill">${t.label}</span>
             ${title ? `<span class="bmp-section-title">${_e(title)}</span>` : ''}
           </div>
           ${sec.type === 'scripture' && (ref || verse) ? `
@@ -1667,85 +1679,7 @@ function _doPrint() {
 function _openPrintWindow(s, bodyHtml) {
   const title = (s.title || 'Sermon').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Print styles — extracted from feed.html @media print block, applied
-  // unconditionally inside this standalone document (this entire window
-  // exists for printing/PDF export).
-  const printCss = `
-    @page { margin: 0.7in 0.8in; }
-    html, body { margin: 0; padding: 0; background: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    body { padding: 0 24px 32px; max-width: 8.5in; margin: 0 auto; box-sizing: border-box; }
-    #bm-print-document { font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; }
-    #bmp-wrap { max-width: 100%; }
-    #bmp-header { margin-bottom: 20pt; }
-    #bmp-header-bar { height: 5pt; background: linear-gradient(90deg, #c48a20, #e8a838); border-radius: 2pt; margin-bottom: 14pt; }
-    #bmp-header-body { padding: 0; }
-    #bmp-header-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4pt; }
-    #bmp-series { font: 600 9pt 'Plus Jakarta Sans', sans-serif; color: #c48a20; text-transform: uppercase; letter-spacing: .08em; }
-    #bmp-date { font: 400 9pt 'Plus Jakarta Sans', sans-serif; color: #888; }
-    #bmp-title { font: 700 24pt 'Plus Jakarta Sans', sans-serif; color: #0f0f0f; margin: 0 0 8pt; line-height: 1.15; }
-    #bmp-meta-row { display: flex; gap: 14pt; flex-wrap: wrap; margin-top: 5pt; padding-top: 7pt; border-top: 1.5pt solid #e8a838; }
-    .bmp-meta-chip { font: 500 9pt 'Plus Jakarta Sans', sans-serif; color: #555; }
-    #bmp-sections { display: flex; flex-direction: column; gap: 9pt; }
-    .bmp-section { display: flex; break-inside: avoid; border: 1pt solid #e2ded8; border-radius: 4pt; overflow: hidden; background: #fff; }
-    .bmp-section-accent { width: 4.5pt; flex-shrink: 0; }
-    .bmp-section-content { flex: 1; padding: 8pt 12pt; }
-    .bmp-section-head { display: flex; align-items: baseline; gap: 7pt; margin-bottom: 5pt; flex-wrap: wrap; }
-    .bmp-type-pill { font: 700 8pt 'Plus Jakarta Sans', sans-serif; text-transform: uppercase; letter-spacing: .10em; border: 1pt solid; padding: 2pt 6pt; border-radius: 3pt; flex-shrink: 0; }
-    .bmp-section-title { font: 600 14pt 'Plus Jakarta Sans', sans-serif; color: #111; line-height: 1.3; }
-    .bmp-transition-section { display: flex; align-items: center; gap: 8pt; padding: 5pt 10pt; border: none; border-top: 1pt dashed #ccc; border-bottom: 1pt dashed #ccc; background: transparent !important; }
-    .bmp-transition-section .bmp-section-accent { display: none; }
-    .bmp-prayer-inline { background: #faf5ff !important; border-color: #e9d5ff !important; }
-    .bmp-verse-block { margin: 6pt 0; padding: 9pt 12pt 9pt 13pt; background: #fef9ec; border-left: 3pt solid #e8a838; }
-    .bmp-verse-ref { font: 700 11.5pt 'Plus Jakarta Sans', sans-serif; color: #c48a20; margin-bottom: 4pt; }
-    .bmp-verse-text { font: italic 13pt/1.7 Georgia, serif; color: #2c2c2c; }
-    .bmp-notes { font: 13pt/1.6 Georgia, serif; color: #2c2c2c; }
-    /* ── Prayer points: own page, hero header, numbered cards ──────────── */
-    #bmp-prayer { page-break-before: always; break-before: page; padding-top: 0; }
-    #bmp-prayer-hero { text-align: center; padding: 6pt 0 18pt; margin-bottom: 18pt; border-bottom: 2pt solid #7c3aed; }
-    #bmp-prayer-eyebrow { font: 700 10pt 'Plus Jakarta Sans', sans-serif; color: #7c3aed; text-transform: uppercase; letter-spacing: .22em; margin-bottom: 8pt; }
-    #bmp-prayer-title { font: 700 22pt 'Plus Jakarta Sans', sans-serif; color: #0f0f0f; margin: 0 0 6pt; line-height: 1.2; }
-    #bmp-prayer-ref { font: 500 11pt 'Plus Jakarta Sans', sans-serif; color: #888; }
-    #bmp-prayer-rule { display: none; }
-    .bmp-prayer-item { display: flex; gap: 12pt; align-items: flex-start; break-inside: avoid; margin-bottom: 14pt; padding: 10pt 12pt; background: #faf7ff; border: 1pt solid #ede4ff; border-left: 3pt solid #7c3aed; border-radius: 4pt; }
-    .bmp-prayer-num { flex-shrink: 0; width: 22pt; height: 22pt; border-radius: 50%; background: #7c3aed; color: #fff; font: 700 11pt 'Plus Jakarta Sans', sans-serif; display: flex; align-items: center; justify-content: center; }
-    .bmp-prayer-body { flex: 1; min-width: 0; }
-    .bmp-prayer-item-title { font: 700 13pt 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; margin-bottom: 4pt; line-height: 1.3; }
-    .bmp-prayer-item-notes { font: 13pt/1.55 Georgia, serif; color: #333; }
-
-    /* ── On-screen toolbar (hidden when printing) ─────────────────────── */
-    .pd-toolbar {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-      padding: 12px 16px; margin: 0 -24px 24px;
-      background: #1a1320; color: #f5e9c8;
-      border-bottom: 2px solid #c48a20;
-      font: 600 0.85rem 'Plus Jakarta Sans', sans-serif;
-      padding-top: calc(12px + env(safe-area-inset-top, 0px));
-    }
-    .pd-toolbar-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 8px; }
-    .pd-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 14px; border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.20);
-      background: rgba(255,255,255,0.08); color: #fff;
-      font: 600 0.82rem 'Plus Jakarta Sans', sans-serif;
-      cursor: pointer; transition: background .15s; white-space: nowrap;
-    }
-    .pd-btn:hover, .pd-btn:focus { background: rgba(255,255,255,0.18); outline: none; }
-    .pd-btn--primary { background: #c48a20; border-color: #c48a20; color: #1a1320; }
-    .pd-btn--primary:hover { background: #e8a838; border-color: #e8a838; }
-    .pd-hint { font: 400 0.72rem 'Plus Jakarta Sans', sans-serif; color: rgba(245,233,200,0.65); padding: 8px 4px 0; text-align: center; }
-
-    @media print {
-      .pd-toolbar, .pd-hint { display: none !important; }
-      body { padding: 0; max-width: none; background: #fff; }
-    }
-    @media (max-width: 600px) {
-      body { padding: 0 14px 24px; }
-      .pd-toolbar { margin: 0 -14px 16px; padding: 10px 14px; padding-top: calc(10px + env(safe-area-inset-top, 0px)); }
-      #bmp-title { font-size: 20pt; }
-    }
-  `;
+  const printCssHref = new URL('Styles/feed-print.css', document.baseURI).href;
 
   const fullDoc = `<!DOCTYPE html>
 <html lang="en">
@@ -1756,7 +1690,7 @@ function _openPrintWindow(s, bodyHtml) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>${printCss}</style>
+<link rel="stylesheet" href="${printCssHref}">
 </head>
 <body>
 <div class="pd-toolbar" role="toolbar" aria-label="Sermon export">
@@ -1852,6 +1786,7 @@ function _buildPresentHtml(s) {
   const prayerSections = [];
   (s.sections || []).forEach(sec => {
     const t      = _TYPE[sec.type] || _TYPE.point;
+    const typeClass = `bmp-section--${_e(sec.type || 'point')}`;
     const title  = (sec.title       || '').trim();
     const notes  = (sec.notes       || '').trim();
     const ref    = (sec.scriptureRef|| '').trim();
@@ -1861,11 +1796,11 @@ function _buildPresentHtml(s) {
       // Collect for bottom summary AND render in-flow
       prayerSections.push(sec);
       html += `
-        <div class="bmp-section bmp-prayer-inline">
-          <div class="bmp-section-accent" style="background:${t.color}"></div>
+        <div class="bmp-section bmp-prayer-inline ${typeClass}">
+          <div class="bmp-section-accent"></div>
           <div class="bmp-section-content">
             <div class="bmp-section-head">
-              <span class="bmp-type-pill" style="color:${t.color};border-color:${t.color}">${t.label}</span>
+              <span class="bmp-type-pill">${t.label}</span>
               ${title ? `<span class="bmp-section-title">${_e(title)}</span>` : ''}
             </div>
             ${notes ? `<div class="bmp-notes">${_e(notes).replace(/\n/g, '<br>')}</div>` : ''}
@@ -1876,11 +1811,11 @@ function _buildPresentHtml(s) {
     }
     const isTransition = sec.type === 'transition';
     html += `
-      <div class="bmp-section${isTransition ? ' bmp-transition-section' : ''}">
-        <div class="bmp-section-accent" style="background:${t.color}"></div>
+      <div class="bmp-section ${typeClass}${isTransition ? ' bmp-transition-section' : ''}">
+        <div class="bmp-section-accent"></div>
         <div class="bmp-section-content">
           <div class="bmp-section-head">
-            <span class="bmp-type-pill" style="color:${t.color};border-color:${t.color}">${t.label}</span>
+            <span class="bmp-type-pill">${t.label}</span>
             ${title ? `<span class="bmp-section-title">${_e(title)}</span>` : ''}
           </div>
           ${sec.type === 'scripture' && (ref || verse) ? `
@@ -2145,7 +2080,7 @@ function _confirmDelete() {
     const saveBtn = _qs('bm-save-btn');
     if (saveBtn) saveBtn.disabled = true;
     const closeBtn = _qs('bm-close-sermon-btn');
-    if (closeBtn) closeBtn.style.display = 'none';
+    _setHidden(closeBtn, true);
     _renderList();
     _renderLanding();
     _toast('Sermon deleted', 'error');
@@ -2499,7 +2434,7 @@ async function _doScriptureLookup(rawRef, suppressAdd = false) {
     text = '';
   } else {
     // Copyrighted translation — can't fetch; direct to BLB
-    textEl.innerHTML = `<em style="color:var(--bm-muted);font-style:normal;font-size:0.75rem">${transKey} is a licensed translation and cannot be fetched directly. Use the Blue Letter Bible link below to read it.</em>`;
+    textEl.innerHTML = `<em class="bm-muted-license">${transKey} is a licensed translation and cannot be fetched directly. Use the Blue Letter Bible link below to read it.</em>`;
     text = '';
   }
 
@@ -2590,7 +2525,7 @@ function _doLexLookup(query) {
     _qs('bm-lex-word').textContent     = entry.word        || query;
     _qs('bm-lex-strongs').textContent  = entry.strongs     || '';
     _qs('bm-lex-translit').textContent = entry.translit    || '';
-    _qs('bm-lex-def').innerHTML        = `${_e(entry.definition || entry.def || '')} <a href="${blbUrl}" target="_blank" rel="noopener" style="color:var(--bm-accent);font-size:0.78rem;white-space:nowrap">Open in BLB ↗</a>`;
+    _qs('bm-lex-def').innerHTML        = `${_e(entry.definition || entry.def || '')} <a class="bm-blb-link" href="${blbUrl}" target="_blank" rel="noopener">Open in BLB ↗</a>`;
     _qs('bm-lex-origin').textContent   = entry.origin      || '';
     res.classList.add('visible');
     return;
@@ -2607,7 +2542,7 @@ function _doLexFirestore(query, isStrongs, blbUrl, res) {
     _qs('bm-lex-word').textContent     = docData.lemma       || query;
     _qs('bm-lex-strongs').textContent  = docData.strongs     || docData.id || '';
     _qs('bm-lex-translit').textContent = docData.xlit        || docData.pron || '';
-    _qs('bm-lex-def').innerHTML        = `${_e(docData.strongs_def || docData.kjv_def || '')} <a href="${blbUrl}" target="_blank" rel="noopener" style="color:var(--bm-accent);font-size:0.78rem;white-space:nowrap">Open in BLB ↗</a>`;
+    _qs('bm-lex-def').innerHTML        = `${_e(docData.strongs_def || docData.kjv_def || '')} <a class="bm-blb-link" href="${blbUrl}" target="_blank" rel="noopener">Open in BLB ↗</a>`;
     _qs('bm-lex-origin').textContent   = docData.derivation  || '';
     res.classList.add('visible');
   };
@@ -2635,7 +2570,7 @@ function _doLexFallback(query, blbUrl, res) {
   _qs('bm-lex-word').textContent     = query;
   _qs('bm-lex-strongs').textContent  = '';
   _qs('bm-lex-translit').textContent = '';
-  _qs('bm-lex-def').innerHTML        = `<a href="${blbUrl}" target="_blank" rel="noopener" style="color:var(--bm-accent)">Search BLB Lexicon ↗</a>`;
+  _qs('bm-lex-def').innerHTML        = `<a class="bm-blb-link--plain" href="${blbUrl}" target="_blank" rel="noopener">Search BLB Lexicon ↗</a>`;
   _qs('bm-lex-origin').textContent   = '';
   if (res) res.classList.add('visible');
 }
@@ -2776,9 +2711,9 @@ function _renderBookOverview() {
   const key  = _parseBookFromPassage(passage);
   const book = key ? _BIBLE_BOOKS[key] : null;
 
-  if (!book) { el.style.display = 'none'; return; }
+  if (!book) { _setHidden(el, true); return; }
 
-  el.style.display = '';
+  _setHidden(el, false);
   el.innerHTML = `
     <div class="bm-book-ov-inner">
       <div class="bm-book-ov-header">
@@ -3205,7 +3140,7 @@ function _landingRenderLexList(out, items) {
   }
   out.innerHTML = items.slice(0, 6).map(w => `
     <div class="bm-land-list-item">
-      <div class="bm-land-list-item-title"><strong>${_e(w.strongs)}</strong>${w.lemma ? ' &middot; ' + _e(w.lemma) : ''}${w.translit ? ' <span style="opacity:0.7">(' + _e(w.translit) + ')</span>' : ''}</div>
+      <div class="bm-land-list-item-title"><strong>${_e(w.strongs)}</strong>${w.lemma ? ' &middot; ' + _e(w.lemma) : ''}${w.translit ? ' <span class="bm-land-translit-muted">(' + _e(w.translit) + ')</span>' : ''}</div>
       <div class="bm-land-list-item-meta">${_e((w.def || '').slice(0, 90))}</div>
     </div>
   `).join('');
@@ -3470,7 +3405,7 @@ function _renderLandingPrayers() {
       ? 'Answered ' + (p.answeredAt ? _fmtAgo(p.answeredAt) : '')
       : 'Added ' + when;
     return '<div class="bm-land-prayer-item' + (p.answered ? ' is-answered' : '') + '" data-id="' + _e(p.id) + '">'
-      + '<div style="flex:1;min-width:0">'
+      + '<div class="bm-flex-fill">'
       +   '<div class="bm-land-prayer-text">' + _e(p.text || '') + '</div>'
       +   '<div class="bm-land-prayer-meta">' + _e(meta) + '</div>'
       + '</div>'
@@ -3564,7 +3499,7 @@ function _closeSermon() {
 
   // Hide close (X) button
   const closeBtn = _qs('bm-close-sermon-btn');
-  if (closeBtn) closeBtn.style.display = 'none';
+  _setHidden(closeBtn, true);
 
   // Refresh list selection state
   if (typeof _renderList === 'function') _renderList();
@@ -3935,8 +3870,8 @@ function _renderCrossRef(body) {
     <input class="bm-tool-input" id="bm-xref-input" type="text"
            placeholder="e.g., John 3:16, Romans 8:28, Psalm 23"
            autocomplete="off" spellcheck="false">
-    <div id="bm-xref-results" style="display:flex;flex-direction:column;gap:8px;"></div>
-    <div class="bm-tool-section-h" style="margin-top:6px;">Popular passages</div>
+    <div id="bm-xref-results" class="bm-xref-results"></div>
+    <div class="bm-tool-section-h bm-tool-section-h--spaced">Popular passages</div>
     <div class="bm-topic-chips" id="bm-xref-suggest"></div>
   `;
   const input = body.querySelector('#bm-xref-input');
@@ -3968,15 +3903,14 @@ function _xrefRender(query, target) {
     target.innerHTML = `
       <div class="bm-tool-empty">
         No curated cross-references for that verse yet.<br>
-        <a href="${_bibleGatewayUrl(query)}" target="_blank" rel="noopener"
-           style="color:var(--bm-accent,#e8a838);font-weight:600;">Open "${_e(query)}" on BibleGateway →</a>
+        <a class="bm-xref-link" href="${_bibleGatewayUrl(query)}" target="_blank" rel="noopener">Open "${_e(query)}" on BibleGateway →</a>
       </div>`;
     return;
   }
   const matched = key.replace(/\b\w/g, c => c.toUpperCase());
   const rows = BM_XREFS[key];
   target.innerHTML = `
-    <div class="bm-tool-section-h" style="color:var(--bm-accent,#e8a838);margin-top:0;">Parallels for ${_e(matched)}</div>
+    <div class="bm-tool-section-h bm-tool-section-h--accent bm-tool-section-h--flush">Parallels for ${_e(matched)}</div>
     ${rows.map(([ref, snip]) => `
       <div class="bm-xref-row">
         <strong>${_e(ref)}</strong>
@@ -3995,7 +3929,7 @@ function _renderTopical(body) {
     <div class="bm-topic-chips" id="bm-topic-chips">
       ${topics.map(t => `<button class="bm-topic-chip" data-topic="${_e(t)}">${_e(t)}</button>`).join('')}
     </div>
-    <div id="bm-topic-results" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <div id="bm-topic-results" class="bm-topic-results"></div>
   `;
   const chips = body.querySelector('#bm-topic-chips');
   const results = body.querySelector('#bm-topic-results');
@@ -4015,7 +3949,7 @@ function _topicRender(topic, target) {
   const verses = BM_TOPICS[topic] || [];
   if (!verses.length) { target.innerHTML = `<div class="bm-tool-empty">No verses for "${_e(topic)}" yet.</div>`; return; }
   target.innerHTML = `
-    <div class="bm-tool-section-h" style="color:var(--bm-accent,#e8a838);">Verses on ${_e(topic)}</div>
+    <div class="bm-tool-section-h bm-tool-section-h--accent">Verses on ${_e(topic)}</div>
     ${verses.map(([ref, snip]) => `
       <div class="bm-topic-verse">
         <strong>${_e(ref)}</strong>
@@ -4094,24 +4028,22 @@ async function _loadLibrary() {
 function _renderQuotes(body) {
   body.innerHTML = `
     <div class="bm-tool-section-h">Add a quote or illustration</div>
-    <textarea class="bm-tool-input" id="bm-quote-text" rows="3"
+    <textarea class="bm-tool-input bm-quote-textarea" id="bm-quote-text" rows="3"
               placeholder="Paste or type the quote, illustration, or story…"
-              style="resize:vertical;min-height:72px;"></textarea>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <input class="bm-tool-input" id="bm-quote-source" type="text"
-             placeholder="Source (e.g., C.S. Lewis, Mere Christianity)"
-             style="flex:2 1 220px;min-width:160px;">
-      <input class="bm-tool-input" id="bm-quote-tag" type="text"
-             placeholder="Tag (grace, hope…)"
-             style="flex:1 1 140px;min-width:120px;">
+              ></textarea>
+    <div class="bm-quote-row">
+      <input class="bm-tool-input bm-quote-field-main" id="bm-quote-source" type="text"
+             placeholder="Source (e.g., C.S. Lewis, Mere Christianity)">
+      <input class="bm-tool-input bm-quote-field-side" id="bm-quote-tag" type="text"
+             placeholder="Tag (grace, hope…)">
     </div>
-    <div style="display:flex;gap:8px;align-items:center;">
+    <div class="bm-quote-actions-row">
       <button class="bm-btn bm-btn--primary bm-btn--sm" id="bm-quote-save">Save quote</button>
-      <span style="color:var(--bm-faint);font:0.74rem 'Plus Jakarta Sans',sans-serif;">Saved here syncs only to this browser. Library is shared.</span>
+      <span class="bm-quote-help">Saved here syncs only to this browser. Library is shared.</span>
     </div>
-    <div class="bm-tool-section-h" style="margin-top:14px;display:flex;align-items:center;gap:8px;">
+    <div class="bm-tool-section-h bm-tool-section-h--more-spaced bm-quote-actions-row">
       <span>Library &amp; Saved (<span id="bm-quote-count">0</span>)</span>
-      <span style="margin-left:auto;display:inline-flex;gap:4px;" id="bm-quote-tabs">
+      <span class="bm-quote-tabs" id="bm-quote-tabs">
         <button class="bm-btn bm-btn--sm bm-quote-tab" data-tab="all"   aria-pressed="true">All</button>
         <button class="bm-btn bm-btn--sm bm-quote-tab" data-tab="mine"  aria-pressed="false">Mine</button>
         <button class="bm-btn bm-btn--sm bm-quote-tab" data-tab="quote" aria-pressed="false">Quotes</button>
@@ -4119,7 +4051,7 @@ function _renderQuotes(body) {
       </span>
     </div>
     <input class="bm-tool-input" id="bm-quote-search" type="text" placeholder="Search library &amp; saved…">
-    <div id="bm-quote-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+    <div id="bm-quote-list" class="bm-quote-list"></div>
   `;
   body.dataset.tab = 'all';
   const txt    = body.querySelector('#bm-quote-text');
@@ -4206,11 +4138,11 @@ function _quotesRender(body, query) {
   if (!filtered.length) { target.innerHTML = `<div class="bm-tool-empty">No matches for "${_e(query)}".</div>`; return; }
   target.innerHTML = filtered.map(it => {
     const isMine = !!it.isMine;
-    const badge = isMine ? '<span class="bm-quote-meta-tag" style="background:#e7f3ff;color:#1366c4;">Mine</span>'
+    const badge = isMine ? '<span class="bm-quote-meta-tag bm-quote-meta-tag--mine">Mine</span>'
       : (it.kind === 'illustration'
-          ? '<span class="bm-quote-meta-tag" style="background:#fff2d6;color:#9a6800;">Illustration</span>'
-          : '<span class="bm-quote-meta-tag" style="background:#eef7e8;color:#2d6a1c;">Library</span>');
-    const headLine = it.title ? `<div style="font-weight:600;margin-bottom:4px;">${_e(it.title)}</div>` : '';
+          ? '<span class="bm-quote-meta-tag bm-quote-meta-tag--illustration">Illustration</span>'
+          : '<span class="bm-quote-meta-tag bm-quote-meta-tag--library">Library</span>');
+    const headLine = it.title ? `<div class="bm-quote-title">${_e(it.title)}</div>` : '';
     const sourceLabel = it.source || it.author || it.passage || '';
     const tagBits = (Array.isArray(it.tags) ? it.tags : []).slice(0, 4)
       .map(t => `<span class="bm-quote-meta-tag">${_e(t)}</span>`).join('');
@@ -4222,7 +4154,7 @@ function _quotesRender(body, query) {
         ${sourceLabel ? `<span>— ${_e(sourceLabel)}</span>` : ''}
         ${tagBits}
         ${badge}
-        ${isMine && it.createdAt ? `<span style="margin-left:auto;">${_e(_fmtAgo(it.createdAt))}</span>` : '<span style="margin-left:auto;"></span>'}
+        ${isMine && it.createdAt ? `<span class="bm-meta-push">${_e(_fmtAgo(it.createdAt))}</span>` : '<span class="bm-meta-push"></span>'}
       </div>
       <div class="bm-quote-actions">
         <button class="bm-quote-copy" title="Copy">Copy</button>
@@ -4363,6 +4295,17 @@ function _currentSeason(today) {
   return current;
 }
 
+function _lituColorClass(color) {
+  const map = {
+    '#7c3aed': 'bm-litu-color--purple',
+    '#facc15': 'bm-litu-color--gold',
+    '#dc2626': 'bm-litu-color--red',
+    '#16a34a': 'bm-litu-color--green',
+    '#000000': 'bm-litu-color--black',
+  };
+  return map[String(color || '').toLowerCase()] || 'bm-litu-color--green';
+}
+
 function _renderLiturgical(body) {
   const today = new Date(); today.setHours(0,0,0,0);
   const year = today.getFullYear();
@@ -4379,7 +4322,7 @@ function _renderLiturgical(body) {
       <div class="bm-litu-now-season">${_e(cur.name)}</div>
       <div class="bm-litu-now-meta">Current liturgical season · ${_e(today.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }))}</div>
     </div>
-    <div class="bm-tool-section-h" style="margin-top:8px;">Upcoming feasts &amp; holy days</div>
+    <div class="bm-tool-section-h bm-tool-section-h--spaced">Upcoming feasts &amp; holy days</div>
     <div>
       ${trimmed.map(ev => {
         const isPast = ev.date < today;
@@ -4389,17 +4332,17 @@ function _renderLiturgical(body) {
           <div class="bm-litu-row ${cls}">
             <div class="bm-litu-date">${_e(_fmtLitDate(ev.date))}, ${ev.date.getFullYear()}</div>
             <div class="bm-litu-name">${_e(ev.name)}</div>
-            <div class="bm-litu-color" style="--c:${ev.color};${ev.color === '#000000' ? 'color:#fff;' : ''}">${_e(ev.season)}</div>
+            <div class="bm-litu-color ${_lituColorClass(ev.color)}">${_e(ev.season)}</div>
           </div>
         `;
       }).join('')}
     </div>
-    <div class="bm-tool-section-h" style="margin-top:14px;">Color guide</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;">
-      <span class="bm-litu-color" style="--c:#7c3aed;">Purple · Advent / Lent</span>
-      <span class="bm-litu-color" style="--c:#facc15;color:#1b264f;">Gold/White · Christmas / Easter</span>
-      <span class="bm-litu-color" style="--c:#dc2626;">Red · Pentecost / Holy Week</span>
-      <span class="bm-litu-color" style="--c:#16a34a;">Green · Ordinary Time</span>
+    <div class="bm-tool-section-h bm-tool-section-h--more-spaced">Color guide</div>
+    <div class="bm-litu-guide">
+      <span class="bm-litu-color bm-litu-color--purple">Purple · Advent / Lent</span>
+      <span class="bm-litu-color bm-litu-color--gold">Gold/White · Christmas / Easter</span>
+      <span class="bm-litu-color bm-litu-color--red">Red · Pentecost / Holy Week</span>
+      <span class="bm-litu-color bm-litu-color--green">Green · Ordinary Time</span>
     </div>
   `;
 }
@@ -4588,7 +4531,7 @@ function _renderApologetics(body) {
   const catNames = Object.keys(cats);
   body.innerHTML = `
     <input type="text" class="bm-tool-input" id="bm-apol-search" placeholder="Search objections, topics, or keywords…">
-    <div id="bm-apol-list" style="display:flex;flex-direction:column;gap:14px;"></div>
+    <div id="bm-apol-list" class="bm-apol-list"></div>
   `;
   const list = _qs('bm-apol-list');
   function paint(query) {
@@ -4601,7 +4544,7 @@ function _renderApologetics(body) {
           || it.v.some(([ref, txt]) => (ref + ' ' + txt).toLowerCase().includes(q));
       });
       if (!items.length) return;
-      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">`;
+      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div class="bm-column-stack bm-column-stack--top">`;
       items.forEach(it => {
         const versesHtml = it.v.map(([ref, txt]) => `
           <div class="bm-apol-verse">
@@ -4879,8 +4822,8 @@ function _renderCounseling(body) {
   const catNames = Object.keys(cats);
   body.innerHTML = `
     <input type="text" class="bm-tool-input" id="bm-coun-search" placeholder="Search by issue, situation, or keyword…">
-    <div class="bm-tool-empty" style="margin-top:-2px;">Pastoral counsel for real situations. Always rooted in Scripture; never a substitute for a pastor or licensed counselor.</div>
-    <div id="bm-coun-list" style="display:flex;flex-direction:column;gap:14px;margin-top:6px;"></div>
+    <div class="bm-tool-empty bm-tool-empty--tight">Pastoral counsel for real situations. Always rooted in Scripture; never a substitute for a pastor or licensed counselor.</div>
+    <div id="bm-coun-list" class="bm-coun-list"></div>
   `;
   const list = _qs('bm-coun-list');
   function paint(query) {
@@ -4893,7 +4836,7 @@ function _renderCounseling(body) {
           || it.v.some(([ref, txt]) => (ref + ' ' + txt).toLowerCase().includes(q));
       });
       if (!items.length) return;
-      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">`;
+      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div class="bm-column-stack bm-column-stack--top">`;
       items.forEach(it => {
         const versesHtml = it.v.map(([ref, txt]) => `
           <div class="bm-apol-verse">
@@ -5302,7 +5245,7 @@ function _renderAccordion(body, dataset, prefix, placeholder, answerLabel, scrip
   const catNames = Object.keys(cats);
   body.innerHTML = `
     <input type="text" class="bm-tool-input" id="${prefix}-search" placeholder="${_e(placeholder)}">
-    <div id="${prefix}-list" style="display:flex;flex-direction:column;gap:14px;margin-top:6px;"></div>
+    <div id="${prefix}-list" class="bm-column-stack bm-column-stack--wide bm-column-stack--top"></div>
   `;
   const list = _qs(prefix + '-list');
   function paint(query) {
@@ -5315,7 +5258,7 @@ function _renderAccordion(body, dataset, prefix, placeholder, answerLabel, scrip
           || it.v.some(([ref, txt]) => (ref + ' ' + txt).toLowerCase().includes(q));
       });
       if (!items.length) return;
-      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">`;
+      html += `<div><div class="bm-apol-cat">${_e(cat)}</div><div class="bm-column-stack bm-column-stack--top">`;
       items.forEach(it => {
         const versesHtml = it.v.map(([ref, txt]) => `
           <div class="bm-apol-verse">

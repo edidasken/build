@@ -100,27 +100,27 @@
           <h2>Why The Wellspring?</h2>
         </div>
         <div class="ws-card-body">
-          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
+          <p class="ws-copy">
             FlockOS was built to serve churches in <strong>210 countries</strong> — including regions with 
             unreliable internet, censored networks, or no connectivity at all. The gospel doesn't stop at 
             the edge of a cellular tower.
           </p>
-          <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
+          <p class="ws-copy">
             The Wellspring enables <strong>100% offline operation</strong>. Your entire database — members, 
             families, sermons, prayer requests, everything — lives locally in your browser as a simple JSON file. 
             No cloud required. No subscription fees. No tracking. No third-party access.
           </p>
-          <div class="ws-info" style="margin-top: 1.25rem;">
+          <div class="ws-info ws-info-spaced">
             <div class="ws-info-title">Built for Freedom & Privacy</div>
-            <ul style="margin-top: 0.5rem; padding-left: 1.25rem; line-height: 1.7;">
-              <li style="margin-bottom: 0.5rem;"><strong>Zero external dependencies:</strong> Native browser IndexedDB, no libraries, no bloat</li>
-              <li style="margin-bottom: 0.5rem;"><strong>Device-only storage:</strong> Your data never leaves your machine unless you export it</li>
-              <li style="margin-bottom: 0.5rem;"><strong>JSON format:</strong> Human-readable, portable, lightweight, and future-proof</li>
-              <li style="margin-bottom: 0.5rem;"><strong>Persecution-resistant:</strong> No cloud trail, no server logs, no API keys to compromise</li>
+            <ul class="ws-info-list">
+              <li><strong>Zero external dependencies:</strong> Native browser IndexedDB, no libraries, no bloat</li>
+              <li><strong>Device-only storage:</strong> Your data never leaves your machine unless you export it</li>
+              <li><strong>JSON format:</strong> Human-readable, portable, lightweight, and future-proof</li>
+              <li><strong>Persecution-resistant:</strong> No cloud trail, no server logs, no API keys to compromise</li>
               <li><strong>Free forever:</strong> No hosting costs, no vendor lock-in, no surprise shutdowns</li>
             </ul>
           </div>
-          <p style="font-size: 1.05rem; line-height: 1.75; margin-top: 1.5rem; padding: 1.25rem 1.5rem; color: rgba(238,241,251,0.92); font-style: italic; border-left: 4px solid var(--ws-gold); background: rgba(232,168,56,0.06); border-radius: 0 12px 12px 0;">
+          <p class="ws-quote-callout">
             "The wind blows wherever it pleases. You hear its sound, but you cannot tell where it comes from 
             or where it is going. So it is with everyone born of the Spirit." — John 3:8
             <br><br>
@@ -151,15 +151,15 @@
               <span class="ws-status-label">Database</span>
               <span class="ws-status-value" id="ws-status-db">Not loaded</span>
             </div>
-            <div class="ws-status-row" id="ws-status-file-row" style="display: none;">
+            <div class="ws-status-row ws-hidden" id="ws-status-file-row">
               <span class="ws-status-label">File</span>
               <span class="ws-status-value" id="ws-status-file"></span>
             </div>
-            <div class="ws-status-row" id="ws-status-tabs-row" style="display: none;">
+            <div class="ws-status-row ws-hidden" id="ws-status-tabs-row">
               <span class="ws-status-label">Tables</span>
               <span class="ws-status-value" id="ws-status-tabs"></span>
             </div>
-            <div class="ws-status-row" id="ws-status-rows-row" style="display: none;">
+            <div class="ws-status-row ws-hidden" id="ws-status-rows-row">
               <span class="ws-status-label">Total Rows</span>
               <span class="ws-status-value" id="ws-status-rows"></span>
             </div>
@@ -199,7 +199,7 @@
 
           <div class="ws-loading" id="ws-import-loading">
             <div class="ws-spinner"></div>
-            <p style="margin-top: 1rem;">Importing database...</p>
+            <p class="ws-loading-text">Importing database...</p>
           </div>
         </div>
       </div>
@@ -216,15 +216,15 @@
             Paste a Google Drive sharing link or direct JSON URL. The database will be fetched and loaded into IndexedDB.
           </div>
 
-          <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <div class="ws-inline-form">
             <input 
               type="url" 
               id="ws-url-input" 
               placeholder="https://drive.google.com/file/d/..." 
-              style="flex: 1; padding: 0.75rem; border: 1px solid var(--color-line, #e2e8f0); border-radius: 12px; font-family: inherit; font-size: 0.9rem;"
+              class="ws-url-input"
               aria-label="Database URL"
             >
-            <button class="ws-btn ws-btn--primary" id="ws-url-import-btn" style="flex-shrink: 0;">
+            <button class="ws-btn ws-btn--primary ws-no-shrink" id="ws-url-import-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="17 8 12 3 7 8"/>
@@ -236,7 +236,7 @@
 
           <div class="ws-loading" id="ws-url-loading">
             <div class="ws-spinner"></div>
-            <p style="margin-top: 1rem;">Fetching database...</p>
+            <p class="ws-loading-text">Fetching database...</p>
           </div>
         </div>
       </div>
@@ -254,7 +254,7 @@
             Requires an active FlockOS session with Firestore configured.
           </div>
 
-          <button class="ws-btn ws-btn--primary ws-btn--full" id="ws-firestore-export-btn" style="margin-top: 1rem;">
+          <button class="ws-btn ws-btn--primary ws-btn--full ws-top-space" id="ws-firestore-export-btn">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
@@ -265,7 +265,7 @@
 
           <div class="ws-loading" id="ws-firestore-loading">
             <div class="ws-spinner"></div>
-            <p style="margin-top: 1rem;">Exporting from Firestore...</p>
+            <p class="ws-loading-text">Exporting from Firestore...</p>
           </div>
         </div>
       </div>
@@ -277,7 +277,7 @@
           <h2>Export Database</h2>
         </div>
         <div class="ws-card-body">
-          <p style="font-size: 0.9rem; color: var(--ws-ink-muted); margin-bottom: 1rem;">
+          <p class="ws-muted-copy">
             Download your local database as a JSON file. This creates a backup of all data currently stored offline.
           </p>
           <button class="ws-btn ws-btn--secondary ws-btn--full" id="ws-export-btn" disabled>
@@ -305,7 +305,7 @@
           </div>
 
           <!-- Vault Status -->
-          <div id="ws-vault-status" style="margin-top: 1rem;">
+          <div id="ws-vault-status" class="ws-top-space">
             <div class="ws-info-row">
               <div class="ws-info-label">Vault Status</div>
               <div id="ws-vault-status-badge">Checking...</div>
@@ -313,24 +313,24 @@
           </div>
 
           <!-- Setup Form (shown when no vault exists) -->
-          <div id="ws-vault-setup" style="display: none; margin-top: 1rem;">
-            <div class="ws-info" style="margin-bottom: 1rem;">
+          <div id="ws-vault-setup" class="ws-hidden ws-top-space">
+            <div class="ws-info ws-vault-info">
               <div class="ws-info-title">Create Vault</div>
               You are currently signed in. Set a 6+ digit PIN to save your session for offline access.
             </div>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="ws-stack-form">
               <input 
                 type="password" 
                 id="ws-vault-pin" 
                 placeholder="Enter PIN (6+ digits)" 
-                style="padding: 0.75rem; border: 1px solid var(--color-line, #e2e8f0); border-radius: 12px; font-family: inherit; font-size: 0.9rem;"
+                class="ws-vault-input"
                 aria-label="Vault PIN"
               >
               <input 
                 type="password" 
                 id="ws-vault-pin-confirm" 
                 placeholder="Confirm PIN" 
-                style="padding: 0.75rem; border: 1px solid var(--color-line, #e2e8f0); border-radius: 12px; font-family: inherit; font-size: 0.9rem;"
+                class="ws-vault-input"
                 aria-label="Confirm PIN"
               >
               <button class="ws-btn ws-btn--primary ws-btn--full" id="ws-vault-setup-btn">
@@ -344,20 +344,20 @@
           </div>
 
           <!-- Unlock Form (shown when vault exists and user not signed in) -->
-          <div id="ws-vault-unlock" style="display: none; margin-top: 1rem;">
-            <div class="ws-info" style="margin-bottom: 1rem;">
+          <div id="ws-vault-unlock" class="ws-hidden ws-top-space">
+            <div class="ws-info ws-vault-info">
               <div class="ws-info-title">Unlock Vault</div>
               Enter your PIN to restore your offline session.
             </div>
-            <div style="display: flex; gap: 0.75rem;">
+            <div class="ws-inline-form">
               <input 
                 type="password" 
                 id="ws-vault-unlock-pin" 
                 placeholder="Enter PIN" 
-                style="flex: 1; padding: 0.75rem; border: 1px solid var(--color-line, #e2e8f0); border-radius: 12px; font-family: inherit; font-size: 0.9rem;"
+                class="ws-vault-input ws-vault-input--flex"
                 aria-label="Unlock PIN"
               >
-              <button class="ws-btn ws-btn--primary" id="ws-vault-unlock-btn" style="flex-shrink: 0;">
+              <button class="ws-btn ws-btn--primary ws-no-shrink" id="ws-vault-unlock-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                   <path d="M7 11V7a5 5 0 0 1 9 0"/>
@@ -368,7 +368,7 @@
           </div>
 
           <!-- Destroy (shown when vault exists) -->
-          <div id="ws-vault-destroy" style="display: none; margin-top: 1rem;">
+          <div id="ws-vault-destroy" class="ws-hidden ws-top-space">
             <button class="ws-btn ws-btn--danger ws-btn--full" id="ws-vault-destroy-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"/>
@@ -387,7 +387,7 @@
           <h2>Danger Zone</h2>
         </div>
         <div class="ws-card-body">
-          <p style="font-size: 0.9rem; color: var(--ws-ink-muted); margin-bottom: 1rem;">
+          <p class="ws-muted-copy">
             This will permanently delete all offline data from this device. This action cannot be undone.
             You'll need to re-import your database to use offline mode again.
           </p>
