@@ -3513,6 +3513,9 @@ textarea { resize: none; }
 
   body.bm-feed-shell #bm-pane-outline {
     display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   body.bm-feed-shell #bm-outline-main,
