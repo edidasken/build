@@ -538,7 +538,65 @@ a { color: inherit; }
   line-height: 1.4; color: var(--ink); font-weight: 400;
 }
 .fn-reading-passage {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .65rem;
+}
+.fn-reading-passage + .fn-reading-passage {
+  margin-top: .28rem;
+}
+.fn-reading-open {
+  flex: 0 0 auto;
+  border: 1px solid var(--rule-soft);
+  border-radius: 6px;
+  background: rgba(255,255,255,.72);
+  color: var(--ink-label);
+  padding: .18rem .42rem;
+  font: 700 9px/1 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.fn-reading-open:hover,
+.fn-reading-open:focus-visible {
+  color: var(--ink);
+  border-color: var(--rule);
+  outline: none;
+}
+.fn-reading-open:disabled {
+  cursor: progress;
+  opacity: .62;
+}
+.fn-reading-preview {
+  display: none;
+  margin-top: .85rem;
+  border-top: 3px double var(--rule);
+  padding-top: .8rem;
+}
+.fn-reading-preview.is-visible {
   display: block;
+}
+.fn-reading-preview-head {
+  font-family: var(--serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+  margin-bottom: .52rem;
+}
+.fn-reading-preview-text {
+  max-height: 18rem;
+  overflow: auto;
+  margin: 0;
+  white-space: pre-wrap;
+  font: 0.88rem/1.62 var(--serif);
+  color: var(--ink);
+}
+.fn-reading-preview-error {
+  font: 0.82rem/1.5 var(--serif);
+  color: var(--ink-muted);
 }
 
 /* Psalm of the Day highlight card */

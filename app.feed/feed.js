@@ -2418,6 +2418,25 @@ function _bibleComDirectUrl(rawRef, versionId, abbrev) {
   return `https://www.bible.com/bible/${versionId}/${path}`;
 }
 
+let _localBiblePromise = null;
+function _localBible() {
+  if (!_localBiblePromise) {
+    _localBiblePromise = import(new URL('Scripts/the_scrolls/the_bible_reference.js', document.baseURI).href);
+  }
+  return _localBiblePromise;
+}
+
+async function _lookupLocalBible(rawRef) {
+  try {
+    const bible = await _localBible();
+    const result = await bible.lookupPassage(rawRef, { includeNumbers: true, maxVerses: 160 });
+    return result && result.ok ? result : null;
+  } catch (e) {
+    console.warn('[TheFeed] Local Bible lookup failed:', e);
+    return null;
+  }
+}
+
 async function _doScriptureLookup(rawRef, suppressAdd = false) {
   const refEl   = _qs('bm-lookup-ref');
   const textEl  = _qs('bm-lookup-text');
@@ -2442,7 +2461,19 @@ async function _doScriptureLookup(rawRef, suppressAdd = false) {
 
   let text = '';
 
-  if (transConf.apiCode) {
+  if (transKey === 'ESV') {
+    const local = await _lookupLocalBible(rawRef);
+    if (local) {
+      text = local.text || '';
+      textEl.textContent = text || 'Verse not found. Check the reference (e.g. John 3:16 or John 3:16-18).';
+      if (local.truncated) textEl.textContent += '\n\n[Long passage truncated for the outline. Refine the reference to import less text.]';
+    } else {
+      const directUrl = _bibleComDirectUrl(rawRef, transConf.bibleComVersion, transKey);
+      const fallbackUrl = `https://www.bible.com/search/bible?q=${encodeURIComponent(rawRef)}&version_id=${transConf.bibleComVersion}`;
+      const bcUrl = directUrl || fallbackUrl;
+      textEl.innerHTML = `<a class="bm-lookup-bible-link" href="${bcUrl}" target="_blank" rel="noopener">Open ${_e(rawRef)} · ${transKey} on Bible.com ↗</a>`;
+    }
+  } else if (transConf.apiCode) {
     // Public domain — fetch inline via bible-api.com
     try {
       const resp = await fetch(

@@ -895,7 +895,44 @@ const PICK  = window._PICK || {};
   // Split multi-passage readings (separated by "; ") onto individual lines
   function fmtReading(ref) {
     if (!ref) return '';
-    return ref.split(/;\s*/).map(p => `<span class="fn-reading-passage">${esc(p.trim())}</span>`).join('');
+    return ref.split(/;\s*/).map(p => {
+      const part = p.trim();
+      return `<span class="fn-reading-passage"><span>${esc(part)}</span><button class="fn-reading-open" type="button" data-reading-ref="${esc(part)}">Read</button></span>`;
+    }).join('');
+  }
+
+  function bindReadingButtons() {
+    const host = document.getElementById('fn-readings-content');
+    if (!host) return;
+    let panel = document.getElementById('fn-reading-preview');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'fn-reading-preview';
+      panel.className = 'fn-reading-preview';
+      host.insertAdjacentElement('afterend', panel);
+    }
+    host.querySelectorAll('[data-reading-ref]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const ref = btn.getAttribute('data-reading-ref') || '';
+        if (!ref) return;
+        btn.disabled = true;
+        panel.classList.add('is-visible');
+        panel.innerHTML = `<div class="fn-reading-preview-head">${esc(ref)}</div><div class="fn-loading">Loading passage...</div>`;
+        try {
+          const bible = await import('../Scripts/the_scrolls/the_bible_reference.js');
+          const result = await bible.lookupPassage(ref, { includeNumbers: true, maxVerses: 160 });
+          if (!result || !result.ok) throw new Error('Passage not found');
+          panel.innerHTML = `
+            <div class="fn-reading-preview-head">${esc(result.reference || ref)}</div>
+            <pre class="fn-reading-preview-text">${esc(result.text || '')}${result.truncated ? '\n\n[Long passage truncated. Open the exact chapter for more.]' : ''}</pre>
+          `;
+        } catch (err) {
+          panel.innerHTML = `<div class="fn-reading-preview-head">${esc(ref)}</div><div class="fn-reading-preview-error">Passage not available in the local Bible import.</div>`;
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    });
   }
 
   document.getElementById('fn-readings-content').innerHTML = `
@@ -917,6 +954,7 @@ const PICK  = window._PICK || {};
       <div class="fn-reading-ref">${fmtReading(entry.pr)}</div>
     </div>
   `;
+  bindReadingButtons();
 
   // Psalm highlight card (separate element below readings)
   const hlEl = document.getElementById('fn-psalm-highlight');
