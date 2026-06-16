@@ -83,6 +83,7 @@
   let _myGender      = '';    // 'Male' | 'Female' | '' — from member doc
   let _meIsAllAccess = false; // Lead Pastor / admin — sees all pinned groups
   let _pastorUid     = null;  // Firebase UID of Lead Pastor
+  let _meMemberId    = null;  // The Fold member document id for this session
   // Ministry channel doc listeners
   let _mensDocUnsub     = null;
   let _womensDocUnsub   = null;
@@ -361,7 +362,7 @@
     // Grant all-access if role is admin / pastor
     if (/^(admin|pastor|lead_pastor)$/i.test(_me.role || '')) _meIsAllAccess = true;
     // Mark member as FlockChat-active AND capture gender
-    _markMemberFlockchatActive().catch(err => console.warn('[FlockChat] flockchatActive flag failed:', err));
+    await _markMemberFlockchatActive().catch(err => console.warn('[FlockChat] flockchatActive flag failed:', err));
     // Resolve Lead Pastor UID + confirm all-access for LP
     await _resolveChurchConfig();
   }
@@ -380,6 +381,7 @@
         if (!snap.empty) {
           const doc = snap.docs[0];
           const mData = doc.data() || {};
+          _meMemberId = doc.id;
           // Capture gender for ministry channel filtering
           if (mData.gender) _myGender = mData.gender;
           // Member role may differ from auth role — union grants access
@@ -387,6 +389,8 @@
           if (/admin|pastor/.test(mRole)) _meIsAllAccess = true;
           await doc.ref.update({
             flockchatActive: true,
+            flockchatUid: _me.uid,
+            flockchatEmail: myEmail,
             flockchatLastSeen: firebase.firestore.FieldValue.serverTimestamp()
           });
           return;
@@ -844,12 +848,20 @@
     try {
       // Source of truth = The Fold (members collection), NOT the chat-only
       // `users` collection (which accumulates duplicates from every sign-in).
-      const snap = await _db.collection('members').orderBy('lastName').get();
+      const [snap, usersSnap] = await Promise.all([
+        _db.collection('members').orderBy('lastName').get(),
+        _db.collection('users').limit(1000).get()
+      ]);
+      const emailToUid = new Map();
+      usersSnap.forEach(doc => {
+        const email = (doc.data().email || '').toLowerCase();
+        if (email && !emailToUid.has(email)) emailToUid.set(email, doc.id);
+      });
       const myEmail = (_me.email || '').toLowerCase();
       const byEmail = new Map();
       snap.forEach(doc => {
         const m = doc.data() || {};
-        m.uid = doc.id;
+        const memberId = doc.id;
         // Filter out archived/inactive
         const ms = String(m.membershipStatus || '').toLowerCase();
         const st = String(m.status || '').toLowerCase();
@@ -863,12 +875,14 @@
         // Exclude self by email (uid won't match — Auth uid vs member doc id)
         if (email && email === myEmail) return;
         // Dedupe by email (fall back to uid when email missing)
-        const key = email || m.uid;
+        const key = email || memberId;
         if (byEmail.has(key)) return;
         const phoneRaw = m.primaryPhone || m.mobile || m.phone || m.phoneNumber || '';
         const phone = String(phoneRaw).replace(/[^\d+]/g, '');
+        const chatUid = m.flockchatUid || m.authUid || emailToUid.get(email) || memberId;
         byEmail.set(key, {
-          uid: m.uid,
+          uid: chatUid,
+          memberId: memberId,
           displayName: name,
           email: email,
           phone: phone,
@@ -902,31 +916,34 @@
       return;
     }
 
+    const jsArg = (value) => JSON.stringify(String(value || ''))
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;');
+
     list.innerHTML = users.map(u => {
       const name = u.displayName || u.email || 'Unknown';
       const initials = _initials(name);
       const email = u.email || '';
       const phone = u.phone || '';
       const onFC  = !!u.flockchatActive;
-      // Escape quotes for onclick attribute
-      const safeName = name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
       // Route: FlockChat user → in-app DM. Otherwise if we have a phone → SMS.
       let onclick, badge, sub;
       if (onFC) {
-        onclick = `window._createDirectMessage('${u.uid}', '${safeName}')`;
+        onclick = `window._createDirectMessage(${jsArg(u.uid)}, ${jsArg(name)}, ${jsArg(u.memberId || u.uid)})`;
         badge = '';
         sub = email;
       } else if (phone) {
-        onclick = `window._startSmsConversation('${u.uid}', '${safeName}', '${phone}')`;
+        onclick = `window._startSmsConversation(${jsArg(u.memberId || u.uid)}, ${jsArg(name)}, ${jsArg(phone)})`;
         badge = '<span class="fc-user-badge sms" title="Not on FlockChat — will text via SMS">SMS</span>';
         sub = phone;
       } else {
-        onclick = `window._toast && window._toast('No phone or FlockChat account on file for ' + ${JSON.stringify(name)}, 'info')`;
+        onclick = `window._toast && window._toast('No phone or FlockChat account on file for ' + ${jsArg(name)}, 'info')`;
         badge = '<span class="fc-user-badge muted" title="No phone on file">No contact</span>';
         sub = email || 'No contact info';
       }
       return `
-        <div class="fc-user-item ${onFC ? '' : 'sms'}" data-uid="${u.uid}" data-name="${_e(name)}" onclick="${onclick}">
+        <div class="fc-user-item ${onFC ? '' : 'sms'}" data-uid="${_e(u.uid)}" data-name="${_e(name)}" onclick="${onclick}">
           <div class="fc-user-avatar">${initials}</div>
           <div class="fc-user-info">
             <div class="fc-user-name">${_e(name)} ${badge}</div>
@@ -947,10 +964,112 @@
     _renderUsers(filtered);
   }
 
-  window._createDirectMessage = async function(otherUid, otherName) {
+  function _foldMemberName(member) {
+    if (!member) return '';
+    const first = member.firstName || '';
+    const last  = member.lastName || '';
+    return member.displayName || member.name || (first + ' ' + last).trim() ||
+      member.primaryEmail || member.email || '';
+  }
+
+  async function _findFoldMember(value) {
+    const raw = String(value || '').trim();
+    if (!raw || !_db) return null;
+
+    try {
+      const direct = await _db.collection('members').doc(raw).get();
+      if (direct.exists) {
+        const data = direct.data() || {};
+        return { id: direct.id, name: _foldMemberName(data), email: (data.primaryEmail || data.email || '').toLowerCase() };
+      }
+    } catch (_) {}
+
+    let email = raw.includes('@') ? raw.toLowerCase() : '';
+    if (!email && _userCache[raw]?.email) email = String(_userCache[raw].email).toLowerCase();
+    if (!email) {
+      try {
+        const userDoc = await _db.collection('users').doc(raw).get();
+        if (userDoc.exists) email = String(userDoc.data().email || '').toLowerCase();
+      } catch (_) {}
+    }
+
+    const memberQueries = [];
+    if (email) {
+      memberQueries.push(_db.collection('members').where('primaryEmail', '==', email).limit(1));
+      memberQueries.push(_db.collection('members').where('email', '==', email).limit(1));
+    }
+    memberQueries.push(_db.collection('members').where('flockchatUid', '==', raw).limit(1));
+    memberQueries.push(_db.collection('members').where('authUid', '==', raw).limit(1));
+
+    for (const q of memberQueries) {
+      try {
+        const snap = await q.get();
+        if (!snap.empty) {
+          const doc = snap.docs[0];
+          const data = doc.data() || {};
+          return { id: doc.id, name: _foldMemberName(data), email: (data.primaryEmail || data.email || email || '').toLowerCase() };
+        }
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  async function _resolvePrivateContactMember(conv) {
+    if (!conv) return null;
+    const candidates = [];
+    const add = (value) => {
+      const v = String(value || '').trim();
+      if (v && !candidates.includes(v)) candidates.push(v);
+    };
+
+    add(conv.smsMemberUid);
+    add(conv.recipientMemberId);
+    if (Array.isArray(conv.memberParticipants)) {
+      conv.memberParticipants.forEach(id => {
+        if (id !== _meMemberId) add(id);
+      });
+    }
+    if (Array.isArray(conv.participants)) {
+      conv.participants.forEach(id => {
+        if (id !== _me?.uid) add(id);
+      });
+    }
+
+    for (const id of candidates) {
+      const member = await _findFoldMember(id);
+      if (member && member.id && member.id !== _meMemberId) return member;
+    }
+    return null;
+  }
+
+  async function _logPrivateMessageTouch(conv, text) {
+    if (!conv || !window.UpperRoom || typeof window.UpperRoom.createTouch !== 'function') return;
+    if (conv.type !== 'dm' && conv.type !== 'pastoral') return;
+
+    try {
+      const member = await _resolvePrivateContactMember(conv);
+      if (!member || !member.id) {
+        console.warn('[FlockChat] Could not resolve Fold member for contact log:', conv.id || _activeConvId);
+        return;
+      }
+      const snippet = String(text || '').trim().slice(0, 180);
+      await window.UpperRoom.createTouch({
+        memberId: member.id,
+        memberName: member.name || conv.name || '',
+        channel: 'text',
+        note: snippet ? 'FlockChat message: ' + snippet : 'FlockChat message sent',
+        source: 'flockchat',
+        sourceConversationId: conv.id || _activeConvId || ''
+      });
+    } catch (err) {
+      console.warn('[FlockChat] FlockChat touch log write failed:', err);
+    }
+  }
+
+  window._createDirectMessage = async function(otherUid, otherName, otherMemberId) {
     _closeNewConversationModal();
 
-    console.log('[FlockChat] Creating DM:', { me: _me.uid, other: otherUid, name: otherName });
+    console.log('[FlockChat] Creating DM:', { me: _me.uid, other: otherUid, memberId: otherMemberId, name: otherName });
 
     // Validate
     if (!otherUid || otherUid === _me.uid) {
@@ -975,6 +1094,12 @@
 
       if (existingConv) {
         console.log('[FlockChat] Found existing DM:', existingConv.id);
+        if (otherMemberId && !existingConv.recipientMemberId) {
+          _db.collection('conversations').doc(existingConv.id).set({
+            recipientMemberId: otherMemberId,
+            memberParticipants: [_meMemberId, otherMemberId].filter(Boolean)
+          }, { merge: true }).catch(() => {});
+        }
         window._openConversation(existingConv.id);
         return;
       }
@@ -986,6 +1111,9 @@
         name: otherName,
         icon: _initials(otherName),
         participants: [_me.uid, otherUid],
+        memberParticipants: [_meMemberId, otherMemberId].filter(Boolean),
+        recipientMemberId: otherMemberId || '',
+        recipientUid: otherUid,
         lastMessage: {
           text: '',
           author: '',
@@ -3694,7 +3822,9 @@
               memberId:   conv.smsMemberUid,
               memberName: conv.name || '',
               channel:    'text',
-              note:       text
+              note:       text,
+              source:     'flockchat-sms',
+              sourceConversationId: _activeConvId || ''
             });
           } catch (logErr) {
             console.warn('[FlockChat] Touch log write failed:', logErr);
@@ -3751,6 +3881,8 @@
         },
         lastActivity: firebase.firestore.FieldValue.serverTimestamp()
       });
+
+      await _logPrivateMessageTouch(conv, text);
 
       // Clear input
       input.value = '';

@@ -1535,6 +1535,10 @@
       loggedBy:    _userEmail       || '',
       loggedAt:    firebase.firestore.FieldValue.serverTimestamp(),
     };
+    if (data.source) payload.source = data.source;
+    if (data.sourceId) payload.sourceId = data.sourceId;
+    if (data.sourceConversationId) payload.sourceConversationId = data.sourceConversationId;
+    if (data.sourceMessageId) payload.sourceMessageId = data.sourceMessageId;
     return _touchesRef().add(payload).then(function(ref) {
       payload.id = ref.id;
       // Auto-update any open care cases for this member so that every contact
