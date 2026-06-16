@@ -3405,13 +3405,16 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   box-shadow: 0 14px 30px rgba(15,23,42,.14);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  gap: .75rem;
+  font-size: 16px;
+  line-height: 1.6;
+  gap: 12px;
 }
 
 .fn-back-bar.unity-header .unity-brand {
   min-height: 42px;
-  gap: .6rem;
-  padding: .35rem .8rem .35rem .35rem;
+  gap: 10px;
+  padding: 6px 13px 6px 6px;
+  font-size: 16px;
 }
 
 .fn-back-bar.unity-header .unity-brand-icon {
@@ -3436,6 +3439,24 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   width: 42px;
   height: 42px;
   border-radius: 16px;
+}
+
+.fn-back-bar.unity-header .unity-brand-text,
+.fn-back-bar.unity-header .fn-btn-label {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.fn-back-bar.unity-header .fn-back-btn {
+  gap: 11px;
+  padding: 7px 15px 7px 7px;
+  font-size: 16px;
+}
+
+.fn-back-bar.unity-header .fn-share-btn,
+.fn-back-bar.unity-header .fn-edit-btn {
+  gap: 7px;
+  font-size: 12px;
 }
 
 .fn-back-bar.unity-header .unity-avatar.unity-avatar--herald {

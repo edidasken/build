@@ -66,6 +66,7 @@ body.stand-auth .card::before {
   inset: 14px;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 18px;
+  background: transparent;
   pointer-events: none;
 }
 
