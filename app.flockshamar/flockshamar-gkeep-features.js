@@ -1,5 +1,5 @@
 /**
- * FlockShamar - Google Keep Feature Parity Module
+ * Notes - Google Keep Feature Parity Module
  * Adds comprehensive note-taking features to match Google Keep functionality
  */
 
@@ -744,7 +744,7 @@
     if (!note) return;
 
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('FlockShamar Reminder', {
+      new Notification('Notes Reminder', {
         body: note.title || note.content.substring(0, 100),
         icon: '/Images/logo.png',
         tag: noteId
@@ -871,7 +871,7 @@
         sidebar.className = 'fs-sidebar-panel';
         sidebar.innerHTML = `
           <div class="fs-sidebar-header">
-            <h3>FlockShamar</h3>
+            <h3>Notes</h3>
             <button onclick="FlockShamarSidebar.hide()">×</button>
           </div>
           <div class="fs-sidebar-content" id="fs-sidebar-notes">
@@ -943,15 +943,15 @@
         if (note.content) docContent += `<p>${note.content}</p>`;
       }
 
-      // Create FlockDocs document
+      // Create Docs document
       if (window.FlockDocs && window.FlockDocs.createDocument) {
         window.FlockDocs.createDocument({
           title: note.title || 'Untitled',
           content: docContent,
-          source: 'FlockShamar'
+          source: 'Notes'
         });
         
-        alert('Note copied to FlockDocs!');
+        alert('Note copied to Docs!');
       } else {
         console.error('[FlockShamar Keep] FlockDocs not available');
       }
@@ -1094,7 +1094,7 @@
       <div class="fs-note-footer">
         <button onclick="showColorPicker('${note.id}')" title="Change color">🎨</button>
         <button onclick="archiveNote('${note.id}')" title="Archive">📦</button>
-        <button onclick="copyNoteToFlockDocs('${note.id}')" title="Copy to FlockDocs">📄</button>
+        <button onclick="copyNoteToFlockDocs('${note.id}')" title="Copy to Docs">📄</button>
       </div>
     `;
 

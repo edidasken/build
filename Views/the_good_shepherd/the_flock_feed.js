@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════════════
-   THE FLOCK FEED — Recent interactions strip on the home page
+   THE FLOCK Feed — Recent interactions strip on the home page
    "And the books were opened." — Revelation 20:12
 
    Pulls the last few entries from the unified comms façade

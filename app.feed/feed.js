@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════════════════════
-   FEED.JS — The Feed: Sermon Preparation & Management for FlockOS
+   Feed.JS — The Feed: Sermon Preparation & Management for FlockOS
    "Study to show thyself approved unto God, a workman that needeth not to
     be ashamed, rightly dividing the word of truth." — 2 Timothy 2:15
 
@@ -1108,7 +1108,7 @@ function _duplicateSermon() {
 const SLIDE_CHAR_TARGET = 260;   // soft max chars per content slide
 const SLIDE_CHAR_HARD   = 360;   // hard max — never exceed this on one slide
 
-// Map FEED section type → FlockShow slide type
+// Map Feed section type → FlockShow slide type
 const _FEED_TO_SHOW_TYPE = {
   intro:        'lyrics',
   scripture:    'scripture',
@@ -2141,7 +2141,7 @@ function _confirmDelete() {
     _qs('bm-empty').hidden  = false;
     _qs('bm-editor').hidden = true;
     const titleEl = _qs('bm-active-title');
-    if (titleEl) { titleEl.textContent = 'FEED'; titleEl.classList.remove('has-sermon'); }
+    if (titleEl) { titleEl.textContent = 'Feed'; titleEl.classList.remove('has-sermon'); }
     const saveBtn = _qs('bm-save-btn');
     if (saveBtn) saveBtn.disabled = true;
     const closeBtn = _qs('bm-close-sermon-btn');
@@ -2905,7 +2905,7 @@ function _hideAuth(user) {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// FEED LANDING PAGE — sermon prep & study dashboard
+// Feed LANDING PAGE — sermon prep & study dashboard
 // ════════════════════════════════════════════════════════════════════════════
 
 const BM_SCRATCH_KEY = 'bm_feed_scratch_v1';
@@ -2970,7 +2970,7 @@ function _renderLanding() {
     const fn = _firstName();
     const hour = new Date().getHours();
     const part = hour < 12 ? 'Good morning' : (hour < 17 ? 'Good afternoon' : 'Good evening');
-    greet.textContent = fn ? `${part}, ${fn}` : 'Welcome to FEED';
+    greet.textContent = fn ? `${part}, ${fn}` : 'Welcome to Feed';
   }
 
   // Verse of the Day
@@ -3524,7 +3524,7 @@ function _closeSermon() {
   if (editor) editor.hidden = true;
 
   const titleEl = _qs('bm-active-title');
-  if (titleEl) { titleEl.textContent = 'FEED'; titleEl.classList.remove('has-sermon'); }
+  if (titleEl) { titleEl.textContent = 'Feed'; titleEl.classList.remove('has-sermon'); }
 
   // Disable sermon-only buttons
   ['bm-save-btn','bm-duplicate-btn','bm-copy-outline-btn','bm-send-flockshow-btn','bm-present-btn'].forEach(id => {
@@ -3757,12 +3757,12 @@ async function _init() {
     userChip.addEventListener('click', () => {
       const N = window.Nehemiah;
       if (N && typeof N.signOut === 'function') {
-        if (confirm('Sign out of FEED?')) N.signOut();
+        if (confirm('Sign out of Feed?')) N.signOut();
       }
     });
   }
 
-  // ── FEED Landing bindings ─────────────────────────────────────────────
+  // ── Feed Landing bindings ─────────────────────────────────────────────
   const closeBtn = _qs('bm-close-sermon-btn');
   if (closeBtn) closeBtn.addEventListener('click', _closeSermon);
 

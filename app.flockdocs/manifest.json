@@ -1,6 +1,6 @@
 {
-  "name": "FlockDocs — Productivity Suite",
-  "short_name": "FlockDocs",
+  "name": "Docs — Productivity Suite",
+  "short_name": "Docs",
   "description": "Document editor, spreadsheets, and productivity tools for your church",
   "start_url": "./app.flockdocs.html",
   "id": "./app.flockdocs.html",

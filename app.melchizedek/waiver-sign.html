@@ -420,7 +420,7 @@
         <div id="email-status" class="ws-email-note" style="display:none">
           ✉️ Confirmation email sent
         </div>
-        <p class="ws-notice" style="margin-top:16px">You may close this tab. The signed record is stored in Melchizedek.</p>
+        <p class="ws-notice" style="margin-top:16px">You may close this tab. The signed record is stored in Safety.</p>
       </div>
     </div>
 
@@ -429,7 +429,7 @@
       <div class="ws-error">
         <div class="ws-icon">⚠️</div>
         <div class="ws-error-title" id="error-title">Something went wrong</div>
-        <p class="ws-subtitle" id="error-msg">Please close this tab and try again from Melchizedek.</p>
+        <p class="ws-subtitle" id="error-msg">Please close this tab and try again from Safety.</p>
       </div>
     </div>
 
@@ -687,7 +687,7 @@ ${sigImg ? `
   ${sigImg}
   <div style="font-size:9.5pt;margin-top:6px"><strong>Printed Name:</strong> ${_e(sigName)}</div>
   <div style="font-size:9.5pt"><strong>Date:</strong> ${_e(today)}</div>
-  <div style="font-size:8.5pt;color:#555;margin-top:4px">This electronic signature was captured and recorded via the Melchizedek compliance system. The signature image and timestamp are stored in the Organization's secure database.</div>
+  <div style="font-size:8.5pt;color:#555;margin-top:4px">This electronic signature was captured and recorded via the Safety compliance system. The signature image and timestamp are stored in the Organization's secure database.</div>
 </div>` : `
 <div style="margin-top:8px">
   <div class="sign-line"><span class="sign-label">Volunteer/Staff Signature:</span><span class="sign-rule"></span></div>
@@ -752,7 +752,7 @@ ${sigImg ? `
 
   // ── Load data ─────────────────────────────────────────────────────────────
   async function _load() {
-    if (!uid) { _err('Missing Member ID', 'No member UID in URL. Open this page from Melchizedek.'); return; }
+    if (!uid) { _err('Missing Member ID', 'No member UID in URL. Open this page from Safety.'); return; }
 
     try {
       // Load member

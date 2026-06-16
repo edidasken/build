@@ -49,12 +49,12 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── FlockShow — aligned with FEED / Herald design system ──────────────
+    /* ── FlockShow — aligned with Feed / Herald design system ──────────────
 
        Inherits HTML bg/font from new_covenant.css + herald-tokens.css.
        Visual language matches feed.css and flocknews.css:
          • Herald light background with gold/cyan radial halos
-         • Floating elevated unity header (FEED style)
+         • Floating elevated unity header (Feed style)
          • Glass backdropped subbar panel
          • Navy sidebar for editor (always-dark cathedral palette)
          • Gold accent throughout, Inter body, serif headings
@@ -62,7 +62,7 @@
     ─────────────────────────────────────────────────────────────────────── */
 
     :root {
-      /* ── Paper surfaces (FEED / Herald match) ─────────────────────────── */
+      /* ── Paper surfaces (Feed / Herald match) ─────────────────────────── */
       --paper:          #f8fafc;
       --paper-white:    #ffffff;
       --paper-tint:     #f1f5f9;
@@ -97,7 +97,7 @@
       --fs-bg-input:   rgba(255,255,255,.82);
       --fs-modal-dim:  rgba(15,23,42,.42);
 
-      /* Topbar — navy chrome (matches Herald / FEED) */
+      /* Topbar — navy chrome (matches Herald / Feed) */
       --fs-top-bg:     linear-gradient(180deg, #0f172a, #162235);
       --fs-top-line:   rgba(255,255,255,.08);
       --fs-top-ink:    #ffffff;
@@ -137,7 +137,7 @@
       overflow: hidden;
     }
 
-    /* ── Unity header — FEED-style floating elevated card ─────────────────── */
+    /* ── Unity header — Feed-style floating elevated card ─────────────────── */
     #fs-root .unity-header {
       position: relative;
       top: auto;
@@ -229,7 +229,7 @@
       color: #fff;
     }
 
-    /* ── Subbar — FEED-style glass panel ────────────────────────────────── */
+    /* ── Subbar — Feed-style glass panel ────────────────────────────────── */
     #fs-subbar {
       display: flex; align-items: center; gap: 10px;
       width: var(--shell-w);

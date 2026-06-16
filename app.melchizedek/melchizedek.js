@@ -124,7 +124,7 @@ function _wireHeader(profile) {
   import('../Scripts/the_unity_header.js').then(({ mountUnityHeader }) => {
     const ctrl = mountUnityHeader(host, {
       appId:       'melchizedek',
-      appName:     'Melchizedek',
+      appName:     'Safety',
       appIconSvg:  MELCH_ICON,
       appAccent:   '#e8a838',
       appAccentDk: '#92400e',
@@ -280,7 +280,7 @@ function _viewOverview() {
   return `
     <div style="margin-bottom:24px">
       <div style="font:700 1.4rem/1.2 var(--font-ui,sans-serif);color:var(--ink,#1b264f);margin-bottom:4px">Background Checks</div>
-      <div style="font:400 0.88rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">"And Melchizedek king of Salem brought out bread and wine." — Genesis 14:18</div>
+      <div style="font:400 0.88rem/1.5 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">Background checks, waivers, and compliance records for safer ministry.</div>
     </div>
 
     <div style="font:600 0.82rem/1 var(--font-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;color:var(--ink-muted,#7a7f96);margin-bottom:8px">Checkr</div>
@@ -368,7 +368,7 @@ function _viewAbout() {
           stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/></svg>
       </div>
       <div>
-        <div style="font:700 1.9rem/1.1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">Melchizedek</div>
+        <div style="font:700 1.9rem/1.1 var(--font-ui,sans-serif);color:var(--ink,#1b264f)">Safety</div>
         <div style="font:500 1.05rem/1.4 var(--font-ui,sans-serif);color:var(--ink-muted,#7a7f96)">
           Background Check &amp; AB-506 Compliance Management
         </div>
@@ -376,28 +376,19 @@ function _viewAbout() {
     </div>
   </div>
 
-  <!-- Scripture origin -->
+  <!-- Safety mandate -->
   <div style="background:linear-gradient(135deg,#1b264f 0%,#2d3a6b 100%);border-radius:14px;
     padding:22px 24px;margin-bottom:28px;border-left:4px solid #e8a838">
     <div style="font:700 0.88rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
-      letter-spacing:.1em;color:#e8a838;margin-bottom:10px">The Name · Genesis 14:18–20 &amp; Hebrews 7:1–3</div>
+      letter-spacing:.1em;color:#e8a838;margin-bottom:10px">The Safety Mandate</div>
     <p style="font:400 1.15rem/1.75 Georgia,serif;color:#f0f2f8;margin:0 0 12px">
-      "And Melchizedek king of Salem brought out bread and wine. He was priest of God Most High.
-      And he blessed him and said, 'Blessed be Abram by God Most High, Possessor of heaven and earth;
-      and blessed be God Most High, who has delivered your enemies into your hand!'"
+      Ministry care includes wise safeguards for the vulnerable, clear records for leaders, and accountable workflows for everyone who serves.
     </p>
     <p style="font:400 1.05rem/1.7 Georgia,serif;color:#c9cde0;margin:0">
-      "For this Melchizedek, king of Salem, priest of the Most High God, met Abraham returning from the slaughter
-      of the kings and blessed him… He is first, by translation of his name, king of righteousness, and then
-      he is also king of Salem, that is, king of peace. He is without father or mother or genealogy, having
-      neither beginning of days nor end of life, but resembling the Son of God he continues a priest forever."
-      — Hebrews 7:1–3
+      Safety brings background checks, annual waivers, mandated reporter training, LiveScan records, and Checkr status into one auditable place.
     </p>
     <div style="margin-top:14px;font:400 0.95rem/1.6 var(--font-ui,sans-serif);color:#8892b0">
-      <strong style="color:#e8a838">Why this name?</strong> Melchizedek appeared without a recorded past,
-      vouched for by God alone — a priest whose legitimacy required no human credentials, only righteousness.
-      This module applies that same principle to those who serve the Little Flock: every worker's
-      fitness to serve is verified through objective, documented evidence, not assumption.
+      <strong style="color:#e8a838">Why it matters:</strong> every worker's fitness to serve should be verified through objective, documented evidence, not assumption.
     </div>
   </div>
 
@@ -432,8 +423,8 @@ function _viewAbout() {
   )}
 
   <!-- Section 2 -->
-  ${_aboutSection('2', 'Why Automation — The Case for Melchizedek',
-    `<p>Manually tracking AB-506 compliance introduces serious operational and legal risk. Melchizedek
+  ${_aboutSection('2', 'Why Automation — The Case for Safety',
+    `<p>Manually tracking AB-506 compliance introduces serious operational and legal risk. Safety
     eliminates that risk by converting every manual step into an automated, auditable workflow.</p>
     <div style="overflow-x:auto;margin-top:16px">
       <table style="width:100%;border-collapse:collapse;font:400 0.95rem/1.6 var(--font-ui,sans-serif)">
@@ -442,7 +433,7 @@ function _viewAbout() {
             <th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--ink,#1b264f);
               border-bottom:2px solid var(--line,#e5e7ef);width:50%">Manual Challenge</th>
             <th style="padding:10px 14px;text-align:left;font-weight:700;color:var(--ink,#1b264f);
-              border-bottom:2px solid var(--line,#e5e7ef)">Melchizedek Solution</th>
+              border-bottom:2px solid var(--line,#e5e7ef)">Safety Solution</th>
           </tr>
         </thead>
         <tbody>
@@ -485,49 +476,49 @@ function _viewAbout() {
         <div style="font:700 0.9rem/1 var(--font-ui,sans-serif);text-transform:uppercase;
           letter-spacing:.07em;color:#4a7fa5;margin-bottom:10px">LiveScan Workflow</div>
         ${_aboutBullet('ORI Integration', 'Little Flock\'s DOJ-issued ORI is stored securely; every initiated check outputs a customized BCIA 8016 Request for Live Scan Service form pre-filled with the correct agency data.')}
-        ${_aboutBullet('Applicant Tracking', 'Volunteers visit an authorized Live Scan operator with provided documentation. The ATI (Applicant Tracking Identifier) is logged in the Melchizedek record.')}
-        ${_aboutBullet('DOJ Clearance Syncing', 'Once the DOJ issues a clearance, Melchizedek updates the worker\'s compliance status, unlocking youth-event scheduling assignments.')}
-        ${_aboutBullet('Subsequent Arrest Notification', 'Per Pen. Code §11105.3(i)(2), organizations may enroll cleared workers in the DOJ\'s ongoing <em>Subsequent Arrest Notification</em> service — the California equivalent of continuous monitoring. Melchizedek manages enrollment and routes any future notifications to leadership automatically.')}
+        ${_aboutBullet('Applicant Tracking', 'Volunteers visit an authorized Live Scan operator with provided documentation. The ATI (Applicant Tracking Identifier) is logged in the Safety record.')}
+        ${_aboutBullet('DOJ Clearance Syncing', 'Once the DOJ issues a clearance, Safety updates the worker\'s compliance status, unlocking youth-event scheduling assignments.')}
+        ${_aboutBullet('Subsequent Arrest Notification', 'Per Pen. Code §11105.3(i)(2), organizations may enroll cleared workers in the DOJ\'s ongoing <em>Subsequent Arrest Notification</em> service — the California equivalent of continuous monitoring. Safety manages enrollment and routes any future notifications to leadership automatically.')}
       </div>
     </div>`
   )}
 
   <!-- Section 4 -->
   ${_aboutSection('4', 'Technical Architecture — The Onboarding Pipeline',
-    `<p>Melchizedek transforms a high-risk administrative chore into a seamless, fully auditable pipeline.</p>
+    `<p>Safety transforms a high-risk administrative chore into a seamless, fully auditable pipeline.</p>
     <div style="margin-top:16px;display:flex;flex-direction:column;gap:0">
       ${_aboutStep('1', '#e8a838', 'Trigger',
-        'A FlockOS member is assigned to a youth ministry role, or their attendance tracking hits the AB-506 hour threshold. Melchizedek flags the profile automatically.')}
+        'A FlockOS member is assigned to a youth ministry role, or their attendance tracking hits the AB-506 hour threshold. Safety flags the profile automatically.')}
       ${_aboutStep('2', '#4a7fa5', 'API Call',
-        'Melchizedek pings the Checkr API via <code>/v1/candidates</code> to initiate the national check and enroll the candidate in continuous monitoring.')}
+        'Safety pings the Checkr API via <code>/v1/candidates</code> to initiate the national check and enroll the candidate in continuous monitoring.')}
       ${_aboutStep('3', '#059669', 'Document Generation',
         'A pre-filled LiveScan Form 8016 is generated with Little Flock\'s ORI. Instructions and a link to the California state Mandated Reporter Training portal are sent to the candidate.')}
       ${_aboutStep('4', '#7c3aed', 'Status Webhooks',
         'As Checkr completes screening, it sends a secure <code>check.completed</code> webhook to FlockOS, automatically updating the member\'s dashboard record in real time.')}
       ${_aboutStep('5', '#1b264f', 'Final Adjudication',
-        'Leadership reviews the consolidated Melchizedek dashboard — Checkr result and DOJ LiveScan clearance in one view — and approves or flags the worker for follow-up.')}
+        'Leadership reviews the consolidated Safety dashboard — Checkr result and DOJ LiveScan clearance in one view — and approves or flags the worker for follow-up.')}
     </div>`
   )}
 
   <!-- Section 5 -->
   ${_aboutSection('5', 'Going Further — How FlockOS Cares for the Little Flock',
-    `<p>AB-506 sets the legal floor. Melchizedek is built to go well beyond it — transforming compliance
+    `<p>AB-506 sets the legal floor. Safety is built to go well beyond it — transforming compliance
     from a checklist into a living, breathing layer of pastoral care for every person who serves.</p>
     <div style="display:grid;gap:10px;margin-top:16px">
       ${_aboutCallout('📡 Hour Threshold Watchdog',
-        'FlockOS tracks every member\'s ministry involvement hours in real time. When a volunteer approaches the 16 hr/month or 32 hr/year threshold, Melchizedek flags the profile and opens the compliance workflow — <em>before</em> the legal line is crossed, not after.')}
+        'FlockOS tracks every member\'s ministry involvement hours in real time. When a volunteer approaches the 16 hr/month or 32 hr/year threshold, Safety flags the profile and opens the compliance workflow — <em>before</em> the legal line is crossed, not after.')}
       ${_aboutCallout('🔔 Dual Continuous Monitoring',
         'Cleared workers are enrolled in both the California DOJ\'s Subsequent Arrest Notification service (§11105.3(i)(2)) and Checkr\'s national Continuous Criminal monitoring simultaneously — providing state-level and national-level post-clearance surveillance in a single dashboard.')}
       ${_aboutCallout('📅 Annual Waiver Auto-Renewal',
-        'California law requires a fresh signed waiver from each worker every year (§11105.3(b)(2)(C)). Melchizedek auto-generates and routes renewal requests 30 days before expiry, tracks completion, and locks the worker\'s scheduling access until the waiver is re-signed.')}
+        'California law requires a fresh signed waiver from each worker every year (§11105.3(b)(2)(C)). Safety auto-generates and routes renewal requests 30 days before expiry, tracks completion, and locks the worker\'s scheduling access until the waiver is re-signed.')}
       ${_aboutCallout('📜 OCAP Training Certificate Vault',
-        'Every worker\'s OCAP completion certificate is uploaded, stored, and tracked within their Melchizedek profile. The system flags certificates as they age and resurfaces the renewal workflow — because mandated reporter training is not a one-time event.')}
+        'Every worker\'s OCAP completion certificate is uploaded, stored, and tracked within their Safety profile. The system flags certificates as they age and resurfaces the renewal workflow — because mandated reporter training is not a one-time event.')}
       ${_aboutCallout('🗓 Two-Reporter Scheduling Guard',
-        'When a youth-event shift is being scheduled in FlockOS, Melchizedek cross-references §18975(c)(2)(A) and blocks any assignment that would leave a single worker alone with children. The scheduling UI surfaces the policy requirement and prompts leadership to add a second cleared reporter before saving.')}
+        'When a youth-event shift is being scheduled in FlockOS, Safety cross-references §18975(c)(2)(A) and blocks any assignment that would leave a single worker alone with children. The scheduling UI surfaces the policy requirement and prompts leadership to add a second cleared reporter before saving.')}
       ${_aboutCallout('📣 Parent Notification Workflow',
-        'If a background check returns a Review result that leadership chooses to manually override, Melchizedek immediately surfaces the §11105.3(c)(1) parent notification obligation — generates the required written notice, tracks the 10-day window, and records confirmation of delivery in the audit log.')}
+        'If a background check returns a Review result that leadership chooses to manually override, Safety immediately surfaces the §11105.3(c)(1) parent notification obligation — generates the required written notice, tracks the 10-day window, and records confirmation of delivery in the audit log.')}
       ${_aboutCallout('📊 Insurance Compliance Record',
-        'Under §18975(d), insurers may request proof of compliance before writing liability coverage for a youth-serving organization. Melchizedek generates a complete compliance report on demand — training completions, background check dates, waiver status, and policy acknowledgments — providing everything needed to satisfy an insurer\'s loss control audit.')}
+        'Under §18975(d), insurers may request proof of compliance before writing liability coverage for a youth-serving organization. Safety generates a complete compliance report on demand — training completions, background check dates, waiver status, and policy acknowledgments — providing everything needed to satisfy an insurer\'s loss control audit.')}
     </div>`
   )}
 
@@ -714,7 +705,7 @@ function _memberRow(p, opts = {}) {
           ${opts.showInitiateBtn ? 'data-show-initiate="1"' : ''}
           ${opts.showParentNotif ? 'data-show-parent-notif="1"' : ''}
           ${check?.invitationUrl ? `data-invitation-url="${_e(check.invitationUrl)}"` : ''}
-          style="font-weight:600">Admin</button>
+          style="font-weight:600">Manage</button>
       </div>
     </div>`;
 }
@@ -1247,10 +1238,10 @@ function _viewCompliance() {
           </div>
         </div>
       </td>
-      <td class="mcvt-cell" data-label="Admin" style="padding:8px 14px;text-align:right;width:1%">
+      <td class="mcvt-cell" data-label="Manage" style="padding:8px 14px;text-align:right;width:1%">
         <button class="flock-btn flock-btn--ghost flock-btn--sm" data-act="open-admin-modal"
           data-member-id="${_e(uid)}" data-name="${_e(dname)}"
-          data-show-compliance="1" style="font-weight:600;white-space:nowrap">Admin</button>
+          data-show-compliance="1" style="font-weight:600;white-space:nowrap">Manage</button>
       </td>
     </tr>`;
   }).join('');
@@ -1807,7 +1798,7 @@ function _generateWaiver(memberId, displayName) {
       <img src="${check.waiverSignature}" style="max-height:64px;max-width:280px;display:block;margin:4px 0">
       <div style="font-size:9.5pt;margin-top:6px"><strong>Printed Name:</strong> ${_e(check.waiverSignedName || displayName)}</div>
       <div style="font-size:9.5pt"><strong>Date:</strong> ${_e(check.waiverSignedDate ? new Date(check.waiverSignedDate?.toDate?.() || check.waiverSignedDate).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}) : today)}</div>
-      <div style="font-size:8pt;color:#555;margin-top:6px">This electronic signature was captured via the Melchizedek compliance system and is stored securely in the Organization's database.</div>
+      <div style="font-size:8pt;color:#555;margin-top:6px">This electronic signature was captured via the Safety compliance system and is stored securely in the Organization's database.</div>
     </div>` : `
     <div class="sign-block">
       <div class="sign-line">

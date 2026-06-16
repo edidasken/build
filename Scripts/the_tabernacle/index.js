@@ -5808,7 +5808,7 @@ window.Modules = (() => {
       }
 
       // ══════════════════════════════════════════════════════════════════
-      // COMPACT FEED CARD — expandable preview for upcoming days
+      // COMPACT Feed CARD — expandable preview for upcoming days
       // ══════════════════════════════════════════════════════════════════
       function renderCard(idx) {
         const r  = allRows[idx] || {};

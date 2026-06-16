@@ -1,6 +1,6 @@
 {
-  "name": "Melchizedek — Background Checks",
-  "short_name": "Melchizedek",
+  "name": "Safety — Background Checks",
+  "short_name": "Safety",
   "description": "Church background check management via Checkr",
   "start_url": "./app.melchizedek.html",
   "id": "./app.melchizedek.html",

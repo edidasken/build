@@ -207,7 +207,7 @@ function _mountHeader() {
   
   mountUnityHeader(document.getElementById('fd-topbar'), {
     appId: 'flockdocs',
-    appName: 'FlockDocs',
+    appName: 'Docs',
     appIconSvg,
     appAccent: '#3b82f6',
     appAccentDk: '#1e3a8a',

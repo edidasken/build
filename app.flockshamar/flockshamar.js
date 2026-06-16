@@ -1,5 +1,5 @@
 /**
- * FlockShamar - Keep & Guard Your Notes
+ * Notes - Keep & Guard Your Notes
  * "The Lord bless you and keep you" - Numbers 6:24
  * 
  * A Google Keep-style note-taking app for FlockOS
@@ -100,7 +100,7 @@ import { mountQuill }       from '../Scripts/the_quill.js';
     if (typeof mountUnityHeader === 'function') {
       mountUnityHeader(document.getElementById('fs-topbar'), {
         appId: 'flockshamar',
-        appName: 'FlockShamar',
+        appName: 'Notes',
         appIconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9,12 11,14 15,10"/></svg>',
         appAccent: '#fbbf24',
         appAccentDk: '#a16207',

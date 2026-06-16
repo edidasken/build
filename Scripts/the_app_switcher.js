@@ -49,11 +49,11 @@ export const NC_APPS = [
   { id: 'stand',     name: 'FlockStand',    sub: 'Songs, setlists & live',         href: 'app.stand/',                     tone: 'purple' },
   { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', tone: 'red'  },
   { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', tone: 'cyan' },
-  { id: 'flockdocs', name: 'FlockDocs',      sub: 'Documents & productivity',       href: 'app.flockdocs/app.flockdocs.html', tone: 'blue' },
-  { id: 'flockshamar', name: 'FlockShamar',  sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', tone: 'gold' },
-  { id: 'feed',      name: 'FEED',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                      tone: 'gold'   },
+  { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/app.flockdocs.html', tone: 'blue' },
+  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', tone: 'gold' },
+  { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                      tone: 'gold'   },
   { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database',  href: 'app.wellspring/app.wellspring.html', tone: 'green' },
-  { id: 'melchizedek', name: 'Melchizedek',   sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', tone: 'gold' },
+  { id: 'melchizedek', name: 'Safety',        sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', tone: 'gold' },
   { id: 'multiply',    name: 'Multiply',       sub: 'Church planting & multiplication',      href: 'app.multiply/multiply.html',          tone: 'green' },
 ];
 

@@ -21,11 +21,11 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="FEED">
+  <meta name="apple-mobile-web-app-title" content="Feed">
   <meta name="theme-color" content="#c48a20">
-  <meta name="description" content="FEED — Sermon preparation, study tools, and the Word for FlockOS. Craft and prepare with clarity, depth, and purpose.">
+  <meta name="description" content="Feed — Sermon preparation, study tools, and the Word for FlockOS. Craft and prepare with clarity, depth, and purpose.">
 
-  <title>FEED — FlockOS</title>
+  <title>Feed — FlockOS</title>
 
   <!-- PWA manifest -->
   <link rel="manifest" href="app.feed/manifest.json">
@@ -43,7 +43,7 @@
 
   <!-- Shared stylesheet -->
   <link rel="stylesheet" href="Styles/new_covenant.css">
-  <!-- Herald token bridge — must load after new_covenant.css so FEED uses the Herald palette -->
+  <!-- Herald token bridge — must load after new_covenant.css so Feed uses the Herald palette -->
   <link rel="stylesheet" href="Styles/herald-tokens.css">
 
   <link rel="stylesheet" href="Styles/feed.css">
@@ -58,10 +58,10 @@
 
   <!-- Subbar: active sermon title + per-sermon actions -->
   <nav id="bm-subbar" aria-label="Active sermon">
-    <button class="bm-btn bm-btn--ghost bm-btn--icon" id="bm-close-sermon-btn" title="Close sermon (back to FEED)" aria-label="Close sermon" style="display:none">
+    <button class="bm-btn bm-btn--ghost bm-btn--icon" id="bm-close-sermon-btn" title="Close sermon (back to Feed)" aria-label="Close sermon" style="display:none">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    <span id="bm-active-title">FEED</span>
+    <span id="bm-active-title">Feed</span>
     <div class="bm-topbar-right" style="margin-left:auto">
       <button class="bm-btn bm-btn--ghost bm-btn--sm" id="bm-duplicate-btn" title="Duplicate this sermon" disabled>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -126,7 +126,7 @@
     <!-- ── Main workspace ──────────────────────────────────────────── -->
     <main id="bm-main">
 
-      <!-- FEED Landing Page (study + sermon prep dashboard) -->
+      <!-- Feed Landing Page (study + sermon prep dashboard) -->
       <div id="bm-empty">
         <div class="bm-land">
 
@@ -136,7 +136,7 @@
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </div>
             <div class="bm-land-hero-text">
-              <h1 class="bm-land-hero-h" id="bm-land-greeting">Welcome to FEED</h1>
+              <h1 class="bm-land-hero-h" id="bm-land-greeting">Welcome to Feed</h1>
               <p class="bm-land-hero-p">Study the Word. Prepare your sermons. Plan with depth and clarity.</p>
             </div>
             <div class="bm-land-hero-actions">
@@ -891,7 +891,7 @@
   if (host) {
     mountUnityHeader(host, {
       appId:       'feed',
-      appName:     'FEED',
+      appName:     'Feed',
       appIconSvg:  FEED_ICON,
       appAccent:   '#e8a838',
       appAccentDk: '#c48a20',
@@ -900,7 +900,7 @@
       signInHref:  'app.feed/',
       onSignOut: () => {
         if (window.Nehemiah && typeof window.Nehemiah.signOut === 'function') {
-          if (confirm('Sign out of FEED?')) window.Nehemiah.signOut();
+          if (confirm('Sign out of Feed?')) window.Nehemiah.signOut();
           return;
         }
         try { sessionStorage.removeItem('flock_auth_session'); } catch (_) {}
@@ -914,7 +914,7 @@
       features: [
         { id: 'bm-sermons',    label: 'Sermons',      hint: 'Browse all sermons',  run: () => { const sb = document.getElementById('bm-sidebar'); if (sb) sb.classList.add('is-open'); } },
         { id: 'bm-new-sermon', label: 'New Sermon',   hint: 'Start a new sermon',  run: () => document.getElementById('bm-new-btn')?.click() },
-        { id: 'bm-overview',   label: 'Overview',     hint: 'Close current sermon and return to FEED', run: () => document.getElementById('bm-close-sermon-btn')?.click() },
+        { id: 'bm-overview',   label: 'Overview',     hint: 'Close current sermon and return to Feed', run: () => document.getElementById('bm-close-sermon-btn')?.click() },
       ],
     });
 

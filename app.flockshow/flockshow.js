@@ -187,7 +187,7 @@ async function _load() {
 // Build the Firestore-bound payload for a show.  Includes every field the
 // FlockShow side needs to round-trip cleanly — most importantly `theme` (so
 // the show's gradient survives the first save), and `sermonId`/`serviceDate`
-// (so a presentation pushed from FEED stays linked to its sermon and won't
+// (so a presentation pushed from Feed stays linked to its sermon and won't
 // be duplicated on the next push).
 function _showPayload(show) {
   return {
@@ -559,7 +559,7 @@ function _renderLibrary() {
               <em>"Praise Him with strings and pipe."</em> &mdash; Psalm 150:4
             </div>
             <p class="word-tease devo-dark-tease">
-              Every premium tool in FlockOS &mdash; FlockShow, FEED, GROW, STAND, and FlockChat &mdash;
+              Every premium tool in FlockOS &mdash; FlockShow, Feed, GROW, STAND, and FlockChat &mdash;
               is yours at no cost. You carry the weight of ministry, and we want nothing standing
               between you and the people you shepherd. <strong>We are praying for you. We love you.
               Thank you for the work you do.</strong>
@@ -2173,13 +2173,13 @@ function _renderSermonPickerList(sermons) {
 }
 
 // ── Sermon → slide builder ───────────────────────────────────────────────────
-// Mirror of FEED's `_buildShowFromSermon` so the picker path produces the same
-// quality deck as the FEED "Send to FlockShow" push.  Keep the two in sync.
+// Mirror of Feed's `_buildShowFromSermon` so the picker path produces the same
+// quality deck as the Feed "Send to FlockShow" push.  Keep the two in sync.
 
 const _SLIDE_CHAR_TARGET = 260;   // soft max chars per content slide
 const _SLIDE_CHAR_HARD   = 360;   // hard max — never exceed on one slide
 
-// FEED section type → FlockShow slide type
+// Feed section type → FlockShow slide type
 const _FEED_TO_SHOW_TYPE = {
   intro:        'lyrics',
   scripture:    'scripture',
