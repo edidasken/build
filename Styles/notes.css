@@ -1,0 +1,39 @@
+/* Notes — Herald bridge layer */
+
+:root {
+  --notes-accent: var(--gold, #f7c756);
+  --notes-accent-deep: var(--gold-deep, #b8871e);
+  --notes-panel: var(--herald-panel-strong, #fff);
+  --notes-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --notes-radius: var(--herald-radius-lg, 18px);
+  --notes-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+.fs-sidebar,
+.fs-note-card,
+.fs-modal-content,
+.fs-editor-panel {
+  border-color: var(--line, rgba(15,23,42,.1));
+}
+
+.fs-note-card,
+.fs-modal-content,
+.fs-editor-panel,
+.fs-share-link-box {
+  background: var(--notes-panel);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.fs-btn-primary,
+.fs-new-note-btn {
+  background: linear-gradient(135deg, var(--notes-accent-deep), var(--notes-accent));
+  color: #111827;
+}
+
+.fs-search-input:focus,
+.fs-note-title-input:focus,
+.fs-note-content:focus,
+.fs-share-link-input:focus {
+  border-color: var(--notes-accent);
+  box-shadow: var(--shadow-glow, 0 0 0 3px rgba(247,199,86,.18));
+}

@@ -1,0 +1,53 @@
+/* Safety — Herald bridge layer */
+
+:root {
+  --safety-accent: var(--gold, #f7c756);
+  --safety-accent-deep: var(--gold-deep, #b8871e);
+  --safety-panel: var(--herald-panel-strong, #fff);
+  --safety-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --safety-radius: var(--herald-radius-lg, 18px);
+  --safety-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+#melch-boot,
+.veil-wrap,
+.gp-wrap,
+.card,
+.ws-card,
+.ws-panel {
+  color: var(--ink, #111827);
+}
+
+.veil-side,
+.gp-side,
+.card,
+.ws-card,
+.ws-panel,
+.flock-card,
+.wall-card {
+  border-color: var(--line, rgba(15,23,42,.1));
+}
+
+.card,
+.ws-card,
+.ws-panel,
+.flock-card,
+.wall-card,
+.melch-modal {
+  background: var(--safety-panel);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.btn-signin,
+.ws-btn--primary,
+.flock-btn--primary {
+  background: linear-gradient(135deg, var(--safety-accent-deep), var(--safety-accent));
+  color: #111827;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--safety-accent);
+  box-shadow: var(--shadow-glow, 0 0 0 3px rgba(247,199,86,.18));
+}

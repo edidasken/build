@@ -1,0 +1,40 @@
+/* FlockChat — Herald bridge layer */
+
+:root {
+  --chat-accent: var(--herald-cyan, #48d3d9);
+  --chat-accent-deep: #0891b2;
+  --chat-panel: var(--herald-panel-strong, #fff);
+  --chat-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --chat-radius: var(--herald-radius-lg, 18px);
+  --chat-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+.fc-container,
+.fc-thread,
+.fc-sidebar,
+.fc-panel,
+.fc-card {
+  color: var(--ink, #111827);
+}
+
+.fc-sidebar,
+.fc-thread,
+.fc-panel,
+.fc-card,
+.fc-composer {
+  border-color: var(--line, rgba(15,23,42,.1));
+}
+
+.fc-thread,
+.fc-panel,
+.fc-card,
+.fc-composer {
+  background: var(--chat-panel);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.fc-send-btn,
+.fc-primary-btn {
+  background: linear-gradient(135deg, var(--chat-accent-deep), var(--chat-accent));
+  color: #f8fafc;
+}

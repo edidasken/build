@@ -3464,3 +3464,61 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
     margin-bottom: 1rem;
   }
 }
+
+/* Mobile apologetics cards must fit inside the Herald column without clipping references. */
+.fn-apol-grid {
+  max-width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fn-apol-item {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.fn-apol-category,
+.fn-apol-question,
+.fn-apol-answer,
+.fn-apol-quote,
+.fn-apol-ref {
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+
+.fn-apol-quote {
+  box-sizing: border-box;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+@media (max-width: 640px) {
+  .fn-apol-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .fn-apol-item,
+  .fn-apol-grid .fn-apol-item:last-child {
+    margin: 0 !important;
+    padding: 1rem !important;
+    border-right: 1px solid var(--rule) !important;
+    border-bottom: 1px solid var(--rule) !important;
+  }
+
+  .fn-apol-question {
+    font-size: clamp(1.45rem, 8vw, 2.05rem);
+    line-height: 1.14;
+  }
+
+  .fn-apol-answer {
+    line-height: 1.55;
+  }
+
+  .fn-apol-ref {
+    display: block;
+    margin-top: .65rem;
+    line-height: 1.35;
+  }
+}

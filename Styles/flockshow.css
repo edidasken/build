@@ -1,0 +1,39 @@
+/* FlockShow — app-owned Herald bridge layer */
+
+:root {
+  --show-accent: #ef4444;
+  --show-accent-deep: #991b1b;
+  --show-panel: var(--herald-panel-strong, #fff);
+  --show-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --show-radius: var(--herald-radius-lg, 18px);
+  --show-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+#fs-root,
+.fs-panel,
+.fs-card,
+.fs-library,
+.fs-editor {
+  color: var(--ink, #111827);
+}
+
+.fs-panel,
+.fs-card,
+.fs-library,
+.fs-editor,
+.fs-slide-card {
+  border-color: var(--line, rgba(15,23,42,.1));
+}
+
+.fs-panel,
+.fs-card,
+.fs-library,
+.fs-editor {
+  background: var(--show-panel);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.fs-btn--primary {
+  background: linear-gradient(135deg, var(--show-accent-deep), var(--show-accent));
+  color: #fff;
+}

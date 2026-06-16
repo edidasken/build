@@ -1,0 +1,34 @@
+/* The Invitation — app-owned Herald bridge layer */
+
+:root {
+  --invite-accent: var(--mint, #34d399);
+  --invite-accent-deep: #047857;
+  --invite-panel: var(--herald-panel-strong, #fff);
+  --invite-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --invite-radius: var(--herald-radius-lg, 18px);
+  --invite-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+.inv-card,
+.inv-panel,
+.invite-card,
+.invite-panel,
+.fn-inv-card {
+  background: var(--invite-panel);
+  border-color: var(--line, rgba(15,23,42,.1));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.inv-btn-primary,
+.invite-btn-primary,
+.fn-inv-share-btn {
+  background: linear-gradient(135deg, var(--invite-accent-deep), var(--invite-accent));
+  color: #f8fafc;
+}
+
+.inv-input:focus,
+.invite-input:focus,
+.fn-inv-input:focus {
+  border-color: var(--invite-accent);
+  box-shadow: 0 0 0 3px rgba(52,211,153,.18);
+}

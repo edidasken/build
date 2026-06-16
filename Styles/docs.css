@@ -1,0 +1,47 @@
+/* Docs — Herald bridge layer
+   App-owned styles live here so Docs is no longer dependent only on inline CSS
+   and app-local Google feature styles. */
+
+:root {
+  --docs-accent: var(--herald-cyan, #48d3d9);
+  --docs-accent-deep: #2563eb;
+  --docs-panel: var(--herald-panel-strong, #fff);
+  --docs-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --docs-radius: var(--herald-radius-lg, 18px);
+  --docs-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+.fd-wrap {
+  color: var(--ink, #111827);
+}
+
+#fd-sidebar,
+.fd-panel,
+.fd-doc-card,
+.fd-editor-panel {
+  border-color: var(--line, rgba(15,23,42,.1));
+}
+
+.fd-doc-card,
+.fd-empty-state,
+.fd-modal,
+.fd-editor-panel {
+  background: var(--docs-panel);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.fd-btn--primary {
+  background: linear-gradient(135deg, var(--gold-deep, #b8871e), var(--gold, #f7c756));
+  color: #111827;
+}
+
+.fd-btn--primary:hover {
+  filter: saturate(1.05) brightness(.98);
+}
+
+.fd-search input:focus,
+.fd-input:focus,
+.fd-textarea:focus {
+  border-color: var(--gold, #f7c756);
+  box-shadow: var(--shadow-glow, 0 0 0 3px rgba(247,199,86,.18));
+}

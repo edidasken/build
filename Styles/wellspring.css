@@ -1,0 +1,37 @@
+/* The Wellspring — Herald bridge layer */
+
+:root {
+  --wellspring-accent: var(--mint, #34d399);
+  --wellspring-accent-deep: #047857;
+  --wellspring-panel: var(--herald-panel-strong, #fff);
+  --wellspring-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
+  --wellspring-radius: var(--herald-radius-lg, 18px);
+  --wellspring-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+}
+
+.ws-shell,
+.ws-container {
+  color: var(--ink, #111827);
+}
+
+.ws-card,
+.ws-panel,
+.ws-file-card,
+.ws-status-card {
+  background: var(--wellspring-panel);
+  border-color: var(--line, rgba(15,23,42,.1));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+}
+
+.ws-btn-primary,
+.ws-btn--primary {
+  background: linear-gradient(135deg, var(--wellspring-accent-deep), var(--wellspring-accent));
+  color: #f8fafc;
+}
+
+.ws-input:focus,
+.ws-textarea:focus,
+.ws-select:focus {
+  border-color: var(--wellspring-accent);
+  box-shadow: 0 0 0 3px rgba(52,211,153,.18);
+}

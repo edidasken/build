@@ -2116,3 +2116,34 @@ body.veil-app .veil-main {
     padding: 26px 20px 24px;
   }
 }
+
+/* Harvest metric cards use quiet icon wells; the colored data accent stays in the number. */
+body.veil-app .harvest-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 174px;
+  padding: 26px 18px 24px;
+  text-align: center;
+}
+
+body.veil-app .harvest-stat-icon {
+  width: 52px;
+  height: 52px;
+  display: inline-grid;
+  place-items: center;
+  margin: 0 auto 16px;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.94), rgba(248,250,252,0.84));
+  color: var(--view-accent, var(--flockos-gold));
+  box-shadow: 0 10px 22px rgba(15,23,42,0.08);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+body.veil-app .harvest-stat-n {
+  margin-top: 0;
+}
