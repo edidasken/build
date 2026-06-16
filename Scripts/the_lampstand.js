@@ -3,7 +3,7 @@
    "You are the light of the world. A city set on a hill cannot be hidden." — Mt 5:14
 
    The Lampstand controls the brief light that covers boot. It does NOT own
-   themes — Adornment (fine_linen.js) owns the 14-theme palette. This module
+   themes — Adornment owns the single Herald palette. This module
    only manages the splash screen that hides flash-of-unstyled-content.
 
    Public API:

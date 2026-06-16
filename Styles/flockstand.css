@@ -2525,3 +2525,13 @@ body.stand-app #ms-live-overlay .ms-live-content .ms-lyric-line {
     padding-right: 2px;
   }
 }
+
+/* ─── Migrated from app.stand/music_stand.html ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Flash prevention — minimal overrides only; full styling in new_covenant.css */
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+/* Boot splash — styled in new_covenant.css */
+
+/* ─── Migrated from app.embeds/embed-stand.html ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }

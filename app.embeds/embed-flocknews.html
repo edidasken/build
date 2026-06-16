@@ -14,8 +14,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap">
   <script>
     (function () {
-      try { var t = localStorage.getItem('flock_theme') || 'america'; document.documentElement.setAttribute('data-theme', t); }
-      catch (_) { document.documentElement.setAttribute('data-theme', 'america'); }
+      document.documentElement.setAttribute('data-theme', 'herald');
       try {
         var isEmbedded = new URLSearchParams(location.search).get('embedded') === '1'; // Only hide nav when launcher explicitly requests it
         if (isEmbedded) document.documentElement.setAttribute('data-fn-embedded', 'true');
@@ -43,37 +42,6 @@
   </script>
   <link rel="manifest" href="../manifest.json">
   <link rel="stylesheet" href="Styles/flocknews.css">
-  <!-- Embedded-mode override: when loaded inside the launcher iframe, hide
-       the Herald's own topbar and sidebar (the parent provides these). -->
-  <style>
-    [data-fn-embedded="true"] .fn-back-bar { display: none !important; }
-    [data-fn-embedded="true"] .fn-side-nav { display: none !important; }
-    [data-fn-embedded="true"] .fn-side-backdrop { display: none !important; }
-    [data-fn-embedded="true"] .fn-nav-toggle { display: none !important; }
-    /* Give the masthead a bit more breathing room without the topbar */
-    [data-fn-embedded="true"] .fn-masthead { padding-top: 28px; }
-    .fn-pull-refresh {
-      position: fixed;
-      left: 50%;
-      top: calc(env(safe-area-inset-top, 0px) + 10px);
-      z-index: 10000;
-      transform: translate3d(-50%, -14px, 0);
-      opacity: 0;
-      pointer-events: none;
-      padding: 8px 14px;
-      border: 1px solid rgba(232, 168, 56, 0.28);
-      border-radius: 999px;
-      background: rgba(14, 22, 40, 0.92);
-      color: #e8a838;
-      box-shadow: 0 10px 28px rgba(2, 6, 23, 0.24);
-      font: 700 0.76rem/1 Inter, sans-serif;
-      transition: opacity .18s ease, transform .18s ease;
-    }
-    .fn-pull-refresh.fn-visible {
-      opacity: 1;
-      transform: translate3d(-50%, 0, 0);
-    }
-  </style>
 </head>
 <body>
 <div class="fn-pull-refresh" id="fn-pull-refresh" aria-live="polite">&#8635; Release to refresh</div>

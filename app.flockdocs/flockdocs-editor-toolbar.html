@@ -1,17 +1,10 @@
 <!-- FlockDocs Rich Text Editor Toolbar - Google Docs Features -->
 <!-- This file contains the comprehensive toolbar HTML to be inserted into app.flockdocs.html -->
 
-<!-- Flash prevention: apply saved FlockOS theme before first paint -->
+<!-- Flash prevention: lock the Herald theme before first paint -->
 <script>
-  (function () {
-    try {
-      var t = localStorage.getItem('flock_theme') || 'america';
-      document.documentElement.setAttribute('data-theme', t);
-    } catch (_) {
-      document.documentElement.setAttribute('data-theme', 'america');
-    }
-  })();
-</script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
 
         <!-- Main Toolbar -->
         <div class="fd-editor-toolbar">

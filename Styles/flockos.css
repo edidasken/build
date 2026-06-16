@@ -2147,3 +2147,46 @@ body.veil-app .harvest-stat-icon {
 body.veil-app .harvest-stat-n {
   margin-top: 0;
 }
+
+/* ─── Migrated from app.flockos/app.flockos.html ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+/* Core NC tokens (--bg, --bg-raised, --ink, --line) live in new_covenant.css */
+/* html stays dark navy (from new_covenant.css) so iOS safe-area band shows footer-matching navy.
+   Body keeps the active app background. */
+html { height: 100dvh; overflow: hidden; }
+body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 100dvh; overflow: hidden; overscroll-behavior: none; }
+/* Shell grid (.veil-wrap), responsive collapse, and .ptr-indicator now
+   live in new_covenant.css — single source of truth. */
+
+/* ─── Migrated from app.embeds/embed-flockos.html ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --bg: #f7f8fb; --bg-raised: #ffffff; --ink: #1b264f; --line: #e5e7ef;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --topbar-h: 60px;
+}
+
+html { height: 100%; overflow: hidden; background: var(--bg); }
+body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 100%; overflow: hidden; overscroll-behavior: none; }
+
+.veil-wrap {
+  display: grid;
+  grid-template-areas: "top top" "side main";
+  grid-template-columns: 256px 1fr;
+  grid-template-rows: calc(var(--topbar-h) + var(--safe-top)) 1fr;
+  height: 100dvh;
+  min-height: 100dvh;
+  position: relative;
+}
+#the-veil-top   { grid-area: top; }
+#the-veil-side  { grid-area: side; overflow-y: auto; overflow-x: hidden; }
+#the-holy-place { grid-area: main; min-width: 0; overflow-y: auto; }
+#the-veil-foot  { grid-area: foot; }
+
+@media (max-width: 860px) {
+  .veil-wrap {
+    grid-template-columns: 1fr;
+    grid-template-areas: "top" "main" "foot";
+  }
+  #the-veil-side { display: none; }
+}

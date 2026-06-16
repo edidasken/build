@@ -29,59 +29,9 @@
   <link rel="stylesheet" href="Styles/herald-tokens.css">
   <link rel="stylesheet" href="Styles/docs.css">
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { 
-      height: 100%; 
-      overflow: hidden; 
-      overscroll-behavior: none;
-      background: var(--bg);
-    }
-
-    /* Boot splash */
-    #fd-boot {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-      z-index: 9999;
-      transition: opacity 400ms, visibility 400ms;
-    }
-    #fd-boot.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .fd-boot-icon {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      animation: fd-pulse 2s ease-in-out infinite;
-    }
-    @keyframes fd-pulse {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.05); opacity: 1; }
-    }
-    .fd-boot-label {
-      font: 700 1.5rem var(--font-ui);
-      color: var(--ink);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-  </style>
-
-  <!-- Flash prevention: apply saved FlockOS theme before first paint -->
+  <!-- Flash prevention: lock the Herald theme before first paint -->
   <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('flock_theme') || 'america';
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (_) {
-        document.documentElement.setAttribute('data-theme', 'america');
-      }
-    })();
+    document.documentElement.setAttribute('data-theme', 'herald');
   </script>
 </head>
 <body>

@@ -1,16 +1,10 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    FINE LINEN — FlockOS Design System
-   Theme engine with pastel palettes, pill components, and auto dark mode.
-
-   THEMES (14 total):
-     Light:  Dayspring · Meadow · Lavender · Rosewood
-     Dark:   Vesper · Evergreen · Twilight · Obsidian
-     Flags:  America · Guatemala · Mexico (light) · Germany · Afghanistan (dark)
-     Auto:   Follows device prefers-color-scheme
+   Legacy theme API, locked to the Herald theme.
 
    USAGE:
      Adornment.init();                     — auto-applies saved theme on load
-     Adornment.setTheme('dayspring');      — apply named theme
+     Adornment.setTheme('herald');         — apply Herald
      Adornment.getTheme();                 — returns current theme name
      Adornment.themes                      — array of all valid theme names
 
@@ -27,15 +21,9 @@ const Adornment = (() => {
 
   /* ─── THEME REGISTRY ──────────────────────────────────────────────────────── */
 
-  const THEMES = [
-    'dayspring', 'meadow', 'lavender', 'rosewood',   // light
-    'vesper', 'evergreen', 'twilight', 'obsidian',    // dark
-    'america', 'guatemala', 'mexico',                  // flag — light
-    'germany', 'afghanistan',                          // flag — dark
-    'auto'
-  ];
+  const THEMES = ['herald'];
 
-  const DEFAULT_THEME = 'america';
+  const DEFAULT_THEME = 'herald';
   const STORAGE_KEY   = 'flock_theme';
   // CSS is now loaded via new_covenant.css (merged single file); embedded CSS and STYLE_ID removed.
 
@@ -50,19 +38,7 @@ const Adornment = (() => {
 
   /* ── Theme metadata for swatch rendering ─────────────────────────────────── */
   const THEME_META = {
-    dayspring:   { label: 'Dayspring',    bg: '#faf9f6', accent: '#7eaacc', mode: 'light' },
-    meadow:      { label: 'Meadow',       bg: '#f6f7f4', accent: '#6ba88a', mode: 'light' },
-    lavender:    { label: 'Lavender',     bg: '#f8f6fb', accent: '#9b7ec8', mode: 'light' },
-    rosewood:    { label: 'Rosewood',     bg: '#fbf6f7', accent: '#c27d8f', mode: 'light' },
-    vesper:      { label: 'Vesper',       bg: '#0f1118', accent: '#8ab4d6', mode: 'dark'  },
-    evergreen:   { label: 'Evergreen',    bg: '#0e1510', accent: '#6ec496', mode: 'dark'  },
-    twilight:    { label: 'Twilight',     bg: '#12101a', accent: '#a088d0', mode: 'dark'  },
-    obsidian:    { label: 'Obsidian',     bg: '#000000', accent: '#88b8e0', mode: 'dark'  },
-    america:     { label: 'America',      bg: '#f7f8fb', accent: '#3c3b6e', mode: 'light' },
-    guatemala:   { label: 'Guatemala',    bg: '#f4f9fc', accent: '#4997d0', mode: 'light' },
-    mexico:      { label: 'Mexico',       bg: '#f5f8f4', accent: '#006847', mode: 'light' },
-    germany:     { label: 'Germany',      bg: '#14120e', accent: '#dd0000', mode: 'dark'  },
-    afghanistan: { label: 'Afghanistan',  bg: '#0e100c', accent: '#007a3d', mode: 'dark'  },
+    herald: { label: 'Herald', bg: '#f8fafc', accent: '#f7c756', mode: 'light' },
   };
 
   /* ─── PUBLIC API ──────────────────────────────────────────────────────────── */
@@ -73,16 +49,14 @@ const Adornment = (() => {
   /**
    * init()
    * Injects CSS and applies the saved theme.
-   * Priority: user preference → admin global theme → localStorage → DEFAULT_THEME.
-   * The admin global theme acts as the church-wide default (base theme).
-   * Users can still override with their own preference.
+   * Always applies Herald. Stale saved custom themes are cleared during boot.
    * Call once on page load, before anything renders.
    */
   function init() {
     // _inject() removed; CSS is loaded via <link> to new_covenant.css (merged single file)
     loadOverrides(); // Apply Interface Studio overrides immediately
 
-    // Custom themes disabled — always apply the default America theme.
+    // Custom themes disabled — always apply the Herald theme.
     // Clear any stored theme overrides so stale dark/custom themes never persist.
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(GLOBAL_THEME_KEY);
@@ -97,17 +71,11 @@ const Adornment = (() => {
     var _fbMode = typeof UpperRoom !== 'undefined' && typeof Modules !== 'undefined' && Modules._isFirebaseComms && Modules._isFirebaseComms();
     if (_fbMode) {
       UpperRoom.getUserPreferences().then(prefs => {
-        if (prefs && THEMES.includes(prefs.theme)) {
-          _apply(prefs.theme);
-          localStorage.setItem(STORAGE_KEY, prefs.theme);
-        }
+        if (prefs && prefs.theme && prefs.theme !== DEFAULT_THEME) _apply(DEFAULT_THEME);
       }).catch(() => {});
     } else if (typeof TheVine !== 'undefined' && TheVine.flock && TheVine.flock.preferences) {
       TheVine.flock.preferences.get().then(prefs => {
-        if (prefs && THEMES.includes(prefs.theme)) {
-          _apply(prefs.theme);
-          localStorage.setItem(STORAGE_KEY, prefs.theme);
-        }
+        if (prefs && prefs.theme && prefs.theme !== DEFAULT_THEME) _apply(DEFAULT_THEME);
       }).catch(() => {});
     }
   }
@@ -118,18 +86,17 @@ const Adornment = (() => {
    * Saves to localStorage always; syncs to TheVine if authenticated.
    */
   function setTheme(name) {
-    if (!THEMES.includes(name)) {
-      console.warn(`Adornment.setTheme: unknown theme "${name}"`);
-      return;
+    if (name && name !== DEFAULT_THEME) {
+      console.warn(`Adornment.setTheme: "${name}" is no longer available; using Herald.`);
     }
-    _apply(name);
-    localStorage.setItem(STORAGE_KEY, name);
+    _apply(DEFAULT_THEME);
+    localStorage.setItem(STORAGE_KEY, DEFAULT_THEME);
 
     var _fbMode = typeof UpperRoom !== 'undefined' && typeof Modules !== 'undefined' && Modules._isFirebaseComms && Modules._isFirebaseComms();
     if (_fbMode) {
-      UpperRoom.updateUserPreferences({ theme: name }).catch(() => {});
+      UpperRoom.updateUserPreferences({ theme: DEFAULT_THEME }).catch(() => {});
     } else if (typeof TheVine !== 'undefined' && TheVine.flock && TheVine.flock.preferences) {
-      TheVine.flock.preferences.update({ theme: name }).catch(() => {});
+      TheVine.flock.preferences.update({ theme: DEFAULT_THEME }).catch(() => {});
     }
   }
 

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
   <meta charset="UTF-8">
   <!-- Absolute base so all relative URLs resolve to GitHub Pages regardless of embed host -->
   <base href="https://flock-os.github.io/FlockOS/New_Covenant/">
@@ -26,91 +29,6 @@
   <link rel="stylesheet" href="Styles/new_covenant.css">
   <link rel="stylesheet" href="Styles/herald-tokens.css">
   <link rel="stylesheet" href="Styles/flockshow.css">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; overflow: hidden; background: var(--bg); overscroll-behavior: none; }
-    :root { --safe-top: env(safe-area-inset-top, 0px); --topbar-h: 54px; }
-
-    /* ── Embed auth overlay ───────────────────────────────────────────────── */
-    #embed-auth-overlay {
-      position: fixed; inset: 0; z-index: 9999;
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    }
-    #embed-auth-overlay.hidden { display: none; }
-
-    .embed-auth-card {
-      width: 100%; max-width: 360px;
-      background: var(--bg-raised);
-      border: 1px solid rgba(212,175,55,0.28);
-      border-radius: 16px;
-      padding: 36px 32px 28px;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.18), 0 0 0 1px rgba(212,175,55,0.06);
-      margin: 0 16px;
-    }
-    .embed-auth-icon {
-      width: 56px; height: 56px; border-radius: 12px; margin-bottom: 6px;
-    }
-    .embed-auth-card h1 {
-      font-size: 1.35rem; font-weight: 800;
-      color: var(--ink); margin-bottom: 2px;
-    }
-    .embed-auth-card p {
-      font-size: 0.8rem; color: var(--ink-muted);
-      text-align: center; margin-bottom: 18px; line-height: 1.5;
-    }
-    .embed-auth-field {
-      width: 100%; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;
-    }
-    .embed-auth-input {
-      width: 100%;
-      background: var(--bg-input);
-      border: 1px solid rgba(212,175,55,0.25);
-      border-radius: 8px;
-      padding: 10px 13px;
-      color: var(--ink);
-      font: 500 0.88rem 'Plus Jakarta Sans', sans-serif;
-      outline: none;
-      -webkit-appearance: none; appearance: none;
-      transition: border-color 0.15s;
-    }
-    .embed-auth-input:focus {
-      border-color: rgba(212,175,55,0.6);
-      box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
-    }
-    .embed-auth-input::placeholder { color: var(--ink-faint); }
-    .embed-auth-btn {
-      width: 100%; padding: 11px 0;
-      background: linear-gradient(135deg, #d4af37, #b8962e);
-      border: none; border-radius: 9px;
-      color: #1a0f00; font: 700 0.88rem 'Plus Jakarta Sans', sans-serif;
-      cursor: pointer; transition: opacity 0.15s, transform 0.1s;
-      margin-top: 4px;
-    }
-    .embed-auth-btn:hover { opacity: 0.92; }
-    .embed-auth-btn:active { transform: scale(0.98); }
-    .embed-auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .embed-auth-err {
-      width: 100%;
-      background: rgba(220,50,50,0.12);
-      border: 1px solid rgba(220,50,50,0.3);
-      border-radius: 7px;
-      padding: 8px 12px;
-      color: #ff8080;
-      font-size: 0.78rem;
-      text-align: center;
-      margin-top: 8px;
-    }
-    .embed-auth-verse {
-      margin-top: 22px;
-      font: italic 0.72rem 'Noto Serif', serif;
-      color: rgba(212,175,55,0.45);
-      text-align: center;
-    }
-  </style>
 
   <!-- Firebase config — patched per-church by B-Build -->
   <script>

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
   <meta charset="UTF-8">
   <!-- Absolute base so all relative URLs resolve to GitHub Pages regardless of embed host -->
   <base href="https://flock-os.github.io/FlockOS/New_Covenant/">
@@ -54,40 +57,6 @@
   <link rel="modulepreload" href="Scripts/the_upper_room/the_tenant.js">
   <link rel="modulepreload" href="Views/_frame.js">
   <link rel="modulepreload" href="Views/the_good_shepherd/index.js">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    :root {
-      --bg: #f7f8fb; --bg-raised: #ffffff; --ink: #1b264f; --line: #e5e7ef;
-      --safe-top: env(safe-area-inset-top, 0px);
-      --topbar-h: 60px;
-    }
-
-    html { height: 100%; overflow: hidden; background: var(--bg); }
-    body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 100%; overflow: hidden; overscroll-behavior: none; }
-
-    .veil-wrap {
-      display: grid;
-      grid-template-areas: "top top" "side main";
-      grid-template-columns: 256px 1fr;
-      grid-template-rows: calc(var(--topbar-h) + var(--safe-top)) 1fr;
-      height: 100dvh;
-      min-height: 100dvh;
-      position: relative;
-    }
-    #the-veil-top   { grid-area: top; }
-    #the-veil-side  { grid-area: side; overflow-y: auto; overflow-x: hidden; }
-    #the-holy-place { grid-area: main; min-width: 0; overflow-y: auto; }
-    #the-veil-foot  { grid-area: foot; }
-
-    @media (max-width: 860px) {
-      .veil-wrap {
-        grid-template-columns: 1fr;
-        grid-template-areas: "top" "main" "foot";
-      }
-      #the-veil-side { display: none; }
-    }
-  </style>
 </head>
 <body class="veil-app">
   <div class="veil-wrap">

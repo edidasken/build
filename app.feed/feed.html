@@ -7,16 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
 
-  <!-- Flash prevention: apply saved FlockOS theme before first paint -->
+  <!-- Flash prevention: lock the Herald theme before first paint -->
   <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('flock_theme') || 'america';
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (_) {
-        document.documentElement.setAttribute('data-theme', 'america');
-      }
-    })();
+    document.documentElement.setAttribute('data-theme', 'herald');
   </script>
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">

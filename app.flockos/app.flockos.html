@@ -8,16 +8,9 @@
   <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
   <title>FlockOS</title>
 
-  <!-- Flash prevention: apply saved FlockOS theme before first paint -->
+  <!-- Flash prevention: lock the Herald theme before first paint -->
   <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('flock_theme') || 'america';
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (_) {
-        document.documentElement.setAttribute('data-theme', 'america');
-      }
-    })();
+    document.documentElement.setAttribute('data-theme', 'herald');
   </script>
 
   <!-- PWA manifest — path relative to base (New_Covenant/) -->
@@ -126,16 +119,6 @@
   <link rel="modulepreload" href="Views/the_good_shepherd/the_call.js">
 
   <!-- Flash prevention only — the_adornment.js applies data-theme after boot. -->
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    /* Core NC tokens (--bg, --bg-raised, --ink, --line) live in new_covenant.css */
-    /* html stays dark navy (from new_covenant.css) so iOS safe-area band shows footer-matching navy.
-       Body keeps the active app background. */
-    html { height: 100dvh; overflow: hidden; }
-    body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 100dvh; overflow: hidden; overscroll-behavior: none; }
-    /* Shell grid (.veil-wrap), responsive collapse, and .ptr-indicator now
-       live in new_covenant.css — single source of truth. */
-  </style>
 </head>
 <body class="veil-app">
   <!--
