@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
+  <meta charset="UTF-8">
+  <base href="../">
+  <script>
+    window.__CARE_FLOCKOS_URL = new URL('app.flockos/app.flockos.html?covenant=new&view=the_life', document.baseURI).href;
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Pastoral Care — Sign In</title>
+
+  <link rel="manifest" href="app.care/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="Images/icon-flockos.svg">
+  <link rel="apple-touch-icon" href="Images/icon-flockos.svg">
+  <meta name="theme-color" content="#14532d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Care">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Styles/app-login.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">Pastoral Care</div>
+        <div class="brand-sub">FlockOS Care Queue</div>
+      </div>
+    </div>
+
+    <div class="form-title">Sign in to continue</div>
+
+    <form id="signin-form" method="post" autocomplete="on" novalidate>
+      <div class="field-group">
+        <label for="care-email">Email</label>
+        <input type="email" id="care-email" name="email" placeholder="you@church.com" autocomplete="email" required>
+      </div>
+
+      <div class="field-group">
+        <label for="care-pass">Passcode</label>
+        <input type="password" id="care-pass" name="password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="btn-signin" id="care-submit">Sign In</button>
+    </form>
+
+    <div class="error-msg" id="care-error"></div>
+
+    <p class="foot-note">Use your FlockOS church account credentials.</p>
+    <a href="index.html" class="return-home-link">← Return to Home</a>
+  </div>
+
+  <script>
+    window.FLOCK_CHURCH_ID = "flockos";
+window.FLOCK_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo",
+  "authDomain": "flockos-notify.firebaseapp.com",
+  "projectId": "flockos-notify",
+  "storageBucket": "flockos-notify.firebasestorage.app",
+  "messagingSenderId": "321766738616",
+  "appId": "1:321766738616:web:d2c1c53ad7493fcde4c24d",
+  "measurementId": "G-EFMSZE581W"
+};
+window.FLOCK_NO_FIREBASE = false;
+window.FLOCK_DATABASE_URL = "https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec";
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" defer></script>
+  <script defer src="Scripts/firm_foundation.js"></script>
+  <script defer src="Scripts/the_upper_room.js"></script>
+  <script defer src="Scripts/the_true_vine.js"></script>
+
+  <script>
+    (function () {
+      var APP_URL = window.__CARE_FLOCKOS_URL || new URL('app.flockos/app.flockos.html?covenant=new&view=the_life', document.baseURI).href;
+      function ready(fn) {
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+        else fn();
+      }
+      ready(function () {
+        if (typeof Nehemiah !== 'undefined' && Nehemiah.isAuthenticated && Nehemiah.isAuthenticated()) {
+          window.location.replace(APP_URL);
+          return;
+        }
+
+        var form = document.getElementById('signin-form');
+        var btn = document.getElementById('care-submit');
+        var errBox = document.getElementById('care-error');
+
+        function showError(msg) {
+          errBox.textContent = msg;
+          errBox.classList.add('visible');
+        }
+        function clearError() {
+          errBox.classList.remove('visible');
+        }
+        function setLoading(on) {
+          btn.disabled = on;
+          btn.innerHTML = on ? '<span class="spinner"></span>Signing in…' : 'Sign In';
+        }
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          clearError();
+          var email = document.getElementById('care-email').value.trim();
+          var pass = document.getElementById('care-pass').value;
+          if (!email || !pass) {
+            showError('Please enter your email and passcode.');
+            return;
+          }
+          if (typeof Nehemiah === 'undefined' || typeof Nehemiah.login !== 'function') {
+            showError('Auth system not loaded yet. Please refresh and try again.');
+            return;
+          }
+          setLoading(true);
+          try {
+            await Nehemiah.login(email, pass);
+            window.location.replace(APP_URL);
+          } catch (err) {
+            setLoading(false);
+            showError(err.message || 'Sign in failed. Check your credentials and try again.');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "FlockOS · Pastoral Care",
+  "short_name": "Care",
+  "description": "Pastoral care, follow-ups, visits, and life moments for FlockOS.",
+  "start_url": "./app.care.html",
+  "id": "./app.care.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#14532d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "../Images/icon-flockos.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "../Images/icon-flockos.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

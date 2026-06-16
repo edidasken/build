@@ -260,6 +260,11 @@
 
   /* ── Mint a fresh custom token from GAS and sign in ────────────── */
   function _mintAndSignIn() {
+    if (window.Nehemiah && typeof window.Nehemiah.isLocalBypass === 'function' && window.Nehemiah.isLocalBypass()) {
+      console.warn('[FLOCK-DEBUG] _mintAndSignIn() skipped for local bypass session.');
+      _ready = false;
+      return Promise.resolve();
+    }
     console.log('[FLOCK-DEBUG] _mintAndSignIn() calling TheVine.flock.firebase.token({ churchId: ' + _churchId + ' })…');
     var _mintStart = Date.now();
     return TheVine.flock.firebase.token({ churchId: _churchId })
@@ -625,6 +630,10 @@
 
   /* ── App-level settings (comms mode per church) ─────────────────────── */
   function getCommsMode() {
+    if (window.Nehemiah && typeof window.Nehemiah.isLocalBypass === 'function' && window.Nehemiah.isLocalBypass()) {
+      console.warn('[FLOCK-DEBUG] UpperRoom.getCommsMode() using sheets for local bypass session.');
+      return Promise.resolve('sheets');
+    }
     console.log('[FLOCK-DEBUG] UpperRoom.getCommsMode() querying settings/app…');
     var _gcmStart = Date.now();
     return _churchRef().collection('settings').doc('app')

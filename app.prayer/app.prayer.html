@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="../">
+  <script>
+    location.replace(new URL('app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain', document.baseURI).href);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="format-detection" content="telephone=no, date=no, email=no, address=no">
+  <title>Prayer — FlockOS</title>
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
+
+  <link rel="manifest" href="app.prayer/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="Images/icon-chat.svg">
+  <link rel="apple-touch-icon" href="Images/icon-chat.svg">
+  <meta name="theme-color" content="#4c1d95">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Prayer">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Prayer — live prayer chain and standing prayer requests for FlockOS.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://firestore.googleapis.com">
+  <link rel="dns-prefetch" href="https://firestore.googleapis.com">
+  <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
+  <link rel="preconnect" href="https://securetoken.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Hebrew:wght@400;600;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Styles/new_covenant.css">
+  <link rel="stylesheet" href="Styles/herald-tokens.css">
+  <link rel="stylesheet" href="Styles/shell.css">
+  <link rel="stylesheet" href="Styles/flockos.css">
+  <link rel="stylesheet" href="Styles/sub_app.css">
+
+  <link rel="modulepreload" href="Scripts/the_unity_header.js">
+  <link rel="modulepreload" href="Scripts/the_priesthood/index.js">
+  <link rel="modulepreload" href="Views/the_prayer_chain/index.js">
+  <link rel="modulepreload" href="Scripts/the_life/index.js">
+  <link rel="modulepreload" href="Scripts/the_upper_room/index.js">
+</head>
+<body class="veil-app sub-app sub-app-prayer">
+  <div class="veil-wrap">
+    <header id="sub-app-top" class="veil-top" role="banner"></header>
+    <main id="sub-app-main" class="veil-main" role="main">
+      <div class="sub-app-loading">Loading Prayer…</div>
+    </main>
+  </div>
+
+  <script>
+    window.FLOCK_CHURCH_ID = "flockos";
+window.FLOCK_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo",
+  "authDomain": "flockos-notify.firebaseapp.com",
+  "projectId": "flockos-notify",
+  "storageBucket": "flockos-notify.firebasestorage.app",
+  "messagingSenderId": "321766738616",
+  "appId": "1:321766738616:web:d2c1c53ad7493fcde4c24d",
+  "measurementId": "G-EFMSZE581W"
+};
+window.FLOCK_NO_FIREBASE = false;
+window.FLOCK_DATABASE_URL = "https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec";
+  </script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-functions-compat.js"></script>
+  <script defer src="Scripts/firm_foundation.js"></script>
+  <script defer src="Scripts/the_upper_room.js"></script>
+  <script defer src="Scripts/fine_linen.js"></script>
+  <script defer src="Scripts/the_true_vine.js"></script>
+  <script defer src="Scripts/the_wellspring.js"></script>
+  <script defer src="Scripts/the_life.js"></script>
+  <script defer src="Scripts/the_shepherd.js"></script>
+  <script defer src="Scripts/the_fold.js"></script>
+  <script defer src="Scripts/the_scrolls.js"></script>
+  <script defer src="Scripts/the_window_bridge.js"></script>
+  <script type="module" src="app.prayer/prayer.js"></script>
+</body>
+</html>

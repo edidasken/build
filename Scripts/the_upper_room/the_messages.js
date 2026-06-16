@@ -8,6 +8,11 @@
 /** Stream messages for a channel. onChange receives an array (oldest-first).
  *  Returns an unsubscribe function. */
 export async function watch(channelId, onChange, { limit = 100 } = {}) {
+  if (window.Nehemiah && typeof window.Nehemiah.isLocalBypass === 'function' && window.Nehemiah.isLocalBypass()) {
+    try { onChange([]); } catch (_) {}
+    return () => {};
+  }
+
   const M = window.UpperRoom ?? {};
 
   if (typeof M.listenMessages === 'function') {

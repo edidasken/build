@@ -1,0 +1,26 @@
+{
+  "name": "FlockOS · Prayer",
+  "short_name": "Prayer",
+  "description": "Live prayer chain and standing prayer requests for FlockOS.",
+  "start_url": "./app.prayer.html",
+  "id": "./app.prayer.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#4c1d95",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "../Images/icon-chat.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "../Images/icon-chat.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

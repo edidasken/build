@@ -76,6 +76,7 @@ const SECTIONS = [
     items: [
       { name: 'the_fold',              label: 'The Fold',           icon: ICON.fold },
       { name: 'the_life',              label: 'Pastoral Care',      icon: ICON.heart,     badge: 'care' },
+      { name: 'the_prayer_chain',      label: 'Prayer',             icon: ICON.hands },
       { name: 'the_seasons',           label: 'Seasons',            icon: ICON.calendar },
     ],
   },
@@ -126,7 +127,9 @@ export function mountPillars(host) {
   items.forEach((btn) => {
     btn.addEventListener('click', () => {
       if (btn.dataset.href) {
-        window.open(btn.dataset.href, '_blank', 'noopener');
+        if (btn.dataset.target === '_self') window.location.href = btn.dataset.href;
+        else window.open(btn.dataset.href, '_blank', 'noopener');
+        document.body.classList.remove('veil-side-open');
         return;
       }
       go(btn.dataset.view).catch((err) => console.warn('[pillars]', err));
@@ -145,7 +148,8 @@ export function mountPillars(host) {
   }
   paintActive();
   window.addEventListener('popstate', paintActive);
-  // Re-check on a short interval — the_scribes doesn't broadcast yet.
+  window.addEventListener('flockos:viewchange', paintActive);
+  // Re-check on a short interval as a fallback for legacy/manual history changes.
   const tick = setInterval(paintActive, 700);
 
   // Badges
@@ -170,6 +174,7 @@ export function mountPillars(host) {
   return () => {
     clearInterval(tick);
     clearInterval(badgeTick);
+    window.removeEventListener('flockos:viewchange', paintActive);
     window.removeEventListener('flockos:badges:refresh', onBadgeRefresh);
     try { careUnsub(); } catch (_) {}
   };
@@ -179,7 +184,7 @@ function _section(s) {
   const head = s.title ? `<div class="pillars-section">${s.title}</div>` : '';
   const slug = (s.title || 'home').toLowerCase().replace(/\s+/g, '-');
   const items = s.items.map((it) => `
-    <button class="pillars-item" type="button" data-view="${it.name}" data-section="${slug}"${it.href ? ` data-href="${it.href}"` : ''}>
+    <button class="pillars-item" type="button" data-view="${it.name}" data-section="${slug}"${it.href ? ` data-href="${it.href}"` : ''}${it.target ? ` data-target="${it.target}"` : ''}>
       <span class="pillars-icon" aria-hidden="true">${it.icon}</span>
       <span class="pillars-label">${it.label}</span>
       ${it.badge ? `<span class="pillars-badge" data-badge="${it.badge}" hidden></span>` : ''}

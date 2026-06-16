@@ -2,7 +2,7 @@
    THE APP SWITCHER — Cross-app navigation popover
    "That they all may be one." — John 17:21
 
-   Single source of truth for the 7 New Covenant apps + Launcher. Renders a
+   Single source of truth for New Covenant apps + Launcher. Renders a
    compact "Apps" button that opens a popover listing every app with its
    canonical launcher SVG icon. Designed to drop into any app header so users
    are never trapped inside a single app.
@@ -31,6 +31,8 @@ export const NC_APP_ICONS = {
   grow:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
   invite:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4.5" y1="8.5" x2="19.5" y2="8.5"/></svg>',
   flockos:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>',
+  care:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/><path d="M12 8v6"/><path d="M9 11h6"/></svg>',
+  prayer:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg>',
   stand:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
   flockshow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16 10,8" fill="currentColor" stroke="none"/></svg>',
   flockchat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
@@ -47,6 +49,8 @@ export const NC_APP_ICON_SRCS = {
   flocknews:   new URL('../Images/icon-herald.svg', import.meta.url).href,
   invite:      new URL('../Images/icon-invite.svg', import.meta.url).href,
   flockos:     new URL('../Images/icon-flockos.svg', import.meta.url).href,
+  care:        new URL('../Images/icon-flockos.svg', import.meta.url).href,
+  prayer:      new URL('../Images/icon-chat.svg', import.meta.url).href,
   stand:       new URL('../Images/icon-stand.svg', import.meta.url).href,
   flockshow:   new URL('../Images/icon-show.svg', import.meta.url).href,
   flockchat:   new URL('../Images/icon-chat.svg', import.meta.url).href,
@@ -63,6 +67,8 @@ export const NC_APPS = [
   { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                      accent: '#e8a838', accentDk: '#b8871e', public: true },
   { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#22c55e', accentDk: '#14532d', public: true },
   { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
+  { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#22c55e', accentDk: '#14532d' },
+  { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
   { id: 'stand',     name: 'FlockStand',     sub: 'Songs, setlists & live',         href: 'app.stand/',                       accent: '#a855f7', accentDk: '#4c1d95' },
   { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d' },
   { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', accent: '#06b6d4', accentDk: '#0c4a6e' },

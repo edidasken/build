@@ -55,6 +55,7 @@ export async function go(name, params = {}, { replace = false } = {}) {
   if (mod.title) document.title = mod.title + ' · FlockOS';
 
   _active = { name, params, unmount };
+  window.dispatchEvent(new CustomEvent('flockos:viewchange', { detail: { name, params } }));
 }
 
 export function current() {

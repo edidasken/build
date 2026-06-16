@@ -194,6 +194,7 @@ let _ensureAuthPromise = null;
 function _ensureUpperRoomAuth() {
   if (_ensureAuthPromise) return _ensureAuthPromise;
   _ensureAuthPromise = (async () => {
+    if (W.Nehemiah && typeof W.Nehemiah.isLocalBypass === 'function' && W.Nehemiah.isLocalBypass()) return;
     const UR = W.UpperRoom;
     if (!UR || typeof UR.init !== 'function' || typeof UR.authenticate !== 'function') return;
     if (typeof UR.isReady === 'function' && UR.isReady()) return;
