@@ -7,49 +7,49 @@
   Refresh this palette from current CSS without applying:
     node New_Covenant/Styles/sync-styler.mjs
 
-  Generated: 2026-06-16T03:37:02.648Z
-  CSS files scanned: 29
+  Generated: 2026-06-16T04:01:30.808Z
+  CSS files scanned: 27
   Unique colors: 136
 */
 
 :root {
   --styler-color-0001: #ffffff; /* source: #ffffff | uses: 462 */
-  --styler-color-0002: transparent; /* source: transparent | uses: 386 */
-  --styler-color-0003: #64748b; /* source: #64748b | uses: 355 */
-  --styler-color-0004: #e5e7ef; /* source: #e5e7ef | uses: 294 */
+  --styler-color-0002: transparent; /* source: transparent | uses: 383 */
+  --styler-color-0003: #64748b; /* source: #64748b | uses: 354 */
+  --styler-color-0004: #e5e7ef; /* source: #e5e7ef | uses: 293 */
   --styler-color-0005: #1b264f; /* source: #1b264f | uses: 231 */
-  --styler-color-0006: rgba(255,255,255,.12); /* source: rgba(255,255,255,.12) | uses: 170 */
-  --styler-color-0007: rgba(15,23,42,.12); /* source: rgba(15,23,42,.12) | uses: 156 */
-  --styler-color-0008: #f1f5f9; /* source: #f1f5f9 | uses: 145 */
-  --styler-color-0009: #e8a838; /* source: #e8a838 | uses: 144 */
-  --styler-color-0010: #111827; /* source: #111827 | uses: 139 */
-  --styler-color-0011: rgba(255,255,255,.04); /* source: rgba(255,255,255,.04) | uses: 137 */
-  --styler-color-0012: #f8fafc; /* source: #f8fafc | uses: 134 */
-  --styler-color-0013: rgba(255,255,255,.08); /* source: rgba(255,255,255,.08) | uses: 132 */
+  --styler-color-0006: rgba(255,255,255,.12); /* source: rgba(255,255,255,.12) | uses: 169 */
+  --styler-color-0007: rgba(15,23,42,.12); /* source: rgba(15,23,42,.12) | uses: 155 */
+  --styler-color-0008: #e8a838; /* source: #e8a838 | uses: 144 */
+  --styler-color-0009: #f1f5f9; /* source: #f1f5f9 | uses: 142 */
+  --styler-color-0010: rgba(255,255,255,.04); /* source: rgba(255,255,255,.04) | uses: 136 */
+  --styler-color-0011: #111827; /* source: #111827 | uses: 134 */
+  --styler-color-0012: #f8fafc; /* source: #f8fafc | uses: 132 */
+  --styler-color-0013: rgba(255,255,255,.08); /* source: rgba(255,255,255,.08) | uses: 131 */
   --styler-color-0014: rgba(255,255,255,.72); /* source: rgba(255,255,255,.72) | uses: 120 */
   --styler-color-0015: #7c3aed; /* source: #7c3aed | uses: 100 */
-  --styler-color-0016: #1e293b; /* source: #1e293b | uses: 96 */
-  --styler-color-0017: #94a3b8; /* source: #94a3b8 | uses: 93 */
-  --styler-color-0018: #0f172a; /* source: #0f172a | uses: 87 */
+  --styler-color-0016: #1e293b; /* source: #1e293b | uses: 94 */
+  --styler-color-0017: #94a3b8; /* source: #94a3b8 | uses: 92 */
+  --styler-color-0018: #0f172a; /* source: #0f172a | uses: 86 */
   --styler-color-0019: #38bdf8; /* source: #38bdf8 | uses: 82 */
   --styler-color-0020: rgba(232,168,56,.12); /* source: rgba(232,168,56,.12) | uses: 81 */
   --styler-color-0021: rgba(247,199,86,.18); /* source: rgba(247,199,86,.18) | uses: 77 */
-  --styler-color-0022: rgba(255,255,255,.5); /* source: rgba(255,255,255,.5) | uses: 73 */
-  --styler-color-0023: #f7c756; /* source: #f7c756 | uses: 71 */
-  --styler-color-0024: rgba(72,211,217,.12); /* source: rgba(72,211,217,.12) | uses: 69 */
+  --styler-color-0022: rgba(255,255,255,.5); /* source: rgba(255,255,255,.5) | uses: 72 */
+  --styler-color-0023: rgba(72,211,217,.12); /* source: rgba(72,211,217,.12) | uses: 68 */
+  --styler-color-0024: #f7c756; /* source: #f7c756 | uses: 67 */
   --styler-color-0025: rgba(255,255,255,.9); /* source: rgba(255,255,255,.9) | uses: 67 */
   --styler-color-0026: rgba(15,23,42,.08); /* source: rgba(15,23,42,.08) | uses: 58 */
   --styler-color-0027: rgba(232,168,56,.18); /* source: rgba(232,168,56,.18) | uses: 58 */
   --styler-color-0028: rgba(15,23,42,.04); /* source: rgba(15,23,42,.04) | uses: 55 */
-  --styler-color-0029: rgba(247,199,86,.12); /* source: rgba(247,199,86,.12) | uses: 53 */
-  --styler-color-0030: #2563eb; /* source: #2563eb | uses: 51 */
+  --styler-color-0029: #2563eb; /* source: #2563eb | uses: 51 */
+  --styler-color-0030: rgba(247,199,86,.12); /* source: rgba(247,199,86,.12) | uses: 51 */
   --styler-color-0031: rgba(255,255,255,.18); /* source: rgba(255,255,255,.18) | uses: 50 */
   --styler-color-0032: #3b82f6; /* source: #3b82f6 | uses: 47 */
   --styler-color-0033: #a78bfa; /* source: #a78bfa | uses: 44 */
-  --styler-color-0034: #334155; /* source: #334155 | uses: 43 */
-  --styler-color-0035: #b45309; /* source: #b45309 | uses: 43 */
-  --styler-color-0036: #cbd5e1; /* source: #cbd5e1 | uses: 43 */
-  --styler-color-0037: #dc2626; /* source: #dc2626 | uses: 43 */
+  --styler-color-0034: #b45309; /* source: #b45309 | uses: 43 */
+  --styler-color-0035: #dc2626; /* source: #dc2626 | uses: 43 */
+  --styler-color-0036: #334155; /* source: #334155 | uses: 42 */
+  --styler-color-0037: #cbd5e1; /* source: #cbd5e1 | uses: 42 */
   --styler-color-0038: rgba(232,168,56,.25); /* source: rgba(232,168,56,.25) | uses: 42 */
   --styler-color-0039: rgba(124,58,237,.12); /* source: rgba(124,58,237,.12) | uses: 41 */
   --styler-color-0040: #059669; /* source: #059669 | uses: 40 */
@@ -59,24 +59,24 @@
   --styler-color-0044: #fb7185; /* source: #fb7185 | uses: 35 */
   --styler-color-0045: rgba(15,23,42,.72); /* source: rgba(15,23,42,.72) | uses: 35 */
   --styler-color-0046: rgba(232,168,56,.5); /* source: rgba(232,168,56,.5) | uses: 35 */
-  --styler-color-0047: #162235; /* source: #162235 | uses: 31 */
-  --styler-color-0048: #b8871e; /* source: #b8871e | uses: 31 */
-  --styler-color-0049: rgba(255,255,255,.25); /* source: rgba(255,255,255,.25) | uses: 31 */
-  --styler-color-0050: #475569; /* source: #475569 | uses: 29 */
+  --styler-color-0047: #b8871e; /* source: #b8871e | uses: 31 */
+  --styler-color-0048: rgba(255,255,255,.25); /* source: rgba(255,255,255,.25) | uses: 31 */
+  --styler-color-0049: #162235; /* source: #162235 | uses: 30 */
+  --styler-color-0050: #475569; /* source: #475569 | uses: 28 */
   --styler-color-0051: rgba(232,168,56,.35); /* source: rgba(232,168,56,.35) | uses: 27 */
-  --styler-color-0052: rgba(247,199,86,.35); /* source: rgba(247,199,86,.35) | uses: 27 */
-  --styler-color-0053: rgba(0,0,0,.12); /* source: rgba(0,0,0,.12) | uses: 26 */
-  --styler-color-0054: rgba(0,0,0,.5); /* source: rgba(0,0,0,.5) | uses: 26 */
+  --styler-color-0052: rgba(0,0,0,.12); /* source: rgba(0,0,0,.12) | uses: 26 */
+  --styler-color-0053: rgba(0,0,0,.5); /* source: rgba(0,0,0,.5) | uses: 26 */
+  --styler-color-0054: rgba(247,199,86,.35); /* source: rgba(247,199,86,.35) | uses: 26 */
   --styler-color-0055: #b91c1c; /* source: #b91c1c | uses: 25 */
   --styler-color-0056: rgba(247,199,86,.25); /* source: rgba(247,199,86,.25) | uses: 25 */
   --styler-color-0057: currentcolor; /* source: currentcolor | uses: 25 */
   --styler-color-0058: #f97316; /* source: #f97316 | uses: 24 */
   --styler-color-0059: #0c1445; /* source: #0c1445 | uses: 23 */
   --styler-color-0060: #fbbf24; /* source: #fbbf24 | uses: 23 */
-  --styler-color-0061: rgba(0,0,0,.18); /* source: rgba(0,0,0,.18) | uses: 23 */
-  --styler-color-0062: rgba(0,0,0,.25); /* source: rgba(0,0,0,.25) | uses: 23 */
-  --styler-color-0063: rgba(15,23,42,.18); /* source: rgba(15,23,42,.18) | uses: 23 */
-  --styler-color-0064: rgba(220,38,38,.12); /* source: rgba(220,38,38,.12) | uses: 23 */
+  --styler-color-0061: rgba(15,23,42,.18); /* source: rgba(15,23,42,.18) | uses: 23 */
+  --styler-color-0062: rgba(220,38,38,.12); /* source: rgba(220,38,38,.12) | uses: 23 */
+  --styler-color-0063: rgba(0,0,0,.18); /* source: rgba(0,0,0,.18) | uses: 22 */
+  --styler-color-0064: rgba(0,0,0,.25); /* source: rgba(0,0,0,.25) | uses: 22 */
   --styler-color-0065: rgba(124,58,237,.25); /* source: rgba(124,58,237,.25) | uses: 22 */
   --styler-color-0066: rgba(124,58,237,.18); /* source: rgba(124,58,237,.18) | uses: 21 */
   --styler-color-0067: #16a34a; /* source: #16a34a | uses: 19 */

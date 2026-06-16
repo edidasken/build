@@ -33,7 +33,7 @@ const PRECACHE_URLS = [
 
   /* ── The Flock Herald (primary app) ──────────────────────────────────── */
   'app.flocknews/flocknews.html',
-  'app.flocknews/flocknews.css',
+  'Styles/flocknews.css',
 
   /* ── GROW public PWA (baked into index.html) ─────────────────────────── */
   'Scripts/grow_public.js',

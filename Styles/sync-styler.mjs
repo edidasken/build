@@ -23,6 +23,7 @@ function targetCssFiles() {
     .filter((file) => {
       const rel = path.relative(covenantDir, file).replaceAll(path.sep, "/");
       return rel !== "Styles/styler.css" &&
+        !/^Styles\/.+-styler\.css$/.test(rel) &&
         !rel.includes("app.grow.bak/") &&
         !rel.includes("app.multiply.bak/");
     })
