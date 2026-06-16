@@ -80,6 +80,177 @@
       background: var(--bg, #f7f8fb);
     }
 
+    body.ws-pin-locked {
+      overflow: hidden;
+    }
+
+    body.ws-pin-locked #ws-header,
+    body.ws-pin-locked .ws-shell {
+      pointer-events: none;
+      user-select: none;
+      filter: blur(10px);
+    }
+
+    .ws-pin-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(8, 13, 33, 0.96) 0%, rgba(15, 23, 42, 0.82) 48%, rgba(15, 23, 42, 0.58) 100%),
+        linear-gradient(0deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.20) 45%),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .ws-pin-gate[hidden] {
+      display: none;
+    }
+
+    .ws-pin-card {
+      position: relative;
+      width: min(420px, calc(100vw - 32px));
+      max-width: calc(100vw - 32px);
+      min-width: 0;
+      overflow: hidden;
+      padding: 36px 32px 28px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), transparent 42%),
+        linear-gradient(135deg, rgba(247,199,86,0.18), transparent 36%),
+        rgba(15,23,42,0.74);
+      box-shadow: 0 32px 90px rgba(0,0,0,0.42), inset 0 0 0 1px rgba(255,255,255,0.04);
+      animation: ws-pin-rise 280ms ease both;
+    }
+
+    .ws-pin-card::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+
+    .ws-pin-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    @keyframes ws-pin-rise {
+      from { opacity: 0; transform: translateY(18px) scale(0.97); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .ws-pin-brand {
+      display: block;
+      margin: 0 0 26px;
+      text-align: center;
+    }
+
+    .ws-pin-title {
+      margin: 0;
+      color: #ffffff;
+      font: 700 2rem/1.12 var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
+      letter-spacing: 0;
+    }
+
+    .ws-pin-sub {
+      margin: 6px 0 0;
+      color: rgba(255,255,255,0.76);
+      font: italic 0.9rem var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
+    }
+
+    .ws-pin-field {
+      margin: 0 0 14px;
+    }
+
+    .ws-pin-label {
+      display: block;
+      margin: 0 0 7px;
+      color: rgba(255,255,255,0.72);
+      font: 700 0.78rem/1 var(--font-ui, "Plus Jakarta Sans", sans-serif);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .ws-pin-input {
+      width: 100%;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      color: #fff;
+      font: 1rem var(--font-ui, "Plus Jakarta Sans", sans-serif);
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+      -webkit-appearance: none;
+    }
+
+    .ws-pin-input::placeholder {
+      color: rgba(255,255,255,0.28);
+    }
+
+    .ws-pin-input:focus {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(247,199,86,0.82);
+      box-shadow: 0 0 0 3px rgba(247,199,86,0.18);
+    }
+
+    .ws-pin-submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 48px;
+      padding: 13px 20px;
+      background: linear-gradient(135deg, #f7c756 0%, #e97916 100%);
+      border: 0;
+      border-radius: 9px;
+      color: #080a1c;
+      cursor: pointer;
+      font: 800 0.95rem var(--font-ui, "Plus Jakarta Sans", sans-serif);
+      box-shadow: 0 12px 30px rgba(232,168,56,0.25);
+      transition: opacity 150ms ease, transform 120ms ease, box-shadow 150ms ease;
+    }
+
+    .ws-pin-submit:hover {
+      opacity: 0.94;
+      box-shadow: 0 14px 34px rgba(232,168,56,0.30);
+    }
+
+    .ws-pin-submit:active {
+      transform: scale(0.98);
+    }
+
+    .ws-pin-error {
+      display: none;
+      margin: 14px 0 -24px;
+      min-height: 1.2em;
+      color: #fca5a5;
+      font: 0.83rem var(--font-ui, "Plus Jakarta Sans", sans-serif);
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .ws-pin-error.visible {
+      display: block;
+    }
+
+    .ws-pin-note {
+      margin: 22px 8px 0;
+      color: rgba(255,255,255,0.78);
+      font: italic 0.95rem/1.45 var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
+      text-align: center;
+    }
+
     /* ── Main scroll container ──────────────────────────────────── */
     .ws-shell {
       flex: 1; min-height: 0;
@@ -471,7 +642,39 @@
     }
   </style>
 </head>
-<body>
+<body class="ws-pin-locked">
+
+  <div class="ws-pin-gate" id="ws-pin-gate" role="dialog" aria-modal="true" aria-labelledby="ws-pin-title">
+    <form class="ws-pin-card" id="ws-pin-form" autocomplete="off" novalidate>
+      <div class="ws-pin-brand">
+        <h1 class="ws-pin-title" id="ws-pin-title">The Wellspring</h1>
+        <p class="ws-pin-sub">Protected offline access</p>
+      </div>
+
+      <div class="ws-pin-field">
+        <label class="ws-pin-label" for="ws-page-pin">Access PIN</label>
+        <input
+          class="ws-pin-input"
+          id="ws-page-pin"
+          name="pin"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          maxlength="11"
+          pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}"
+          placeholder="482-19-0634"
+          aria-describedby="ws-pin-error"
+          required
+        >
+      </div>
+
+      <div class="ws-pin-error" id="ws-pin-error" aria-live="polite"></div>
+
+      <button class="ws-pin-submit" type="submit">Unlock Wellspring</button>
+
+      <p class="ws-pin-note">"A spring of water welling up to eternal life." — John 4:14</p>
+    </form>
+  </div>
 
   <!-- Unity header (mounted by script below) -->
   <header class="unity-header" id="ws-header"></header>
@@ -805,6 +1008,97 @@
 
   <!-- Unity footer removed -->
 
+  <script>
+    (function () {
+      var SESSION_KEY = 'wellspring.page.pin.unlocked';
+      var REQUIRED_PIN_DIGITS = '777777777';
+      var gate = document.getElementById('ws-pin-gate');
+      var form = document.getElementById('ws-pin-form');
+      var input = document.getElementById('ws-page-pin');
+      var error = document.getElementById('ws-pin-error');
+
+      function setAppLocked(locked) {
+        document.body.classList.toggle('ws-pin-locked', locked);
+        document.querySelectorAll('#ws-header, .ws-shell').forEach(function (el) {
+          if ('inert' in el) el.inert = locked;
+          el.setAttribute('aria-hidden', locked ? 'true' : 'false');
+        });
+      }
+
+      function unlock() {
+        try { sessionStorage.setItem(SESSION_KEY, '1'); } catch (_) {}
+        setAppLocked(false);
+        if (gate) gate.hidden = true;
+      }
+
+      function showError(message) {
+        if (!error) return;
+        error.textContent = message;
+        error.classList.add('visible');
+      }
+
+      function clearError() {
+        if (!error) return;
+        error.textContent = '';
+        error.classList.remove('visible');
+      }
+
+      function normalizePin(value) {
+        return String(value || '').replace(/\D/g, '');
+      }
+
+      function formatPin(value) {
+        var digits = normalizePin(value).slice(0, 9);
+        if (digits.length <= 3) return digits;
+        if (digits.length <= 5) return digits.slice(0, 3) + '-' + digits.slice(3);
+        return digits.slice(0, 3) + '-' + digits.slice(3, 5) + '-' + digits.slice(5);
+      }
+
+      function checkPin(auto) {
+        var digits = normalizePin(input && input.value);
+        if (digits === REQUIRED_PIN_DIGITS) {
+          unlock();
+          return true;
+        }
+        if (!auto || digits.length >= REQUIRED_PIN_DIGITS.length) {
+          showError('That PIN did not match. Please try again.');
+          if (input) {
+            input.select();
+            input.focus();
+          }
+        }
+        return false;
+      }
+
+      try {
+        if (sessionStorage.getItem(SESSION_KEY) === '1') {
+          unlock();
+          return;
+        }
+      } catch (_) {}
+
+      setAppLocked(true);
+      setTimeout(function () { if (input) input.focus(); }, 60);
+
+      if (input) {
+        input.addEventListener('input', function () {
+          var formatted = formatPin(input.value);
+          input.value = formatted;
+          clearError();
+          if (normalizePin(formatted).length >= REQUIRED_PIN_DIGITS.length) {
+            checkPin(true);
+          }
+        });
+      }
+
+      if (!form) return;
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        clearError();
+        checkPin(false);
+      });
+    })();
+  </script>
 
   <!-- ── Firebase SDK (for Firestore export feature) ────────────────────── -->
   <script>

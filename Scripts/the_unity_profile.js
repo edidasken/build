@@ -18,6 +18,7 @@ let _sheet      = null;   // single DOM node, persists for the page lifetime
 let _opts       = {};     // last openUnityProfile() options (user, callbacks…)
 let _activeView = 'main';
 const HERALD_ICON_SRC = new URL('../Images/icon-herald.svg', import.meta.url).href;
+const DEFAULT_SIGNIN_HREF = new URL('../app.flockos/', import.meta.url).href;
 
 // ── Menu item registry ─────────────────────────────────────────────────────────
 const ITEMS = [
@@ -31,6 +32,12 @@ const ITEMS = [
   { id: 'journal',       label: 'Journal Logs',      icon: 'book',   subview: 'journal'  },
   { divider: true },
   { id: 'signout',       label: 'Sign Out',          icon: 'out',    danger: true        },
+];
+
+const SIGNED_OUT_ITEMS = [
+  { id: 'signin',       label: 'Sign In',       icon: 'user' },
+  { id: 'settings',     label: 'Settings',      icon: 'gear',   subview: 'settings' },
+  { id: 'switch-church', label: 'Switch Church', icon: 'church', href: '../' },
 ];
 
 // ── SVG icon library ──────────────────────────────────────────────────────────
@@ -183,11 +190,7 @@ function _populateMainHeader() {
 function _renderMainList() {
   if (!_sheet) return;
   const signedIn = !!(_opts.user && _opts.user.email);
-  const items = signedIn ? ITEMS : [
-    { id: 'signin',       label: 'Sign In',       icon: 'user' },
-    { id: 'settings',     label: 'Settings',      icon: 'gear',   subview: 'settings' },
-    { id: 'switch-church', label: 'Switch Church', icon: 'church', href: '../' },
-  ];
+  const items = signedIn ? ITEMS : SIGNED_OUT_ITEMS;
   _sheet.querySelector('.unity-pp-list').innerHTML = items.map(it => it.divider
     ? `<div class="unity-pp-divider"></div>`
     : `<button class="unity-pp-item${it.danger ? ' unity-pp-item--danger' : ''}" role="menuitem" data-id="${it.id}">
@@ -203,7 +206,8 @@ function _wireMainItems() {
     const btn = e.target.closest('.unity-pp-item');
     if (!btn) return;
     const id   = btn.dataset.id;
-    const item = ITEMS.find(it => it.id === id);
+    const items = (_opts.user && _opts.user.email) ? ITEMS : SIGNED_OUT_ITEMS;
+    const item = items.find(it => it.id === id);
     if (!item) return;
 
     if (id === 'signout') {
@@ -215,8 +219,7 @@ function _wireMainItems() {
     }
     if (id === 'signin') {
       closeUnityProfile();
-      if (_opts.signInHref) location.assign(_opts.signInHref);
-      else _toast('Sign-in not configured for this app.');
+      location.assign(_opts.signInHref || DEFAULT_SIGNIN_HREF);
       return;
     }
     if (item.href) {
