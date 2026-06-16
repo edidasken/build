@@ -1,6 +1,6 @@
 {
-  "name": "{{CHURCH_NAME}}",
-  "short_name": "{{CHURCH_NAME}}",
+  "name": "Herald",
+  "short_name": "Herald",
   "description": "Church management, discipleship, and pastoral care tools. Free forever. 210 countries. 256-bit encrypted.",
   "start_url": "./index.html",
   "id": "./index.html",
