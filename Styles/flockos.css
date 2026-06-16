@@ -2014,6 +2014,12 @@ body.veil-app .modal-card {
 }
 
 body.veil-app .life-sheet-drag {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+  margin: 0;
+  transform: translateX(-50%);
   background: rgba(247,199,86,.95);
 }
 
@@ -2025,6 +2031,10 @@ body.veil-app .modal-header {
     linear-gradient(90deg, rgba(15,23,42,.95), rgba(15,23,42,.95));
   color: #f8fafc;
   border-bottom-color: rgba(247,199,86,.18);
+}
+
+body.veil-app .life-sheet-hd {
+  padding-top: 28px;
 }
 
 body.veil-app .life-sheet-hd-name,
