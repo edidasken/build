@@ -234,7 +234,17 @@ function _mountHeader() {
     ],
     extras: [
       {
-        html: `<div id="fd-new-btn-wrap" style="position:relative;margin-left:48px"></div>`,
+        aria: 'Create new document',
+        title: 'Create new document',
+        html: `
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span class="fd-new-label">New</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        `,
       },
     ],
   });
@@ -244,62 +254,57 @@ function _mountHeader() {
 }
 
 function _mountNewButton() {
-  const wrap = document.getElementById('fd-new-btn-wrap');
-  if (!wrap) return;
+  const header = document.getElementById('fd-topbar');
+  const btn = header?.querySelector('.unity-extra');
+  if (!header || !btn) return;
 
-  const btnHtml = `
-    <button id="fd-new-btn" style="display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;background:#e8a838;color:#0c1445;font:600 0.82rem 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background .15s;border:none;white-space:nowrap;box-shadow:0 2px 8px rgba(232,168,56,0.25)" title="Create new document">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="15" height="15" style="flex-shrink:0">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+  btn.id = 'fd-new-btn';
+  btn.classList.add('fd-new-btn');
+  btn.setAttribute('aria-haspopup', 'menu');
+  btn.setAttribute('aria-expanded', 'false');
+
+  const menu = document.createElement('div');
+  menu.id = 'fd-new-menu';
+  menu.className = 'fd-new-menu';
+  menu.setAttribute('role', 'menu');
+  menu.innerHTML = `
+    <button type="button" class="fd-new-menu-item" data-doc-type="document" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
       </svg>
-      <span style="white-space:nowrap">New</span>
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="12" height="12" style="flex-shrink:0;margin-left:2px">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-      </svg>
+      <span><strong>Document</strong><small>Word processor</small></span>
     </button>
-    <div id="fd-new-menu" style="display:none;position:absolute;top:calc(100% + 4px);right:0;background:white;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.15);min-width:200px;z-index:1000;overflow:hidden">
-      <button onclick="FlockDocs.createNewDocument('document');document.getElementById('fd-new-menu').style.display='none'" style="display:flex;align-items:center;gap:12px;padding:12px 16px;width:100%;background:white;border:none;cursor:pointer;font:400 0.875rem 'Plus Jakarta Sans',sans-serif;color:#0f1735;text-align:left;transition:background .15s" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;color:#e8a838">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        <div>
-          <div style="font-weight:600;margin-bottom:2px">Document</div>
-          <div style="font-size:0.75rem;color:#64748b">Word processor</div>
-        </div>
-      </button>
-      <button onclick="FlockDocs.createNewSpreadsheet();document.getElementById('fd-new-menu').style.display='none'" style="display:flex;align-items:center;gap:12px;padding:12px 16px;width:100%;background:white;border:none;cursor:pointer;font:400 0.875rem 'Plus Jakarta Sans',sans-serif;color:#0f1735;text-align:left;transition:background .15s" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;color:#10b981">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-        </svg>
-        <div>
-          <div style="font-weight:600;margin-bottom:2px">Spreadsheet</div>
-          <div style="font-size:0.75rem;color:#64748b">Tables & calculations</div>
-        </div>
-      </button>
-    </div>
+    <button type="button" class="fd-new-menu-item" data-doc-type="spreadsheet" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+      </svg>
+      <span><strong>Spreadsheet</strong><small>Tables & calculations</small></span>
+    </button>
   `;
-  
-  wrap.innerHTML = btnHtml;
-  
-  // Toggle menu on button click
-  const btn = document.getElementById('fd-new-btn');
-  const menu = document.getElementById('fd-new-menu');
-  
+  header.appendChild(menu);
+
+  const setOpen = (open) => {
+    menu.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+
   if (btn && menu) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+      setOpen(!menu.classList.contains('is-open'));
     });
-    
-    // Hover effects
-    btn.addEventListener('mouseover', () => btn.style.background = '#f0b845');
-    btn.addEventListener('mouseout', () => btn.style.background = '#e8a838');
-    
+
+    menu.addEventListener('click', (e) => {
+      const item = e.target.closest('[data-doc-type]');
+      if (!item) return;
+      if (item.dataset.docType === 'spreadsheet') createNewSpreadsheet();
+      else createNewDocument('document');
+      setOpen(false);
+    });
+
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (!wrap.contains(e.target)) {
-        menu.style.display = 'none';
-      }
+      if (!header.contains(e.target)) setOpen(false);
     });
   }
 }
