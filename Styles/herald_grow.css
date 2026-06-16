@@ -23,6 +23,12 @@ body.hg-grow {
   overflow-x: hidden;
 }
 
+body.herald-shell {
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 body.hg-grow .fn-sw-icon img,
 body.hg-grow .fn-side-icon img {
   width: 20px;
@@ -871,9 +877,12 @@ html[data-fn-sidebar="closed"] .hg-page > .hg-footer {
 /* ─── Migrated from app.embeds/embed-grow.html ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body {
-  height: 100%; margin: 0; padding: 0;
-  background: var(--bg); color: var(--ink);
+body.grow-embed {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
   overflow: hidden;
   overscroll-behavior: none;
 }
