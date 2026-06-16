@@ -38,3 +38,1686 @@
   background: linear-gradient(135deg, var(--chat-accent-deep), var(--chat-accent));
   color: #f8fafc;
 }
+
+
+/* ─── Migrated from new_covenant.css: FlockChat core app styles ───────────────────────────── */
+/* FlockChat CSS Themes */
+/* ═══════════════════════════════════════════════════════════════════════
+ *  the_word.css  —  FlockChat Styles (America theme)
+ *  "The Word" = messaging that connects the Flock.
+ *  Self-contained — all variables, layout & components defined here.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Reset (FlockChat-scoped) ─────────────────────────────────────────────
+   These global element rules used to be unscoped, which broke scrolling and
+   overrode themes on FlockOS / ATOG / About pages. They are now confined to
+   <body class="flockchat-app">. All FlockChat HTML must include that class. */
+body.flockchat-app,
+body.flockchat-app *,
+body.flockchat-app *::before,
+body.flockchat-app *::after { box-sizing: border-box; }
+/* Margin/padding reset (matches original FlockChat the_word.css * { margin:0; padding:0 }
+   reset). Uses :where() so specificity stays at 0,0,0 and any class-set
+   margin/padding (e.g. .auth-logo margin-bottom, .auth-card padding) wins. */
+:where(body.flockchat-app *,
+       body.flockchat-app *::before,
+       body.flockchat-app *::after) { margin: 0; padding: 0; }
+body.flockchat-app {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.5;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  overflow-x: hidden;
+}
+body.flockchat-app.auth-open {
+  overflow: auto;
+  height: auto;
+}
+/* FlockChat-only tokens + America-theme fallbacks.
+   Ensures correct first-paint colors before fine_linen.js applies data-theme.
+   Scoped so they don't override theme tokens on FlockOS/ATOG pages. */
+body.flockchat-app {
+  --bg:            #f7f8fb;
+  --bg-raised:     #ffffff;
+  --bg-sunken:     #edf0f6;
+  --bg-hover:      #f0f3f9;
+  --bg-active:     rgba(60,59,110,0.12);
+  --ink:           #1b264f;
+  --ink-muted:     #4a5578;
+  --ink-faint:     #8890a5;
+  --accent:        #3c3b6e;
+  --accent-soft:   rgba(60,59,110,0.12);
+  --gold:          #c5a44e;
+  --gold-soft:     rgba(197,164,78,0.12);
+  --danger:        #b22234;
+  --danger-soft:   rgba(178,34,52,0.10);
+  --success:       #3d7a4f;
+  --line:          #d4d9e6;
+  --line-strong:   #bec5d6;
+  --shadow-sm:     0 1px 3px rgba(27,38,79,0.06);
+  --shadow-md:     0 4px 12px rgba(27,38,79,0.06);
+  --shadow-lg:     0 8px 24px rgba(27,38,79,0.08);
+  --sidebar-w:     240px;
+  --topbar-h:      52px;
+  --online: #2ea043;
+  --away:   #d29922;
+  --dnd:    #cf222e;
+}
+body.flockchat-app button { font-family: inherit; cursor: pointer; }
+body.flockchat-app input,
+body.flockchat-app textarea { font-family: inherit; }
+body.flockchat-app a { color: var(--accent); text-decoration: none; }
+body.flockchat-app a:hover { text-decoration: underline; }
+body.flockchat-app ::-webkit-scrollbar { width: 5px; height: 5px; }
+body.flockchat-app ::-webkit-scrollbar-track { background: transparent; }
+body.flockchat-app ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+/* ── Auth Screen ──────────────────────────────────────────────────────── */
+#auth-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  min-height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 40px 16px max(40px, env(safe-area-inset-bottom));
+  background: var(--bg);
+  box-sizing: border-box;
+}
+@media (max-width: 640px) {
+  /* Mobile: top-align so the form is reachable when the keyboard
+     opens; add generous bottom padding so the password field can
+     scroll above the on-screen keyboard. */
+  #auth-screen {
+    align-items: flex-start;
+    padding: 24px 16px max(160px, env(safe-area-inset-bottom) + 120px);
+  }
+}
+.auth-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 40px 36px;
+  width: 380px;
+  max-width: 100%;
+  box-shadow: var(--shadow-lg);
+}
+.auth-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.auth-logo h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+}
+.auth-logo p {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+.auth-field {
+  margin-bottom: 14px;
+}
+.auth-field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.auth-field input {
+  width: 100%;
+  background: var(--bg-sunken);
+  border: 1.5px solid var(--line-strong);
+  box-shadow: 0 1px 2px rgba(27,38,79,0.03);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--ink);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.auth-field input:focus { border-color: var(--accent); }
+.auth-field input::placeholder {
+  color: var(--ink-muted);
+  opacity: 1;
+}
+.auth-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: opacity 0.2s;
+}
+.auth-btn:hover { opacity: 0.88; }
+.auth-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.auth-toggle {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+.auth-toggle a { color: var(--accent); cursor: pointer; }
+.auth-suite-link {
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.auth-suite-link:hover { color: var(--accent); text-decoration: none; }
+.auth-error {
+  background: var(--danger-soft);
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  color: var(--danger);
+  margin-bottom: 14px;
+  display: none;
+}
+
+/* ── App Shell ────────────────────────────────────────────────────────── */
+#app {
+  display: none;
+  height: 100vh;
+  height: 100dvh;
+  flex-direction: column;
+}
+
+/* ── Top Bar ──────────────────────────────────────────────────────────── */
+.topbar {
+  height: var(--topbar-h);
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 50;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  gap: 0;
+}
+.topbar-brand .wordmark {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.topbar-brand .build-tag {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 400;
+  margin-left: 8px;
+}
+#btn-sidebar-toggle {
+  display: none;
+}
+.topbar-context {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-channel-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.topbar-channel-name .sigil {
+  color: var(--ink-muted);
+  margin-right: 2px;
+}
+.topbar-channel-desc {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  border-left: 1px solid var(--line);
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 320px;
+}
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.topbar-icon-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--ink-muted);
+  padding: 6px 10px;
+  font-size: 0.88rem;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.topbar-icon-btn:hover {
+  background: var(--bg-hover);
+  color: var(--ink);
+  border-color: var(--line);
+}
+.topbar-icon-btn.active { color: var(--accent); }
+.suite-link {
+  color: var(--ink-muted);
+  font-size: 0.8rem;
+  text-decoration: none;
+  padding: 5px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.suite-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-hover);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 4px 12px 4px 6px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.user-pill:hover { border-color: var(--accent); }
+.user-pill .avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+.user-pill .uname { font-size: 0.82rem; font-weight: 600; color: var(--ink); }
+.presence-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--online);
+  border: 2px solid var(--bg-raised);
+  margin-left: -4px;
+  margin-bottom: -6px;
+  position: relative;
+  top: 8px;
+  left: -2px;
+}
+
+/* ── Body Layout ──────────────────────────────────────────────────────── */
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-raised);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sidebar-search {
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.sidebar-search input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 7px 11px;
+  font-size: 0.86rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.sidebar-search input::placeholder { color: var(--ink-faint); }
+.sidebar-search input:focus { border-color: var(--accent); }
+.sidebar-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 12px;
+}
+.sidebar-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 12px 4px;
+}
+.sidebar-section-header .label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.sidebar-add-btn {
+  background: none;
+  border: none;
+  color: var(--ink-faint);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 2px;
+  transition: color 0.15s;
+}
+.sidebar-add-btn:hover { color: var(--accent); }
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 6px;
+  margin: 1px 6px;
+  cursor: pointer;
+  transition: background 0.12s;
+  gap: 6px;
+  position: relative;
+}
+.sidebar-item:hover { background: var(--bg-hover); }
+.sidebar-item.active { background: var(--bg-active); }
+.sidebar-item .sigil {
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.sidebar-item .ch-name {
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-item.active .ch-name { color: var(--ink); font-weight: 500; }
+.sidebar-item .unread-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 9px;
+  text-align: center;
+  line-height: 17px;
+  padding: 0 4px;
+  display: none;
+}
+.sidebar-item.has-unread .unread-badge { display: block; }
+.sidebar-item.has-unread .ch-name { color: var(--ink); font-weight: 600; }
+.dm-presence {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  flex-shrink: 0;
+  border: 2px solid var(--bg-raised);
+}
+.dm-presence.online  { background: var(--online); }
+.dm-presence.away    { background: var(--away); }
+.dm-presence.dnd     { background: var(--dnd); }
+
+/* ── Message Thread ────────────────────────────────────────────────────── */
+.thread-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0 8px;
+  scroll-behavior: smooth;
+}
+.day-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  margin: 4px 0;
+}
+.day-divider .line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.day-divider .label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.msg-row {
+  display: flex;
+  gap: 10px;
+  padding: 3px 20px;
+  position: relative;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+.msg-row:hover { background: var(--bg-hover); }
+.msg-row:hover .msg-actions { opacity: 1; }
+.msg-row.grouped { padding-top: 1px; }
+.msg-row.grouped .msg-avatar { visibility: hidden; }
+.msg-row.grouped .msg-meta { display: none; }
+.msg-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--bg-active);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+  user-select: none;
+}
+.msg-body { flex: 1; min-width: 0; }
+.msg-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.msg-author {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.msg-time {
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+}
+.msg-text {
+  font-size: 0.94rem;
+  color: var(--ink);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+.msg-text .mention {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.msg-text .mention.self {
+  color: var(--gold);
+  background: var(--gold-soft);
+}
+.msg-edited {
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  margin-left: 4px;
+}
+.msg-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 4px;
+}
+.reaction-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-active);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.reaction-chip:hover,
+.reaction-chip.reacted { border-color: var(--accent); background: var(--accent-soft); }
+.reaction-chip .emoji { font-size: 0.9rem; }
+.reaction-chip .count { color: var(--ink-muted); font-size: 0.75rem; font-weight: 600; }
+.msg-actions {
+  position: absolute;
+  top: -14px;
+  right: 20px;
+  display: flex;
+  gap: 2px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+.msg-action-btn {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  font-size: 0.88rem;
+  padding: 4px 7px;
+  border-radius: 5px;
+  transition: background 0.12s, color 0.12s;
+}
+.msg-action-btn:hover { background: var(--bg-hover); color: var(--ink); }
+
+/* ── Typing Indicator ──────────────────────────────────────────────────── */
+.typing-indicator {
+  padding: 0 20px 6px;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  min-height: 22px;
+}
+.typing-dots {
+  display: inline-flex;
+  gap: 3px;
+  vertical-align: middle;
+}
+.typing-dots span {
+  width: 5px; height: 5px;
+  background: var(--ink-muted);
+  border-radius: 50%;
+  animation: typingBounce 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* ── Composer ──────────────────────────────────────────────────────────── */
+.composer {
+  border-top: 1px solid var(--line);
+  padding: 10px 16px 12px;
+  background: var(--bg);
+}
+.composer-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 10px;
+  transition: border-color 0.2s;
+}
+.composer-inner:focus-within { border-color: var(--accent); }
+.composer-toolbar {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+.composer-tool {
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  font-size: 1rem;
+  padding: 4px 6px;
+  border-radius: 5px;
+  transition: background 0.12s, color 0.12s;
+}
+.composer-tool:hover { background: var(--bg-hover); color: var(--ink); }
+textarea#composer-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-size: 0.88rem;
+  resize: none;
+  outline: none;
+  min-height: 20px;
+  max-height: 140px;
+  line-height: 1.5;
+  padding: 2px 4px;
+}
+textarea#composer-input::placeholder { color: var(--ink-faint); }
+.send-btn {
+  background: var(--accent, #3c3b6e);
+  color: var(--ink-inverse, #fff);
+  border: none;
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+.send-btn:hover { opacity: 0.85; }
+.send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Details Pane ──────────────────────────────────────────────────────── */
+.details-pane {
+  width: var(--details-w);
+  background: var(--bg-raised);
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width 0.2s;
+}
+.details-pane.collapsed { width: 0; border-left: none; }
+.details-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.details-close {
+  background: none; border: none;
+  color: var(--ink-muted); font-size: 1rem;
+  padding: 2px 4px; border-radius: 4px;
+  transition: color 0.15s;
+}
+.details-close:hover { color: var(--ink); }
+.details-scroll {
+  flex: 1; overflow-y: auto; padding: 12px;
+}
+.details-section {
+  margin-bottom: 20px;
+}
+.details-section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+}
+.member-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--bg-active);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.member-name {
+  font-size: 0.83rem;
+  color: var(--ink);
+}
+.member-role {
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  background: var(--bg-active);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: auto;
+  text-transform: capitalize;
+}
+
+/* ── Empty State ───────────────────────────────────────────────────────── */
+.empty-thread {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--ink-faint);
+  padding: 40px;
+  text-align: center;
+}
+.empty-thread .icon { font-size: 3rem; }
+.empty-thread h3 { font-size: 1rem; color: var(--ink-muted); }
+.empty-thread p { font-size: 0.82rem; }
+
+/* ── No Channel Selected ────────────────────────────────────────────────── */
+#no-channel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--ink-faint);
+}
+#no-channel .icon { font-size: 3.5rem; }
+#no-channel h2 { font-size: 1.1rem; color: var(--ink-muted); }
+#no-channel p { font-size: 0.83rem; }
+
+/* ── Modals ────────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(27,38,79,0.35);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-backdrop.open { display: flex; }
+.modal-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 28px 28px 24px;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  box-shadow: var(--shadow-lg);
+}
+.modal-card h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+.modal-field {
+  margin-bottom: 12px;
+}
+.modal-field label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin-bottom: 5px;
+}
+.modal-field input,
+.modal-field textarea,
+.modal-field select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 9px 12px;
+  color: var(--ink);
+  font-size: 0.87rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-field input:focus,
+.modal-field textarea:focus { border-color: var(--accent); }
+.modal-field select { cursor: pointer; }
+.modal-field select option { background: var(--bg-raised); }
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+.user-mgmt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.user-mgmt-row:last-child { border-bottom: none; }
+.user-mgmt-info { flex: 1; min-width: 0; }
+.user-mgmt-name { font-weight: 600; font-size: 0.88rem; }
+.user-mgmt-email { font-size: 0.78rem; color: var(--ink-muted); }
+.user-mgmt-role { font-size: 0.8rem; padding: 4px 8px; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.user-mgmt-remove { background: none; border: none; color: var(--danger); font-size: 1rem;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+.user-mgmt-remove:hover { background: var(--danger-soft); }
+.btn-secondary {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink-muted);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--ink-muted); color: var(--ink); }
+.btn-primary {
+  background: var(--accent);
+  border: none;
+  border-radius: 7px;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.85; }
+
+/* ── Emoji Picker ──────────────────────────────────────────────────────── */
+#emoji-picker {
+  display: none;
+  position: fixed;
+  z-index: 300;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: var(--shadow-md);
+  width: 260px;
+}
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+}
+.emoji-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.emoji-btn:hover { background: var(--bg-hover); }
+
+/* ── Toast Notifications ────────────────────────────────────────────────── */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.83rem;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  animation: slideInToast 0.25s ease;
+  max-width: 300px;
+}
+.toast.success { border-color: var(--success); color: var(--success); }
+.toast.error   { border-color: var(--danger);  color: var(--danger); }
+@keyframes slideInToast {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── User Menu ──────────────────────────────────────────────────────────── */
+.user-menu-item {
+  display: block; width: 100%;
+  background: none; border: none;
+  color: var(--ink); font-size: 0.84rem;
+  text-align: left; padding: 7px 12px;
+  border-radius: 6px; cursor: pointer;
+  transition: background 0.12s;
+}
+.user-menu-item:hover { background: var(--bg-hover); }
+
+/* ── Admin User Table ───────────────────────────────────────────────────── */
+.admin-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-row:last-child { border-bottom: none; }
+.admin-row .member-avatar { flex-shrink: 0; }
+.admin-row .admin-info { flex: 1; min-width: 0; }
+.admin-row .admin-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.admin-row .admin-email { font-size: 0.75rem; color: var(--ink-muted); }
+.admin-row select {
+  background: var(--bg); border: 1px solid var(--line);
+  border-radius: 6px; color: var(--ink);
+  font-size: 0.78rem; padding: 4px 8px; cursor: pointer;
+  outline: none;
+}
+.admin-row select option { background: var(--bg-raised); }
+.admin-row .btn-remove {
+  background: none; border: 1px solid transparent;
+  border-radius: 6px; color: var(--ink-faint);
+  font-size: 0.8rem; padding: 4px 8px; cursor: pointer;
+  transition: all 0.15s; white-space: nowrap;
+}
+.admin-row .btn-remove:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ── Admin Tabs ─────────────────────────────────────────────────────────── */
+.admin-tab {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--ink-muted); font-size: 0.85rem; font-weight: 600;
+  padding: 6px 14px; cursor: pointer; transition: all 0.15s;
+}
+.admin-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.admin-tab:hover:not(.active) { color: var(--ink); }
+
+/* ── Unread dot on sidebar ──────────────────────────────────────────────── */
+.sidebar-item.has-unread .ch-name { font-weight: 700; color: var(--ink); }
+
+/* ── Join banner (non-member public channels) ───────────────────────────── */
+.join-banner {
+  background: var(--bg-raised);
+  border-top: 1px solid var(--line);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.join-banner p { flex: 1; font-size: 0.85rem; color: var(--ink-muted); }
+.join-btn {
+  background: var(--accent); border: none; border-radius: 7px;
+  color: #fff; font-size: 0.85rem; font-weight: 600;
+  padding: 8px 18px; cursor: pointer; transition: opacity 0.15s; white-space: nowrap;
+}
+.join-btn:hover { opacity: 0.85; }
+
+/* ── Spinner ────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Loading overlay ────────────────────────────────────────────────────── */
+#loading-overlay {
+  display: flex;
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+}
+#loading-overlay .wordmark {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+#loading-overlay p { font-size: 0.83rem; color: var(--ink-muted); }
+
+/* Hamburger hidden by default; shown by mobile @media */
+#btn-sidebar-toggle { display: none; }
+
+/* ── FlockChat Polish ────────────────────────────────────────────────────
+   Goal: a refined, professional chat surface. One quiet bubble style,
+   clean typography, restrained color, deliberate use of accent only
+   on identity (wordmark, active channel, mentions, focus).
+   Inspired by Slack / Linear / Notion — restraint over decoration. */
+
+/* Topbar: accent-colored bar, white text — gives FlockChat its identity. */
+body.flockchat-app .topbar {
+  background: var(--accent);
+  border-bottom: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+}
+body.flockchat-app .topbar-brand .wordmark {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+body.flockchat-app .topbar-brand .build-tag {
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-left: 8px;
+}
+body.flockchat-app .topbar-channel-name { color: #fff; font-weight: 600; }
+body.flockchat-app .topbar-channel-name .sigil { color: rgba(255,255,255,0.60); }
+body.flockchat-app .topbar-channel-desc { color: rgba(255,255,255,0.60); border-left-color: rgba(255,255,255,0.18); }
+body.flockchat-app .user-pill {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.18);
+}
+body.flockchat-app .user-pill .uname { color: #fff; }
+body.flockchat-app .user-pill:hover { border-color: rgba(255,255,255,0.40); }
+
+/* Sidebar: light — matches FlockOS shell, accent details for identity.
+   IMPORTANT: The unscoped .sidebar rule (for FlockOS nav) uses position:fixed.
+   We must explicitly reset to static here so the FlockChat sidebar sits in
+   normal flex flow on desktop and does NOT overlay the thread pane. */
+body.flockchat-app .sidebar {
+  position: static !important;
+  z-index: auto !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  height: auto;
+  overflow-y: hidden;
+  padding: 0;
+  background: var(--bg-sunken, #edf0f6);
+  border-right: 1px solid var(--line);
+}
+body.flockchat-app .sidebar ::-webkit-scrollbar-thumb { background: var(--line-strong); }
+body.flockchat-app .sidebar-search input {
+  background: var(--bg-raised);
+  border-color: var(--line);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+body.flockchat-app .sidebar-search input::placeholder { color: var(--ink-faint); }
+body.flockchat-app .sidebar-search input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 2px var(--accent-soft); }
+body.flockchat-app .sidebar-section-header .label {
+  color: var(--ink-faint);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+body.flockchat-app .sidebar-add-btn { color: var(--ink-faint); }
+body.flockchat-app .sidebar-add-btn:hover { color: var(--accent); background: var(--accent-soft); }
+body.flockchat-app .sidebar-item .ch-name { color: var(--ink-muted); }
+body.flockchat-app .sidebar-item .unread-badge { background: var(--accent); color: #fff; }
+body.flockchat-app .sidebar-item .sigil { color: var(--ink-faint); }
+body.flockchat-app .sidebar-item:hover {
+  background: rgba(60,59,110,0.06);
+}
+body.flockchat-app .sidebar-item.active {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 18px;  /* 12px original + 6px margin compensation */
+  padding-right: 18px;
+}
+body.flockchat-app .sidebar-item.active .sigil,
+body.flockchat-app .sidebar-item.active .ch-name { color: var(--accent); font-weight: 700; }
+body.flockchat-app .sidebar-item.has-unread .ch-name { color: var(--ink); font-weight: 700; }
+body.flockchat-app .sidebar-item.has-unread .sigil { color: var(--accent); }
+body.flockchat-app .dm-presence { border-color: var(--bg-sunken); }
+
+/* Avatars: solid color from a 6-step palette, white initials.
+   Color is assigned via :nth-of-type so distinct speakers in the
+   visible thread get distinct identities — no rainbow chaos. */
+body.flockchat-app .msg-avatar,
+body.flockchat-app .member-avatar,
+body.flockchat-app .user-pill .avatar {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: none;
+  text-shadow: none;
+}
+body.flockchat-app .msg-row:nth-of-type(6n+1) .msg-avatar { background: var(--accent); }
+body.flockchat-app .msg-row:nth-of-type(6n+2) .msg-avatar { background: var(--lilac); }
+body.flockchat-app .msg-row:nth-of-type(6n+3) .msg-avatar { background: var(--mint); }
+body.flockchat-app .msg-row:nth-of-type(6n+4) .msg-avatar { background: var(--sky); }
+body.flockchat-app .msg-row:nth-of-type(6n+5) .msg-avatar { background: var(--gold); }
+body.flockchat-app .msg-row:nth-of-type(6n)   .msg-avatar { background: var(--rose, #b07c95); }
+
+/* Message rows: generous breathing room, hover tint only (no pills,
+   no per-row colored backgrounds). */
+body.flockchat-app .message-list { padding: 20px 0 12px; }
+body.flockchat-app .msg-row {
+  padding: 6px 24px;
+  border-radius: 0;
+  transition: background 0.12s;
+}
+body.flockchat-app .msg-row:hover { background: var(--bg-hover); }
+body.flockchat-app .msg-row.grouped { padding-top: 1px; padding-bottom: 1px; }
+
+/* Author + timestamp typography */
+body.flockchat-app .msg-author {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+}
+body.flockchat-app .msg-time {
+  color: var(--ink-faint);
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+body.flockchat-app .msg-text {
+  color: var(--ink);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+/* Day divider: thin centered hairline with small label */
+body.flockchat-app .day-divider { padding: 14px 24px 10px; }
+body.flockchat-app .day-divider .line { background: var(--line); }
+body.flockchat-app .day-divider .label {
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* Mentions: subtle accent chip; self-mention promoted to gold */
+body.flockchat-app .msg-text .mention {
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+body.flockchat-app .msg-text .mention.self {
+  color: var(--gold);
+  background: var(--gold-soft);
+}
+
+/* Reaction chips: neutral at rest, accent when reacted */
+body.flockchat-app .reaction-chip {
+  background: var(--bg-raised);
+  border-color: var(--line);
+}
+body.flockchat-app .reaction-chip:hover { border-color: var(--line-strong); }
+body.flockchat-app .reaction-chip.reacted {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+body.flockchat-app .reaction-chip.reacted .count { color: var(--accent); }
+
+/* Composer: cleaner edge, accent focus ring (one strong signal) */
+body.flockchat-app .composer { background: var(--bg); }
+body.flockchat-app .composer-inner {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+body.flockchat-app .composer-inner:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* Topbar icon buttons: white on accent background */
+body.flockchat-app .topbar-icon-btn {
+  color: rgba(255,255,255,0.75);
+  border-color: transparent;
+  transition: background 0.12s, color 0.12s;
+}
+body.flockchat-app .topbar-icon-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-color: transparent;
+}
+
+/* Auth card: clean white, single accent rule on top */
+body.flockchat-app .auth-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  box-shadow: var(--shadow-md);
+}
+
+/* Modal cards */
+body.flockchat-app .modal-card {
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Pin strip & join banner */
+body.flockchat-app .pin-strip { border-left: 3px solid var(--gold); }
+body.flockchat-app .join-banner {
+  background: var(--bg-raised);
+  border-top: 1px solid var(--line);
+}
+
+/* Empty state: subtle accent tint */
+body.flockchat-app .empty-state-icon { color: var(--accent); opacity: 0.8; }
+body.flockchat-app .empty-state-title { color: var(--accent); }
+
+/* Send button: filled accent */
+body.flockchat-app .composer-send,
+body.flockchat-app #btn-send {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+}
+body.flockchat-app .composer-send:not(:disabled):hover,
+body.flockchat-app #btn-send:not(:disabled):hover {
+  background: var(--accent-hover);
+}
+body.flockchat-app .composer-send:disabled,
+body.flockchat-app #btn-send:disabled {
+  background: var(--bg-active);
+  color: var(--ink-faint);
+}
+
+/* Topbar context never wraps; truncate long channel names */
+body.flockchat-app .topbar-context { min-width: 0; flex: 1 1 auto; overflow: hidden; }
+body.flockchat-app .topbar-channel-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+body.flockchat-app .topbar-actions { flex-shrink: 0; flex-wrap: nowrap; }
+body.flockchat-app .topbar-icon-btn { white-space: nowrap; }
+
+/* Mobile bottom nav: light, matches FlockOS chrome */
+body.flockchat-app #bottom-nav {
+  background: var(--bg-raised);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -1px 8px rgba(27,38,79,0.07);
+}
+body.flockchat-app .bottom-nav-btn { color: var(--ink-faint); }
+body.flockchat-app .bottom-nav-btn.active { color: var(--accent); font-weight: 700; }
+body.flockchat-app a.bottom-nav-btn,
+body.flockchat-app a.bottom-nav-btn:hover { color: var(--ink-faint); text-decoration: none; }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+/* Tablet: hide details, narrow sidebar */
+@media (max-width: 900px) {
+  body.flockchat-app { --details-w: 0px; }
+  .details-pane { display: none !important; }
+  .topbar-channel-desc { display: none; }
+}
+
+/* Mobile: drawer sidebar, bottom nav, full-width thread */
+@media (max-width: 640px) {
+  body.flockchat-app {
+    --sidebar-w:   280px;
+    --topbar-h:    52px;
+  }
+
+  /* Body fills viewport exactly, no scrolling on app */
+  body.flockchat-app:not(.auth-open) {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Topbar ── */
+  #btn-sidebar-toggle { display: flex; }
+  .topbar-brand .build-tag { display: none; }
+  .topbar-brand .wordmark { font-size: 1rem; }
+  .topbar { padding: 0 10px; gap: 4px; }
+  .topbar-context { padding: 0 6px; min-width: 0; }
+  .topbar-channel-desc { display: none; }
+  .topbar-actions { gap: 2px; }
+  .topbar-icon-btn { padding: 6px 8px; font-size: 0.85rem; }
+  #btn-details-toggle { display: none; }
+
+  /* Suite link: arrow only, no text */
+  .topbar-icon-btn.suite-link {
+    font-size: 0;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+  }
+  .topbar-icon-btn.suite-link::before {
+    content: "←";
+    font-size: 1rem;
+    color: var(--ink-muted);
+  }
+
+  /* Manage Users: icon only, hide "Users" label */
+  #btn-manage-users {
+    font-size: 0;
+    padding: 6px 8px;
+  }
+  #btn-manage-users::before {
+    content: "👥";
+    font-size: 1.05rem;
+  }
+
+  /* Search button: keep icon size readable */
+  #btn-msg-search { font-size: 1rem; }
+
+  /* ── Sidebar drawer ── */
+  /* Must be scoped to body.flockchat-app so it outweighs the static reset above */
+  body.flockchat-app .sidebar {
+    position: fixed !important;
+    top: var(--topbar-h) !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: var(--sidebar-w);
+    z-index: 150 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.25s ease;
+    box-shadow: var(--shadow-lg);
+    height: auto;
+    overflow-y: auto;
+  }
+  body.flockchat-app .sidebar.open { transform: translateX(0) !important; }
+
+  /* Scrim behind open drawer */
+  #sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: var(--topbar-h);
+    background: rgba(0,0,0,0.30);
+    z-index: 140;
+  }
+  #sidebar-scrim.open { display: block; }
+
+  /* ── Thread pane fills screen ── */
+  .app-body { position: relative; }
+  .thread-pane { width: 100%; }
+
+  /* ── Bottom nav ── */
+  #bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 56px;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--line);
+    z-index: 100;
+    align-items: stretch;
+  }
+  .bottom-nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .bottom-nav-btn .nav-icon { font-size: 1.7rem; line-height: 1; }
+  .bottom-nav-btn.active { color: var(--accent); }
+  a.bottom-nav-btn { text-decoration: none; }
+  a.bottom-nav-btn:hover { text-decoration: none; color: var(--accent); }
+
+  /* ── Composer ── */
+  .composer { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  /* Extra room so content isn't hidden behind bottom nav */
+  .message-list { padding-bottom: 64px; }
+  #thread-pane { padding-bottom: 56px; }
+
+  /* ── Modals full-width on mobile ── */
+  .modal-card {
+    width: calc(100vw - 32px);
+    padding: 24px 20px;
+  }
+
+  /* ── Hamburger: only show on mobile ── */
+  #btn-sidebar-toggle { display: inline-flex !important; font-size: 1.5rem; padding: 4px 14px; }
+
+  /* ── User pill on mobile ──
+     Both .uname and the status dot are hidden on mobile, leaving an empty
+     oval. Hide the entire pill on mobile — user actions are reachable via
+     the bottom-nav "You" tab and the sidebar drawer. */
+  .user-pill { display: none; }
+  .user-pill .uname { display: none; }
+  .user-pill #topbar-status-dot { display: none; }
+}
+
+/* ── Embedded mode: loaded inside a FlockOS iframe ────────────────────────
+   Goal: reclaim the ~52px FlockChat topbar so only one navbar shows.
+   Keep channel name + user pill for context; hide brand + admin actions. */
+body.embedded .topbar-brand { display: none !important; }
+body.embedded .topbar {
+  height: 38px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 4px rgba(27,38,79,0.05);
+}
+body.embedded { --topbar-h: 38px; }
+body.embedded .topbar-context { padding: 0 8px; }
+body.embedded .topbar-channel-name { font-size: 0.86rem; }
+body.embedded .topbar-channel-desc { max-width: 180px; font-size: 0.73rem; }
+body.embedded #btn-signout,
+body.embedded #btn-manage-users { display: none !important; }
+
+/* ── Markdown Rendering ─────────────────────────────────────────────────── */
+.msg-text code {
+  background: var(--bg-active);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 0.85em;
+}
+.msg-text pre {
+  background: var(--bg-active);
+  border-radius: 6px;
+  padding: 10px 14px;
+  overflow-x: auto;
+  margin: 4px 0;
+  border: 1px solid var(--line);
+}
+.msg-text pre code { background: none; padding: 0; font-size: 0.88em; }
+.msg-text blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+  margin: 3px 0;
+  color: var(--ink-muted);
+}
+.msg-text del { opacity: 0.55; }
+.msg-text a { color: var(--accent); }
+.msg-text a:hover { text-decoration: underline; }
+
+/* ── Pin Strip ──────────────────────────────────────────────────────────── */
+.pin-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: background 0.12s;
+  flex-shrink: 0;
+}
+.pin-strip:hover { background: var(--bg-hover); }
+.pin-strip .pin-icon { color: var(--gold); flex-shrink: 0; }
+.pin-strip .pin-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pin-strip .pin-count { font-size: 0.7rem; color: var(--ink-faint); flex-shrink: 0; }
+
+/* ── Load More Button ───────────────────────────────────────────────────── */
+.load-more-btn {
+  display: block;
+  margin: 8px auto 4px;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  padding: 4px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.load-more-btn:hover { border-color: var(--accent); color: var(--accent); }
+.load-more-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Message Search Bar ─────────────────────────────────────────────────── */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.search-bar input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.85rem;
+  color: var(--ink);
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--accent); }
+.search-count { font-size: 0.75rem; color: var(--ink-faint); white-space: nowrap; }
+.search-close-btn {
+  background: none; border: none;
+  color: var(--ink-muted); font-size: 1rem;
+  padding: 2px 5px; border-radius: 4px; cursor: pointer;
+}
+.search-close-btn:hover { color: var(--ink); }
+.msg-row.search-hidden { display: none; }
+.msg-text mark {
+  background: var(--gold-soft);
+  color: var(--gold);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+/* ── Quick Switcher (Ctrl+K) ────────────────────────────────────────────── */
+#quick-switcher {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(27,38,79,0.45);
+  z-index: 400;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 14vh;
+}
+#quick-switcher.open { display: flex; }
+.qs-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.qs-input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 14px 18px;
+  font-size: 1rem;
+  color: var(--ink);
+  outline: none;
+}
+.qs-input::placeholder { color: var(--ink-faint); }
+.qs-list { max-height: 320px; overflow-y: auto; padding: 6px 0; }
+.qs-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  transition: background 0.1s;
+}
+.qs-item:hover, .qs-item.qs-selected { background: var(--bg-hover); color: var(--ink); }
+.qs-sigil { color: var(--ink-faint); width: 18px; text-align: center; flex-shrink: 0; }
+.qs-hint {
+  padding: 7px 16px;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--line);
+}
+
+
+/* ─── Migrated from new_covenant.css: FlockChat v2 feature styles ───────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOCKCHAT v2 — Reply-to · Prayer Chain · Announcements · Misc
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Reply-quote block (appears above message text) ─────────────────────── */
+.reply-quote {
+  display: flex; gap: 6px; align-items: baseline;
+  background: color-mix(in srgb, var(--accent, #38bdf8) 8%, transparent);
+  border-left: 3px solid var(--accent, #38bdf8);
+  border-radius: 0 6px 6px 0;
+  padding: 4px 8px; margin-bottom: 4px;
+  font-size: 0.76rem; cursor: pointer;
+  transition: background 0.15s;
+}
+.reply-quote:hover { background: color-mix(in srgb, var(--accent, #38bdf8) 15%, transparent); }
+.reply-quote-author { font-weight: 700; color: var(--accent, #38bdf8); white-space: nowrap; }
+.reply-quote-text { color: var(--ink-muted, #888); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+
+/* ── Message highlight (jump-to-message animation) ──────────────────────── */
+.msg-highlight {
+  animation: fc-msg-hl 1.8s ease;
+}
+@keyframes fc-msg-hl {
+  0%   { background: color-mix(in srgb, var(--accent, #38bdf8) 22%, transparent); }
+  100% { background: transparent; }
+}
+
+/* ── Sidebar section nav bar (Chat / Prayer / Announce tabs) ────────────── */
+.sidebar-section-nav { transition: color 0.15s, border-color 0.15s; }
+.sidebar-section-nav:hover { color: var(--ink) !important; }
+.sidebar-section-nav.active {
+  color: var(--accent, #38bdf8) !important;
+  border-bottom-color: var(--accent, #38bdf8) !important;
+}
+
+/* ── Prayer Chain ───────────────────────────────────────────────────────── */
+.prayer-item {
+  padding: 8px 12px; cursor: pointer; border-radius: 8px;
+  margin: 2px 6px; transition: background 0.14s;
+}
+.prayer-item:hover, .prayer-item.active {
+  background: color-mix(in srgb, #a78bfa 12%, transparent);
+}
+.prayer-status-badge {
+  display: inline-block; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 4px; margin-top: 4px;
+}
+.prayer-status-badge.new    { background: rgba(167,139,250,0.18); color: #a78bfa; }
+.prayer-status-badge.answered { background: rgba(52,211,153,0.18); color: #34d399; }
+.prayer-status-badge.archived { background: rgba(150,150,150,0.15); color: #888; }
+.prayer-cat-label {
+  display: inline-block; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #a78bfa; background: rgba(167,139,250,0.1);
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 0.75rem;
+}
+
+/* ── Announcements ──────────────────────────────────────────────────────── */
+:root { --announce-color: #fbbf24; }
+.announce-item {
+  padding: 8px 12px; cursor: pointer; border-radius: 8px;
+  margin: 2px 6px; transition: background 0.14s;
+}
+.announce-item:hover, .announce-item.active {
+  background: color-mix(in srgb, #fbbf24 10%, transparent);
+}
+
+/* ── Reply bar (above composer) ─────────────────────────────────────────── */
+#reply-bar { border-radius: 0; }
+
+/* ── Prayer / Announce detail panels ───────────────────────────────────── */
+.prayer-detail-panel,
+.announce-detail-panel {
+  border-left: 1px solid var(--border, rgba(255,255,255,0.08));
+}
