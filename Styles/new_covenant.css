@@ -15840,16 +15840,16 @@ body:not(.veil-app):not([class*="-app"]) .ptr-indicator {
 }
 
 .unity-header {
-  position: relative;
-  top: auto;
+  position: sticky;
+  top: var(--fn-shell-top, 12px);
   z-index: 200;
   width: var(--unity-shell-w);
   height: 56px;
   min-height: 56px;
-  margin: 8px auto;
+  margin: 0 auto 1.35rem;
   padding: 6px 14px 6px 8px;
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--unity-header-radius);
+  border-radius: var(--herald-radius-lg, var(--unity-header-radius));
   background: linear-gradient(180deg, #0f172a, #162235);
   color: #f8fafc;
   box-shadow: 0 14px 30px rgba(15,23,42,.14);

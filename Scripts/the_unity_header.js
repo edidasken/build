@@ -101,7 +101,10 @@ export function mountUnityHeader(host, cfg = {}) {
       e.preventDefault(); // Prevent double-fire in PWA
       let open;
       if (typeof onHamburger === 'function') open = onHamburger();
-      else open = toggleUnityNavDrawer(appId);
+      else {
+        switcherHost?.click();
+        open = false;
+      }
       if (typeof open === 'boolean') btn.setAttribute('aria-expanded', open ? 'true' : 'false');
     } else if (act === 'home') {
       // Native anchor handles navigation; nothing to do

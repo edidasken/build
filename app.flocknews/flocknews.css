@@ -2598,15 +2598,13 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 
   .fn-side-icon svg,
   .fn-side-icon img {
-    width: 30px;
-    height: 30px;
+    width: 22px;
+    height: 22px;
   }
 
-  .fn-side-link-active .fn-side-icon,
-  .fn-side-link-active .fn-side-icon img {
-    width: 42px;
-    height: 42px;
-    flex-basis: 42px;
+  .fn-side-icon img {
+    width: 30px;
+    height: 30px;
   }
 
   .fn-side-label,
@@ -3114,19 +3112,13 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 
   html[data-fn-sidebar="open"] .fn-side-icon svg,
   html[data-fn-sidebar="open"] .fn-side-icon img {
+    width: 22px;
+    height: 22px;
+  }
+
+  html[data-fn-sidebar="open"] .fn-side-icon img {
     width: 34px;
     height: 34px;
-  }
-
-  html[data-fn-sidebar="open"] .fn-side-link-active {
-    min-height: 60px;
-  }
-
-  html[data-fn-sidebar="open"] .fn-side-link-active .fn-side-icon,
-  html[data-fn-sidebar="open"] .fn-side-link-active .fn-side-icon img {
-    width: 48px;
-    height: 48px;
-    flex-basis: 48px;
   }
 
   html[data-fn-sidebar="open"] .fn-side-label {
