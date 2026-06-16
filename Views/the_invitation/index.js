@@ -375,7 +375,7 @@ function _pendingRow(u) {
   const initials = u.name.split(/\s+/).map(w => w[0] || '').slice(0, 2).join('').toUpperCase() || '?';
   return /* html */`
     <article class="inv-pending-row" tabindex="0">
-      <div class="fold-avatar" style="background:linear-gradient(135deg,#7c3aed,#0ea5e9);width:38px;height:38px;font-size:.78rem;">${_e(initials)}</div>
+      <div class="fold-avatar" style="background:rgba(247,199,86,0.14);color:var(--gold-text,#b8871e);border:1px solid rgba(15,23,42,0.08);width:38px;height:38px;font-size:.78rem;">${_e(initials)}</div>
       <div class="inv-pending-body">
         <div class="inv-pending-name">${_e(u.name)}</div>
         <div class="inv-pending-meta">
@@ -390,4 +390,3 @@ function _pendingRow(u) {
       </div>
     </article>`;
 }
-

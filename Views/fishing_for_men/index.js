@@ -199,7 +199,7 @@ function _liveContactRow(c) {
   const unassigned = assigned === 'Unassigned';
   return `
     <article class="fish-contact-row"${c.id ? ` data-id="${_e(String(c.id))}"` : ''} tabindex="0">
-      <div class="fold-avatar" style="background:linear-gradient(135deg,#0ea5e9,#7c3aed);width:38px;height:38px;font-size:.78rem;">${_e(initials || '?')}</div>
+      <div class="fold-avatar" style="background:rgba(247,199,86,0.14);color:var(--gold-text,#b8871e);border:1px solid rgba(15,23,42,0.08);width:38px;height:38px;font-size:.78rem;">${_e(initials || '?')}</div>
       <div class="fish-contact-body">
         <div class="fish-contact-name">${_e(name)}</div>
         <div class="fish-contact-meta">
@@ -370,4 +370,3 @@ function _openContactSheet(c, onReload) {
     }
   });
 }
-

@@ -824,7 +824,7 @@ function _personalEventCard(ev) {
     <article class="seasons-personal-card seasons-card" data-id="${_e(id)}" tabindex="0"
       style="display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:10px;
              border:1px solid var(--line,#e5e7eb);background:var(--bg-raised,#fff);margin-bottom:10px;">
-      <div style="text-align:center;min-width:42px;padding:6px 4px;background:#6366f1;border-radius:8px;color:#fff;">
+      <div style="text-align:center;min-width:42px;padding:6px 4px;background:#f8fafc;border:1px solid rgba(15,23,42,0.08);border-radius:8px;color:var(--ink,#1b264f);">
         <div style="font-size:1.3rem;font-weight:800;line-height:1;">${isValid ? d.getDate() : '—'}</div>
         <div style="font-size:.65rem;font-weight:600;opacity:.85;">${isValid ? MONTHS[d.getMonth()].slice(0,3).toUpperCase() : ''}</div>
       </div>

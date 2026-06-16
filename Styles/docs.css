@@ -388,7 +388,11 @@ body.docs-auth {
 }
 
 .fd-doc-icon {
+  border: 1px solid rgba(15,23,42,.08) !important;
   border-radius: 14px !important;
+  background: #f8fafc !important;
+  color: var(--gold-deep, #b8871e) !important;
+  box-shadow: none !important;
 }
 
 .fd-doc-icon svg {
@@ -397,33 +401,27 @@ body.docs-auth {
 }
 
 .fd-doc-icon--document {
-  background: linear-gradient(135deg, #2563eb, #38bdf8) !important;
-  box-shadow: 0 10px 22px rgba(59,130,246,.18) !important;
+  color: #1b264f !important;
 }
 
 .fd-doc-icon--note {
-  background: linear-gradient(135deg, #b8871e, #f7c756) !important;
-  box-shadow: 0 10px 22px rgba(232,168,56,.18) !important;
+  color: var(--gold-deep, #b8871e) !important;
 }
 
 .fd-doc-icon--prayer {
-  background: linear-gradient(135deg, #b91c1c, #fb7185) !important;
-  box-shadow: 0 10px 22px rgba(220,38,38,.18) !important;
+  color: #b91c1c !important;
 }
 
 .fd-doc-icon--journal {
-  background: linear-gradient(135deg, #7c3aed, #a78bfa) !important;
-  box-shadow: 0 10px 22px rgba(124,58,237,.18) !important;
+  color: #1b264f !important;
 }
 
 .fd-doc-icon--calendar {
-  background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
-  box-shadow: 0 10px 22px rgba(59,130,246,.18) !important;
+  color: #1b264f !important;
 }
 
 .fd-doc-icon--spreadsheet {
-  background: linear-gradient(135deg, #16a34a, #34d399) !important;
-  box-shadow: 0 10px 22px rgba(34,197,94,.18) !important;
+  color: #166534 !important;
 }
 
 .fd-doc-type-pill {
@@ -514,47 +512,47 @@ body.docs-auth {
 }
 
 .fd-sidebar-btn[data-view="all-docs"] svg {
-  background: rgba(59,130,246,.18);
+  background: rgba(255,255,255,.08);
   color: #a78bfa;
 }
 
 .fd-sidebar-btn[data-view="notes"] svg {
-  background: rgba(247,199,86,.18);
+  background: rgba(255,255,255,.08);
   color: #f7c756;
 }
 
 .fd-sidebar-btn[data-view="prayers"] svg {
-  background: rgba(232,168,56,.18);
+  background: rgba(255,255,255,.08);
   color: #fb7185;
 }
 
 .fd-sidebar-btn[data-view="journal"] svg {
-  background: rgba(124,58,237,.18);
+  background: rgba(255,255,255,.08);
   color: #cbd5e1;
 }
 
 .fd-sidebar-btn[data-view="calendar"] svg {
-  background: rgba(72,211,217,.18);
+  background: rgba(255,255,255,.08);
   color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="my-docs"] svg {
-  background: rgba(72,211,217,.18);
+  background: rgba(255,255,255,.08);
   color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="shared-docs"] svg {
-  background: rgba(34,197,94,.18);
+  background: rgba(255,255,255,.08);
   color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="recent"] svg {
-  background: rgba(124,58,237,.18);
+  background: rgba(255,255,255,.08);
   color: #cbd5e1;
 }
 
 .fd-sidebar-btn[data-view="trash"] svg {
-  background: rgba(232,168,56,.18);
+  background: rgba(255,255,255,.08);
   color: #fb7185;
 }
 
@@ -569,7 +567,7 @@ body.docs-auth {
 }
 
 .fd-sidebar-btn.is-active[data-view="all-docs"] svg {
-  background: rgba(59,130,246,.25);
+  background: rgba(247,199,86,.25);
   color: #cbd5e1;
 }
 
@@ -579,37 +577,37 @@ body.docs-auth {
 }
 
 .fd-sidebar-btn.is-active[data-view="prayers"] svg {
-  background: rgba(232,168,56,.25);
+  background: rgba(247,199,86,.25);
   color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="journal"] svg {
-  background: rgba(124,58,237,.25);
+  background: rgba(247,199,86,.25);
   color: #f1f5f9;
 }
 
 .fd-sidebar-btn.is-active[data-view="calendar"] svg {
-  background: rgba(72,211,217,.25);
+  background: rgba(247,199,86,.25);
   color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="my-docs"] svg {
-  background: rgba(72,211,217,.25);
+  background: rgba(247,199,86,.25);
   color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="shared-docs"] svg {
-  background: rgba(34,197,94,.18);
+  background: rgba(247,199,86,.25);
   color: #cbd5e1;
 }
 
 .fd-sidebar-btn.is-active[data-view="recent"] svg {
-  background: rgba(124,58,237,.25);
+  background: rgba(247,199,86,.25);
   color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="trash"] svg {
-  background: rgba(232,168,56,.18);
+  background: rgba(247,199,86,.25);
   color: #e5e7ef;
 }
 
@@ -1491,13 +1489,14 @@ body { background: var(--fd-bg, #f5f0e4); }
 
 .fd-doc-icon {
   width: 48px; height: 48px;
-  background: linear-gradient(135deg, var(--fd-gold), #c48a20);
+  background: #f8fafc;
+  border: 1px solid rgba(15,23,42,.08);
   border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 12px;
-  box-shadow: 0 4px 12px rgba(232,168,56,0.25);
+  box-shadow: none;
 }
-.fd-doc-icon svg { width: 24px; height: 24px; color: #1a1208; }
+.fd-doc-icon svg { width: 24px; height: 24px; color: currentColor; }
 
 .fd-doc-name {
   font: 600 0.938rem var(--font-ui);

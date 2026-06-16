@@ -1274,8 +1274,7 @@ body.veil-app .page-hero-scripture {
 
 body.veil-app .grow-hero-icon {
   border: 1px solid rgba(255,255,255,.18);
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--view-accent) 70%, #ffffff), var(--flockos-gold));
+  background: rgba(247,199,86,.95);
   color: #111827;
   box-shadow: 0 14px 30px rgba(0,0,0,0.18);
 }
@@ -1676,10 +1675,29 @@ body.veil-app :is(
   .gc-partner-icon,
   .gi-card-icon
 ) {
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 72%, #ffffff), var(--flockos-gold));
-  color: #111827;
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 18%, transparent);
+  border: 1px solid rgba(15,23,42,0.08);
+  background: rgba(247,199,86,0.14) !important;
+  color: var(--flockos-gold-deep);
+  box-shadow: none;
+}
+
+body.veil-app :is(
+  .seasons-card-date,
+  .qwp-agenda-date
+) {
+  min-width: 48px;
+  padding: 7px 5px;
+  border-radius: 8px;
+  background: #f8fafc !important;
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.seasons-card-day, .qwp-ad-day) {
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.seasons-card-mon, .qwp-ad-dow, .qwp-ad-mon) {
+  color: #64748b;
 }
 
 body.veil-app :is(
@@ -1935,16 +1953,16 @@ body.veil-app .unity-nav-item.is-current .unity-nav-copy strong {
 
 body.veil-app .nc-switcher-current-pill {
   border-color: rgba(247,199,86,.5);
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: rgba(247,199,86,.95);
   color: #111827;
 }
 
 body.veil-app .nc-switcher-icon.tone-gold,
 body.veil-app .unity-nav-icon,
 body.veil-app .unity-pp-avatar {
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: rgba(247,199,86,.95);
   color: #111827;
-  box-shadow: 0 0 0 1px rgba(247,199,86,.35), 0 10px 24px rgba(247,199,86,.18);
+  box-shadow: 0 0 0 1px rgba(247,199,86,.35), 0 10px 24px rgba(247,199,86,.14);
 }
 
 body.veil-app .unity-pp-avatar.unity-pp-avatar--herald {
@@ -1955,21 +1973,24 @@ body.veil-app .unity-pp-avatar.unity-pp-avatar--herald {
 }
 
 body.veil-app .nc-switcher-icon.tone-green {
-  background: linear-gradient(135deg, #334155, #22c55e);
+  background: rgba(255,255,255,.12);
+  color: #34d399;
 }
 
 body.veil-app .nc-switcher-icon.tone-blue,
 body.veil-app .nc-switcher-icon.tone-cyan {
-  background: linear-gradient(135deg, #059669, var(--flockos-cyan));
+  background: rgba(255,255,255,.12);
+  color: var(--flockos-cyan);
 }
 
 body.veil-app .nc-switcher-icon.tone-purple {
-  background: linear-gradient(135deg, #4c1d95, #a78bfa);
+  background: rgba(255,255,255,.12);
+  color: #c4b5fd;
 }
 
 body.veil-app .nc-switcher-icon.tone-red {
-  background: linear-gradient(135deg, #b91c1c, #dc2626);
-  color: #ffffff;
+  background: rgba(255,255,255,.12);
+  color: #fb7185;
 }
 
 body.veil-app .unity-pp-item--danger:hover {
@@ -1993,7 +2014,7 @@ body.veil-app .modal-card {
 }
 
 body.veil-app .life-sheet-drag {
-  background: linear-gradient(90deg, var(--flockos-cyan), #6366f1, var(--flockos-gold), #22c55e);
+  background: rgba(247,199,86,.95);
 }
 
 body.veil-app .life-sheet-hd,
@@ -2014,6 +2035,35 @@ body.veil-app .modal-title {
 body.veil-app .life-sheet-hd-meta,
 body.veil-app .life-sheet-close {
   color: rgba(255,255,255,.72);
+}
+
+body.veil-app .life-sheet-hd .life-contact-actions {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+body.veil-app .life-sheet-hd .life-contact-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255,255,255,.72);
+  border-radius: 14px;
+  background: rgba(255,255,255,.08);
+  color: #f8fafc;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+  text-decoration: none;
+}
+
+body.veil-app .life-sheet-hd .life-contact-btn svg {
+  color: inherit;
+  stroke: currentColor;
+}
+
+body.veil-app .life-sheet-hd .life-contact-btn:hover,
+body.veil-app .life-sheet-hd .life-contact-btn:focus-visible {
+  border-color: rgba(247,199,86,.85);
+  background: rgba(247,199,86,.18);
+  color: #ffffff;
+  outline: none;
 }
 
 body.veil-app .life-sheet-close:hover {
@@ -2136,8 +2186,7 @@ body.veil-app .harvest-stat-icon {
   margin: 0 auto 16px;
   border: 1px solid rgba(15,23,42,0.08);
   border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.72));
+  background: #ffffff;
   color: var(--view-accent, var(--flockos-gold));
   box-shadow: 0 10px 22px rgba(15,23,42,0.08);
   font-size: 1.5rem;

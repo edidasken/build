@@ -6722,7 +6722,7 @@ html[data-platform="xbox"] .topbar-toggle { display: none !important; }
   border-bottom: 1px solid var(--line, #e5e7ef);
 }
 .gift-tx-row:last-child { border-bottom: 0; }
-.gift-tx-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#7c3aed,#0ea5e9); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex: none; }
+.gift-tx-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(232,168,56,.14); color: var(--gold-text, #b8871e); border: 1px solid rgba(15,23,42,.08); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex: none; }
 .gift-tx-body   { flex: 1; min-width: 0; }
 .gift-tx-name   { font: 600 0.88rem var(--font-ui); color: var(--ink, #1b264f); }
 .gift-tx-fund   { font: 0.74rem var(--font-ui); color: var(--ink-muted, #64748b); }
