@@ -702,6 +702,12 @@ function goBack() {
     e.preventDefault();
   }, { passive: false });
 
+  function setSwitcherScrollLock(locked) {
+    var shouldLock = locked && window.innerWidth <= 640;
+    document.documentElement.toggleAttribute('data-fn-switcher-open', shouldLock);
+    document.documentElement.style.overflow = shouldLock ? 'hidden' : '';
+  }
+
   function openSwitcher() {
     panel.hidden = false;
     panel.setAttribute('aria-hidden', 'false');
@@ -709,8 +715,7 @@ function goBack() {
     chevron.style.transform = 'rotate(180deg)';
     if (window.innerWidth <= 640) {
       backdrop.style.display = 'block';
-      // Lock body scroll without breaking iOS nested-scroll (avoid overflow:hidden on body)
-      document.documentElement.style.overflow = 'hidden';
+      setSwitcherScrollLock(true);
     }
   }
   function closeSwitcher() {
@@ -719,7 +724,7 @@ function goBack() {
     btn.setAttribute('aria-expanded', 'false');
     chevron.style.transform = '';
     backdrop.style.display = 'none';
-    document.documentElement.style.overflow = '';
+    setSwitcherScrollLock(false);
   }
 
   btn.addEventListener('click', function (e) {
@@ -732,6 +737,19 @@ function goBack() {
   });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && !panel.hidden) closeSwitcher();
+  });
+  window.addEventListener('pagehide', function () { setSwitcherScrollLock(false); });
+  window.addEventListener('pageshow', function () {
+    if (panel.hidden) setSwitcherScrollLock(false);
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 640) {
+      backdrop.style.display = 'none';
+      setSwitcherScrollLock(false);
+    } else if (!panel.hidden) {
+      backdrop.style.display = 'block';
+      setSwitcherScrollLock(true);
+    }
   });
 })();
 

@@ -3651,6 +3651,15 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
   transform: translate3d(-50%, 0, 0);
 }
 
+/* Keep the Herald document scrollable unless the app switcher is actively open. */
+html:not([data-fn-switcher-open="true"]) {
+  overflow-y: auto !important;
+}
+
+html[data-fn-switcher-open="true"] {
+  overflow: hidden !important;
+}
+
 /* ─── Migrated from app.embeds/embed-flocknews.html ───────────────────────────────────────── */
 [data-fn-embedded="true"] .fn-back-bar { display: none !important; }
 [data-fn-embedded="true"] .fn-side-nav { display: none !important; }

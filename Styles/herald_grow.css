@@ -25,8 +25,7 @@ body.hg-grow {
 
 body.herald-shell {
   min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: clip;
 }
 
 body.hg-grow .fn-sw-icon img,
