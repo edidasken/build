@@ -1,0 +1,103 @@
+/* ============================================================================
+   HERALD EDITOR - Herald-aligned bridge
+   Loaded after app.flocknews/news_editor.css.
+   ============================================================================ */
+
+:root {
+  --ed-sidebar: var(--herald-navy, #0f172a);
+  --ed-sidebar-2: var(--herald-navy-2, #162235);
+  --ed-sidebar-3: #1e293b;
+  --ed-rule: rgba(255,255,255,.10);
+  --ed-rule-hi: rgba(247,199,86,.34);
+  --ed-gold: var(--herald-gold, #f7c756);
+  --ed-gold-hi: #ffe08a;
+  --ed-text: #f8fafc;
+  --ed-text-dim: rgba(248,250,252,.62);
+  --paper: #f8fafc;
+  --paper-tint: #eef2f7;
+  --ink: #111827;
+  --rule-soft: rgba(15,23,42,.12);
+  --serif: var(--font-serif, "Merriweather", Georgia, serif);
+  --sans: var(--font-ui, Inter, system-ui, sans-serif);
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at top left, rgba(247,199,86,.14), transparent 28rem),
+    linear-gradient(180deg, var(--ed-sidebar), var(--ed-sidebar-2));
+  font-family: var(--sans);
+}
+
+.ed-sidebar,
+.ed-preview-bar {
+  background: linear-gradient(180deg, var(--ed-sidebar), var(--ed-sidebar-2));
+}
+
+.ed-header {
+  border-bottom-color: var(--ed-rule);
+}
+
+.ed-header-title,
+.ed-preview-bar span {
+  color: var(--ed-gold);
+  letter-spacing: .12em;
+}
+
+.ed-accordion-item {
+  border-bottom-color: var(--ed-rule);
+}
+
+.ed-accordion-btn {
+  border-radius: 0;
+}
+
+.ed-accordion-btn:hover,
+.ed-accordion-btn:focus-visible,
+.ed-accordion-body {
+  background: rgba(255,255,255,.06);
+  outline: none;
+}
+
+.ed-row select,
+.ed-row input[type="text"],
+.ed-row textarea {
+  border-radius: var(--herald-radius-md, 14px);
+  background: rgba(255,255,255,.08);
+  border-color: var(--ed-rule);
+  color: var(--ed-text);
+}
+
+.ed-row select:focus,
+.ed-row input:focus,
+.ed-row textarea:focus {
+  border-color: var(--ed-gold);
+  box-shadow: 0 0 0 3px rgba(247,199,86,.14);
+}
+
+.ed-btn-primary,
+#ed-status {
+  border-radius: var(--herald-radius-md, 14px);
+  background: var(--ed-gold);
+  color: #111827;
+  box-shadow: 0 10px 22px rgba(0,0,0,.18);
+  letter-spacing: .08em;
+}
+
+.ed-btn-secondary,
+.ed-reload-btn {
+  border-radius: var(--herald-radius-md, 14px);
+  border-color: var(--ed-rule);
+}
+
+.ed-preview {
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 28rem),
+    var(--paper);
+}
+
+@media (max-width: 760px) {
+  .ed-sidebar {
+    min-height: 300px;
+  }
+}

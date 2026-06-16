@@ -124,7 +124,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     await _waitForReady();
     // Auth passed — reveal the app shell (was hidden to block guest access)
     const appEl = document.getElementById('fd-app');
-    if (appEl) appEl.style.display = '';
+    if (appEl) appEl.style.display = 'grid';
     // Mint Firebase custom token so Firestore reads are authenticated
     if (typeof UpperRoom !== 'undefined') {
       await UpperRoom.init();

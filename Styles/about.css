@@ -1,0 +1,185 @@
+/* ============================================================================
+   ABOUT - Herald-aligned bridge
+   Loaded after the embed's legacy inline styles.
+   ============================================================================ */
+
+:root {
+  --about-navy: var(--herald-navy, #0f172a);
+  --about-navy-2: var(--herald-navy-2, #162235);
+  --about-gold: var(--herald-gold, #e8a838);
+  --about-cyan: var(--herald-cyan, #48d3d9);
+  --about-panel: var(--herald-panel, rgba(255,255,255,.72));
+  --about-panel-strong: var(--herald-panel-strong, #ffffff);
+  --about-rule: rgba(15,23,42,.10);
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at top left, rgba(232,168,56,.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+  color: var(--ink, #111827);
+  font-family: var(--font-ui, "Plus Jakarta Sans", system-ui, sans-serif);
+}
+
+.ab-hero {
+  min-height: min(620px, 82vh);
+  display: grid;
+  align-items: center;
+  border-bottom: 1px solid rgba(247,199,86,.24);
+  background:
+    radial-gradient(circle at 86% 12%, rgba(72,211,217,.18), transparent 18rem),
+    radial-gradient(circle at 14% 88%, rgba(247,199,86,.18), transparent 18rem),
+    linear-gradient(135deg, rgba(15,23,42,.98), rgba(22,34,53,.96));
+  color: #f8fafc;
+}
+
+.ab-hero::before {
+  opacity: .42;
+}
+
+.ab-hero::after {
+  background: radial-gradient(circle, rgba(247,199,86,.13) 0%, transparent 68%);
+}
+
+.ab-hero-badge,
+.ab-section-head-icon,
+.ab-ws-step-icon {
+  border: 1px solid rgba(247,199,86,.24);
+  background: rgba(247,199,86,.14) !important;
+  color: var(--about-gold) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.48);
+}
+
+.ab-hero h1,
+.ab-section-head h2,
+.ab-free h2,
+.ab-closing h2 {
+  letter-spacing: 0;
+}
+
+.ab-hero h1 em,
+.ab-section-head h2 em,
+.ab-free h2 em {
+  color: var(--about-gold);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.ab-wrap {
+  max-width: 1120px;
+}
+
+.ab-story,
+.ab-card,
+.ab-free,
+.ab-pillar,
+.ab-ws-step,
+.ab-ws-verse,
+.ab-engine,
+.ab-security,
+.ab-closing {
+  border: 1px solid var(--about-rule);
+  border-radius: var(--herald-radius-lg, 18px);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 11rem),
+    var(--about-panel);
+  box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.ab-story {
+  border-left: 4px solid var(--about-gold);
+}
+
+.ab-card,
+.ab-engine {
+  overflow: hidden;
+}
+
+.ab-card::before,
+.ab-engine::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ab-c, var(--about-gold)), var(--about-cyan), transparent);
+}
+
+.ab-card:hover,
+.ab-engine:hover {
+  border-color: rgba(247,199,86,.42);
+  box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08)), 0 0 0 1px rgba(247,199,86,.14);
+}
+
+.ab-card-icon,
+.ab-engine-logo,
+.ab-security-lock,
+.ab-free-crown,
+.ab-globe-icon {
+  width: 52px;
+  height: 52px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.84));
+  box-shadow: 0 10px 22px rgba(15,23,42,.08);
+  font-size: 1.55rem;
+}
+
+.ab-globe,
+.ab-free {
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.18), transparent 18rem),
+    linear-gradient(135deg, var(--about-navy), var(--about-navy-2));
+}
+
+.ab-badge {
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.ab-ws-arrow {
+  color: var(--about-gold);
+}
+
+.ab-engine-top {
+  background: rgba(15,23,42,.92);
+  color: #f8fafc;
+}
+
+.ab-engine-name {
+  color: #f8fafc;
+}
+
+@media (max-width: 720px) {
+  .ab-hero {
+    min-height: 560px;
+    padding: 52px 20px 64px;
+  }
+
+  .ab-wrap {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .ab-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ab-story,
+  .ab-card,
+  .ab-free,
+  .ab-pillar,
+  .ab-ws-step,
+  .ab-ws-verse,
+  .ab-engine,
+  .ab-security,
+  .ab-closing {
+    border-radius: var(--herald-radius-lg, 18px);
+  }
+}
