@@ -32,8 +32,8 @@ body.stand-auth .bg-glow {
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(8, 13, 33, 0.96) 0%, rgba(15, 23, 42, 0.82) 48%, rgba(15, 23, 42, 0.58) 100%),
-    linear-gradient(0deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.20) 45%),
+    linear-gradient(90deg, rgba(15,23,42,.95) 0%, rgba(15,23,42,.72) 48%, rgba(15,23,42,.5) 100%),
+    linear-gradient(0deg, rgba(15,23,42,.72), rgba(15,23,42,.18) 45%),
     url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover !important;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
@@ -49,13 +49,13 @@ body.stand-auth .card {
   margin: auto;
   overflow: hidden;
   padding: 36px 32px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255,255,255,.18);
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 42%),
     linear-gradient(135deg, rgba(247, 199, 86, 0.18), transparent 36%),
-    rgba(15, 23, 42, 0.74);
-  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    rgba(15,23,42,.72);
+  box-shadow: 0 32px 90px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
   animation: app-login-rise 280ms var(--ease, ease) both;
 }
 
@@ -64,7 +64,7 @@ body.stand-auth .card::before {
   content: "";
   position: absolute;
   inset: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 18px;
   background: transparent;
   pointer-events: none;
@@ -112,7 +112,7 @@ body.stand-auth .brand-name {
 .brand-sub,
 body.stand-auth .brand-sub {
   margin: 6px 0 0;
-  color: rgba(255, 255, 255, 0.76);
+  color: rgba(255,255,255,.72);
   font: italic 0.9rem var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
   letter-spacing: 0;
   text-transform: none;
@@ -156,7 +156,7 @@ body.stand-auth input[type="password"] {
 
 input[type="email"]::placeholder,
 input[type="password"]::placeholder {
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(255,255,255,.25);
 }
 
 input[type="email"]:focus,
@@ -164,8 +164,8 @@ input[type="password"]:focus,
 input:focus,
 body.stand-auth input[type="email"]:focus,
 body.stand-auth input[type="password"]:focus {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(247, 199, 86, 0.82);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(247,199,86,.72);
   box-shadow: 0 0 0 3px rgba(247, 199, 86, 0.18);
 }
 
@@ -178,10 +178,10 @@ body.stand-auth .btn-signin {
   width: 100%;
   margin-top: 48px;
   padding: 13px 20px;
-  background: linear-gradient(135deg, #f7c756 0%, #e97916 100%);
+  background: linear-gradient(135deg, #f7c756 0%, #f97316 100%);
   border: 0;
   border-radius: 9px;
-  color: #080a1c;
+  color: #0f172a;
   cursor: pointer;
   font: 800 0.95rem var(--font-ui, "Noto Sans", sans-serif);
   letter-spacing: 0;
@@ -194,7 +194,7 @@ body.stand-auth .btn-signin {
 body.stand-auth .btn-signin:hover {
   opacity: 0.94;
   transform: none;
-  box-shadow: 0 14px 34px rgba(232, 168, 56, 0.30);
+  box-shadow: 0 14px 34px rgba(232,168,56,.25);
 }
 
 .btn-signin:active,
@@ -217,7 +217,7 @@ body.stand-auth .btn-signin:disabled {
   min-height: 1.2em;
   background: transparent;
   border: 0;
-  color: #fca5a5;
+  color: #fb7185;
   font: 0.83rem var(--font-ui, "Noto Sans", sans-serif);
   line-height: 1.4;
   text-align: center;
@@ -229,15 +229,15 @@ body.stand-auth .btn-signin:disabled {
 }
 
 .role-notice {
-  color: #f7d27b;
+  color: #f7c756;
 }
 
 .spinner {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  border: 2px solid rgba(8, 10, 28, 0.25);
-  border-top-color: #080a1c;
+  border: 2px solid rgba(15,23,42,.25);
+  border-top-color: #0f172a;
   animation: spin 700ms linear infinite;
   flex-shrink: 0;
   margin: 0;
@@ -246,7 +246,7 @@ body.stand-auth .btn-signin:disabled {
 .foot-note,
 body.stand-auth .foot-note {
   margin: 22px 8px 0;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255,255,255,.72);
   font: italic 0.95rem/1.45 var(--font-serif, "Noto Serif", Merriweather, Georgia, serif);
   letter-spacing: 0.01em;
   text-align: center;
@@ -256,7 +256,7 @@ body.stand-auth .foot-note {
 body.stand-auth .return-home-link {
   display: block;
   margin-top: 14px;
-  color: rgba(255, 255, 255, 0.68);
+  color: rgba(255,255,255,.72);
   font: 0.73rem var(--font-ui, sans-serif);
   text-align: center;
   text-decoration: underline;
@@ -265,7 +265,7 @@ body.stand-auth .return-home-link {
 
 .return-home-link:hover,
 body.stand-auth .return-home-link:hover {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255,255,255,.9);
 }
 
 @media (max-width: 480px) {

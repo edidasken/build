@@ -2,7 +2,7 @@
 
 :root {
   --wellspring-accent: var(--mint, #34d399);
-  --wellspring-accent-deep: #047857;
+  --wellspring-accent-deep: #059669;
   --wellspring-panel: var(--herald-panel-strong, #fff);
   --wellspring-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
   --wellspring-radius: var(--herald-radius-lg, 18px);
@@ -19,8 +19,8 @@
 .ws-file-card,
 .ws-status-card {
   background: var(--wellspring-panel);
-  border-color: var(--line, rgba(15,23,42,.1));
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+  border-color: var(--line, rgba(15,23,42,.12));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.04));
 }
 
 .ws-btn-primary,
@@ -33,5 +33,5 @@
 .ws-textarea:focus,
 .ws-select:focus {
   border-color: var(--wellspring-accent);
-  box-shadow: 0 0 0 3px rgba(52,211,153,.18);
+  box-shadow: 0 0 0 3px rgba(34,197,94,.18);
 }

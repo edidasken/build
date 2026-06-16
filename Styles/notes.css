@@ -13,7 +13,7 @@
 .fs-note-card,
 .fs-modal-content,
 .fs-editor-panel {
-  border-color: var(--line, rgba(15,23,42,.1));
+  border-color: var(--line, rgba(15,23,42,.12));
 }
 
 .fs-note-card,
@@ -21,7 +21,7 @@
 .fs-editor-panel,
 .fs-share-link-box {
   background: var(--notes-panel);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.04));
 }
 
 .fs-btn-primary,

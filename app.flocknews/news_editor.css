@@ -6,20 +6,20 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --ed-sidebar: #1a1710;
-  --ed-sidebar-2: #222018;
-  --ed-sidebar-3: #2a2820;
-  --ed-rule:     #3d3a2e;
-  --ed-rule-hi:  #5a5444;
-  --ed-gold:     #c9aa70;
-  --ed-gold-hi:  #e2c47e;
-  --ed-text:     #ddd7c8;
-  --ed-text-dim: #8a8070;
-  --ed-ink:      #f7f2e7;
-  --paper:       #f7f2e7;
-  --paper-tint:  #ede7d6;
-  --ink:         #1a1a1a;
-  --rule-soft:   #bfb8a8;
+  --ed-sidebar: #111827;
+  --ed-sidebar-2: #111827;
+  --ed-sidebar-3: #1e293b;
+  --ed-rule:     #334155;
+  --ed-rule-hi:  #475569;
+  --ed-gold:     #f7c756;
+  --ed-gold-hi:  #f7c756;
+  --ed-text:     #cbd5e1;
+  --ed-text-dim: #64748b;
+  --ed-ink:      #f1f5f9;
+  --paper:       #f1f5f9;
+  --paper-tint:  #e5e7ef;
+  --ink:         #111827;
+  --rule-soft:   #94a3b8;
   --serif:       'Playfair Display', Georgia, serif;
   --sans:        system-ui, -apple-system, sans-serif;
 }
@@ -204,6 +204,6 @@ html, body {
   color: var(--ed-sidebar); padding: 9px 22px; border-radius: 4px;
   font-family: var(--serif); font-size: 13px; font-weight: 700;
   z-index: 9999; letter-spacing: .06em;
-  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
 }
 #ed-status.visible { display: block; }

@@ -10,14 +10,14 @@
   --about-cyan: var(--herald-cyan, #48d3d9);
   --about-panel: var(--herald-panel, rgba(255,255,255,.72));
   --about-panel-strong: var(--herald-panel-strong, #ffffff);
-  --about-rule: rgba(15,23,42,.10);
+  --about-rule: rgba(15,23,42,.12);
 }
 
 html,
 body {
   background:
-    radial-gradient(circle at top left, rgba(232,168,56,.16), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 30rem),
+    radial-gradient(circle at top left, rgba(232,168,56,.18), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
   color: var(--ink, #111827);
   font-family: var(--font-ui, "Plus Jakarta Sans", system-ui, sans-serif);
@@ -27,11 +27,11 @@ body {
   min-height: min(620px, 82vh);
   display: grid;
   align-items: center;
-  border-bottom: 1px solid rgba(247,199,86,.24);
+  border-bottom: 1px solid rgba(247,199,86,.25);
   background:
     radial-gradient(circle at 86% 12%, rgba(72,211,217,.18), transparent 18rem),
     radial-gradient(circle at 14% 88%, rgba(247,199,86,.18), transparent 18rem),
-    linear-gradient(135deg, rgba(15,23,42,.98), rgba(22,34,53,.96));
+    linear-gradient(135deg, rgba(15,23,42,.95), rgba(15,23,42,.95));
   color: #f8fafc;
 }
 
@@ -40,16 +40,16 @@ body {
 }
 
 .ab-hero::after {
-  background: radial-gradient(circle, rgba(247,199,86,.13) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(247,199,86,.12) 0%, transparent 68%);
 }
 
 .ab-hero-badge,
 .ab-section-head-icon,
 .ab-ws-step-icon {
-  border: 1px solid rgba(247,199,86,.24);
-  background: rgba(247,199,86,.14) !important;
+  border: 1px solid rgba(247,199,86,.25);
+  background: rgba(247,199,86,.12) !important;
   color: var(--about-gold) !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.48);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.5);
 }
 
 .ab-hero h1,
@@ -83,7 +83,7 @@ body {
   border: 1px solid var(--about-rule);
   border-radius: var(--herald-radius-lg, 18px);
   background:
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 11rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 11rem),
     var(--about-panel);
   box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
   backdrop-filter: blur(12px);
@@ -110,8 +110,8 @@ body {
 
 .ab-card:hover,
 .ab-engine:hover {
-  border-color: rgba(247,199,86,.42);
-  box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08)), 0 0 0 1px rgba(247,199,86,.14);
+  border-color: rgba(247,199,86,.35);
+  box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08)), 0 0 0 1px rgba(247,199,86,.12);
 }
 
 .ab-card-icon,
@@ -125,7 +125,7 @@ body {
   place-items: center;
   border: 1px solid rgba(15,23,42,.08);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.84));
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.72));
   box-shadow: 0 10px 22px rgba(15,23,42,.08);
   font-size: 1.55rem;
 }
@@ -148,7 +148,7 @@ body {
 }
 
 .ab-engine-top {
-  background: rgba(15,23,42,.92);
+  background: rgba(15,23,42,.9);
   color: #f8fafc;
 }
 

@@ -2,7 +2,7 @@
 
 :root {
   --chat-accent: var(--herald-cyan, #48d3d9);
-  --chat-accent-deep: #0891b2;
+  --chat-accent-deep: #0ea5e9;
   --chat-panel: var(--herald-panel-strong, #fff);
   --chat-panel-soft: var(--herald-panel, rgba(255,255,255,.72));
   --chat-radius: var(--herald-radius-lg, 18px);
@@ -22,7 +22,7 @@
 .fc-panel,
 .fc-card,
 .fc-composer {
-  border-color: var(--line, rgba(15,23,42,.1));
+  border-color: var(--line, rgba(15,23,42,.12));
 }
 
 .fc-thread,
@@ -30,7 +30,7 @@
 .fc-card,
 .fc-composer {
   background: var(--chat-panel);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.04));
 }
 
 .fc-send-btn,
@@ -80,31 +80,31 @@ body.flockchat-app.auth-open {
    Ensures correct first-paint colors before fine_linen.js applies data-theme.
    Scoped so they don't override theme tokens on FlockOS/ATOG pages. */
 body.flockchat-app {
-  --bg:            #f7f8fb;
+  --bg:            #f8fafc;
   --bg-raised:     #ffffff;
-  --bg-sunken:     #edf0f6;
-  --bg-hover:      #f0f3f9;
-  --bg-active:     rgba(60,59,110,0.12);
+  --bg-sunken:     #f1f5f9;
+  --bg-hover:      #f1f5f9;
+  --bg-active:     rgba(27,38,79,.12);
   --ink:           #1b264f;
-  --ink-muted:     #4a5578;
-  --ink-faint:     #8890a5;
-  --accent:        #3c3b6e;
-  --accent-soft:   rgba(60,59,110,0.12);
-  --gold:          #c5a44e;
-  --gold-soft:     rgba(197,164,78,0.12);
-  --danger:        #b22234;
-  --danger-soft:   rgba(178,34,52,0.10);
-  --success:       #3d7a4f;
-  --line:          #d4d9e6;
-  --line-strong:   #bec5d6;
-  --shadow-sm:     0 1px 3px rgba(27,38,79,0.06);
-  --shadow-md:     0 4px 12px rgba(27,38,79,0.06);
+  --ink-muted:     #475569;
+  --ink-faint:     #94a3b8;
+  --accent:        #334155;
+  --accent-soft:   rgba(27,38,79,.12);
+  --gold:          #e8a838;
+  --gold-soft:     rgba(232,168,56,.12);
+  --danger:        #b91c1c;
+  --danger-soft:   rgba(220,38,38,.12);
+  --success:       #475569;
+  --line:          #cbd5e1;
+  --line-strong:   #cbd5e1;
+  --shadow-sm:     0 1px 3px rgba(27,38,79,.04);
+  --shadow-md:     0 4px 12px rgba(27,38,79,.04);
   --shadow-lg:     0 8px 24px rgba(27,38,79,0.08);
   --sidebar-w:     240px;
   --topbar-h:      52px;
-  --online: #2ea043;
-  --away:   #d29922;
-  --dnd:    #cf222e;
+  --online: #16a34a;
+  --away:   #b8871e;
+  --dnd:    #dc2626;
 }
 body.flockchat-app button { font-family: inherit; cursor: pointer; }
 body.flockchat-app input,
@@ -177,7 +177,7 @@ body.flockchat-app ::-webkit-scrollbar-thumb { background: var(--line); border-r
   width: 100%;
   background: var(--bg-sunken);
   border: 1.5px solid var(--line-strong);
-  box-shadow: 0 1px 2px rgba(27,38,79,0.03);
+  box-shadow: 0 1px 2px rgba(27,38,79,.04);
   border-radius: 8px;
   padding: 10px 14px;
   color: var(--ink);
@@ -692,7 +692,7 @@ textarea#composer-input {
 }
 textarea#composer-input::placeholder { color: var(--ink-faint); }
 .send-btn {
-  background: var(--accent, #3c3b6e);
+  background: var(--accent, #334155);
   color: var(--ink-inverse, #fff);
   border: none;
   border-radius: 7px;
@@ -1069,7 +1069,7 @@ textarea#composer-input::placeholder { color: var(--ink-faint); }
 body.flockchat-app .topbar {
   background: var(--accent);
   border-bottom: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
 }
 body.flockchat-app .topbar-brand .wordmark {
   color: #fff;
@@ -1077,7 +1077,7 @@ body.flockchat-app .topbar-brand .wordmark {
   letter-spacing: 0.02em;
 }
 body.flockchat-app .topbar-brand .build-tag {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,.5);
   font-weight: 500;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -1085,14 +1085,14 @@ body.flockchat-app .topbar-brand .build-tag {
   margin-left: 8px;
 }
 body.flockchat-app .topbar-channel-name { color: #fff; font-weight: 600; }
-body.flockchat-app .topbar-channel-name .sigil { color: rgba(255,255,255,0.60); }
-body.flockchat-app .topbar-channel-desc { color: rgba(255,255,255,0.60); border-left-color: rgba(255,255,255,0.18); }
+body.flockchat-app .topbar-channel-name .sigil { color: rgba(255,255,255,.5); }
+body.flockchat-app .topbar-channel-desc { color: rgba(255,255,255,.5); border-left-color: rgba(255,255,255,0.18); }
 body.flockchat-app .user-pill {
   background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.18);
 }
 body.flockchat-app .user-pill .uname { color: #fff; }
-body.flockchat-app .user-pill:hover { border-color: rgba(255,255,255,0.40); }
+body.flockchat-app .user-pill:hover { border-color: rgba(255,255,255,.35); }
 
 /* Sidebar: light — matches FlockOS shell, accent details for identity.
    IMPORTANT: The unscoped .sidebar rule (for FlockOS nav) uses position:fixed.
@@ -1108,7 +1108,7 @@ body.flockchat-app .sidebar {
   height: auto;
   overflow-y: hidden;
   padding: 0;
-  background: var(--bg-sunken, #edf0f6);
+  background: var(--bg-sunken, #f1f5f9);
   border-right: 1px solid var(--line);
 }
 body.flockchat-app .sidebar ::-webkit-scrollbar-thumb { background: var(--line-strong); }
@@ -1133,7 +1133,7 @@ body.flockchat-app .sidebar-item .ch-name { color: var(--ink-muted); }
 body.flockchat-app .sidebar-item .unread-badge { background: var(--accent); color: #fff; }
 body.flockchat-app .sidebar-item .sigil { color: var(--ink-faint); }
 body.flockchat-app .sidebar-item:hover {
-  background: rgba(60,59,110,0.06);
+  background: rgba(27,38,79,.04);
 }
 body.flockchat-app .sidebar-item.active {
   background: var(--accent-soft);
@@ -1168,7 +1168,7 @@ body.flockchat-app .msg-row:nth-of-type(6n+2) .msg-avatar { background: var(--li
 body.flockchat-app .msg-row:nth-of-type(6n+3) .msg-avatar { background: var(--mint); }
 body.flockchat-app .msg-row:nth-of-type(6n+4) .msg-avatar { background: var(--sky); }
 body.flockchat-app .msg-row:nth-of-type(6n+5) .msg-avatar { background: var(--gold); }
-body.flockchat-app .msg-row:nth-of-type(6n)   .msg-avatar { background: var(--rose, #b07c95); }
+body.flockchat-app .msg-row:nth-of-type(6n)   .msg-avatar { background: var(--rose, #94a3b8); }
 
 /* Message rows: generous breathing room, hover tint only (no pills,
    no per-row colored backgrounds). */
@@ -1251,7 +1251,7 @@ body.flockchat-app .composer-inner:focus-within {
 
 /* Topbar icon buttons: white on accent background */
 body.flockchat-app .topbar-icon-btn {
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,.72);
   border-color: transparent;
   transition: background 0.12s, color 0.12s;
 }
@@ -1319,7 +1319,7 @@ body.flockchat-app .topbar-icon-btn { white-space: nowrap; }
 body.flockchat-app #bottom-nav {
   background: var(--bg-raised);
   border-top: 1px solid var(--line);
-  box-shadow: 0 -1px 8px rgba(27,38,79,0.07);
+  box-shadow: 0 -1px 8px rgba(27,38,79,.08);
 }
 body.flockchat-app .bottom-nav-btn { color: var(--ink-faint); }
 body.flockchat-app .bottom-nav-btn.active { color: var(--accent); font-weight: 700; }
@@ -1409,7 +1409,7 @@ body.flockchat-app a.bottom-nav-btn:hover { color: var(--ink-faint); text-decora
     position: fixed;
     inset: 0;
     top: var(--topbar-h);
-    background: rgba(0,0,0,0.30);
+    background: rgba(0,0,0,.25);
     z-index: 140;
   }
   #sidebar-scrim.open { display: block; }
@@ -1484,7 +1484,7 @@ body.embedded .topbar {
   height: 38px;
   padding: 0 12px;
   border-bottom: 1px solid var(--line);
-  box-shadow: 0 1px 4px rgba(27,38,79,0.05);
+  box-shadow: 0 1px 4px rgba(27,38,79,.04);
 }
 body.embedded { --topbar-h: 38px; }
 body.embedded .topbar-context { padding: 0 8px; }
@@ -1596,7 +1596,7 @@ body.embedded #btn-manage-users { display: none !important; }
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(27,38,79,0.45);
+  background: rgba(27,38,79,.5);
   z-index: 400;
   align-items: flex-start;
   justify-content: center;
@@ -1661,7 +1661,7 @@ body.embedded #btn-manage-users { display: none !important; }
 }
 .reply-quote:hover { background: color-mix(in srgb, var(--accent, #38bdf8) 15%, transparent); }
 .reply-quote-author { font-weight: 700; color: var(--accent, #38bdf8); white-space: nowrap; }
-.reply-quote-text { color: var(--ink-muted, #888); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.reply-quote-text { color: var(--ink-muted, #64748b); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
 
 /* ── Message highlight (jump-to-message animation) ──────────────────────── */
 .msg-highlight {
@@ -1693,13 +1693,13 @@ body.embedded #btn-manage-users { display: none !important; }
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 1px 6px; border-radius: 4px; margin-top: 4px;
 }
-.prayer-status-badge.new    { background: rgba(167,139,250,0.18); color: #a78bfa; }
-.prayer-status-badge.answered { background: rgba(52,211,153,0.18); color: #34d399; }
-.prayer-status-badge.archived { background: rgba(150,150,150,0.15); color: #888; }
+.prayer-status-badge.new    { background: rgba(124,58,237,.18); color: #a78bfa; }
+.prayer-status-badge.answered { background: rgba(34,197,94,.18); color: #34d399; }
+.prayer-status-badge.archived { background: rgba(100,116,139,.12); color: #64748b; }
 .prayer-cat-label {
   display: inline-block; font-size: 0.62rem; font-weight: 700;
   letter-spacing: 0.08em; text-transform: uppercase;
-  color: #a78bfa; background: rgba(167,139,250,0.1);
+  color: #a78bfa; background: rgba(124,58,237,.12);
   padding: 2px 8px; border-radius: 4px; margin-bottom: 0.75rem;
 }
 

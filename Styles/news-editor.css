@@ -7,14 +7,14 @@
   --ed-sidebar: var(--herald-navy, #0f172a);
   --ed-sidebar-2: var(--herald-navy-2, #162235);
   --ed-sidebar-3: #1e293b;
-  --ed-rule: rgba(255,255,255,.10);
-  --ed-rule-hi: rgba(247,199,86,.34);
+  --ed-rule: rgba(255,255,255,.12);
+  --ed-rule-hi: rgba(247,199,86,.35);
   --ed-gold: var(--herald-gold, #f7c756);
-  --ed-gold-hi: #ffe08a;
+  --ed-gold-hi: #f7c756;
   --ed-text: #f8fafc;
-  --ed-text-dim: rgba(248,250,252,.62);
+  --ed-text-dim: rgba(255,255,255,.5);
   --paper: #f8fafc;
-  --paper-tint: #eef2f7;
+  --paper-tint: #f1f5f9;
   --ink: #111827;
   --rule-soft: rgba(15,23,42,.12);
   --serif: var(--font-serif, "Merriweather", Georgia, serif);
@@ -24,7 +24,7 @@
 html,
 body {
   background:
-    radial-gradient(circle at top left, rgba(247,199,86,.14), transparent 28rem),
+    radial-gradient(circle at top left, rgba(247,199,86,.12), transparent 28rem),
     linear-gradient(180deg, var(--ed-sidebar), var(--ed-sidebar-2));
   font-family: var(--sans);
 }
@@ -55,7 +55,7 @@ body {
 .ed-accordion-btn:hover,
 .ed-accordion-btn:focus-visible,
 .ed-accordion-body {
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.04);
   outline: none;
 }
 
@@ -72,7 +72,7 @@ body {
 .ed-row input:focus,
 .ed-row textarea:focus {
   border-color: var(--ed-gold);
-  box-shadow: 0 0 0 3px rgba(247,199,86,.14);
+  box-shadow: 0 0 0 3px rgba(247,199,86,.12);
 }
 
 .ed-btn-primary,
@@ -92,7 +92,7 @@ body {
 
 .ed-preview {
   background:
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 28rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 28rem),
     var(--paper);
 }
 

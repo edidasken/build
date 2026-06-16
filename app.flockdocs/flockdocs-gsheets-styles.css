@@ -6,14 +6,14 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: rgba(30, 41, 59, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(27,38,79,.72);
+  border-bottom: 1px solid rgba(255,255,255,.12);
   flex-wrap: wrap;
 }
 
 .fd-ss-format-select {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.9);
   padding: 6px 10px;
@@ -23,12 +23,12 @@
 }
 
 .fd-ss-format-select:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.25);
 }
 
 .fd-ss-toolbar-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   border: 1px solid transparent;
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.9);
@@ -39,18 +39,18 @@
 }
 
 .fd-ss-toolbar-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.18);
 }
 
 .fd-ss-toolbar-btn:active {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,.18);
 }
 
 .fd-ss-toolbar-divider {
   width: 1px;
   height: 24px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   margin: 0 4px;
 }
 
@@ -60,22 +60,22 @@
   align-items: center;
   gap: 12px;
   padding: 8px 16px;
-  background: rgba(15, 23, 42, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15,23,42,.72);
+  border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
 .fd-ss-cell-ref {
   min-width: 60px;
   font-family: 'Courier New', monospace;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255,255,255,.72);
   font-weight: 600;
 }
 
 .fd-ss-formula-input {
   flex: 1;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 4px;
   color: rgba(255, 255, 255, 0.9);
   padding: 6px 12px;
@@ -103,12 +103,12 @@
 }
 
 .fd-ss-grid th {
-  background: linear-gradient(180deg, #1e293b 0%, #1a2332 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #1e293b 0%, #162235 100%);
+  border: 1px solid rgba(255,255,255,.12);
   padding: 8px;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255,255,255,.72);
   text-align: center;
   position: sticky;
   top: 0;
@@ -123,7 +123,7 @@
 }
 
 .fd-ss-grid td {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   padding: 0;
   height: 30px;
   min-width: 120px;
@@ -132,7 +132,7 @@
 }
 
 .fd-ss-grid td:hover {
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(59,130,246,.04);
 }
 
 .fd-ss-cell {
@@ -158,13 +158,13 @@
 }
 
 .fd-ss-cell.selected {
-  background: rgba(59, 130, 246, 0.15);
+  background: rgba(59,130,246,.12);
   outline: 2px solid #3b82f6;
   outline-offset: -2px;
 }
 
 .fd-ss-cell.fd-ss-protected {
-  background: rgba(251, 191, 36, 0.05);
+  background: rgba(232,168,56,.04);
   position: relative;
 }
 
@@ -204,25 +204,25 @@
 
 /* Conditional Formatting */
 .fd-ss-cell.cf-heat-high {
-  background: rgba(239, 68, 68, 0.3) !important;
-  color: #fca5a5;
+  background: rgba(220,38,38,.25) !important;
+  color: #fb7185;
 }
 
 .fd-ss-cell.cf-heat-medium {
-  background: rgba(251, 191, 36, 0.3) !important;
-  color: #fcd34d;
+  background: rgba(232,168,56,.25) !important;
+  color: #f7c756;
 }
 
 .fd-ss-cell.cf-heat-low {
-  background: rgba(34, 197, 94, 0.3) !important;
-  color: #86efac;
+  background: rgba(34,197,94,.25) !important;
+  color: #48d3d9;
 }
 
 /* Data Validation Dropdowns */
 .fd-ss-cell-dropdown {
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,.04);
   border: none;
   color: rgba(255, 255, 255, 0.9);
   font-size: 13px;
@@ -232,7 +232,7 @@
 
 .fd-ss-cell-dropdown:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
 }
 
 /* Filter Buttons */
@@ -241,10 +241,10 @@
   right: 4px;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   border: none;
   border-radius: 3px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255,255,255,.5);
   font-size: 10px;
   padding: 2px 6px;
   cursor: pointer;
@@ -257,7 +257,7 @@
 }
 
 .fd-ss-filter-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,.18);
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -265,7 +265,7 @@
 .fd-ss-filter-menu {
   position: absolute;
   background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   padding: 8px 0;
@@ -286,7 +286,7 @@
 }
 
 .fd-ss-filter-option:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
 }
 
 .fd-ss-filter-option input[type="checkbox"] {
@@ -308,7 +308,7 @@
 .fd-ss-chart-container {
   position: absolute;
   background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   padding: 16px;
@@ -325,7 +325,7 @@
   align-items: center;
   margin-bottom: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
 .fd-ss-chart-title {
@@ -337,7 +337,7 @@
 .fd-ss-chart-close {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255,255,255,.5);
   cursor: pointer;
   font-size: 18px;
   padding: 0;
@@ -347,7 +347,7 @@
 }
 
 .fd-ss-chart-close:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -360,7 +360,7 @@
 .fd-ss-pivot-container {
   position: absolute;
   background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   padding: 16px;
@@ -375,8 +375,8 @@
 }
 
 .fd-ss-pivot-table th {
-  background: rgba(59, 130, 246, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(59,130,246,.18);
+  border: 1px solid rgba(255,255,255,.12);
   padding: 8px;
   font-size: 12px;
   font-weight: 600;
@@ -384,17 +384,17 @@
 }
 
 .fd-ss-pivot-table td {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   padding: 6px 8px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255,255,255,.72);
 }
 
 /* Slicers */
 .fd-ss-slicer {
   position: absolute;
   background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   padding: 12px;
@@ -408,37 +408,37 @@
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
 .fd-ss-slicer-item {
   padding: 6px 10px;
   margin: 4px 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 4px;
   cursor: pointer;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255,255,255,.72);
   transition: all 0.15s ease;
 }
 
 .fd-ss-slicer-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   border-color: #3b82f6;
 }
 
 .fd-ss-slicer-item.selected {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(59,130,246,.18);
   border-color: #3b82f6;
-  color: #60a5fa;
+  color: #38bdf8;
 }
 
 /* Named Ranges Highlight */
 .fd-ss-named-range {
   outline: 2px dashed #22c55e;
   outline-offset: -2px;
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(34,197,94,.12);
 }
 
 /* Macro Recording Indicator */
@@ -446,7 +446,7 @@
   position: fixed;
   top: 80px;
   right: 20px;
-  background: rgba(239, 68, 68, 0.9);
+  background: rgba(220,38,38,.9);
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -480,8 +480,8 @@
   bottom: 0;
   width: 320px;
   background: #1e293b;
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+  border-left: 1px solid rgba(255,255,255,.12);
+  box-shadow: -5px 0 20px rgba(0,0,0,.25);
   transform: translateX(100%);
   transition: transform 0.3s ease;
   z-index: 1000;
@@ -494,13 +494,13 @@
 
 .fd-ss-version-item {
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255,255,255,.04);
   cursor: pointer;
   transition: background 0.15s ease;
 }
 
 .fd-ss-version-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255,255,255,.04);
 }
 
 .fd-ss-version-date {
@@ -519,18 +519,18 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: rgba(59, 130, 246, 0.2);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(59,130,246,.18);
+  border: 1px solid rgba(59,130,246,.25);
   border-radius: 12px;
   padding: 2px 8px;
   font-size: 12px;
-  color: #60a5fa;
+  color: #38bdf8;
   cursor: pointer;
   max-width: 100%;
 }
 
 .fd-ss-smart-chip:hover {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(59,130,246,.25);
 }
 
 /* Timeline/Gantt View */
@@ -555,7 +555,7 @@
 
 .fd-ss-timeline-bar {
   height: 24px;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  background: linear-gradient(90deg, #3b82f6, #38bdf8);
   border-radius: 4px;
   position: relative;
   transition: all 0.2s ease;
@@ -570,7 +570,7 @@
 .fd-ss-context-menu {
   position: absolute;
   background: #1e293b;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255,255,255,.12);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   padding: 4px 0;
@@ -589,12 +589,12 @@
 }
 
 .fd-ss-context-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
 }
 
 .fd-ss-context-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.12);
   margin: 4px 0;
 }
 
@@ -602,7 +602,7 @@
 .fd-ss-selection-range {
   outline: 2px solid #3b82f6;
   outline-offset: -2px;
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(59,130,246,.12);
 }
 
 /* Auto-fill Handle */
@@ -620,8 +620,8 @@
 
 /* Error Indicator */
 .fd-ss-cell.error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
+  background: rgba(220,38,38,.12);
+  color: #fb7185;
 }
 
 .fd-ss-cell.error::after {
@@ -638,7 +638,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(30, 41, 59, 0.95);
+  background: rgba(27,38,79,.95);
   padding: 24px 32px;
   border-radius: 8px;
   font-size: 14px;
@@ -649,7 +649,7 @@
 .fd-ss-spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(255,255,255,.18);
   border-top-color: #3b82f6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;

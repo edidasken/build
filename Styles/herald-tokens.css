@@ -13,7 +13,7 @@
   --bg:                #f8fafc;
   --bg-raised:         #ffffff;
   --bg-sunken:         #f1f5f9;
-  --bg-hover:          #e2e8f0;
+  --bg-hover:          #e5e7ef;
   --bg-soft:           #f1f5f9;        /* alias for --bg-sunken used by some views */
   --bg-base:           #f1f5f9;         /* alias used by GROW, life-sheet, etc. */
   --bg-input:          #f1f5f9;         /* input / textarea field background */
@@ -30,50 +30,50 @@
   --ink-inverse:       #f8fafc;
 
   /* ── Borders & rules ──────────────────────────────────────────────────── */
-  --line:              rgba(15, 23, 42, .10);
+  --line:              rgba(15,23,42,.12);
   --line-strong:       rgba(15, 23, 42, .18);
-  --line-faint:        rgba(15, 23, 42, .06);
-  --rule:              rgba(15, 23, 42, .10);
-  --rule-soft:         rgba(15, 23, 42, .10);
+  --line-faint:        rgba(15,23,42,.04);
+  --rule:              rgba(15,23,42,.12);
+  --rule-soft:         rgba(15,23,42,.12);
   --rule-faint:        rgba(15, 23, 42, .08);
-  --border:            rgba(15, 23, 42, .10);  /* GROW + legacy alias */
-  --stroke:            rgba(15, 23, 42, .10);  /* newer view alias */
+  --border:            rgba(15,23,42,.12);  /* GROW + legacy alias */
+  --stroke:            rgba(15,23,42,.12);  /* newer view alias */
 
   /* ── Gold — the Herald signature ──────────────────────────────────────── */
   --gold:              #f7c756;
   --gold-deep:         #b8871e;
   --gold-text:         #b8871e;
-  --gold-soft:         rgba(247, 199, 86, .15);
-  --gold-glow:         rgba(247, 199, 86, .32);
-  --gold-shadow:       0 4px 20px rgba(247, 199, 86, .42), 0 1px 4px rgba(247, 199, 86, .20);
+  --gold-soft:         rgba(247,199,86,.12);
+  --gold-glow:         rgba(247,199,86,.25);
+  --gold-shadow:       0 4px 20px rgba(247,199,86,.35), 0 1px 4px rgba(247,199,86,.18);
 
   /* ── Accent (maps to gold in the Herald world) ────────────────────────── */
   --accent:            #f7c756;
-  --accent-hover:      #e8b83a;
+  --accent-hover:      #e8a838;
   --accent-soft:       rgba(247, 199, 86, .12);
 
   /* ── Supporting palette — desaturated to sit quiet beside gold ────────── */
   --mint:              #34d399;
-  --mint-soft:         rgba(52, 211, 153, .12);
-  --peach:             #f0a889;
-  --peach-soft:        rgba(240, 168, 137, .12);
-  --lilac:             #b49bdb;
-  --lilac-soft:        rgba(180, 155, 219, .12);
-  --rose:              #e69aba;
-  --rose-soft:         rgba(230, 154, 186, .12);
+  --mint-soft:         rgba(34,197,94,.12);
+  --peach:             #fb7185;
+  --peach-soft:        rgba(232,168,56,.12);
+  --lilac:             #a78bfa;
+  --lilac-soft:        rgba(124,58,237,.12);
+  --rose:              #fb7185;
+  --rose-soft:         rgba(232,168,56,.12);
   --sky:               #48d3d9;          /* Herald cyan */
   --sky-soft:          rgba(72, 211, 217, .12);
 
-  --danger:            #c0392b;
-  --danger-soft:       rgba(192, 57, 43, .10);
-  --success:           #3d8b4f;
-  --success-soft:      rgba(61, 139, 79, .10);
-  --warning:           #946B1C;
-  --warning-soft:      rgba(148, 107, 28, .12);
+  --danger:            #dc2626;
+  --danger-soft:       rgba(220,38,38,.12);
+  --success:           #16a34a;
+  --success-soft:      rgba(34,197,94,.12);
+  --warning:           #b45309;
+  --warning-soft:      rgba(220,38,38,.12);
 
   /* ── Links ────────────────────────────────────────────────────────────── */
   --link:              #b8871e;
-  --link-hover:        #8b6914;
+  --link-hover:        #b45309;
 
   /* ── Typography — Herald font stack ───────────────────────────────────── */
   --font-ui:           'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -83,22 +83,22 @@
   /* ── Sidebar — Herald navy (always dark, cathedral at night) ──────────── */
   --side-0:            #0f172a;
   --side-1:            #162235;
-  --side-2:            #0a1128;
-  --side-bg:           linear-gradient(180deg, #0f172a 0%, #162235 55%, #0a1128 100%);
-  --side-ink:          rgba(255, 255, 255, .62);
-  --side-ink-hi:       rgba(255, 255, 255, .92);
+  --side-2:            #0f172a;
+  --side-bg:           linear-gradient(180deg, #0f172a 0%, #162235 55%, #0f172a 100%);
+  --side-ink:          rgba(255,255,255,.5);
+  --side-ink-hi:       rgba(255,255,255,.9);
   --side-line:         rgba(255, 255, 255, .08);
 
   /* ── Topbar — Herald navy chrome ──────────────────────────────────────── */
   --top-bg:            linear-gradient(180deg, #0f172a, #162235);
   --top-ink:           #f8fafc;
-  --top-ink-muted:     rgba(255, 255, 255, .62);
+  --top-ink-muted:     rgba(255,255,255,.5);
   --top-line:          rgba(255, 255, 255, .08);
 
   /* ── Shadows — subtle, high-end ───────────────────────────────────────── */
-  --shadow-sm:         0 1px 3px rgba(15, 23, 42, .06), 0 1px 2px rgba(15, 23, 42, .04);
-  --shadow-md:         0 8px 24px rgba(15, 23, 42, .08), 0 3px 8px rgba(15, 23, 42, .05);
-  --shadow-lg:         0 22px 60px rgba(15, 23, 42, .10), 0 8px 20px rgba(15, 23, 42, .06);
+  --shadow-sm:         0 1px 3px rgba(15,23,42,.04), 0 1px 2px rgba(15, 23, 42, .04);
+  --shadow-md:         0 8px 24px rgba(15, 23, 42, .08), 0 3px 8px rgba(15,23,42,.04);
+  --shadow-lg:         0 22px 60px rgba(15,23,42,.12), 0 8px 20px rgba(15,23,42,.04);
   --shadow-glow:       0 0 0 3px rgba(247, 199, 86, .18);
 
   /* ── Radius — Herald rounded language ─────────────────────────────────── */
@@ -116,18 +116,18 @@
   --herald-cyan:       #48d3d9;
   --herald-panel:      rgba(255, 255, 255, .72);
   --herald-panel-strong: #ffffff;
-  --herald-shadow:     0 22px 60px rgba(15, 23, 42, .10);
+  --herald-shadow:     0 22px 60px rgba(15,23,42,.12);
   --herald-shadow-soft: 0 12px 30px rgba(15, 23, 42, .08);
   --herald-radius-xl:  24px;
   --herald-radius-lg:  18px;
   --herald-radius-md:  14px;
 
   /* ── Modal dim — lighter than NC default (matches Herald airiness) ────── */
-  --modal-dim:         rgba(15, 23, 42, .42);
+  --modal-dim:         rgba(15,23,42,.35);
 
   /* ── Gradients — subtle radial halos on page background ───────────────── */
   --grad-hero:
-    radial-gradient(circle at top left,  rgba(247, 199, 86, .16), transparent 32rem),
+    radial-gradient(circle at top left,  rgba(247,199,86,.18), transparent 32rem),
     radial-gradient(circle at top right, rgba(72, 211, 217, .12), transparent 30rem),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
 }
@@ -135,7 +135,7 @@
 /* ── Page background — Herald-style radial halos ─────────────────────────── */
 body {
   background:
-    radial-gradient(circle at top left,  rgba(247, 199, 86, .16), transparent 32rem),
+    radial-gradient(circle at top left,  rgba(247,199,86,.18), transparent 32rem),
     radial-gradient(circle at top right, rgba(72, 211, 217, .12), transparent 30rem),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
 }
@@ -148,14 +148,14 @@ body {
   --c-sky:             #48d3d9;
   --c-sky-bg:          rgba(72, 211, 217, .12);
   --c-emerald:         #34d399;
-  --c-emerald-bg:      rgba(52, 211, 153, .12);
+  --c-emerald-bg:      rgba(34,197,94,.12);
   --c-amber:           #f7c756;
   --c-amber-bg:        rgba(247, 199, 86, .12);
   --c-violet:          #a78bfa;
-  --c-violet-bg:       rgba(167, 139, 250, .12);
+  --c-violet-bg:       rgba(124,58,237,.12);
   --c-rose:            #fb7185;
 
   /* ── Gradient rainbow (topbar accent line, same as Herald) ────────────── */
   --grad-rainbow:
-    linear-gradient(90deg, #48d3d9 0%, #818cf8 22%, #a78bfa 40%, #f7c756 58%, #34d399 78%, #48d3d9 100%);
+    linear-gradient(90deg, #48d3d9 0%, #a78bfa 22%, #a78bfa 40%, #f7c756 58%, #34d399 78%, #48d3d9 100%);
 }

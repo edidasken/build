@@ -1,18 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --paper: #f7f2e7;
-  --paper-white: #fdfaf4;
-  --paper-tint: #ede7d6;
-  --rule: #1a1a1a;
-  --rule-soft: #bfb8a8;
-  --ink: #1a1a1a;
-  --muted: #5a4e42;
+  --paper: #f1f5f9;
+  --paper-white: #f8fafc;
+  --paper-tint: #e5e7ef;
+  --rule: #111827;
+  --rule-soft: #94a3b8;
+  --ink: #111827;
+  --muted: #475569;
   --gold: #e8a838;
   --navy: #0c1445;
-  --navy-hover: #162858;
-  --danger: #b42318;
-  --herald-shadow: 0 22px 60px rgba(15, 23, 42, .10);
+  --navy-hover: #1b264f;
+  --danger: #b91c1c;
+  --herald-shadow: 0 22px 60px rgba(15,23,42,.12);
   --herald-shadow-soft: 0 12px 30px rgba(15, 23, 42, .08);
   --herald-radius-xl: 24px;
   --herald-radius-lg: 18px;
@@ -38,8 +38,8 @@ body {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(232, 168, 56, .20), transparent 30rem),
-    radial-gradient(circle at top right, rgba(72, 211, 217, .10), transparent 28rem);
+    radial-gradient(circle at top left, rgba(232,168,56,.18), transparent 30rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 28rem);
 }
 
 .card {
@@ -47,9 +47,9 @@ body {
   z-index: 1;
   overflow: hidden;
   background:
-    radial-gradient(circle at top right, rgba(72, 211, 217, .10), transparent 12rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 12rem),
     rgba(255, 255, 255, .72);
-  border: 1px solid rgba(15, 23, 42, .10);
+  border: 1px solid rgba(15,23,42,.12);
   border-radius: var(--herald-radius-xl);
   padding: 40px 38px 36px;
   width: 100%;
@@ -66,7 +66,7 @@ body {
   width: 150px;
   height: 150px;
   border-radius: 999px;
-  background: rgba(72, 211, 217, .13);
+  background: rgba(72,211,217,.12);
   pointer-events: none;
 }
 
@@ -92,7 +92,7 @@ body {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 8px 22px rgba(12, 20, 69, .22);
+  box-shadow: 0 8px 22px rgba(15,23,42,.18);
 }
 
 .brand-icon svg { stroke: currentColor; }
@@ -124,9 +124,9 @@ body {
   align-items: center;
   width: fit-content;
   padding: .38rem .65rem;
-  border: 1px solid rgba(247, 199, 86, .22);
+  border: 1px solid rgba(247,199,86,.18);
   border-radius: 999px;
-  background: rgba(247, 199, 86, .14);
+  background: rgba(247,199,86,.12);
   margin-bottom: 22px;
 }
 
@@ -146,7 +146,7 @@ input[type="email"],
 input[type="password"] {
   width: 100%;
   background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, .10);
+  border: 1px solid rgba(15,23,42,.12);
   border-radius: var(--herald-radius-md);
   color: var(--ink);
   font-family: inherit;
@@ -163,7 +163,7 @@ input[type="password"]:focus {
   box-shadow: 0 0 0 3px rgba(232, 168, 56, .18);
 }
 
-input::placeholder { color: #8b8175; }
+input::placeholder { color: #64748b; }
 
 .btn-signin {
   width: 100%;
@@ -180,12 +180,12 @@ input::placeholder { color: #8b8175; }
   letter-spacing: .14em;
   text-transform: uppercase;
   transition: opacity .15s, transform .1s, box-shadow .15s;
-  box-shadow: 0 8px 22px rgba(12, 20, 69, .22);
+  box-shadow: 0 8px 22px rgba(15,23,42,.18);
 }
 
 .btn-signin:hover {
   background: var(--navy-hover);
-  box-shadow: 0 10px 26px rgba(12, 20, 69, .26);
+  box-shadow: 0 10px 26px rgba(15,23,42,.25);
 }
 
 .btn-signin:active { transform: scale(.98); }
@@ -193,8 +193,8 @@ input::placeholder { color: #8b8175; }
 
 .error-msg {
   display: none;
-  background: rgba(180, 35, 24, .08);
-  border: 1px solid rgba(180, 35, 24, .25);
+  background: rgba(220,38,38,.08);
+  border: 1px solid rgba(220,38,38,.25);
   border-radius: var(--herald-radius-md);
   color: var(--danger);
   font-size: .82rem;

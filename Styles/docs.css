@@ -19,7 +19,7 @@
 .fd-panel,
 .fd-doc-card,
 .fd-editor-panel {
-  border-color: var(--line, rgba(15,23,42,.1));
+  border-color: var(--line, rgba(15,23,42,.12));
 }
 
 .fd-doc-card,
@@ -27,7 +27,7 @@
 .fd-modal,
 .fd-editor-panel {
   background: var(--docs-panel);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.06));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(15,23,42,.04));
 }
 
 .fd-btn--primary {
@@ -50,8 +50,8 @@
 body:has(#fd-app),
 body.docs-auth {
   background:
-    radial-gradient(circle at top left, rgba(247,199,86,.14), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 30rem),
+    radial-gradient(circle at top left, rgba(247,199,86,.12), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%) !important;
   color: var(--ink, #111827);
 }
@@ -60,18 +60,18 @@ body.docs-auth {
   --fd-sidebar-w: 238px;
   --fd-bg: #f8fafc;
   --fd-panel: rgba(255,255,255,.72);
-  --fd-border: rgba(15,23,42,.10);
+  --fd-border: rgba(15,23,42,.12);
   --fd-side-bg: linear-gradient(180deg, var(--herald-navy, #0f172a), var(--herald-navy-2, #162235));
   --fd-side-line: rgba(255,255,255,.08);
-  --fd-side-ink: #e2e8f0;
+  --fd-side-ink: #e5e7ef;
   --fd-side-ink-hi: #ffffff;
   --sidebar-w: var(--fd-sidebar-w);
   grid-template-rows: auto 1fr auto;
   gap: 0 1.35rem;
   padding: 12px 22px 0;
   background:
-    radial-gradient(circle at top left, rgba(247,199,86,.14), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 30rem),
+    radial-gradient(circle at top left, rgba(247,199,86,.12), transparent 32rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 30rem),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
 }
 
@@ -96,7 +96,7 @@ body.docs-auth {
   border-radius: var(--herald-radius-lg, 18px);
   background: linear-gradient(180deg, var(--herald-navy, #0f172a), var(--herald-navy-2, #162235));
   color: #f8fafc;
-  box-shadow: 0 14px 30px rgba(15,23,42,.14);
+  box-shadow: 0 14px 30px rgba(15,23,42,.12);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   gap: .75rem;
@@ -131,8 +131,8 @@ body.docs-auth {
 #fd-topbar .unity-action:focus-visible,
 #fd-topbar .nc-switcher-btn:hover,
 #fd-topbar .nc-switcher-btn:focus-visible {
-  background: rgba(255,255,255,.11);
-  border-color: rgba(247,199,86,.34);
+  background: rgba(255,255,255,.12);
+  border-color: rgba(247,199,86,.35);
   outline: none;
 }
 
@@ -164,8 +164,8 @@ body.docs-auth {
   min-width: 84px;
   padding: 0 .78rem;
   gap: .4rem;
-  border-color: rgba(247,199,86,.28);
-  background: rgba(247,199,86,.16);
+  border-color: rgba(247,199,86,.25);
+  background: rgba(247,199,86,.18);
   color: #ffffff;
   font-weight: 900;
 }
@@ -182,10 +182,10 @@ body.docs-auth {
   display: none;
   min-width: 220px;
   overflow: hidden;
-  border: 1px solid rgba(15,23,42,.10);
+  border: 1px solid rgba(15,23,42,.12);
   border-radius: var(--herald-radius-md, 14px);
   background: #ffffff;
-  box-shadow: 0 18px 44px rgba(15,23,42,.14);
+  box-shadow: 0 18px 44px rgba(15,23,42,.12);
 }
 
 .fd-new-menu.is-open {
@@ -242,13 +242,13 @@ body.docs-auth {
   border-radius: 20px;
   background: var(--fd-side-bg) !important;
   color: #f8fafc;
-  box-shadow: 0 14px 30px rgba(15,23,42,.14);
+  box-shadow: 0 14px 30px rgba(15,23,42,.12);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
 .fd-sidebar-title {
-  color: rgba(248,250,252,.42) !important;
+  color: rgba(255,255,255,.35) !important;
   letter-spacing: .1em;
 }
 
@@ -270,9 +270,9 @@ body.docs-auth {
 }
 
 .fd-sidebar-btn.is-active {
-  background: rgba(247,199,86,.16) !important;
+  background: rgba(247,199,86,.18) !important;
   color: #ffffff !important;
-  box-shadow: inset 0 -2px 0 rgba(247,199,86,.85);
+  box-shadow: inset 0 -2px 0 rgba(247,199,86,.72);
 }
 
 .fd-library-view {
@@ -283,10 +283,10 @@ body.docs-auth {
 .fd-library-header,
 .fd-empty-state,
 .fd-doc-card {
-  border: 1px solid rgba(15,23,42,.10) !important;
+  border: 1px solid rgba(15,23,42,.12) !important;
   border-radius: var(--herald-radius-lg, 18px) !important;
   background:
-    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 11rem),
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 11rem),
     rgba(255,255,255,.72) !important;
   color: var(--ink, #111827);
   box-shadow: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,.08));
@@ -313,12 +313,12 @@ body.docs-auth {
 
 .fd-search-box {
   background: #ffffff !important;
-  border-color: rgba(15,23,42,.10) !important;
+  border-color: rgba(15,23,42,.12) !important;
 }
 
 .fd-search-box:focus-within {
   border-color: rgba(247,199,86,.50) !important;
-  box-shadow: 0 0 0 3px rgba(247,199,86,.16);
+  box-shadow: 0 0 0 3px rgba(247,199,86,.18);
 }
 
 .fd-search-box svg,
@@ -337,7 +337,7 @@ body.docs-auth {
 
 .fd-doc-menu-btn {
   background: #ffffff !important;
-  border: 1px solid rgba(15,23,42,.10) !important;
+  border: 1px solid rgba(15,23,42,.12) !important;
   color: #475569 !important;
   box-shadow: 0 4px 12px rgba(15,23,42,.08);
 }
@@ -359,18 +359,18 @@ body.docs-auth {
 }
 
 .fd-doc-icon--document {
-  background: linear-gradient(135deg, #2563eb, #60a5fa) !important;
-  box-shadow: 0 10px 22px rgba(37,99,235,.20) !important;
+  background: linear-gradient(135deg, #2563eb, #38bdf8) !important;
+  box-shadow: 0 10px 22px rgba(59,130,246,.18) !important;
 }
 
 .fd-doc-icon--note {
   background: linear-gradient(135deg, #b8871e, #f7c756) !important;
-  box-shadow: 0 10px 22px rgba(184,135,30,.22) !important;
+  box-shadow: 0 10px 22px rgba(232,168,56,.18) !important;
 }
 
 .fd-doc-icon--prayer {
-  background: linear-gradient(135deg, #be123c, #fb7185) !important;
-  box-shadow: 0 10px 22px rgba(190,18,60,.18) !important;
+  background: linear-gradient(135deg, #b91c1c, #fb7185) !important;
+  box-shadow: 0 10px 22px rgba(220,38,38,.18) !important;
 }
 
 .fd-doc-icon--journal {
@@ -379,13 +379,13 @@ body.docs-auth {
 }
 
 .fd-doc-icon--calendar {
-  background: linear-gradient(135deg, #0891b2, #22d3ee) !important;
-  box-shadow: 0 10px 22px rgba(8,145,178,.18) !important;
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8) !important;
+  box-shadow: 0 10px 22px rgba(59,130,246,.18) !important;
 }
 
 .fd-doc-icon--spreadsheet {
-  background: linear-gradient(135deg, #15803d, #4ade80) !important;
-  box-shadow: 0 10px 22px rgba(21,128,61,.18) !important;
+  background: linear-gradient(135deg, #16a34a, #34d399) !important;
+  box-shadow: 0 10px 22px rgba(34,197,94,.18) !important;
 }
 
 .fd-doc-type-pill {
@@ -393,7 +393,7 @@ body.docs-auth {
   width: fit-content;
   margin: 0 0 .55rem;
   padding: .18rem .48rem;
-  border: 1px solid rgba(15,23,42,.10);
+  border: 1px solid rgba(15,23,42,.12);
   border-radius: 999px;
   background: #f8fafc;
   color: #475569;
@@ -403,45 +403,45 @@ body.docs-auth {
 }
 
 .fd-doc-card[data-doc-type="note"] .fd-doc-type-pill {
-  border-color: rgba(184,135,30,.28);
+  border-color: rgba(232,168,56,.25);
   background: rgba(247,199,86,.18);
-  color: #6b4605;
+  color: #b45309;
 }
 
 .fd-doc-card[data-doc-type="spreadsheet"] .fd-doc-type-pill {
-  border-color: rgba(21,128,61,.22);
+  border-color: rgba(34,197,94,.18);
   background: rgba(34,197,94,.12);
-  color: #166534;
+  color: #334155;
 }
 
 .fd-doc-card[data-doc-type="prayer"] .fd-doc-type-pill {
-  border-color: rgba(190,18,60,.22);
-  background: rgba(251,113,133,.12);
-  color: #9f1239;
+  border-color: rgba(220,38,38,.18);
+  background: rgba(232,168,56,.12);
+  color: #b91c1c;
 }
 
 .fd-doc-card[data-doc-type="journal"] .fd-doc-type-pill {
-  border-color: rgba(124,58,237,.22);
-  background: rgba(167,139,250,.14);
-  color: #5b21b6;
+  border-color: rgba(124,58,237,.18);
+  background: rgba(124,58,237,.12);
+  color: #4c1d95;
 }
 
 .fd-doc-card[data-doc-type="calendar"] .fd-doc-type-pill {
-  border-color: rgba(8,145,178,.22);
-  background: rgba(34,211,238,.13);
-  color: #155e75;
+  border-color: rgba(59,130,246,.18);
+  background: rgba(72,211,217,.12);
+  color: #1b264f;
 }
 
 #fd-footer {
   margin: 0 -22px;
   border-top: 1px solid rgba(15,23,42,.08) !important;
-  background: rgba(255,255,255,.82) !important;
+  background: rgba(255,255,255,.72) !important;
   color: #64748b !important;
 }
 
 /* Colorful Docs navigation accents. */
 #fd-topbar .unity-hamburger svg {
-  color: #7dd3fc;
+  color: #48d3d9;
   stroke: currentColor;
 }
 
@@ -462,7 +462,7 @@ body.docs-auth {
 }
 
 #fd-topbar .fd-new-btn svg:last-child {
-  color: #7dd3fc;
+  color: #48d3d9;
   stroke: currentColor;
 }
 
@@ -471,108 +471,108 @@ body.docs-auth {
   padding: 4px;
   border-radius: 10px;
   background: rgba(255,255,255,.08);
-  color: #e2e8f0;
+  color: #e5e7ef;
   stroke: currentColor;
 }
 
 .fd-sidebar-btn[data-view="all-docs"] svg {
-  background: rgba(37,99,235,.22);
-  color: #93c5fd;
+  background: rgba(59,130,246,.18);
+  color: #a78bfa;
 }
 
 .fd-sidebar-btn[data-view="notes"] svg {
-  background: rgba(247,199,86,.20);
-  color: #fcd34d;
+  background: rgba(247,199,86,.18);
+  color: #f7c756;
 }
 
 .fd-sidebar-btn[data-view="prayers"] svg {
-  background: rgba(251,113,133,.18);
-  color: #fda4af;
+  background: rgba(232,168,56,.18);
+  color: #fb7185;
 }
 
 .fd-sidebar-btn[data-view="journal"] svg {
-  background: rgba(167,139,250,.18);
-  color: #c4b5fd;
+  background: rgba(124,58,237,.18);
+  color: #cbd5e1;
 }
 
 .fd-sidebar-btn[data-view="calendar"] svg {
-  background: rgba(34,211,238,.18);
-  color: #67e8f9;
+  background: rgba(72,211,217,.18);
+  color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="my-docs"] svg {
   background: rgba(72,211,217,.18);
-  color: #67e8f9;
+  color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="shared-docs"] svg {
-  background: rgba(34,197,94,.16);
-  color: #86efac;
+  background: rgba(34,197,94,.18);
+  color: #48d3d9;
 }
 
 .fd-sidebar-btn[data-view="recent"] svg {
-  background: rgba(167,139,250,.18);
-  color: #c4b5fd;
+  background: rgba(124,58,237,.18);
+  color: #cbd5e1;
 }
 
 .fd-sidebar-btn[data-view="trash"] svg {
-  background: rgba(248,113,113,.16);
-  color: #fca5a5;
+  background: rgba(232,168,56,.18);
+  color: #fb7185;
 }
 
 .fd-folder-item svg {
-  background: rgba(247,199,86,.16);
-  color: #fde68a;
+  background: rgba(247,199,86,.18);
+  color: #f7c756;
 }
 
 .fd-sidebar-btn.is-active svg {
-  background: rgba(247,199,86,.24);
-  color: #fff7cc;
+  background: rgba(247,199,86,.25);
+  color: #f1f5f9;
 }
 
 .fd-sidebar-btn.is-active[data-view="all-docs"] svg {
-  background: rgba(37,99,235,.28);
-  color: #bfdbfe;
+  background: rgba(59,130,246,.25);
+  color: #cbd5e1;
 }
 
 .fd-sidebar-btn.is-active[data-view="notes"] svg {
-  background: rgba(247,199,86,.24);
-  color: #fff7cc;
+  background: rgba(247,199,86,.25);
+  color: #f1f5f9;
 }
 
 .fd-sidebar-btn.is-active[data-view="prayers"] svg {
-  background: rgba(251,113,133,.24);
-  color: #ffe4e6;
+  background: rgba(232,168,56,.25);
+  color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="journal"] svg {
-  background: rgba(167,139,250,.24);
-  color: #ede9fe;
+  background: rgba(124,58,237,.25);
+  color: #f1f5f9;
 }
 
 .fd-sidebar-btn.is-active[data-view="calendar"] svg {
-  background: rgba(34,211,238,.24);
-  color: #cffafe;
+  background: rgba(72,211,217,.25);
+  color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="my-docs"] svg {
-  background: rgba(72,211,217,.24);
-  color: #cffafe;
+  background: rgba(72,211,217,.25);
+  color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="shared-docs"] svg {
-  background: rgba(34,197,94,.22);
-  color: #bbf7d0;
+  background: rgba(34,197,94,.18);
+  color: #cbd5e1;
 }
 
 .fd-sidebar-btn.is-active[data-view="recent"] svg {
-  background: rgba(167,139,250,.24);
-  color: #ddd6fe;
+  background: rgba(124,58,237,.25);
+  color: #e5e7ef;
 }
 
 .fd-sidebar-btn.is-active[data-view="trash"] svg {
-  background: rgba(248,113,113,.22);
-  color: #fecaca;
+  background: rgba(232,168,56,.18);
+  color: #e5e7ef;
 }
 
 .fd-new-menu-item[data-doc-type="document"] svg {
@@ -580,7 +580,7 @@ body.docs-auth {
 }
 
 .fd-new-menu-item[data-doc-type="spreadsheet"] svg {
-  color: #15803d !important;
+  color: #16a34a !important;
 }
 
 .fd-new-menu-item[data-doc-type="note"] svg {
@@ -588,7 +588,7 @@ body.docs-auth {
 }
 
 .fd-new-menu-item[data-doc-type="prayer"] svg {
-  color: #be123c !important;
+  color: #b91c1c !important;
 }
 
 .fd-new-menu-item[data-doc-type="journal"] svg {
@@ -596,7 +596,7 @@ body.docs-auth {
 }
 
 .fd-new-menu-item[data-doc-type="calendar"] svg {
-  color: #0891b2 !important;
+  color: #0ea5e9 !important;
 }
 
 .fd-system-field:empty::before {
@@ -608,13 +608,13 @@ body.docs-auth {
 #fd-app.fd-wrap {
   --fd-control-bg: #ffffff;
   --fd-control-bg-hover: #f8fafc;
-  --fd-control-border: rgba(15,23,42,.14);
+  --fd-control-border: rgba(15,23,42,.12);
   --fd-control-ink: #111827;
   --fd-control-muted: #475569;
-  --fd-control-soft: #e2e8f0;
+  --fd-control-soft: #e5e7ef;
   --fd-focus-ring: 0 0 0 3px rgba(247,199,86,.18);
   --fd-blue: #2563eb;
-  --fd-green: #15803d;
+  --fd-green: #16a34a;
   --fd-red: #dc2626;
   --fd-amber: #b8871e;
 }
@@ -635,7 +635,7 @@ body.docs-auth {
 .fd-ss-format-bar,
 .fd-ss-formula-bar {
   background:
-    linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.90)) !important;
+    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.9)) !important;
   border-top: 1px solid rgba(15,23,42,.08) !important;
   border-bottom: 1px solid rgba(15,23,42,.12) !important;
   box-shadow: 0 10px 24px rgba(15,23,42,.08);
@@ -650,7 +650,7 @@ body.docs-auth {
   background: #ffffff !important;
   border: 1px solid var(--fd-control-border) !important;
   color: var(--fd-control-ink) !important;
-  box-shadow: 0 1px 2px rgba(15,23,42,.05);
+  box-shadow: 0 1px 2px rgba(15,23,42,.04);
 }
 
 .fd-toolbar-btn:hover,
@@ -664,7 +664,7 @@ body.docs-auth {
 .fd-ss-format-bar .fd-btn:hover,
 .fd-ss-format-bar .fd-btn:focus-visible {
   background: var(--fd-control-bg-hover) !important;
-  border-color: rgba(184,135,30,.45) !important;
+  border-color: rgba(232,168,56,.5) !important;
   color: #0f172a !important;
   outline: none;
   box-shadow: var(--fd-focus-ring);
@@ -674,9 +674,9 @@ body.docs-auth {
 .fd-ss-toolbar-btn.is-active,
 .fd-toolbar-btn[aria-pressed="true"],
 .fd-ss-toolbar-btn[aria-pressed="true"] {
-  background: rgba(247,199,86,.24) !important;
-  border-color: rgba(184,135,30,.55) !important;
-  color: #5f3f08 !important;
+  background: rgba(247,199,86,.25) !important;
+  border-color: rgba(232,168,56,.5) !important;
+  color: #b45309 !important;
 }
 
 .fd-toolbar-btn svg,
@@ -697,7 +697,7 @@ body.docs-auth {
   background: #ffffff !important;
   border: 1px solid var(--fd-control-border) !important;
   color: var(--fd-control-ink) !important;
-  box-shadow: inset 0 1px 1px rgba(15,23,42,.03);
+  box-shadow: inset 0 1px 1px rgba(15,23,42,.04);
 }
 
 .fd-toolbar-select:hover,
@@ -709,7 +709,7 @@ body.docs-auth {
 .fd-formula-bar-wrap:focus-within,
 .fd-ss-formula-input:focus {
   background: #ffffff !important;
-  border-color: rgba(184,135,30,.48) !important;
+  border-color: rgba(232,168,56,.5) !important;
   box-shadow: var(--fd-focus-ring);
   outline: none;
 }
@@ -723,7 +723,7 @@ body.docs-auth {
 
 .fd-toolbar-divider,
 .fd-ss-toolbar-divider {
-  background: rgba(15,23,42,.14) !important;
+  background: rgba(15,23,42,.12) !important;
 }
 
 .fd-save-status,
@@ -754,12 +754,12 @@ body.docs-auth {
 .fd-editor-container {
   background:
     radial-gradient(circle at top left, rgba(247,199,86,.08), transparent 22rem),
-    #e2e8f0 !important;
+    #e5e7ef !important;
 }
 
 .fd-editor-page {
-  border: 1px solid rgba(15,23,42,.10);
-  box-shadow: 0 18px 44px rgba(15,23,42,.14) !important;
+  border: 1px solid rgba(15,23,42,.12);
+  box-shadow: 0 18px 44px rgba(15,23,42,.12) !important;
 }
 
 .fd-editor-view.is-note-editor .fd-editor-container {
@@ -781,33 +781,33 @@ body.docs-auth {
 .fd-editor-content p,
 .fd-editor-content li,
 .fd-editor-content td {
-  color: #1f2937;
+  color: #1e293b;
 }
 
 .fd-editor-content table td,
 .fd-editor-content table th,
 .fd-ss-pivot-table th,
 .fd-ss-pivot-table td {
-  border-color: rgba(15,23,42,.14) !important;
+  border-color: rgba(15,23,42,.12) !important;
 }
 
 .fd-editor-content table th,
 .fd-ss-pivot-table th {
-  background: rgba(37,99,235,.10) !important;
+  background: rgba(59,130,246,.12) !important;
   color: #0f172a !important;
 }
 
 .fd-editor-content blockquote {
   border-left-color: var(--fd-blue) !important;
   color: #334155 !important;
-  background: rgba(37,99,235,.06);
+  background: rgba(59,130,246,.04);
   border-radius: 0 10px 10px 0;
 }
 
 .fd-editor-content pre {
   background: #111827 !important;
   border-color: rgba(255,255,255,.12) !important;
-  color: #e5e7eb;
+  color: #e5e7ef;
 }
 
 .fd-dropdown-menu,
@@ -822,7 +822,7 @@ body.docs-auth {
   background: #ffffff !important;
   border: 1px solid rgba(15,23,42,.12) !important;
   color: #111827 !important;
-  box-shadow: 0 18px 44px rgba(15,23,42,.16) !important;
+  box-shadow: 0 18px 44px rgba(15,23,42,.18) !important;
 }
 
 .fd-menu-label,
@@ -860,7 +860,7 @@ body.docs-auth {
 .fd-ss-version-item,
 .fd-ss-chart-header,
 .fd-ss-slicer-title {
-  border-color: rgba(15,23,42,.10) !important;
+  border-color: rgba(15,23,42,.12) !important;
 }
 
 .fd-comment,
@@ -881,19 +881,19 @@ body.docs-auth {
 }
 
 .fd-template-card {
-  box-shadow: 0 6px 18px rgba(15,23,42,.06);
+  box-shadow: 0 6px 18px rgba(15,23,42,.04);
 }
 
 .fd-equation,
 .fd-editor-header,
 .fd-editor-footer {
   background: #f8fafc !important;
-  border-color: rgba(15,23,42,.14) !important;
+  border-color: rgba(15,23,42,.12) !important;
   color: #334155 !important;
 }
 
 .fd-suggestion-delete {
-  color: #991b1b !important;
+  color: #b91c1c !important;
 }
 
 .fd-status-dropdown.status-not-started {
@@ -903,20 +903,20 @@ body.docs-auth {
 }
 
 .fd-status-dropdown.status-in-progress {
-  background: rgba(247,199,86,.20) !important;
-  border-color: #d89b21 !important;
-  color: #6b4605 !important;
+  background: rgba(247,199,86,.18) !important;
+  border-color: #e8a838 !important;
+  color: #b45309 !important;
 }
 
 .fd-status-dropdown.status-done {
-  background: rgba(34,197,94,.14) !important;
+  background: rgba(34,197,94,.12) !important;
   border-color: #16a34a !important;
-  color: #166534 !important;
+  color: #334155 !important;
 }
 
 .fd-spreadsheet-container-wrap,
 .fd-ss-grid-container {
-  border-top: 1px solid rgba(15,23,42,.10);
+  border-top: 1px solid rgba(15,23,42,.12);
 }
 
 .fd-spreadsheet-table,
@@ -926,8 +926,8 @@ body.docs-auth {
 
 .fd-cell-header,
 .fd-ss-grid th {
-  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%) !important;
-  border-color: rgba(15,23,42,.16) !important;
+  background: linear-gradient(180deg, #f8fafc 0%, #e5e7ef 100%) !important;
+  border-color: rgba(15,23,42,.18) !important;
   color: #334155 !important;
 }
 
@@ -958,13 +958,13 @@ body.docs-auth {
 
 .fd-cell.is-selected,
 .fd-ss-cell.selected {
-  background: rgba(37,99,235,.08) !important;
+  background: rgba(59,130,246,.08) !important;
   outline-color: var(--fd-blue) !important;
 }
 
 .fd-ss-frozen-row,
 .fd-ss-frozen-col {
-  background: #e2e8f0 !important;
+  background: #e5e7ef !important;
   color: #111827 !important;
 }
 
@@ -987,18 +987,18 @@ body.docs-auth {
 
 .fd-ss-cell.cf-heat-high,
 .fd-ss-cell.error {
-  background: rgba(239,68,68,.12) !important;
-  color: #991b1b !important;
+  background: rgba(220,38,38,.12) !important;
+  color: #b91c1c !important;
 }
 
 .fd-ss-cell.cf-heat-medium {
-  background: rgba(251,191,36,.20) !important;
-  color: #6b4605 !important;
+  background: rgba(232,168,56,.18) !important;
+  color: #b45309 !important;
 }
 
 .fd-ss-cell.cf-heat-low {
-  background: rgba(34,197,94,.14) !important;
-  color: #166534 !important;
+  background: rgba(34,197,94,.12) !important;
+  color: #334155 !important;
 }
 
 .fd-ss-timeline-label,
@@ -1009,18 +1009,18 @@ body.docs-auth {
 .fd-ss-loading {
   background: #ffffff !important;
   border: 1px solid rgba(15,23,42,.12);
-  box-shadow: 0 18px 44px rgba(15,23,42,.16);
+  box-shadow: 0 18px 44px rgba(15,23,42,.18);
 }
 
 .fd-ss-spinner {
-  border-color: rgba(15,23,42,.14) !important;
+  border-color: rgba(15,23,42,.12) !important;
   border-top-color: var(--fd-blue) !important;
 }
 
 /* Runtime Quill formatter is injected after static CSS, so these must win hard. */
 #fd-app .quill-bar {
   background:
-    linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.92)) !important;
+    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.9)) !important;
   border-top: 1px solid rgba(15,23,42,.08) !important;
   border-bottom: 1px solid rgba(15,23,42,.12) !important;
   box-shadow: 0 10px 24px rgba(15,23,42,.08) !important;
@@ -1031,9 +1031,9 @@ body.docs-auth {
 #fd-app .quill-style-pill,
 #fd-app .quill-format-btn {
   background: #ffffff !important;
-  border: 1px solid rgba(15,23,42,.14) !important;
+  border: 1px solid rgba(15,23,42,.12) !important;
   color: #111827 !important;
-  box-shadow: 0 1px 2px rgba(15,23,42,.05) !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04) !important;
 }
 
 #fd-app .quill-btn:hover,
@@ -1043,7 +1043,7 @@ body.docs-auth {
 #fd-app .quill-format-btn:hover,
 #fd-app .quill-format-btn:focus-visible {
   background: #f8fafc !important;
-  border-color: rgba(184,135,30,.45) !important;
+  border-color: rgba(232,168,56,.5) !important;
   color: #0f172a !important;
   outline: none !important;
   box-shadow: var(--fd-focus-ring) !important;
@@ -1052,15 +1052,15 @@ body.docs-auth {
 #fd-app .quill-btn.is-active,
 #fd-app .quill-style-pill.is-active,
 #fd-app .quill-format-btn.is-active {
-  background: rgba(247,199,86,.24) !important;
-  border-color: rgba(184,135,30,.55) !important;
-  color: #5f3f08 !important;
+  background: rgba(247,199,86,.25) !important;
+  border-color: rgba(232,168,56,.5) !important;
+  color: #b45309 !important;
 }
 
 #fd-app .quill-format-btn {
-  color: #5f3f08 !important;
-  background: rgba(247,199,86,.20) !important;
-  border-color: rgba(184,135,30,.38) !important;
+  color: #b45309 !important;
+  background: rgba(247,199,86,.18) !important;
+  border-color: rgba(232,168,56,.35) !important;
 }
 
 #fd-app .quill-btn svg,
@@ -1071,19 +1071,19 @@ body.docs-auth {
 }
 
 #fd-app .quill-sep {
-  background: rgba(15,23,42,.14) !important;
+  background: rgba(15,23,42,.12) !important;
 }
 
 .quill-panel {
   background: #ffffff !important;
   border-left: 1px solid rgba(15,23,42,.12) !important;
-  box-shadow: -16px 0 44px rgba(15,23,42,.16) !important;
+  box-shadow: -16px 0 44px rgba(15,23,42,.18) !important;
   color: #111827 !important;
 }
 
 .quill-panel-head,
 .quill-section {
-  border-color: rgba(15,23,42,.10) !important;
+  border-color: rgba(15,23,42,.12) !important;
 }
 
 .quill-panel-title,
@@ -1108,8 +1108,8 @@ body.docs-auth {
 .quill-num-input,
 .quill-color-native {
   background: #ffffff !important;
-  border: 1px solid rgba(15,23,42,.14) !important;
-  box-shadow: 0 1px 2px rgba(15,23,42,.05) !important;
+  border: 1px solid rgba(15,23,42,.12) !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04) !important;
 }
 
 .quill-panel-close {
@@ -1127,7 +1127,7 @@ body.docs-auth {
 .quill-panel-close:hover,
 .quill-panel-close:focus-visible {
   background: #f8fafc !important;
-  border-color: rgba(184,135,30,.45) !important;
+  border-color: rgba(232,168,56,.5) !important;
   color: #0f172a !important;
   outline: none !important;
   box-shadow: var(--fd-focus-ring) !important;
@@ -1135,9 +1135,9 @@ body.docs-auth {
 
 .quill-pbtn.is-active,
 .quill-pbtn-wide.is-active {
-  background: rgba(247,199,86,.24) !important;
-  border-color: rgba(184,135,30,.55) !important;
-  color: #5f3f08 !important;
+  background: rgba(247,199,86,.25) !important;
+  border-color: rgba(232,168,56,.5) !important;
+  color: #b45309 !important;
 }
 
 .quill-pselect {
@@ -1145,13 +1145,13 @@ body.docs-auth {
 }
 
 .quill-color-swatch {
-  border-color: rgba(15,23,42,.24) !important;
-  box-shadow: 0 1px 2px rgba(15,23,42,.10) !important;
+  border-color: rgba(15,23,42,.25) !important;
+  box-shadow: 0 1px 2px rgba(15,23,42,.12) !important;
 }
 
 .quill-color-swatch.is-active {
   border-color: #111827 !important;
-  box-shadow: 0 0 0 3px rgba(247,199,86,.30) !important;
+  box-shadow: 0 0 0 3px rgba(247,199,86,.25) !important;
 }
 
 @media (max-width: 768px) {
