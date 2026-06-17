@@ -115,6 +115,7 @@ const SECTIONS = [
   {
     title: 'Admin',
     items: [
+      { name: 'the_do',                      label: 'Workflows',      icon: ICON.clipboard },
       { name: 'the_wall',                    label: 'Admin',          icon: ICON.shield },
     ],
   },

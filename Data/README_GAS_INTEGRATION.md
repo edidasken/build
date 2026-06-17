@@ -5,10 +5,11 @@
 `seed_database.json` can now be used in Google Apps Script (GAS) to seed **both** Google Sheets (GAS-mode) and Firestore (Firestore-mode) from a single source.
 
 **Stats:**
-- 101 collections
-- 17,443 documents
-- 5.9 MB JSON file
+- 106 collections
+- 17,603 documents
+- 6.5 MB JSON file
 - Includes Strong's lexicons (8,674 Hebrew + 5,523 Greek entries)
+- Includes installed `/do` workflows (160 procedure records)
 
 ---
 
@@ -28,7 +29,7 @@ Add `seedFromMasterJSON()` function to your GAS `Code.gs` file (see implementati
 ```javascript
 // In setupFlockOSGAS() or setupFlockOSFirestore()
 var stats = seedFromMasterJSON();
-// ✅ Seeded 14 Sheet tabs, 17,443 Firestore docs
+// ✅ Seeded 14 Sheet tabs, 17,603 Firestore docs
 ```
 
 ---
@@ -93,7 +94,7 @@ See `Iris/Shepherds/Build/SEED_DATABASE_MAINTENANCE.md` for details.
 ✅ Single source of truth (`seed_database.json`)  
 ✅ Fully automated (one function call)  
 ✅ Seeds both GAS and Firestore  
-✅ Complete (17,443 docs including lexicons)  
+✅ Complete (17,603 docs including lexicons and workflows)
 ✅ Fast (~3-4 minutes total)  
 
 ---
@@ -106,6 +107,7 @@ New_Covenant/Data/
   ├── strongs-greek.js            ← Source: Greek lexicon (5,523 entries)
   ├── strongs-hebrew.js           ← Source: Hebrew lexicon (8,674 entries)
   ├── teaching_plans.js           ← Source: Teaching sessions
+  ├── do_workflows.js             ← Source: Installed /do workflows
   └── README_GAS_INTEGRATION.md   ← This file
 
 Architechtural Docs/New Covenant/Data/  (PRIVATE, gitignored)

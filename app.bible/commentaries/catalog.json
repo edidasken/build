@@ -1,0 +1,109 @@
+{
+  "source": {
+    "name": "BibleCommentaries / 110000-English-Bible-Sermons-Parallel-Commentaries",
+    "repo": "https://github.com/BibleCommentaries/110000-English-Bible-Sermons-Parallel-Commentaries",
+    "archivePath": "commentaries/bible-commentaries-english/",
+    "description": "Imported gateway pages for public-domain sermon and commentary indexes from the provided BibleCommentaries repo. External URLs are retained only inside the archived source HTML/index data."
+  },
+  "libraries": [
+    {
+      "name": "Spurgeon's Verse Expositions",
+      "keyword": "Spur Ex"
+    },
+    {
+      "name": "Spurgeon's Sermons",
+      "keyword": "Spurgeon Ser"
+    },
+    {
+      "name": "Spurgeon's Daily Devotion",
+      "keyword": "Spurgeon Daily"
+    },
+    {
+      "name": "Matthew Henry's Complete",
+      "keyword": "Matt Hen Wh"
+    },
+    {
+      "name": "Matthew Henry's Concise",
+      "keyword": "Matt Hen Con"
+    },
+    {
+      "name": "Calvin's Commentary",
+      "keyword": "Calvin"
+    },
+    {
+      "name": "The Pulpit Commentaries",
+      "keyword": "Pulpit"
+    },
+    {
+      "name": "Scofield's Reference Notes",
+      "keyword": "Scofield"
+    },
+    {
+      "name": "Wesley's Explanatory Notes",
+      "keyword": "Wesley"
+    },
+    {
+      "name": "Adam Clarke Commentary",
+      "keyword": "Adam Cla"
+    },
+    {
+      "name": "Albert Barnes' Notes",
+      "keyword": "Albert"
+    },
+    {
+      "name": "Joseph Benson's Commentary",
+      "keyword": "Joseph"
+    },
+    {
+      "name": "The Bridgeway Bible Commentary",
+      "keyword": "Bridgeway"
+    },
+    {
+      "name": "E.W. Bullinger's Companion",
+      "keyword": "Bullinger"
+    },
+    {
+      "name": "Thomas Constable",
+      "keyword": "Dr Thomas"
+    },
+    {
+      "name": "Thomas Coke Commentary",
+      "keyword": "Thomas Coke"
+    },
+    {
+      "name": "John Gill's Exposition",
+      "keyword": "John Gill"
+    },
+    {
+      "name": "Commentary Critical and Explanatory",
+      "keyword": "Critical"
+    },
+    {
+      "name": "John Dummelow's Commentary",
+      "keyword": "John Dum"
+    },
+    {
+      "name": "Geneva Study Bible",
+      "keyword": "Geneva"
+    },
+    {
+      "name": "Ellicott's Commentary",
+      "keyword": "Ellicott"
+    },
+    {
+      "name": "Arno Gaebelein's Annotated Bible",
+      "keyword": "Arno"
+    },
+    {
+      "name": "James Gray",
+      "keyword": "James"
+    }
+  ],
+  "local": {
+    "readme": "commentaries/bible-commentaries-english/README.md",
+    "commentariesHtml": "commentaries/bible-commentaries-english/30-English-Commentaries.html",
+    "parallelHtml": "commentaries/bible-commentaries-english/parallel-kjv(asv)-commentaries.html",
+    "sermonsHtml": "commentaries/bible-commentaries-english/110000-sermons.html",
+    "sermonsIndex": "commentaries/bible-commentaries-english/sermons-index.json"
+  }
+}

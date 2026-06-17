@@ -1,0 +1,49 @@
+{
+  "imports": [
+    {
+      "source": "openscriptures/strongs",
+      "url": "https://github.com/openscriptures/strongs",
+      "localPath": "original-languages/openscriptures-strongs/",
+      "imported": [
+        "strongs-dictionary.xhtml",
+        "Greek Strong's dictionary",
+        "Hebrew Strong's dictionary",
+        "Greek and Hebrew spelling dictionaries",
+        "browser-ready JSON dictionaries"
+      ]
+    },
+    {
+      "source": "tahmmee/interlinear_bibledata",
+      "url": "https://github.com/tahmmee/interlinear_bibledata",
+      "localPath": "original-languages/tahmmee-interlinear/",
+      "imported": [
+        "public-domain interlinear archive",
+        "per-book interlinear JSON chunks",
+        "Greek and Hebrew lexicon JSON",
+        "BibleForge source SQL archive",
+        "books and stats metadata"
+      ],
+      "knownNotes": [
+        "Upstream README states all text is public domain.",
+        "Upstream README notes 1 Kings 22 and 3 John 15 are missing."
+      ]
+    },
+    {
+      "source": "jburson/bible-data",
+      "url": "https://github.com/jburson/bible-data",
+      "localPath": "original-languages/jburson-bible-data/",
+      "imported": [
+        "books metadata",
+        "Strong's index",
+        "ESV text JSON",
+        "ESV footnotes JSON",
+        "ESV interlinear JSON",
+        "ESV static JSON",
+        "per-book ESV text, footnote, and interlinear chunks"
+      ],
+      "knownNotes": [
+        "Imported ESV because ESV API application is in progress."
+      ]
+    }
+  ]
+}

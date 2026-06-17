@@ -1,0 +1,268 @@
+{
+  "books": [
+    {
+      "slug": "1-chronicles",
+      "verses": 942
+    },
+    {
+      "slug": "1-corinthians",
+      "verses": 437
+    },
+    {
+      "slug": "1-john",
+      "verses": 105
+    },
+    {
+      "slug": "1-kings",
+      "verses": 816
+    },
+    {
+      "slug": "1-peter",
+      "verses": 105
+    },
+    {
+      "slug": "1-samuel",
+      "verses": 810
+    },
+    {
+      "slug": "1-thessalonians",
+      "verses": 89
+    },
+    {
+      "slug": "1-timothy",
+      "verses": 113
+    },
+    {
+      "slug": "2-chronicles",
+      "verses": 822
+    },
+    {
+      "slug": "2-corinthians",
+      "verses": 257
+    },
+    {
+      "slug": "2-john",
+      "verses": 13
+    },
+    {
+      "slug": "2-kings",
+      "verses": 719
+    },
+    {
+      "slug": "2-peter",
+      "verses": 61
+    },
+    {
+      "slug": "2-samuel",
+      "verses": 695
+    },
+    {
+      "slug": "2-thessalonians",
+      "verses": 47
+    },
+    {
+      "slug": "2-timothy",
+      "verses": 83
+    },
+    {
+      "slug": "3-john",
+      "verses": 14
+    },
+    {
+      "slug": "acts",
+      "verses": 1007
+    },
+    {
+      "slug": "amos",
+      "verses": 146
+    },
+    {
+      "slug": "colossians",
+      "verses": 95
+    },
+    {
+      "slug": "daniel",
+      "verses": 357
+    },
+    {
+      "slug": "deuteronomy",
+      "verses": 959
+    },
+    {
+      "slug": "ecclesiastes",
+      "verses": 222
+    },
+    {
+      "slug": "ephesians",
+      "verses": 155
+    },
+    {
+      "slug": "esther",
+      "verses": 167
+    },
+    {
+      "slug": "exodus",
+      "verses": 1213
+    },
+    {
+      "slug": "ezekiel",
+      "verses": 1273
+    },
+    {
+      "slug": "ezra",
+      "verses": 280
+    },
+    {
+      "slug": "galatians",
+      "verses": 149
+    },
+    {
+      "slug": "genesis",
+      "verses": 1533
+    },
+    {
+      "slug": "habakkuk",
+      "verses": 56
+    },
+    {
+      "slug": "haggai",
+      "verses": 38
+    },
+    {
+      "slug": "hebrews",
+      "verses": 303
+    },
+    {
+      "slug": "hosea",
+      "verses": 197
+    },
+    {
+      "slug": "isaiah",
+      "verses": 1292
+    },
+    {
+      "slug": "james",
+      "verses": 108
+    },
+    {
+      "slug": "jeremiah",
+      "verses": 1364
+    },
+    {
+      "slug": "job",
+      "verses": 1070
+    },
+    {
+      "slug": "joel",
+      "verses": 73
+    },
+    {
+      "slug": "john",
+      "verses": 879
+    },
+    {
+      "slug": "jonah",
+      "verses": 48
+    },
+    {
+      "slug": "joshua",
+      "verses": 658
+    },
+    {
+      "slug": "jude",
+      "verses": 25
+    },
+    {
+      "slug": "judges",
+      "verses": 618
+    },
+    {
+      "slug": "lamentations",
+      "verses": 154
+    },
+    {
+      "slug": "leviticus",
+      "verses": 859
+    },
+    {
+      "slug": "luke",
+      "verses": 1151
+    },
+    {
+      "slug": "malachi",
+      "verses": 55
+    },
+    {
+      "slug": "mark",
+      "verses": 678
+    },
+    {
+      "slug": "matthew",
+      "verses": 1071
+    },
+    {
+      "slug": "micah",
+      "verses": 105
+    },
+    {
+      "slug": "nahum",
+      "verses": 47
+    },
+    {
+      "slug": "nehemiah",
+      "verses": 406
+    },
+    {
+      "slug": "numbers",
+      "verses": 1288
+    },
+    {
+      "slug": "obadiah",
+      "verses": 21
+    },
+    {
+      "slug": "philemon",
+      "verses": 25
+    },
+    {
+      "slug": "philippians",
+      "verses": 104
+    },
+    {
+      "slug": "proverbs",
+      "verses": 915
+    },
+    {
+      "slug": "psalms",
+      "verses": 2461
+    },
+    {
+      "slug": "revelation",
+      "verses": 404
+    },
+    {
+      "slug": "romans",
+      "verses": 433
+    },
+    {
+      "slug": "ruth",
+      "verses": 85
+    },
+    {
+      "slug": "song-of-solomon",
+      "verses": 117
+    },
+    {
+      "slug": "titus",
+      "verses": 46
+    },
+    {
+      "slug": "zechariah",
+      "verses": 211
+    },
+    {
+      "slug": "zephaniah",
+      "verses": 53
+    }
+  ]
+}

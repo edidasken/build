@@ -5,6 +5,12 @@
 
 import { pageHero } from '../_frame.js';
 import { buildAdapter } from '../../Scripts/the_living_water_adapter.js';
+import {
+  doWorkflowById,
+  workflowPayload,
+  workflowSelectOptions,
+  workflowSummaryText,
+} from '../../Scripts/do_workflow_registry.js';
 
 export const name  = 'the_way';
 export const title = 'The Way';
@@ -225,6 +231,24 @@ function _liveGroupRow(g) {
 function _e(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function _workflowPreviewHtml(workflow) {
+  const routing = (workflow.routingRules || []).slice(0, 3);
+  const outputs = (workflow.outputExpectations || []).slice(0, 3);
+  return /* html */`
+    <details class="life-wg" open style="margin-bottom:14px;">
+      <summary class="life-wg-summary">${_e(workflow.title || workflow.workflowId)} Workflow</summary>
+      <div class="life-wg-body">
+        <div class="life-wg-stage">
+          <div class="life-wg-stage-title">Purpose</div>
+          <div class="life-wg-stage-desc">${_e(workflow.description || workflow.purpose || 'Follow the selected discipleship workflow for this path.')}</div>
+        </div>
+        ${routing.length ? `<div class="life-wg-stage"><div class="life-wg-stage-title">Routing</div><div class="life-wg-stage-desc">${routing.map(_e).join('<br>')}</div></div>` : ''}
+        ${outputs.length ? `<div class="life-wg-stage"><div class="life-wg-stage-title">Output</div><div class="life-wg-stage-desc">${outputs.map(_e).join('<br>')}</div></div>` : ''}
+      </div>
+    </details>
+  `;
 }
 
 function _fmtTime(raw) {
@@ -793,6 +817,7 @@ function _openTrackSheet(t, onReload) {
   const V   = window.TheVine;
   const MXD = buildAdapter('flock.discipleship.paths', V);
   const isNew = !t;
+  const workflowId = t?.workflowId || '';
 
   const sheet = document.createElement('div');
   sheet.className = 'life-sheet';
@@ -821,6 +846,14 @@ function _openTrackSheet(t, onReload) {
             ${TRACK_STAGES.map(s => `<option value="${_e(s)}"${s === (t?.stage || t?.level || t?.category || '') ? ' selected' : ''}>${_e(s)}</option>`).join('')}
           </select>
         </div>
+        <div class="life-sheet-field">
+          <div class="life-sheet-label">Workflow</div>
+          <select class="life-sheet-input" data-field="workflowId">
+            <option value="">No workflow selected</option>
+            ${workflowSelectOptions('discipleship', workflowId)}
+          </select>
+        </div>
+        <div data-workflow-preview></div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
             <div class="life-sheet-label">Lesson Count</div>
@@ -855,6 +888,16 @@ function _openTrackSheet(t, onReload) {
   sheet.querySelector('[data-cancel]').addEventListener('click', _closeTrackSheet);
   sheet.querySelector('.life-sheet-close').addEventListener('click', _closeTrackSheet);
 
+  const workflowSelect = sheet.querySelector('[data-field="workflowId"]');
+  const workflowPreview = sheet.querySelector('[data-workflow-preview]');
+  const paintWorkflowPreview = () => {
+    if (!workflowPreview) return;
+    const workflow = doWorkflowById(workflowSelect?.value || '');
+    workflowPreview.innerHTML = workflow ? _workflowPreviewHtml(workflow) : '';
+  };
+  workflowSelect?.addEventListener('change', paintWorkflowPreview);
+  paintWorkflowPreview();
+
   sheet.querySelector('[data-save]').addEventListener('click', async () => {
     const errEl = sheet.querySelector('[data-error]');
     const title = sheet.querySelector('[data-field="title"]').value.trim();
@@ -874,6 +917,12 @@ function _openTrackSheet(t, onReload) {
       enrolledCount:parseInt(sheet.querySelector('[data-field="enrolledCount"]').value) || undefined,
       description:  sheet.querySelector('[data-field="description"]').value.trim() || undefined,
     };
+    const workflow = doWorkflowById(sheet.querySelector('[data-field="workflowId"]')?.value || '');
+    if (workflow) {
+      Object.assign(payload, workflowPayload(workflow), {
+        workflowSummary: workflowSummaryText(workflow),
+      });
+    }
     Object.keys(payload).forEach(k => { if (payload[k] === undefined) delete payload[k]; });
     if (!isNew) payload.id = String(t.id);
     try {

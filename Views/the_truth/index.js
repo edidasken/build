@@ -5,6 +5,12 @@
 
 import { pageHero } from '../_frame.js';
 import { buildAdapter } from '../../Scripts/the_living_water_adapter.js';
+import {
+  doWorkflowById,
+  workflowPayload,
+  workflowSelectOptions,
+  workflowSummaryText,
+} from '../../Scripts/do_workflow_registry.js';
 
 export const name  = 'the_truth';
 export const title = 'Content';
@@ -231,6 +237,24 @@ function _e(s) {
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function _workflowPreviewHtml(workflow) {
+  const routing = (workflow.routingRules || []).slice(0, 3);
+  const outputs = (workflow.outputExpectations || []).slice(0, 3);
+  return /* html */`
+    <details class="life-wg" open style="margin-bottom:14px;">
+      <summary class="life-wg-summary">${_e(workflow.title || workflow.workflowId)} Workflow</summary>
+      <div class="life-wg-body">
+        <div class="life-wg-stage">
+          <div class="life-wg-stage-title">Purpose</div>
+          <div class="life-wg-stage-desc">${_e(workflow.description || workflow.purpose || 'Follow the selected workflow for this teaching record.')}</div>
+        </div>
+        ${routing.length ? `<div class="life-wg-stage"><div class="life-wg-stage-title">Routing</div><div class="life-wg-stage-desc">${routing.map(_e).join('<br>')}</div></div>` : ''}
+        ${outputs.length ? `<div class="life-wg-stage"><div class="life-wg-stage-title">Output</div><div class="life-wg-stage-desc">${outputs.map(_e).join('<br>')}</div></div>` : ''}
+      </div>
+    </details>
+  `;
+}
+
 // ── Truth sheets ────────────────────────────────────────────────────
 function _closeTruthSheet() {
   if (!_activeTruthSheet) return;
@@ -257,6 +281,7 @@ function _openMsgSheet(m, onReload) {
   const duration = m?.duration || '';
   const series  = m?.series || m?.seriesTitle || '';
   const desc    = m?.description || m?.notes || '';
+  const workflowId = m?.workflowId || '';
 
   sheet.innerHTML = /* html */`
     <div class="life-sheet-overlay"></div>
@@ -282,6 +307,14 @@ function _openMsgSheet(m, onReload) {
             ${CONTENT_TYPES.map(t => `<option value="${t}"${t === type ? ' selected' : ''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
           </select>
         </div>
+        <div class="life-sheet-field">
+          <div class="life-sheet-label">Workflow</div>
+          <select class="life-sheet-input" data-field="workflowId">
+            <option value="">No workflow selected</option>
+            ${workflowSelectOptions(['teach', 'research'], workflowId)}
+          </select>
+        </div>
+        <div data-workflow-preview></div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Speaker</div>
           <input class="life-sheet-input" data-field="speaker" type="text" value="${_e(speaker)}" placeholder="e.g. Pastor Mike">
@@ -323,6 +356,16 @@ function _openMsgSheet(m, onReload) {
   sheet.querySelector('[data-cancel]').addEventListener('click', close);
   sheet.querySelector('.life-sheet-close').addEventListener('click', close);
 
+  const workflowSelect = sheet.querySelector('[data-field="workflowId"]');
+  const workflowPreview = sheet.querySelector('[data-workflow-preview]');
+  const paintWorkflowPreview = () => {
+    if (!workflowPreview) return;
+    const workflow = doWorkflowById(workflowSelect?.value || '');
+    workflowPreview.innerHTML = workflow ? _workflowPreviewHtml(workflow) : '';
+  };
+  workflowSelect?.addEventListener('change', paintWorkflowPreview);
+  paintWorkflowPreview();
+
   sheet.querySelector('[data-save]').addEventListener('click', async () => {
     const errEl = sheet.querySelector('[data-error]');
     const titleVal = sheet.querySelector('[data-field="title"]').value.trim();
@@ -340,6 +383,12 @@ function _openMsgSheet(m, onReload) {
       series:      sheet.querySelector('[data-field="series"]').value.trim() || undefined,
       description: sheet.querySelector('[data-field="description"]').value.trim() || undefined,
     };
+    const workflow = doWorkflowById(sheet.querySelector('[data-field="workflowId"]')?.value || '');
+    if (workflow) {
+      Object.assign(payload, workflowPayload(workflow), {
+        workflowSummary: workflowSummaryText(workflow),
+      });
+    }
     Object.keys(payload).forEach(k => { if (payload[k] === undefined) delete payload[k]; });
     if (!isNew) payload.id = uid;
     try {
@@ -481,4 +530,3 @@ function _openSeriesSheet(s, onReload) {
     }
   });
 }
-

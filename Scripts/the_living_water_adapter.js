@@ -55,6 +55,12 @@ const _DOMAIN_MAP = {
     delete: { ur: 'deleteSermonSeries' },
   },
 
+  // ── Installed Do Workflows ──────────────────────────────────────────────
+  'flock.doWorkflows': {
+    list: { ur: 'listDoWorkflows' },
+    get:  { ur: 'getDoWorkflow'   },
+  },
+
   // ── Presentations (FlockShow) ─────────────────────────────────────────────
   'flock.presentations': {
     list:   { ur: 'listPresentations'   },

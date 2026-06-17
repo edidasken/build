@@ -3225,6 +3225,29 @@
   }
 
   /* ══════════════════════════════════════════════════════════════════
+     INSTALLED DO WORKFLOWS
+     ══════════════════════════════════════════════════════════════════ */
+
+  function _doWorkflowsRef() { return _churchDoc().collection('doWorkflows'); }
+
+  function listDoWorkflows(opts) {
+    opts = opts || {};
+    return _paginatedGet(_doWorkflowsRef().orderBy('workflowId'), opts).then(function(rows) {
+      if (!opts.family) return rows;
+      return rows.filter(function(w) { return w.family === opts.family; });
+    });
+  }
+
+  function getDoWorkflow(opts) {
+    var id = (typeof opts === 'string') ? opts : (opts && (opts.id || opts.workflowId));
+    if (!id) throw new Error('workflowId required');
+    return _doWorkflowsRef().doc(id).get().then(function(d) {
+      if (!d.exists) throw new Error('Workflow not found');
+      var o = d.data(); o.id = d.id; return o;
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════════════════
      SERMON SERIES
      ══════════════════════════════════════════════════════════════════ */
 
@@ -5302,6 +5325,10 @@
     deliverSermon:      deliverSermon,
     uploadSermonMedia:  uploadSermonMedia,
     sermonDashboard:    sermonDashboard,
+
+    // Installed Do Workflows
+    listDoWorkflows:    listDoWorkflows,
+    getDoWorkflow:      getDoWorkflow,
 
     // Sermon Series
     listSermonSeries:   listSermonSeries,

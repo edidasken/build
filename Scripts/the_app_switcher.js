@@ -29,6 +29,7 @@ import { canAccessUnityApp, hasUnitySession } from './the_unity_session.js';
 export const NC_APP_ICONS = {
   launcher:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
   grow:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+  bible:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h8"/></svg>',
   invite:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="3" x2="12" y2="21"/><line x1="4.5" y1="8.5" x2="19.5" y2="8.5"/></svg>',
   flockos:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>',
   fold:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7c4 0 4 3 8 3s4-3 8-3"/><path d="M3 17c4 0 4 3 8 3s4-3 8-3"/><path d="M3 12h18"/></svg>',
@@ -65,6 +66,7 @@ export const NC_APP_ICON_SRCS = {
   fold:        new URL('../Images/icon-flockos.svg', import.meta.url).href,
   fellowship:  new URL('../Images/icon-chat.svg', import.meta.url).href,
   care:        new URL('../Images/icon-flockos.svg', import.meta.url).href,
+  workflows:   new URL('../Images/icon-flockos.svg', import.meta.url).href,
   prayer:      new URL('../Images/icon-chat.svg', import.meta.url).href,
   seasons:     new URL('../Images/icon-flockos.svg', import.meta.url).href,
   upperroom:   new URL('../Images/icon-flockos.svg', import.meta.url).href,
@@ -103,11 +105,13 @@ export const NC_APP_ICON_SRCS = {
 /* Canonical app catalog. Order = launcher order (Public first, then Secure). */
 export const NC_APPS = [
   { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                      accent: '#e8a838', accentDk: '#b8871e', public: true },
+  { id: 'bible',     name: 'Bible',          sub: 'ESV reader, notes & prayer',     href: 'app.bible/',                      accent: '#f7c756', accentDk: '#b8871e', public: true },
   { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#f7c756', accentDk: '#b8871e', public: true },
   { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
   { id: 'fold',      name: 'The Fold',       sub: 'Members & flock care',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_fold',          accent: '#3b82f6', accentDk: '#1e3a8a' },
   { id: 'fellowship', name: 'Fellowship',    sub: 'Community & conversations',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_fellowship',    accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#f7c756', accentDk: '#b8871e' },
+  { id: 'workflows', name: 'Workflows',      sub: 'Installed ministry procedures',  href: 'app.flockos/app.flockos.html?covenant=new&view=the_do',            accent: '#64748b', accentDk: '#334155' },
   { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
   { id: 'seasons',   name: 'Seasons',        sub: 'Calendar & events',              href: 'app.flockos/app.flockos.html?covenant=new&view=the_seasons',       accent: '#d97706', accentDk: '#92400e' },
   { id: 'upperroom', name: 'Upper Room',     sub: 'Devotion, journal & prayer',     href: 'app.flockos/app.flockos.html?covenant=new&view=the_upper_room',    accent: '#ef4444', accentDk: '#7f1d1d' },
