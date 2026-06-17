@@ -28,6 +28,9 @@
   --bible-sidebar-w: 292px;
   --bible-original-w: 300px;
   --bible-study-w: 360px;
+  --bible-header-z: 500;
+  --bible-controls-z: 40;
+  --bible-popover-z: 120;
 }
 
 html,
@@ -92,7 +95,7 @@ svg {
 #bible-topbar {
   position: sticky;
   top: var(--bible-top-offset);
-  z-index: 200;
+  z-index: var(--bible-header-z);
 }
 
 .bible-herald-topbar.unity-header {
@@ -416,7 +419,7 @@ body.bible-nav-hidden .bible-sidebar {
 
 .bible-toolbar {
   position: relative;
-  z-index: 220;
+  z-index: var(--bible-controls-z);
   min-width: 0;
   display: flex;
   align-items: end;
@@ -444,7 +447,7 @@ body.bible-nav-hidden .bible-sidebar {
 
 .bible-picker-wrap {
   position: relative;
-  z-index: 320;
+  z-index: calc(var(--bible-controls-z) + 1);
 }
 
 .bible-picker-toggle[aria-expanded="true"] {
@@ -456,7 +459,7 @@ body.bible-nav-hidden .bible-sidebar {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  z-index: 300;
+  z-index: var(--bible-popover-z);
   width: min(420px, calc(100vw - 24px));
   max-height: min(620px, calc(100dvh - var(--bible-header-h) - 48px));
   display: grid;
