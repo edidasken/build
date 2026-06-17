@@ -1206,6 +1206,84 @@ body.bible-nav-hidden .bible-sidebar {
   gap: 8px;
 }
 
+.bible-key-verbs {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 8px;
+  background: rgba(248, 250, 252, .78);
+}
+
+.bible-key-verbs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--bible-muted);
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.bible-key-verb-list {
+  display: grid;
+  gap: 7px;
+}
+
+.bible-key-verb {
+  display: grid;
+  gap: 5px;
+  padding: 9px;
+  border: 1px solid var(--bible-line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.bible-key-verb-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bible-key-verb-main strong {
+  color: var(--bible-navy);
+  font-size: .84rem;
+  font-weight: 900;
+}
+
+.bible-key-verb-main span {
+  color: var(--bible-navy);
+  font: 900 .96rem/1.2 var(--font-serif), Georgia, serif;
+}
+
+.bible-key-verb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.bible-key-verb-meta span {
+  padding: 2px 6px;
+  border: 1px solid rgba(15, 23, 42, .08);
+  border-radius: 999px;
+  color: var(--bible-muted);
+  background: rgba(248, 250, 252, .95);
+  font-size: .66rem;
+  font-weight: 900;
+}
+
+.bible-key-verb-parse {
+  color: #475569;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.bible-key-verb-list-extra {
+  padding: 8px;
+}
+
 .bible-original-word,
 .bible-original-note,
 .bible-commentary-hit {
@@ -2238,15 +2316,26 @@ body.bible-nav-hidden .bible-sidebar {
   .bible-crossref-item,
   .bible-original-word,
   .bible-original-note,
+  .bible-key-verb,
   .bible-original-token {
     padding: 8px;
   }
 
   .bible-original-grid,
   .bible-original-alignment,
-  .bible-original-notes {
+  .bible-original-notes,
+  .bible-key-verb-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
+  }
+
+  .bible-key-verbs {
+    padding: 8px;
+  }
+
+  .bible-key-verb-main {
+    display: grid;
+    gap: 3px;
   }
 
   .bible-original-script {

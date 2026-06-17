@@ -106,6 +106,7 @@ const TSK_VERSE_PREVIEW_CHARS = 220;
 const ORIGINAL_VISIBLE_LIMIT = 6;
 const ESV_ALIGNMENT_VISIBLE_LIMIT = 6;
 const ORIGINAL_NOTES_VISIBLE_LIMIT = 3;
+const KEY_VERB_VISIBLE_LIMIT = 6;
 
 const state = {
   books: new Map(),
@@ -1022,6 +1023,7 @@ async function renderOriginalLanguage() {
     ]);
     const words = bookInterlinear[key] || [];
     const esvWords = esvInterlinear[key] || [];
+    const esvPassageWords = collectEsvInterlinearRange(esvInterlinear, target);
     const notes = footnotes[key] || [];
     const kinds = new Set(words.map((word) => String(word.number || '').slice(0, 1).toLowerCase()).filter(Boolean));
     const [greek, hebrew] = await Promise.all([
@@ -1065,8 +1067,10 @@ async function renderOriginalLanguage() {
         </details>
       `
       : '';
+    const keyVerbHtml = renderKeyVerbs(esvPassageWords, target);
     el.originalCount.textContent = `${words.length} words`;
     el.original.innerHTML = `
+      ${keyVerbHtml}
       <div class="bible-original-grid">${wordHtml}</div>
       ${extraWordHtml}
       ${esvHtml}
@@ -1459,6 +1463,192 @@ function renderEsvInterlinearToken(token) {
       ${translit ? `<small>${escapeHtml(translit)}</small>` : ''}
     </span>
   `;
+}
+
+function collectEsvInterlinearRange(esvInterlinear, target) {
+  const start = Math.max(1, Number(target.verse) || 1);
+  const end = Math.max(start, Number(target.verseEnd) || start);
+  const items = [];
+  for (let verse = start; verse <= end; verse += 1) {
+    const tokens = esvInterlinear[`${target.chapter}:${verse}`] || [];
+    tokens.forEach((token) => items.push({ token, verse }));
+  }
+  return items;
+}
+
+function renderKeyVerbs(items, target) {
+  const verbs = findKeyVerbs(items);
+  if (!verbs.length) return '';
+  const visible = verbs.slice(0, KEY_VERB_VISIBLE_LIMIT);
+  const hidden = verbs.slice(KEY_VERB_VISIBLE_LIMIT);
+  return `
+    <section class="bible-key-verbs" aria-label="Key verbs in ${escapeAttr(formatStudyTarget(target))}">
+      <div class="bible-key-verbs-head">
+        <span class="bible-crossref-ref">Key Verbs</span>
+        <span>${verbs.length} found</span>
+      </div>
+      <div class="bible-key-verb-list">
+        ${visible.map(renderKeyVerb).join('')}
+      </div>
+      ${hidden.length ? `
+        <details class="bible-study-more">
+          <summary>${hidden.length} more verbs</summary>
+          <div class="bible-key-verb-list bible-key-verb-list-extra">${hidden.map(renderKeyVerb).join('')}</div>
+        </details>
+      ` : ''}
+    </section>
+  `;
+}
+
+function findKeyVerbs(items) {
+  const seen = new Set();
+  return items.map(({ token, verse }) => parseEsvInterlinearToken(token, verse))
+    .filter((item) => item && isVerbMorph(item.morph))
+    .map((item) => ({
+      ...item,
+      parsing: parseVerbMorphology(item.morph),
+    }))
+    .filter((item) => {
+      const key = `${item.verse}:${item.strong || item.lemma || item.original}:${item.morph}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function parseEsvInterlinearToken(token, verse) {
+  const parts = String(token || '').split('|');
+  const morph = parts[4] || '';
+  return {
+    verse,
+    strong: normalizeStrongNumber(parts[3] || ''),
+    morph,
+    english: parts[5] || '',
+    original: parts[6] || '',
+    translit: parts[7] || '',
+    lemma: parts[8] || '',
+    lemmaTranslit: parts[9] || '',
+    gloss: parts[10] || '',
+  };
+}
+
+function isVerbMorph(morph) {
+  const value = String(morph || '').trim();
+  return /^V[-\s]/i.test(value) || /^@v/i.test(value);
+}
+
+function renderKeyVerb(item) {
+  return `
+    <article class="bible-key-verb">
+      <div class="bible-key-verb-main">
+        <strong>${escapeHtml(item.english || item.gloss || item.original || 'verb')}</strong>
+        <span>${escapeHtml(item.original || item.lemma || '')}</span>
+      </div>
+      <div class="bible-key-verb-meta">
+        ${item.verse ? `<span>v.${escapeHtml(item.verse)}</span>` : ''}
+        ${item.strong ? `<span>${escapeHtml(item.strong)}</span>` : ''}
+        ${item.lemmaTranslit || item.translit ? `<span>${escapeHtml(item.lemmaTranslit || item.translit)}</span>` : ''}
+      </div>
+      <div class="bible-key-verb-parse">${escapeHtml(item.parsing || 'Verb')}</div>
+    </article>
+  `;
+}
+
+function parseVerbMorphology(morph) {
+  const value = String(morph || '').trim();
+  if (/^V[-\s]/i.test(value)) return parseGreekVerbMorphology(value);
+  if (/^@v/i.test(value)) return parseHebrewVerbMorphology(value);
+  return 'Verb';
+}
+
+function parseGreekVerbMorphology(morph) {
+  const code = String(morph || '').replace(/\s+/g, '');
+  const compact = code.replace(/^V-?/i, '');
+  const personMap = { 1: '1st person', 2: '2nd person', 3: '3rd person' };
+  const tenseMap = {
+    P: 'present',
+    I: 'imperfect',
+    F: 'future',
+    A: 'aorist',
+    X: 'perfect',
+    Y: 'pluperfect',
+    R: 'future perfect',
+  };
+  const voiceMap = {
+    A: 'active',
+    M: 'middle',
+    P: 'passive',
+    E: 'middle/passive',
+    D: 'middle deponent',
+    O: 'passive deponent',
+    N: 'middle/passive deponent',
+    Q: 'impersonal active',
+  };
+  const moodMap = {
+    I: 'indicative',
+    M: 'imperative',
+    S: 'subjunctive',
+    O: 'optative',
+    N: 'infinitive',
+    P: 'participle',
+  };
+  const numberMap = { S: 'singular', P: 'plural' };
+  const genderMap = { M: 'masculine', F: 'feminine', N: 'neuter' };
+  const caseMap = {
+    N: 'nominative',
+    G: 'genitive',
+    D: 'dative',
+    A: 'accusative',
+    V: 'vocative',
+  };
+
+  const hasPerson = Boolean(personMap[compact[0]]);
+  const cursor = hasPerson ? 1 : 0;
+  const person = hasPerson ? personMap[compact[0]] : '';
+  const tense = tenseMap[compact[cursor]] || '';
+  const voice = voiceMap[compact[cursor + 1]] || '';
+  const mood = moodMap[compact[cursor + 2]] || '';
+  const tail = compact.split('-')[1] || '';
+  const grammaticalCase = mood === 'participle' ? (caseMap[tail[0]] || '') : '';
+  const number = mood === 'participle' ? (numberMap[tail[1]] || '') : (numberMap[tail[0]] || '');
+  const gender = mood === 'participle' ? (genderMap[tail[2]] || '') : (genderMap[tail[1]] || '');
+  return [person, tense, voice, mood, grammaticalCase, number, gender].filter(Boolean).join(', ') || 'Verb';
+}
+
+function parseHebrewVerbMorphology(morph) {
+  const code = String(morph || '').trim().replace(/^@/, '');
+  const stemMap = {
+    q: 'Qal',
+    n: 'Niphal',
+    p: 'Piel',
+    P: 'Pual',
+    h: 'Hiphil',
+    H: 'Hophal',
+    t: 'Hithpael',
+    o: 'Polel',
+    O: 'Polal',
+    r: 'Hithpolel',
+  };
+  const formMap = {
+    p: 'perfect',
+    q: 'sequential perfect',
+    i: 'imperfect',
+    w: 'wayyiqtol',
+    v: 'imperative',
+    r: 'participle',
+    s: 'infinitive construct',
+    a: 'infinitive absolute',
+  };
+  const personMap = { 1: '1st person', 2: '2nd person', 3: '3rd person' };
+  const genderMap = { m: 'masculine', f: 'feminine', c: 'common' };
+  const numberMap = { s: 'singular', p: 'plural', d: 'dual' };
+  const stem = stemMap[code[1]] || '';
+  const form = formMap[code[2]] || '';
+  const details = code.slice(3);
+  const person = personMap[details.match(/[123]/)?.[0]] || '';
+  const gender = genderMap[details.match(/[mfc]/)?.[0]] || '';
+  const number = numberMap[details.match(/[spd]/)?.[0]] || '';
+  return [stem, form, person, gender, number].filter(Boolean).join(', ') || 'Hebrew verb';
 }
 
 function renderEsvNote(note) {
