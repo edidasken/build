@@ -1022,7 +1022,7 @@ function renderCommentaryAccordion(result, index) {
   const first = sections[0];
   const remaining = sections.length - 1;
   return `
-    <details class="bible-commentary-accordion" ${index === 0 ? 'open' : ''} role="listitem">
+    <details class="bible-commentary-accordion" role="listitem">
       <summary>
         <span class="bible-commentary-card-name">${escapeHtml(library.name)}</span>
         <span class="bible-commentary-card-status">${escapeHtml(first.label)}${remaining ? ` + ${remaining} more` : ''}</span>
