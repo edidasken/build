@@ -53,8 +53,8 @@
   --accent-soft:       rgba(247, 199, 86, .12);
 
   /* ── Supporting palette — desaturated to sit quiet beside gold ────────── */
-  --mint:              #34d399;
-  --mint-soft:         rgba(34,197,94,.12);
+  --mint:              #b8871e;
+  --mint-soft:         rgba(247,199,86,.12);
   --peach:             #fb7185;
   --peach-soft:        rgba(232,168,56,.12);
   --lilac:             #a78bfa;
@@ -66,8 +66,8 @@
 
   --danger:            #dc2626;
   --danger-soft:       rgba(220,38,38,.12);
-  --success:           #16a34a;
-  --success-soft:      rgba(34,197,94,.12);
+  --success:           #b8871e;
+  --success-soft:      rgba(247,199,86,.12);
   --warning:           #b45309;
   --warning-soft:      rgba(220,38,38,.12);
 
@@ -147,15 +147,15 @@ body {
 :root {
   --c-sky:             #48d3d9;
   --c-sky-bg:          rgba(72, 211, 217, .12);
-  --c-emerald:         #34d399;
-  --c-emerald-bg:      rgba(34,197,94,.12);
+  --c-emerald:         #b8871e;
+  --c-emerald-bg:      rgba(247,199,86,.12);
   --c-amber:           #f7c756;
   --c-amber-bg:        rgba(247, 199, 86, .12);
   --c-violet:          #a78bfa;
   --c-violet-bg:       rgba(124,58,237,.12);
   --c-rose:            #fb7185;
 
-  /* ── Gradient rainbow (topbar accent line, same as Herald) ────────────── */
+  /* ── Herald chrome accent line: gold only, no rainbow shimmer ─────────── */
   --grad-rainbow:
-    linear-gradient(90deg, #48d3d9 0%, #a78bfa 22%, #a78bfa 40%, #f7c756 58%, #34d399 78%, #48d3d9 100%);
+    linear-gradient(90deg, transparent 0%, rgba(247,199,86,.68) 18%, #f7c756 50%, rgba(247,199,86,.68) 82%, transparent 100%);
 }

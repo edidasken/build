@@ -14,9 +14,8 @@
    ─────────────
    • Sidebar is ALWAYS deep navy-to-purple (dark, royal, timeless — like a
      cathedral at night). Theme tokens govern everything else.
-   • A continuous rainbow shimmer line runs across the topbar — sky → indigo
-     → gold → emerald. It is the signature mark of this shell.
-   • Each section of the nav has its own color: Comms=sky, Care=emerald,
+   • A quiet Herald-gold line runs across the topbar.
+   • Section colors resolve through the Herald token bridge.
      Mission=amber, Build=violet. The active item glows gold.
    • Stat cards on the home dashboard use the section palette (top border +
      icon background). Numbers are large, serif, confident.
@@ -40,8 +39,8 @@
   /* Section colors */
   --c-sky:         #38bdf8;
   --c-sky-bg:      rgba(72,211,217,.12);
-  --c-emerald:     #34d399;
-  --c-emerald-bg:  rgba(34,197,94,.12);
+  --c-emerald:     #b8871e;
+  --c-emerald-bg:  rgba(247,199,86,.12);
   --c-amber:       #fbbf24;
   --c-amber-bg:    rgba(232,168,56,.12);
   --c-violet:      #a78bfa;
@@ -97,7 +96,7 @@
     linear-gradient(180deg, var(--bg-raised, #fff) 0%, var(--bg, #f8fafc) 100%);
 
   --grad-rainbow:
-    linear-gradient(90deg, #38bdf8 0%, #a78bfa 22%, #a78bfa 40%, #e8a838 58%, #34d399 78%, #38bdf8 100%);
+    linear-gradient(90deg, transparent 0%, rgba(247,199,86,.68) 18%, #f7c756 50%, rgba(247,199,86,.68) 82%, transparent 100%);
 
   /* Typography */
   --font-ui:      'Plus Jakarta Sans', 'Noto Sans', system-ui, sans-serif;
@@ -208,13 +207,13 @@ body.veil-app {
   z-index: 400;
 }
 
-/* ✦ Animated rainbow accent line — the signature mark */
+/* Herald-gold accent line */
 .veil-top::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0;
   height: 2.5px; pointer-events: none;
   background: var(--grad-rainbow);
-  background-size: 200% 100%;
-  animation: rainbow-scroll 9s linear infinite;
+  background-size: 100% 100%;
+  animation: none;
   opacity: 0.72;
 }
 @keyframes rainbow-scroll {
@@ -369,10 +368,10 @@ body.veil-app {
 .pillars-item[data-section="home"]        .pillars-icon { color: var(--gold, #e8a838); }
 .pillars-item[data-section="word"]        .pillars-icon { color: var(--c-violet, #a78bfa); }
 .pillars-item[data-section="comms"]       .pillars-icon { color: var(--c-sky,    #38bdf8); }
-.pillars-item[data-section="care"]        .pillars-icon { color: var(--c-emerald,#34d399); }
+.pillars-item[data-section="care"]        .pillars-icon { color: var(--c-emerald,#b8871e); }
 .pillars-item[data-section="worship"]     .pillars-icon { color: var(--c-rose,   #fb7185); }
 .pillars-item[data-section="mission"]     .pillars-icon { color: var(--c-amber,  #fbbf24); }
-.pillars-item[data-section="stewardship"] .pillars-icon { color: var(--c-emerald,#34d399); }
+.pillars-item[data-section="stewardship"] .pillars-icon { color: var(--c-emerald,#b8871e); }
 .pillars-item[data-section="legacy"]      .pillars-icon { color: var(--c-violet, #a78bfa); }
 .pillars-item[data-section="build"]       .pillars-icon { color: var(--c-sky,    #38bdf8); }
 
@@ -383,7 +382,7 @@ body.veil-app {
   font: 700 0.68rem var(--font-ui); min-width: 18px; text-align: center;
 }
 .pillars-badge[data-badge="care"] {
-  background: var(--c-emerald, #34d399); color: #0f172a;
+  background: var(--c-emerald, #b8871e); color: #0f172a;
 }
 
 
@@ -565,7 +564,7 @@ body.veil-app {
 
 /* Colorful top border per section */
 .stat-card.sc-fellowship { border-top: 3px solid var(--c-sky, #38bdf8); }
-.stat-card.sc-care       { border-top: 3px solid var(--c-emerald, #34d399); }
+.stat-card.sc-care       { border-top: 3px solid var(--c-emerald, #b8871e); }
 .stat-card.sc-today      { border-top: 3px solid var(--c-amber, #fbbf24); }
 
 /* Icon pill */
@@ -575,7 +574,7 @@ body.veil-app {
   font-size: 1.15rem; margin-bottom: 12px;
 }
 .stat-icon.sc-fellowship { background: var(--c-sky-bg); color: #0ea5e9; }
-.stat-icon.sc-care       { background: var(--c-emerald-bg); color: #059669; }
+.stat-icon.sc-care       { background: var(--c-emerald-bg); color: #b8871e; }
 .stat-icon.sc-today      { background: var(--c-amber-bg); color: #f97316; }
 
 /* Number */
@@ -603,7 +602,7 @@ body.veil-app {
 
 /* Subtle glow behind number on hover */
 .stat-card.sc-fellowship:hover { box-shadow: var(--shadow-md), 0 0 0 1px var(--c-sky, #38bdf8); }
-.stat-card.sc-care:hover       { box-shadow: var(--shadow-md), 0 0 0 1px var(--c-emerald, #34d399); }
+.stat-card.sc-care:hover       { box-shadow: var(--shadow-md), 0 0 0 1px var(--c-emerald, #b8871e); }
 .stat-card.sc-today:hover      { box-shadow: var(--shadow-md), 0 0 0 1px var(--c-amber, #fbbf24); }
 
 
@@ -757,7 +756,7 @@ flock-tabs [role="tablist"], .tabs-bar {
   font: 500 0.92rem var(--font-ui);
   animation: toast-in 240ms var(--spring);
 }
-.staff-host > [data-tone="good"]   { border-left-color: var(--c-emerald, #34d399); }
+.staff-host > [data-tone="good"]   { border-left-color: var(--c-emerald, #b8871e); }
 .staff-host > [data-tone="warn"]   { border-left-color: var(--c-amber,   #fbbf24); }
 .staff-host > [data-tone="danger"] { border-left-color: var(--c-rose,    #fb7185); }
 @keyframes toast-in {
@@ -782,7 +781,7 @@ flock-tabs [role="tablist"], .tabs-bar {
   box-shadow: var(--shadow-lg); overflow: hidden;
   animation: rise-in 220ms var(--spring);
 }
-/* Rainbow bar at top of palette */
+/* Herald-gold bar at top of palette */
 .herald-panel::before {
   content: ''; display: block; height: 3px;
   background: var(--grad-rainbow);
@@ -854,9 +853,9 @@ body:not(.veil-app):not([class*="-app"]) .ptr-indicator {
 }
 .unity-header::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2.5px;
-  background: var(--grad-rainbow, linear-gradient(90deg,#dc2626,#fbbf24,#b8871e,#0ea5e9,#6366f1,#dc2626));
-  background-size: 200% 100%;
-  animation: unity-rainbow 9s linear infinite;
+  background: var(--grad-rainbow, linear-gradient(90deg, transparent, #f7c756, transparent));
+  background-size: 100% 100%;
+  animation: none;
   opacity: 0.72; pointer-events: none;
 }
 @keyframes unity-rainbow { from { background-position: 0% 0; } to { background-position: 200% 0; } }
@@ -1543,7 +1542,7 @@ body.unity-modal-open { overflow: hidden; }
   width: 18px; height: 18px; border-radius: 50%; background: #fff;
   box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform 0.20s;
 }
-.unity-sv-toggle input:checked + .unity-sv-toggle-track { background: #22c55e; }
+.unity-sv-toggle input:checked + .unity-sv-toggle-track { background: #f7c756; }
 .unity-sv-toggle input:checked + .unity-sv-toggle-track::after { transform: translateX(18px); }
 .unity-sv-toggle input:disabled + .unity-sv-toggle-track { opacity: 0.38; cursor: not-allowed; }
 /* Settings: info rows */
@@ -1574,7 +1573,7 @@ body.unity-modal-open { overflow: hidden; }
   transition: color 0.12s;
 }
 .unity-sv-task-check:hover { color: #e8a838; }
-.unity-sv-task.is-done .unity-sv-task-check { color: #22c55e; }
+.unity-sv-task.is-done .unity-sv-task-check { color: #b8871e; }
 .unity-sv-task-text {
   flex: 1; font: 500 0.88rem 'Plus Jakarta Sans', system-ui, sans-serif;
   color: #f1f5f9; word-break: break-word;

@@ -103,11 +103,11 @@ export const NC_APP_ICON_SRCS = {
 /* Canonical app catalog. Order = launcher order (Public first, then Secure). */
 export const NC_APPS = [
   { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                      accent: '#e8a838', accentDk: '#b8871e', public: true },
-  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#22c55e', accentDk: '#14532d', public: true },
+  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#f7c756', accentDk: '#b8871e', public: true },
   { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
   { id: 'fold',      name: 'The Fold',       sub: 'Members & flock care',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_fold',          accent: '#3b82f6', accentDk: '#1e3a8a' },
   { id: 'fellowship', name: 'Fellowship',    sub: 'Community & conversations',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_fellowship',    accent: '#06b6d4', accentDk: '#0c4a6e' },
-  { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#22c55e', accentDk: '#14532d' },
+  { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
   { id: 'seasons',   name: 'Seasons',        sub: 'Calendar & events',              href: 'app.flockos/app.flockos.html?covenant=new&view=the_seasons',       accent: '#d97706', accentDk: '#92400e' },
   { id: 'upperroom', name: 'Upper Room',     sub: 'Devotion, journal & prayer',     href: 'app.flockos/app.flockos.html?covenant=new&view=the_upper_room',    accent: '#ef4444', accentDk: '#7f1d1d' },
@@ -115,18 +115,18 @@ export const NC_APPS = [
   { id: 'service',   name: 'Service Order',  sub: 'Worship planning',               href: 'app.flockos/app.flockos.html?covenant=new&view=the_anatomy_of_worship', accent: '#64748b', accentDk: '#334155' },
   { id: 'quarterly', name: 'Quarterly',       sub: 'Quarterly worship planner',      href: 'app.flockos/app.flockos.html?covenant=new&view=quarterly_worship', accent: '#a855f7', accentDk: '#4c1d95' },
   { id: 'missions',  name: 'Missions',        sub: 'Great Commission work',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_great_commission', accent: '#0ea5e9', accentDk: '#0c4a6e' },
-  { id: 'harvest',   name: 'Harvest',         sub: 'Outreach & conversions',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_harvest',       accent: '#65a30d', accentDk: '#365314' },
+  { id: 'harvest',   name: 'Harvest',         sub: 'Outreach & conversions',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_harvest',       accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'way',       name: 'The Way',         sub: 'Discipleship pathways',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_way',           accent: '#f59e0b', accentDk: '#92400e' },
   { id: 'content',   name: 'Content',         sub: 'Teaching & media library',       href: 'app.flockos/app.flockos.html?covenant=new&view=the_truth',         accent: '#2563eb', accentDk: '#1d4ed8' },
-  { id: 'giving',    name: 'Giving',          sub: 'Stewardship & gifts',            href: 'app.flockos/app.flockos.html?covenant=new&view=the_gift_drift',    accent: '#059669', accentDk: '#065f46' },
-  { id: 'weavers',   name: "The Weaver's Plan", sub: 'Strategy & planning',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_weavers_plan',  accent: '#14b8a6', accentDk: '#0f766e' },
+  { id: 'giving',    name: 'Giving',          sub: 'Stewardship & gifts',            href: 'app.flockos/app.flockos.html?covenant=new&view=the_gift_drift',    accent: '#f7c756', accentDk: '#b8871e' },
+  { id: 'weavers',   name: "The Weaver's Plan", sub: 'Strategy & planning',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_weavers_plan',  accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'admin',     name: 'Admin',           sub: 'FlockOS administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_wall',          accent: '#7c3aed', accentDk: '#4c1d95' },
   { id: 'announcements', name: 'Announcements', sub: 'Church announcements',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_announcements', accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'events',    name: 'Events',          sub: 'Special events & gatherings',    href: 'app.flockos/app.flockos.html?covenant=new&view=the_pentecost',     accent: '#d97706', accentDk: '#92400e' },
   { id: 'forgive',   name: 'Forgiveness',     sub: 'Reconciliation guide',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_call_to_forgive', accent: '#ef4444', accentDk: '#7f1d1d' },
   { id: 'generations', name: 'Generations',   sub: 'Build history & records',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_generations',  accent: '#64748b', accentDk: '#334155' },
   { id: 'prayerful', name: 'Prayerful Action', sub: 'Prayer journal & rhythm',       href: 'app.flockos/app.flockos.html?covenant=new&view=prayerful_action', accent: '#8b5cf6', accentDk: '#4c1d95' },
-  { id: 'outreach',  name: 'Outreach',        sub: 'Fishing for men',                href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_men',   accent: '#22c55e', accentDk: '#14532d' },
+  { id: 'outreach',  name: 'Outreach',        sub: 'Fishing for men',                href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_men',   accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'analytics', name: 'Analytics',       sub: 'Ministry data',                  href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_data',  accent: '#2563eb', accentDk: '#1d4ed8' },
   { id: 'deploy',    name: 'Deploy',          sub: 'Deployment referral',            href: 'app.flockos/app.flockos.html?covenant=new&view=software_deployment_referral', accent: '#64748b', accentDk: '#334155' },
   { id: 'bezalel',   name: 'Bezalel',         sub: 'Build tools',                    href: 'app.flockos/app.flockos.html?covenant=new&view=bezalel',           accent: '#7c3aed', accentDk: '#4c1d95' },
@@ -135,12 +135,12 @@ export const NC_APPS = [
   { id: 'truth-admin', name: 'Truth Editor',  sub: 'Content administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=content-admin',    accent: '#2563eb', accentDk: '#1d4ed8' },
   { id: 'stand',     name: 'FlockStand',     sub: 'Songs, setlists & live',         href: 'app.stand/',                       accent: '#a855f7', accentDk: '#4c1d95' },
   { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d' },
-  { id: 'flocksort', name: 'FlockSort',      sub: 'Free water-sort puzzle',         href: 'app.flocksort/',                   accent: '#0f766e', accentDk: '#134e4a' },
+  { id: 'flocksort', name: 'FlockSort',      sub: 'Free water-sort puzzle',         href: 'app.flocksort/',                   accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/',                   accent: '#2563eb', accentDk: '#1d4ed8' },
-  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#14b8a6', accentDk: '#0f766e' },
+  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                        accent: '#d97706', accentDk: '#92400e' },
-  { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database', href: 'app.wellspring/app.wellspring.html', accent: '#059669', accentDk: '#065f46' },
+  { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database', href: 'app.wellspring/app.wellspring.html', accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'melchizedek', name: 'Safety',       sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', accent: '#7c3aed', accentDk: '#4c1d95' },
 ];
 
@@ -220,7 +220,7 @@ function ensureStyles() {
   width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
   color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.30);
-  background: linear-gradient(135deg, var(--nc-app-accent-dk), var(--nc-app-accent));
+  background: linear-gradient(135deg, #b8871e, #f7c756);
   overflow: hidden;
 }
 .nc-switcher-icon svg { width: 18px; height: 18px; }
@@ -255,7 +255,7 @@ function ensureStyles() {
   margin: 6px 6px;
 }
 .nc-switcher-item--signin .nc-switcher-icon {
-  background: linear-gradient(135deg, #14532d, #22c55e);
+  background: linear-gradient(135deg, #b8871e, #f7c756);
 }
 `;
   const style = document.createElement('style');

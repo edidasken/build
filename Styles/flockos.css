@@ -20,19 +20,13 @@ body.veil-app {
   --gold: var(--flockos-gold);
   --gold-text: var(--flockos-gold-deep);
   --gold-glow: rgba(247,199,86,0.35);
-  background:
-    radial-gradient(circle at top left, rgba(247,199,86,.18), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,0.12), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+  background: #ffffff;
 }
 
 body.veil-app .veil-wrap {
   --topbar-h: 68px;
   --sidebar-w: 238px;
-  background:
-    radial-gradient(circle at top left, rgba(247,199,86,.18), transparent 32rem),
-    radial-gradient(circle at top right, rgba(72,211,217,0.12), transparent 30rem),
-    linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #f1f5f9 100%);
+  background: #ffffff;
 }
 
 body.veil-app .veil-top,
@@ -175,20 +169,22 @@ body.veil-app .pillars-item.is-active::before {
 body.veil-app .pillars-icon {
   width: 22px;
   height: 22px;
-}
-
-body.veil-app .pillars-item[data-section="home"] .pillars-icon,
-body.veil-app .pillars-item[data-section="mission"] .pillars-icon {
   color: var(--flockos-gold);
 }
 
+body.veil-app .pillars-item[data-section="home"] .pillars-icon,
 body.veil-app .pillars-item[data-section="fellowship"] .pillars-icon,
+body.veil-app .pillars-item[data-section="care"] .pillars-icon,
+body.veil-app .pillars-item[data-section="worship"] .pillars-icon,
+body.veil-app .pillars-item[data-section="mission"] .pillars-icon,
+body.veil-app .pillars-item[data-section="stewardship"] .pillars-icon,
 body.veil-app .pillars-item[data-section="admin"] .pillars-icon {
-  color: var(--flockos-cyan);
+  color: var(--flockos-gold);
 }
 
 body.veil-app .veil-main {
   padding: 0 22px calc(var(--safe-bottom, 0px) + 64px);
+  background: #ffffff;
 }
 
 body.veil-app .veil-main > * {
@@ -351,8 +347,8 @@ body.veil-app .pasture-action--feed {
 }
 
 body.veil-app .pasture-action--guard {
-  border-color: rgba(34,197,94,.25);
-  background: rgba(34,197,94,0.12);
+  border-color: rgba(247,199,86,.25);
+  background: rgba(247,199,86,0.12);
   color: #fff;
 }
 
@@ -474,7 +470,7 @@ body.veil-app .pasture-hero-aside span:nth-of-type(2) {
 }
 
 body.veil-app .pasture-hero-aside span:nth-of-type(3) {
-  background: rgba(34,197,94,.12);
+  background: rgba(247,199,86,.12);
   color: #fff;
 }
 
@@ -513,7 +509,7 @@ body.veil-app .pasture [data-bind="prayers"] .stat-card {
 }
 
 body.veil-app .pasture [data-bind="care-summary"] .stat-card {
-  --stat-accent: #22c55e;
+  --stat-accent: var(--flockos-gold);
 }
 
 body.veil-app .pasture [data-bind="today"] .stat-card {
@@ -848,8 +844,8 @@ body.veil-app .upper-room {
   --c-violet-bg: rgba(72,211,217,.12);
   --c-amber: var(--flockos-gold);
   --c-amber-bg: rgba(247,199,86,.12);
-  --c-emerald: #22c55e;
-  --c-emerald-bg: rgba(34,197,94,.12);
+  --c-emerald: var(--flockos-gold-deep);
+  --c-emerald-bg: rgba(247,199,86,.12);
   --ur-accent: var(--flockos-gold);
 }
 
@@ -1202,7 +1198,7 @@ body.veil-app :is(
   color: var(--flockos-navy);
 }
 
-body.veil-app .grow-page { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .grow-page { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .ann-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
 body.veil-app .bz-view { --view-accent: #7c3aed; --view-accent-soft: rgba(124,58,237,.12); }
 body.veil-app .content-admin-view,
@@ -1210,11 +1206,11 @@ body.veil-app .data-view { --view-accent: #2563eb; --view-accent-soft: rgba(37,9
 body.veil-app .ctf-view { --view-accent: #ef4444; --view-accent-soft: rgba(239,68,68,.12); }
 body.veil-app .fellowship-frame-view,
 body.veil-app .pc-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
-body.veil-app .fish-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .fish-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .fold-view { --view-accent: #6366f1; --view-accent-soft: rgba(59,130,246,.12); }
 body.veil-app .gen-view { --view-accent: #64748b; --view-accent-soft: rgba(100,116,139,.12); }
-body.veil-app .inv-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
-body.veil-app .life-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .inv-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .life-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .lm-view,
 body.veil-app .sdr-view { --view-accent: #f59e0b; --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .pent-view { --view-accent: #d97706; --view-accent-soft: rgba(217,119,6,.12); }
@@ -1222,7 +1218,7 @@ body.veil-app .pray-view,
 body.veil-app .upper-room { --view-accent: #8b5cf6; --view-accent-soft: rgba(139,92,246,.12); }
 body.veil-app .seasons-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,.12); }
 body.veil-app .gc-view,
-body.veil-app .harvest-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .harvest-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .way-view,
 body.veil-app .truth-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .gift-view { --view-accent: #6366f1; --view-accent-soft: rgba(59,130,246,.12); }
@@ -1265,8 +1261,8 @@ body.veil-app .grow-page > .grow-hero {
   border: 1px solid rgba(247,199,86,.25);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 86% 12%, rgba(72,211,217,0.18), transparent 18rem),
-    radial-gradient(circle at 14% 88%, rgba(247,199,86,0.18), transparent 18rem),
+    radial-gradient(circle at 86% 12%, rgba(72,211,217,0.12), transparent 18rem),
+    radial-gradient(circle at 14% 88%, rgba(15,23,42,0.08), transparent 18rem),
     linear-gradient(135deg, rgba(15,23,42,.95), rgba(15,23,42,.95));
   color: #f8fafc;
   box-shadow: var(--flockos-shadow);
@@ -1306,7 +1302,7 @@ body.veil-app .grow-page > .grow-hero::before {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--view-accent) 22%, transparent), transparent 46%),
+    linear-gradient(90deg, rgba(255,255,255,.08), transparent 46%),
     linear-gradient(180deg, rgba(255,255,255,0.08), transparent 54%);
   pointer-events: none;
 }
@@ -1328,10 +1324,10 @@ body.veil-app .page-hero-scripture {
   max-width: 68ch;
   margin-top: 14px;
   padding: 10px 13px;
-  border-left: 4px solid var(--view-accent, var(--flockos-gold));
+  border-left: 4px solid var(--flockos-gold);
   border-radius: 0 12px 12px 0;
   background: rgba(15,23,42,0.35);
-  color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 68%, #ffffff);
+  color: color-mix(in srgb, var(--flockos-gold) 68%, #ffffff);
 }
 
 body.veil-app .grow-hero-icon {
@@ -1411,9 +1407,8 @@ body.veil-app :is(
   border: 1px solid rgba(15,23,42,.12);
   border-radius: var(--flockos-radius-md);
   background:
-    radial-gradient(circle at top right, color-mix(in srgb, var(--view-accent-2, var(--flockos-cyan)) 10%, transparent), transparent 10rem),
-    radial-gradient(circle at bottom left, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 9%, transparent), transparent 10rem),
-    rgba(255,255,255,.9);
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 12rem),
+    #ffffff;
   box-shadow: var(--flockos-shadow-soft);
 }
 
@@ -1513,11 +1508,11 @@ body.veil-app :is(
   .wv-init-row,
   .wv-milestone-row
 ):hover {
-  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 34%, transparent);
+  border-color: rgba(15,23,42,.12);
   background:
-    radial-gradient(circle at top right, color-mix(in srgb, var(--view-accent-2, var(--flockos-cyan)) 13%, transparent), transparent 10rem),
-    linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.9));
-  box-shadow: var(--flockos-shadow-soft), 0 0 0 1px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 18%, transparent);
+    radial-gradient(circle at top right, rgba(72,211,217,.14), transparent 12rem),
+    #ffffff;
+  box-shadow: 0 18px 44px rgba(15,23,42,.08);
 }
 
 body.veil-app :is(
@@ -1553,7 +1548,7 @@ body.veil-app :is(
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  background: linear-gradient(90deg, var(--view-accent, var(--flockos-gold)), var(--view-accent-2, var(--flockos-cyan)), transparent);
+  background: linear-gradient(90deg, var(--flockos-gold), rgba(247,199,86,.42), transparent);
 }
 
 body.veil-app :is(
@@ -1584,8 +1579,8 @@ body.veil-app :is(
   border: 1px solid rgba(15,23,42,.08);
   border-radius: var(--flockos-radius-md);
   background:
-    linear-gradient(90deg, color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 11%, transparent), rgba(72,211,217,.04)),
-    rgba(255,255,255,.72);
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 10rem),
+    rgba(255,255,255,.95);
   box-shadow: var(--flockos-shadow-soft);
 }
 
@@ -1724,10 +1719,10 @@ body.veil-app :is(
   .wall-nav-item.is-active,
   .aow-service-tab.is-active
 ) {
-  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 44%, transparent);
-  background: linear-gradient(135deg, var(--view-accent, var(--flockos-gold)), var(--flockos-gold));
+  border-color: rgba(247,199,86,.44);
+  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
   color: #111827;
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 22%, transparent);
+  box-shadow: 0 10px 22px rgba(247,199,86,.22);
 }
 
 body.veil-app :is(
@@ -1752,8 +1747,8 @@ body.veil-app :is(.flock-btn--ghost, .btn-outline, .flock-btn--secondary) {
 }
 
 body.veil-app :is(.flock-btn--ghost, .btn-outline, .flock-btn--secondary):hover {
-  border-color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 42%, transparent);
-  background: var(--view-accent-soft, rgba(247,199,86,.12));
+  border-color: rgba(247,199,86,.42);
+  background: rgba(247,199,86,.12);
 }
 
 body.veil-app :is(
@@ -1814,8 +1809,8 @@ body.veil-app :is(
   border: 1px dashed rgba(15,23,42,.12);
   border-radius: var(--flockos-radius-md);
   background:
-    linear-gradient(135deg, var(--view-accent-soft, rgba(247,199,86,0.12)), rgba(72,211,217,.04)),
-    rgba(255,255,255,0.72);
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 10rem),
+    #ffffff;
   color: #64748b !important;
 }
 
@@ -1841,9 +1836,9 @@ body.veil-app :is(
   .pray-urgent-badge,
   .wall-status-badge
 ) {
-  border: 1px solid color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 28%, transparent);
-  background: var(--view-accent-soft, rgba(247,199,86,.12));
-  color: color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 62%, var(--flockos-navy));
+  border: 1px solid rgba(247,199,86,.28);
+  background: rgba(247,199,86,.12);
+  color: var(--flockos-gold-deep);
 }
 
 body.veil-app :is(
@@ -2146,14 +2141,14 @@ body.veil-app .unity-nav-item:hover,
 body.veil-app .unity-search-item:hover,
 body.veil-app .unity-search-item.is-sel,
 body.veil-app .unity-pp-item:hover {
-  background: linear-gradient(90deg, rgba(247,199,86,.12), rgba(72,211,217,.12));
+  background: linear-gradient(90deg, rgba(247,199,86,.12), rgba(247,199,86,.06));
   border-color: rgba(247,199,86,.25);
   color: #ffffff;
 }
 
 body.veil-app .nc-switcher-item.is-current,
 body.veil-app .unity-nav-item.is-current {
-  background: linear-gradient(90deg, rgba(247,199,86,.18), rgba(34,197,94,.12));
+  background: linear-gradient(90deg, rgba(247,199,86,.18), rgba(247,199,86,.08));
   border-color: rgba(247,199,86,.35);
   box-shadow: inset 3px 0 0 var(--flockos-gold);
 }
@@ -2185,8 +2180,8 @@ body.veil-app .unity-pp-avatar.unity-pp-avatar--herald {
 }
 
 body.veil-app .nc-switcher-icon.tone-green {
-  background: rgba(255,255,255,.12);
-  color: #34d399;
+  background: rgba(247,199,86,.95);
+  color: #111827;
 }
 
 body.veil-app .nc-switcher-icon.tone-blue,
@@ -2356,14 +2351,14 @@ body.veil-app .bp-section,
 body.veil-app .bp-toggle {
   border: 1px solid rgba(15,23,42,0.08);
   background:
-    radial-gradient(circle at top right, rgba(72,211,217,0.08), transparent 8rem),
+    radial-gradient(circle at top right, rgba(72,211,217,0.10), transparent 8rem),
     #ffffff;
 }
 
 body.veil-app .life-status-pill.is-active,
 body.veil-app .life-priority-pill.is-active {
   border-color: rgba(247,199,86,.5);
-  background: linear-gradient(135deg, rgba(247,199,86,.18), rgba(34,197,94,0.12));
+  background: linear-gradient(135deg, rgba(247,199,86,.18), rgba(247,199,86,0.08));
   color: var(--flockos-gold-deep);
 }
 
@@ -2512,13 +2507,13 @@ body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 
 /* ─── Migrated from app.embeds/embed-flockos.html ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 :root {
-  --bg: #f7f8fb; --bg-raised: #ffffff; --ink: #1b264f; --line: #e5e7ef;
+  --bg: #ffffff; --bg-raised: #ffffff; --ink: #1b264f; --line: #e5e7ef;
   --safe-top: env(safe-area-inset-top, 0px);
   --topbar-h: 60px;
 }
 
-html { height: 100%; overflow: hidden; background: var(--bg); }
-body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); height: 100%; overflow: hidden; overscroll-behavior: none; }
+html { height: 100%; overflow: hidden; background: #ffffff; }
+body { margin: 0; padding: 0; background: #ffffff; color: var(--ink); height: 100%; overflow: hidden; overscroll-behavior: none; }
 
 .veil-wrap {
   display: grid;
