@@ -2899,7 +2899,7 @@
     _panel(_spinner());
     try {
       // Load from local static bundle — re-export with:
-      //   python "Architechtural Docs/New Covenant/Automation/Shepherds/export_apologetics_to_js.py"
+      //   python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/export_apologetics_to_js.py"
       var mod  = await import('../Data/apologetics.js');
       var data = mod.default || [];
 
@@ -2972,7 +2972,7 @@
   // ══════════════════════════════════════════════════════════════════════════
   // PSALMS — Browse all 150 psalms by theme or numeric order
   // Data: New_Covenant/Data/psalms.js (static bundle — zero Firestore reads)
-  // Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/convert_psalms_to_js.py"
+  // Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/convert_psalms_to_js.py"
   // ══════════════════════════════════════════════════════════════════════════
 
   async function _renderPsalms() {

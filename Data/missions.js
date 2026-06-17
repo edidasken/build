@@ -10,7 +10,7 @@
 //   • Operation World (operationworld.org) — narrative summary + prayer
 //     answers/challenges (curated for BAL Extreme tier)
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/export_missions_to_js.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/export_missions_to_js.py"
 // DO NOT EDIT — regenerate from Firestore instead.
 
 export default [

@@ -1,5 +1,5 @@
 // do_workflows.js - Generated workflow registry for /do.
-// Source: Architechtural Docs/do
+// Source: New_Covenant/iris/docs/do
 // Generated: 2026-06-17T06:09:52.040Z
 // Records: 160
 // Re-generate: node New_Covenant/iris/build_do_workflows.mjs
@@ -7,7 +7,7 @@
 
 export const DO_WORKFLOW_META = {
   "generatedAt": "2026-06-17T06:09:52.040Z",
-  "sourceRoot": "Architechtural Docs/do",
+  "sourceRoot": "New_Covenant/iris/docs/do",
   "count": 160,
   "byFamily": {
     "care": 17,
@@ -28,7 +28,7 @@ export const DO_WORKFLOW_META = {
 export const DO_WORKFLOWS = [
   {
     "workflowId": "care.do-spiritual-care-best-practices-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-best-practices-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-best-practices-by-type.md",
     "sourceHash": "5284652e40ad04e2",
     "title": "Spiritual Care Best Practices by Type",
     "description": "Type-based pastoral care best practices for spiritual care workflows, including crisis, grief, family, discipleship, recovery, hardship, identity-sensitive, and long-term care situations.",
@@ -131,7 +131,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-closure-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-closure-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-closure-by-type.md",
     "sourceHash": "1995b7fa280baca8",
     "title": "Spiritual Care Closure by Type",
     "description": "Type-based closure and transition guidance for spiritual care cases, covering how closure should differ by crisis, grief, medical, trauma, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -229,7 +229,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-closure-transition",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-closure-transition.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-closure-transition.md",
     "sourceHash": "79c8d79baf711556",
     "title": "Spiritual Care Closure and Transition",
     "description": "Steps for closing spiritual care cases, documenting referrals, and transitioning people into ongoing support.",
@@ -320,7 +320,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-follow-up-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-follow-up-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-follow-up-by-type.md",
     "sourceHash": "f0ccf5c69b19325e",
     "title": "Spiritual Care Follow-Up by Type",
     "description": "Type-based follow-up guidance for spiritual care cases, covering how follow-up should differ by crisis, grief, medical, trauma, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -415,7 +415,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-follow-up-timelines",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-follow-up-timelines.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-follow-up-timelines.md",
     "sourceHash": "303a92546e6257d5",
     "title": "Spiritual Care Follow-Up Timelines",
     "description": "Cadence, reminder, and escalation timelines for spiritual care follow-up by urgency and case type.",
@@ -508,7 +508,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-intake-triage",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-intake-triage.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-intake-triage.md",
     "sourceHash": "7070d8089932ed3f",
     "title": "Spiritual Care Intake and Triage",
     "description": "Practical intake and triage guidance for spiritual care requests.",
@@ -602,7 +602,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-intake-triage-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-intake-triage-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-intake-triage-by-type.md",
     "sourceHash": "d3300c98d63ac2a1",
     "title": "Spiritual Care Intake and Triage by Type",
     "description": "Type-based intake and triage guidance for spiritual care cases, covering how the first conversation should differ by crisis, grief, medical, trauma, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -695,7 +695,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-notes-handoffs",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-notes-handoffs.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-notes-handoffs.md",
     "sourceHash": "62d79209bb20dad7",
     "title": "Spiritual Care Notes and Handoffs",
     "description": "Guidance for factual care notes and smooth pastoral handoffs.",
@@ -773,7 +773,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-notes-handoffs-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-notes-handoffs-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-notes-handoffs-by-type.md",
     "sourceHash": "8a31f9eb80b60ddd",
     "title": "Spiritual Care Notes and Handoffs by Type",
     "description": "Type-based notes and handoff guidance for spiritual care cases, covering how documentation and transfers should differ by crisis, grief, medical, trauma, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -873,7 +873,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-prayer",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-prayer.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-prayer.md",
     "sourceHash": "fbec900d415c6437",
     "title": "Spiritual Care Prayer Bank",
     "description": "Comprehensive prayer bank for spiritual conditions, pastoral care needs, and everyday discipleship, with special focus on the Sermon on the Mount.",
@@ -965,7 +965,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-prayer-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-prayer-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-prayer-by-type.md",
     "sourceHash": "1b3a4e2442d73feb",
     "title": "Spiritual Care Prayer by Type",
     "description": "Type-based prayer guidance for spiritual care cases, covering how prayer tone, content, and timing should differ by crisis, grief, medical, trauma, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -1057,7 +1057,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-risk-escalation",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-risk-escalation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-risk-escalation.md",
     "sourceHash": "55c7d1f88c5813a3",
     "title": "Spiritual Care Risk Escalation",
     "description": "Thresholds and actions for urgent spiritual care escalation.",
@@ -1154,7 +1154,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-risk-escalation-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-risk-escalation-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-risk-escalation-by-type.md",
     "sourceHash": "05bcbbf22723fa26",
     "title": "Spiritual Care Risk Escalation by Type",
     "description": "Type-based risk escalation guidance for spiritual care cases, covering how danger thresholds and response steps differ by crisis, trauma, medical, grief, recovery, family, discipleship, hardship, and identity-sensitive care.",
@@ -1250,7 +1250,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-scripture-prayer",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-scripture-prayer.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-scripture-prayer.md",
     "sourceHash": "ebe57c885889da39",
     "title": "Spiritual Care Scripture and Prayer",
     "description": "Pastoral language, scripture selection, and prayer patterns for spiritual care workflows.",
@@ -1335,7 +1335,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.do-spiritual-care-scripture-prayer-by-type",
-    "sourcePath": "Architechtural Docs/do/care/do-spiritual-care-scripture-prayer-by-type.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/do-spiritual-care-scripture-prayer-by-type.md",
     "sourceHash": "3db82a13c6cb4192",
     "title": "Spiritual Care Scripture Prayer by Type",
     "description": "Type-based Scripture-prayer guidance for spiritual care cases, covering which biblical passages to use, how to frame them, and what to avoid by care type.",
@@ -1420,7 +1420,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.readme",
-    "sourcePath": "Architechtural Docs/do/care/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/README.md",
     "sourceHash": "4f636b77fafeef5d",
     "title": "Spiritual Care Core Index",
     "description": "Flat authoritative index for the core spiritual-care workflow docs under documentation/do/core.",
@@ -1507,7 +1507,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "care.spiritual-care-case-taxonomy-and-workflows",
-    "sourcePath": "Architechtural Docs/do/care/spiritual-care-case-taxonomy-and-workflows.md",
+    "sourcePath": "New_Covenant/iris/docs/do/care/spiritual-care-case-taxonomy-and-workflows.md",
     "sourceHash": "ebf25f5e1b29f3e8",
     "title": "Spiritual Care Case Taxonomy and Software Workflows",
     "description": "Build a comprehensive, software-ready taxonomy for spiritual care cases so the system can classify requests correctly, apply the right confidentiality rules, route to the right people, and trigger the right follow-up workflow.",
@@ -1598,7 +1598,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-abuse-domestic-violence",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-abuse-domestic-violence.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-abuse-domestic-violence.md",
     "sourceHash": "11e0928e16ac1e2c",
     "title": "Abuse and Domestic Violence",
     "description": "Spiritual-care workflow for abuse, coercive control, domestic violence, stalking, and unsafe home situations.",
@@ -1693,7 +1693,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-abuse-neglect-exploitation",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-abuse-neglect-exploitation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-abuse-neglect-exploitation.md",
     "sourceHash": "c199f6b96ee3c1a3",
     "title": "Abuse, Neglect, and Exploitation",
     "description": "Immediate pastoral response workflow for suspected abuse, neglect, or exploitation of a minor or vulnerable adult.",
@@ -1784,7 +1784,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-addiction",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-addiction.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-addiction.md",
     "sourceHash": "81b44b40922e316f",
     "title": "Addiction Care Workflow",
     "description": "Shepherding workflow for substance use, compulsive behavior, and recovery support.",
@@ -1880,7 +1880,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-addiction-recovery",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-addiction-recovery.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-addiction-recovery.md",
     "sourceHash": "ed5eef006de4a62e",
     "title": "Spiritual Care: Addiction & Recovery",
     "description": "Workflow for Addiction and Pornography / Sexual Addiction spiritual care cases.",
@@ -1981,7 +1981,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-adoption-foster-care",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-adoption-foster-care.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-adoption-foster-care.md",
     "sourceHash": "742fd9aa187b0859",
     "title": "Adoption and Foster Care Care",
     "description": "Pastoral care workflow for adoption, foster care, placement transitions, and family support around children in care.",
@@ -2071,7 +2071,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-caregiver-burnout",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-caregiver-burnout.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-caregiver-burnout.md",
     "sourceHash": "f567f07937ba7628",
     "title": "Caregiver Burnout Care",
     "description": "Pastoral care workflow for caregiver burnout, fatigue, overload, and support needs.",
@@ -2162,7 +2162,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-church-hurt-ministry-conflict",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-church-hurt-ministry-conflict.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-church-hurt-ministry-conflict.md",
     "sourceHash": "1180f069d0aa9abf",
     "title": "Spiritual Care: Church Hurt and Ministry Conflict",
     "description": "Pastoral workflow for church hurt, ministry conflict, and relational wounds within church leadership or volunteer settings.",
@@ -2256,7 +2256,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-counseling",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-counseling.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-counseling.md",
     "sourceHash": "527d861879fbbd92",
     "title": "Counseling Care",
     "description": "General spiritual counseling workflow for discernment, support, and next steps",
@@ -2356,7 +2356,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-crisis",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-crisis.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-crisis.md",
     "sourceHash": "22e5b8b089ba7edb",
     "title": "Crisis and Safety",
     "description": "Immediate spiritual-care workflow for suicide risk, self-harm, violence, psychosis, or other urgent safety concerns.",
@@ -2447,7 +2447,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-crisis-safety",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-crisis-safety.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-crisis-safety.md",
     "sourceHash": "dc0fbbf4c7a4d8ec",
     "title": "Crisis & Safety Spiritual Care",
     "description": "Safely triage crisis and abuse or domestic violence care cases with immediate protection and pastoral clarity.",
@@ -2540,7 +2540,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-death-bereavement-funeral-support",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-death-bereavement-funeral-support.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-death-bereavement-funeral-support.md",
     "sourceHash": "8340a3553d02e43b",
     "title": "Death, Bereavement, and Funeral Support",
     "description": "Practical workflow for bereavement care and funeral support.",
@@ -2628,7 +2628,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-disability-accessibility-support",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-disability-accessibility-support.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-disability-accessibility-support.md",
     "sourceHash": "963321f9b8f77f53",
     "title": "Disability / Accessibility Support",
     "description": "Spiritual care workflow for disability-related accessibility support, accommodations, and inclusive pastoral care.",
@@ -2720,7 +2720,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-disaster-community-displacement",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-disaster-community-displacement.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-disaster-community-displacement.md",
     "sourceHash": "13cb1e82e78b172e",
     "title": "Disaster and Community Displacement",
     "description": "Practical workflow for disaster response and community displacement support.",
@@ -2809,7 +2809,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-discipleship",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-discipleship.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-discipleship.md",
     "sourceHash": "35a236a16b682b2a",
     "title": "Discipleship Care",
     "description": "Ongoing discipleship workflow for spiritual growth, obedience, and formation",
@@ -2899,7 +2899,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-discipleship-growth",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-discipleship-growth.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-discipleship-growth.md",
     "sourceHash": "34338ad572630fda",
     "title": "Spiritual Care: Discipleship & Growth",
     "description": "Workflow for New Believer, New Member Integration, Discipleship, Shepherding, and Restoration cases.",
@@ -2985,7 +2985,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-elder-care",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-elder-care.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-elder-care.md",
     "sourceHash": "04713aff91260687",
     "title": "Elder Care",
     "description": "Spiritual-care workflow for aging adults, caregivers, safety concerns, memory loss, and elder support.",
@@ -3077,7 +3077,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-encouragement-check-in",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-encouragement-check-in.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-encouragement-check-in.md",
     "sourceHash": "a2524fbd3ca9c92c",
     "title": "Spiritual Care: Encouragement Check-In",
     "description": "Pastoral workflow for encouragement check-ins that provide steady contact, discernment, and low-pressure support.",
@@ -3164,7 +3164,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-family",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-family.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-family.md",
     "sourceHash": "c0aca6f2addbb34d",
     "title": "Family Care Workflow",
     "description": "Shepherding workflow for family-system concerns, parenting stress, and relational repair.",
@@ -3262,7 +3262,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-family-estrangement-reconciliation",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-family-estrangement-reconciliation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-family-estrangement-reconciliation.md",
     "sourceHash": "3859ae17f82e07ab",
     "title": "Family Estrangement and Reconciliation",
     "description": "Pastoral workflow for family estrangement, reconciliation discernment, and boundary-aware care.",
@@ -3358,7 +3358,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-financial",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-financial.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-financial.md",
     "sourceHash": "b768040b9676589b",
     "title": "Financial Spiritual Care",
     "description": "Pastoral and practical workflow for financial hardship, benevolence, debt, and stability planning.",
@@ -3449,7 +3449,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-follow-up",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-follow-up.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-follow-up.md",
     "sourceHash": "737e60c0ac0d0b53",
     "title": "Follow-Up",
     "description": "Shepherding workflow for follow-up care after an earlier conversation, prayer request, referral, or intervention.",
@@ -3538,7 +3538,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-food-insecurity-transportation-utilities",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-food-insecurity-transportation-utilities.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-food-insecurity-transportation-utilities.md",
     "sourceHash": "a894c563b2ceafdf",
     "title": "Food Insecurity, Transportation, and Utilities",
     "description": "Practical workflow for food, transportation, and utility insecurity support.",
@@ -3625,7 +3625,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-gender-identity-sexuality",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-gender-identity-sexuality.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-gender-identity-sexuality.md",
     "sourceHash": "c91e61378a45fddb",
     "title": "Gender Identity & Sexuality",
     "description": "Shepherding workflow for gender identity and sexuality conversations that centers dignity, safety, and careful routing.",
@@ -3721,7 +3721,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-general",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-general.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-general.md",
     "sourceHash": "8036796d157ac7b8",
     "title": "Spiritual Care: General",
     "description": "Workflow for Prayer Request, Follow-Up, Life Milestone, and Other spiritual care cases.",
@@ -3799,7 +3799,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-grief",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-grief.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-grief.md",
     "sourceHash": "057cc5f718fc2e16",
     "title": "Grief Care Workflow",
     "description": "Shepherding workflow for grief, mourning, and loss support.",
@@ -3891,7 +3891,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-grief-loss",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-grief-loss.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-grief-loss.md",
     "sourceHash": "0fed3104b37d5e80",
     "title": "Grief & Loss Spiritual Care",
     "description": "Shepherd grief and pregnancy or infant loss cases with compassionate presence, clear routing, and patient follow-up.",
@@ -3968,7 +3968,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-hospital-visit",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-hospital-visit.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-hospital-visit.md",
     "sourceHash": "73ff20fae7902f98",
     "title": "Hospital Visit",
     "description": "Spiritual-care workflow for hospital bedside visits, inpatient support, and discharge transitions.",
@@ -4057,7 +4057,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-housing-insecurity-homelessness",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-housing-insecurity-homelessness.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-housing-insecurity-homelessness.md",
     "sourceHash": "07b47428250b2625",
     "title": "Housing Insecurity and Homelessness",
     "description": "Practical workflow for responding to housing insecurity and homelessness.",
@@ -4149,7 +4149,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-immigration-deportation",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-immigration-deportation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-immigration-deportation.md",
     "sourceHash": "5a5537f14ac2cfb5",
     "title": "Immigration & Deportation Spiritual Care",
     "description": "Pastoral and practical workflow for immigration stress, detention, deportation risk, and family protection.",
@@ -4249,7 +4249,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-incarceration-reentry",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-incarceration-reentry.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-incarceration-reentry.md",
     "sourceHash": "ef36b833334e45ae",
     "title": "Incarceration & Re-Entry Spiritual Care",
     "description": "Pastoral and practical workflow for incarceration, release planning, and re-entry support.",
@@ -4340,7 +4340,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-infidelity-betrayal",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-infidelity-betrayal.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-infidelity-betrayal.md",
     "sourceHash": "00492f2855d60fc3",
     "title": "Infidelity and Betrayal",
     "description": "Pastoral workflow for infidelity, betrayal, disclosure, and trust repair care.",
@@ -4435,7 +4435,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-leadership-failure-moral-failure",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-leadership-failure-moral-failure.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-leadership-failure-moral-failure.md",
     "sourceHash": "b13979482e3cc084",
     "title": "Leadership Failure / Moral Failure",
     "description": "Spiritual care workflow for leaders facing moral failure, disqualification questions, repentance, accountability, and restoration discernment.",
@@ -4526,7 +4526,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-life-milestone",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-life-milestone.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-life-milestone.md",
     "sourceHash": "bbe7765c0a6296c9",
     "title": "Life Milestone",
     "description": "Shepherding workflow for celebrations and transitions tied to major life milestones.",
@@ -4615,7 +4615,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-life-situations",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-life-situations.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-life-situations.md",
     "sourceHash": "a7d174529378f031",
     "title": "Spiritual Care: Life Situations",
     "description": "Workflow for Financial, Immigration / Deportation, Incarceration & Re-Entry, and Gender Identity / Sexuality cases.",
@@ -4705,7 +4705,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-loneliness-isolation",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-loneliness-isolation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-loneliness-isolation.md",
     "sourceHash": "531c2cc7f9ae9764",
     "title": "Loneliness and Isolation Care",
     "description": "Pastoral care workflow for chronic loneliness, isolation, and relational disconnection.",
@@ -4793,7 +4793,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-marriage",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-marriage.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-marriage.md",
     "sourceHash": "807ea73d41773e53",
     "title": "Marriage Care Workflow",
     "description": "Shepherding workflow for married couples needing pastoral support.",
@@ -4886,7 +4886,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-medical",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-medical.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-medical.md",
     "sourceHash": "c7c7da33488724b5",
     "title": "Medical Care",
     "description": "Spiritual-care workflow for non-emergency medical concerns, diagnosis support, chronic illness, and treatment navigation.",
@@ -4980,7 +4980,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-medical-physical",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-medical-physical.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-medical-physical.md",
     "sourceHash": "bc47acfe17e6a813",
     "title": "Medical & Physical Spiritual Care",
     "description": "Guide hospital, medical, elder care, and terminal illness cases with steady pastoral support and timely routing.",
@@ -5067,7 +5067,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-mental-emotional-health",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-mental-emotional-health.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-mental-emotional-health.md",
     "sourceHash": "f58dba7990f0564a",
     "title": "Spiritual Care: Mental & Emotional Health",
     "description": "Workflow for Mental Health and Counseling spiritual care cases.",
@@ -5160,7 +5160,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-mental-health",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-mental-health.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-mental-health.md",
     "sourceHash": "79dfee7e6128c511",
     "title": "Mental Health Care",
     "description": "Pastoral triage and discreet support workflow for mental health concerns",
@@ -5256,7 +5256,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-ministry-burnout-volunteer-fatigue",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-ministry-burnout-volunteer-fatigue.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-ministry-burnout-volunteer-fatigue.md",
     "sourceHash": "451def5db7e603c8",
     "title": "Spiritual Care: Ministry Burnout and Volunteer Fatigue",
     "description": "Pastoral workflow for ministry burnout, volunteer fatigue, overcommitment, and sustainable care planning.",
@@ -5344,7 +5344,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-ministry-conflict-volunteer-dispute",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-ministry-conflict-volunteer-dispute.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-ministry-conflict-volunteer-dispute.md",
     "sourceHash": "109cccbc78788089",
     "title": "Ministry Conflict / Volunteer Dispute",
     "description": "Spiritual care workflow for ministry conflict, volunteer disputes, team tension, and leadership mediation.",
@@ -5433,7 +5433,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-missionary-cross-cultural-support",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-missionary-cross-cultural-support.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-missionary-cross-cultural-support.md",
     "sourceHash": "ddbc693cc7a36058",
     "title": "Missionary / Cross-Cultural Support",
     "description": "Spiritual care workflow for missionaries and cross-cultural workers needing support, discernment, and pastoral care.",
@@ -5522,7 +5522,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-new-believer",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-new-believer.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-new-believer.md",
     "sourceHash": "d68b20aa419a2a0c",
     "title": "New Believer Care",
     "description": "Discipleship workflow for people who have recently come to faith",
@@ -5606,7 +5606,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-new-member-integration",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-new-member-integration.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-new-member-integration.md",
     "sourceHash": "89851dc99151e27e",
     "title": "New Member Integration Care",
     "description": "Integration workflow for welcoming new members into church life and care",
@@ -5698,7 +5698,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-other",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-other.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-other.md",
     "sourceHash": "ebbd6277fc0b0849",
     "title": "Other",
     "description": "Catch-all shepherding workflow for requests that do not clearly fit another spiritual-care case.",
@@ -5792,7 +5792,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-overdose-substance-crisis",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-overdose-substance-crisis.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-overdose-substance-crisis.md",
     "sourceHash": "a04bbe06029b3640",
     "title": "Overdose and Substance Crisis",
     "description": "Immediate pastoral response workflow for overdose, intoxication, withdrawal, or urgent substance-related crisis.",
@@ -5887,7 +5887,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-parenting-child-discipline",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-parenting-child-discipline.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-parenting-child-discipline.md",
     "sourceHash": "92c8436ff3227ceb",
     "title": "Parenting and Child Discipline",
     "description": "Pastoral workflow for parenting challenges, child discipline, and family guidance.",
@@ -5978,7 +5978,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-pornography-sexual-addiction",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-pornography-sexual-addiction.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-pornography-sexual-addiction.md",
     "sourceHash": "49182ed422b7515c",
     "title": "Pornography & Sexual Addiction Care",
     "description": "Discreet shepherding workflow for pornography use and sexual addiction recovery",
@@ -6072,7 +6072,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-post-crisis-stabilization",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-post-crisis-stabilization.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-post-crisis-stabilization.md",
     "sourceHash": "d0afafd60db31706",
     "title": "Post-Crisis Stabilization Care",
     "description": "Pastoral care workflow for stabilizing someone after a recent crisis, emergency, or acute care event.",
@@ -6166,7 +6166,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-prayer-request",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-prayer-request.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-prayer-request.md",
     "sourceHash": "2582a16097d5ecf3",
     "title": "Prayer Request",
     "description": "Shepherding workflow for prayer requests that prioritizes consent, clarity, and appropriate escalation.",
@@ -6263,7 +6263,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-prayer-request-only",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-prayer-request-only.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-prayer-request-only.md",
     "sourceHash": "85b325a7a504ad77",
     "title": "Spiritual Care: Prayer Request Only",
     "description": "Pastoral workflow for prayer-only requests that need careful listening, light triage, and clear closure.",
@@ -6356,7 +6356,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-pre-marriage",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-pre-marriage.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-pre-marriage.md",
     "sourceHash": "7d4391c1b609ed4f",
     "title": "Pre-Marriage Care Workflow",
     "description": "Shepherding workflow for engaged couples preparing for marriage.",
@@ -6447,7 +6447,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-pregnancy-infant-loss",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-pregnancy-infant-loss.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-pregnancy-infant-loss.md",
     "sourceHash": "c32e4299c073d3b9",
     "title": "Pregnancy and Infant Loss Care Workflow",
     "description": "Shepherding workflow for miscarriage, stillbirth, neonatal loss, and related grief.",
@@ -6539,7 +6539,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-pregnancy-infertility",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-pregnancy-infertility.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-pregnancy-infertility.md",
     "sourceHash": "e7470e8b42592f4f",
     "title": "Pregnancy and Infertility",
     "description": "Pastoral workflow for pregnancy, infertility, conception loss, and reproductive discernment.",
@@ -6637,7 +6637,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-relationships",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-relationships.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-relationships.md",
     "sourceHash": "2f20008f40baf7b2",
     "title": "Relationships Spiritual Care",
     "description": "Support marriage, pre-marriage, and family care cases with wise, truth-filled pastoral guidance and appropriate routing.",
@@ -6724,7 +6724,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-restoration",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-restoration.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-restoration.md",
     "sourceHash": "47f567d6702bba89",
     "title": "Restoration Spiritual Care",
     "description": "Pastoral restoration workflow for confession, repentance, reconciliation, restitution, and trust repair.",
@@ -6815,7 +6815,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-self-harm-suicidal-ideation",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-self-harm-suicidal-ideation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-self-harm-suicidal-ideation.md",
     "sourceHash": "4f8defef30e12117",
     "title": "Self-Harm and Suicidal Ideation",
     "description": "Immediate pastoral response workflow for self-harm, suicidal ideation, or suicide attempt concerns.",
@@ -6911,7 +6911,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-separation-divorce",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-separation-divorce.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-separation-divorce.md",
     "sourceHash": "df81e2c282bfaf01",
     "title": "Separation and Divorce",
     "description": "Pastoral workflow for separation, divorce discernment, and family transition care.",
@@ -7010,7 +7010,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-sexual-assault-harassment",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-sexual-assault-harassment.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-sexual-assault-harassment.md",
     "sourceHash": "369394a769691fee",
     "title": "Sexual Assault and Harassment",
     "description": "Trauma-informed pastoral response workflow for sexual assault, sexual harassment, or recent sexual boundary violation concerns.",
@@ -7103,7 +7103,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-shepherding",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-shepherding.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-shepherding.md",
     "sourceHash": "b2ed87c0cf392f9a",
     "title": "Shepherding Care Workflow",
     "description": "Ongoing pastoral shepherding workflow for general care, connection, and follow-up.",
@@ -7201,7 +7201,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-spiritual-abuse-recovery",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-spiritual-abuse-recovery.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-spiritual-abuse-recovery.md",
     "sourceHash": "dae0364c815ff523",
     "title": "Spiritual Abuse Recovery Care",
     "description": "Pastoral care workflow for recovering from spiritual abuse, coercive religious control, and harmed trust in church settings.",
@@ -7291,7 +7291,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-spiritual-doubt-deconstruction",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-spiritual-doubt-deconstruction.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-spiritual-doubt-deconstruction.md",
     "sourceHash": "ae4ab71ef65cbc33",
     "title": "Spiritual Care: Spiritual Doubt and Deconstruction",
     "description": "Pastoral workflow for spiritual doubt, deconstruction, and questions that require patient listening and careful discernment.",
@@ -7380,7 +7380,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-teen-youth-crisis",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-teen-youth-crisis.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-teen-youth-crisis.md",
     "sourceHash": "8aedd167b1bbb33a",
     "title": "Teen / Youth Crisis",
     "description": "Spiritual care workflow for teens or youth facing crisis, safety concerns, or urgent family and school pressure.",
@@ -7476,7 +7476,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-terminal-illness-end-of-life",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-terminal-illness-end-of-life.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-terminal-illness-end-of-life.md",
     "sourceHash": "1c54fd55e1bd3bc5",
     "title": "Terminal Illness and End-of-Life Care",
     "description": "Spiritual-care workflow for terminal illness, hospice, palliative care, dying, and end-of-life support.",
@@ -7565,7 +7565,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-unemployment-underemployment",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-unemployment-underemployment.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-unemployment-underemployment.md",
     "sourceHash": "29067b43575eac65",
     "title": "Unemployment and Underemployment",
     "description": "Practical workflow for supporting unemployment and underemployment needs.",
@@ -7654,7 +7654,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-violence-threat",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-violence-threat.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-violence-threat.md",
     "sourceHash": "7a622230f540ef62",
     "title": "Violence Threat",
     "description": "Immediate pastoral response workflow for threats of violence, weapon risk, or credible danger to others.",
@@ -7748,7 +7748,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.do-spiritual-care-young-adult-transition",
-    "sourcePath": "Architechtural Docs/do/cases/do-spiritual-care-young-adult-transition.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/do-spiritual-care-young-adult-transition.md",
     "sourceHash": "76acb52af01fa9b8",
     "title": "Young Adult Transition",
     "description": "Spiritual care workflow for young adults navigating adulthood, independence, vocation, identity, and faith transition.",
@@ -7838,7 +7838,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "cases.readme",
-    "sourcePath": "Architechtural Docs/do/cases/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/cases/README.md",
     "sourceHash": "6066c7d80700616a",
     "title": "Spiritual Care Cases Index",
     "description": "Index and organizing guide for spiritual-care case workflows under documentation/do/cases.",
@@ -7943,7 +7943,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "discipleship.discipleship-life-stages",
-    "sourcePath": "Architechtural Docs/do/discipleship/discipleship-life-stages.md",
+    "sourcePath": "New_Covenant/iris/docs/do/discipleship/discipleship-life-stages.md",
     "sourceHash": "71db26c79d5782b9",
     "title": "Discipleship Life Stages",
     "description": "Life-stage map for disciple-making pathways from pregnancy through hospice.",
@@ -8017,7 +8017,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "discipleship.discipleship-program-models",
-    "sourcePath": "Architechtural Docs/do/discipleship/discipleship-program-models.md",
+    "sourcePath": "New_Covenant/iris/docs/do/discipleship/discipleship-program-models.md",
     "sourceHash": "524191c2e0c62c8f",
     "title": "Discipleship Program Models",
     "description": "Reusable discipleship delivery models for different ages, settings, and needs.",
@@ -8089,7 +8089,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "discipleship.discipleship-special-paths",
-    "sourcePath": "Architechtural Docs/do/discipleship/discipleship-special-paths.md",
+    "sourcePath": "New_Covenant/iris/docs/do/discipleship/discipleship-special-paths.md",
     "sourceHash": "03d486cf31214168",
     "title": "Discipleship Special Paths",
     "description": "Special situations that require discipleship adaptations beyond normal life-stage planning.",
@@ -8170,7 +8170,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "discipleship.readme",
-    "sourcePath": "Architechtural Docs/do/discipleship/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/discipleship/README.md",
     "sourceHash": "ef15e5d38eac9323",
     "title": "Discipleship Catalog",
     "description": "Canonical index for disciple-making planning across life stages, special situations, and program models.",
@@ -8244,7 +8244,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-administration-operations-research",
-    "sourcePath": "Architechtural Docs/do/research/do-administration-operations-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-administration-operations-research.md",
     "sourceHash": "35ea00bab1fd278f",
     "title": "Administration and Operations Research",
     "description": "Research brief for admin workflows, permissions, support tasks, and operational oversight across the Do environment.",
@@ -8307,7 +8307,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-architecture-and-data-model-research",
-    "sourcePath": "Architechtural Docs/do/research/do-architecture-and-data-model-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-architecture-and-data-model-research.md",
     "sourceHash": "8469ed51cd51eb91",
     "title": "Architecture & Data Model Research",
     "description": "Research brief for documenting system boundaries, key entities, and the data model behind Herald workflows.",
@@ -8368,7 +8368,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-audit-logging-observability-traceability-research",
-    "sourcePath": "Architechtural Docs/do/research/do-audit-logging-observability-traceability-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-audit-logging-observability-traceability-research.md",
     "sourceHash": "79a6c29e3358088e",
     "title": "Audit Logging, Observability, and Traceability Research",
     "description": "Research brief for logging, monitoring, traceability, and evidence capture across Herald workflows.",
@@ -8431,7 +8431,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-bible-overviews-free-tier-automation-plan",
-    "sourcePath": "Architechtural Docs/do/research/do-bible-overviews-free-tier-automation-plan.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-bible-overviews-free-tier-automation-plan.md",
     "sourceHash": "d26567ed74a0b90f",
     "title": "Bible Overviews Free-Tier Automation Plan",
     "description": "Research and implementation plan for automating Bible overview content with a free-first Google Apps Script and Firestore architecture.",
@@ -8496,7 +8496,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-care-case-lifecycle-research",
-    "sourcePath": "Architechtural Docs/do/research/do-care-case-lifecycle-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-care-case-lifecycle-research.md",
     "sourceHash": "6bf67b40b54cff50",
     "title": "Care Case Lifecycle Research",
     "description": "Research notes for the care case lifecycle, from intake through follow-up, closure, and reporting.",
@@ -8568,7 +8568,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-communications-announcements-research",
-    "sourcePath": "Architechtural Docs/do/research/do-communications-announcements-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-communications-announcements-research.md",
     "sourceHash": "bd7896f6abd62970",
     "title": "Communications and Announcements Research",
     "description": "Research plan for ministry announcements, approvals, scheduling, and channel coordination.",
@@ -8633,7 +8633,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-content-ingestion-import-migration-research",
-    "sourcePath": "Architechtural Docs/do/research/do-content-ingestion-import-migration-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-content-ingestion-import-migration-research.md",
     "sourceHash": "61bd8b554b3aa094",
     "title": "Content Ingestion, Import, and Migration Research",
     "description": "Research brief for importing legacy content, validating mappings, and migrating records safely.",
@@ -8693,7 +8693,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-data-sync-migration-research",
-    "sourcePath": "Architechtural Docs/do/research/do-data-sync-migration-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-data-sync-migration-research.md",
     "sourceHash": "24c6149892befadf",
     "title": "Data Sync and Migration Research",
     "description": "Research brief for syncing data between systems, importing records, and planning safe migrations in the Do automation stack.",
@@ -8756,7 +8756,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-documentation-gap-analysis",
-    "sourcePath": "Architechtural Docs/do/research/do-documentation-gap-analysis.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-documentation-gap-analysis.md",
     "sourceHash": "bfc50896b0beb1a6",
     "title": "Documentation Gap Analysis",
     "description": "Research brief for comparing documented processes against actual workflows and identifying missing or stale documentation.",
@@ -8829,7 +8829,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-editorial-publishing-media-release-research",
-    "sourcePath": "Architechtural Docs/do/research/do-editorial-publishing-media-release-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-editorial-publishing-media-release-research.md",
     "sourceHash": "7b1ccd074bad6168",
     "title": "Editorial Publishing and Media Release Research",
     "description": "Research brief for editorial workflows, publishing approvals, and media release coordination within the Do automation area.",
@@ -8891,7 +8891,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-events-calendar-coordination-research",
-    "sourcePath": "Architechtural Docs/do/research/do-events-calendar-coordination-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-events-calendar-coordination-research.md",
     "sourceHash": "961e735b7a0ea07f",
     "title": "Events and Calendar Coordination Research",
     "description": "Research notes for event intake, calendar approval, coordination, and scheduling workflows.",
@@ -8958,7 +8958,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-giving-stewardship-research",
-    "sourcePath": "Architechtural Docs/do/research/do-giving-stewardship-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-giving-stewardship-research.md",
     "sourceHash": "60d6be40793da799",
     "title": "Giving and Stewardship Research",
     "description": "Research plan for donation workflows, donor care, pledges, and stewardship communication.",
@@ -9025,7 +9025,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-groups-community-research",
-    "sourcePath": "Architechtural Docs/do/research/do-groups-community-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-groups-community-research.md",
     "sourceHash": "a40e473f596f5b96",
     "title": "Groups and Community Research",
     "description": "Research notes for group formation, membership, participation, and community engagement workflows.",
@@ -9092,7 +9092,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-guest-follow-up-research",
-    "sourcePath": "Architechtural Docs/do/research/do-guest-follow-up-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-guest-follow-up-research.md",
     "sourceHash": "8c03db0633456543",
     "title": "Guest Follow-Up Research",
     "description": "Research notes for guest follow-up workflows, response timing, and handoff rules.",
@@ -9160,7 +9160,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-identity-membership-account-lifecycle-research",
-    "sourcePath": "Architechtural Docs/do/research/do-identity-membership-account-lifecycle-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-identity-membership-account-lifecycle-research.md",
     "sourceHash": "bfccd493572ec9cc",
     "title": "Identity, Membership, and Account Lifecycle Research",
     "description": "Research notes for identity, membership, and account lifecycle handling in church operations.",
@@ -9226,7 +9226,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-integration-interoperability-research",
-    "sourcePath": "Architechtural Docs/do/research/do-integration-interoperability-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-integration-interoperability-research.md",
     "sourceHash": "3d2eeeca29ebfac4",
     "title": "Integration and Interoperability Research",
     "description": "Research brief for integration boundaries, contracts, interoperability rules, and external system fit.",
@@ -9288,7 +9288,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-missions-sending-research",
-    "sourcePath": "Architechtural Docs/do/research/do-missions-sending-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-missions-sending-research.md",
     "sourceHash": "e2ecb02e837ba331",
     "title": "Missions and Sending Research",
     "description": "Research plan for missionary support, sending workflows, updates, and trip coordination.",
@@ -9354,7 +9354,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-notifications-reminders-handoff-research",
-    "sourcePath": "Architechtural Docs/do/research/do-notifications-reminders-handoff-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-notifications-reminders-handoff-research.md",
     "sourceHash": "bc8ea424ab4ce66d",
     "title": "Notifications, Reminders, and Handoff Research",
     "description": "Research brief for notification timing, reminder cadence, escalation, and human handoff behavior.",
@@ -9420,7 +9420,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-operational-maintenance-research",
-    "sourcePath": "Architechtural Docs/do/research/do-operational-maintenance-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-operational-maintenance-research.md",
     "sourceHash": "e6c8ecd7ae6a1ff0",
     "title": "Operational Maintenance Research",
     "description": "Research brief for ongoing upkeep, monitoring, incident response, and routine maintenance workflows in the Do automation area.",
@@ -9493,7 +9493,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-outreach-evangelism-research",
-    "sourcePath": "Architechtural Docs/do/research/do-outreach-evangelism-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-outreach-evangelism-research.md",
     "sourceHash": "9d5ab1a8f0e2517e",
     "title": "Outreach and Evangelism Research",
     "description": "Research plan for outreach events, invite workflows, follow-up, and evangelism support.",
@@ -9559,7 +9559,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-prayer-ministry-research",
-    "sourcePath": "Architechtural Docs/do/research/do-prayer-ministry-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-prayer-ministry-research.md",
     "sourceHash": "ace90492c0467348",
     "title": "Prayer Ministry Research",
     "description": "Research notes for prayer request intake, assignment, confidentiality, and follow-up.",
@@ -9636,7 +9636,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-publishing-and-release-workflow-research",
-    "sourcePath": "Architechtural Docs/do/research/do-publishing-and-release-workflow-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-publishing-and-release-workflow-research.md",
     "sourceHash": "2e3a62b49491fb56",
     "title": "Publishing & Release Workflow Research",
     "description": "Research brief for documenting drafting, review, publishing, and release practices for Herald content and automations.",
@@ -9698,7 +9698,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-reporting-analytics-research",
-    "sourcePath": "Architechtural Docs/do/research/do-reporting-analytics-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-reporting-analytics-research.md",
     "sourceHash": "a398f35792696bf9",
     "title": "Reporting and Analytics Research",
     "description": "Research brief for measurement strategy, reporting needs, dashboards, and analytics governance for Do automation.",
@@ -9762,7 +9762,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-retention-archival-lifecycle-end-state-research",
-    "sourcePath": "Architechtural Docs/do/research/do-retention-archival-lifecycle-end-state-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-retention-archival-lifecycle-end-state-research.md",
     "sourceHash": "d1682d48f36f0648",
     "title": "Retention, Archival, and Lifecycle End-State Research",
     "description": "Research brief for retention rules, archival states, deletion, and record end-state handling.",
@@ -9822,7 +9822,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-search-navigation-discovery-research",
-    "sourcePath": "Architechtural Docs/do/research/do-search-navigation-discovery-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-search-navigation-discovery-research.md",
     "sourceHash": "9e9b925e5540bbda",
     "title": "Search, Navigation, and Discovery Research",
     "description": "Research brief for search behavior, browse paths, navigation structure, and content discovery across the Do experience.",
@@ -9886,7 +9886,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-security-access-sensitive-data-research",
-    "sourcePath": "Architechtural Docs/do/research/do-security-access-sensitive-data-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-security-access-sensitive-data-research.md",
     "sourceHash": "8c260f9f1d05aeb7",
     "title": "Security, Access & Sensitive Data Research",
     "description": "Research brief for understanding access control, permissions, and handling of sensitive or confidential data.",
@@ -9948,7 +9948,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-spiritual-care-research-planning",
-    "sourcePath": "Architechtural Docs/do/research/do-spiritual-care-research-planning.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-spiritual-care-research-planning.md",
     "sourceHash": "c9593cd5b371679d",
     "title": "Spiritual Care Research Planning",
     "description": "Workflow-first audit plan for translating imperfect spiritual-care workflows into decisions using the care taxonomy.",
@@ -10035,7 +10035,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-spiritual-care-workflow-map",
-    "sourcePath": "Architechtural Docs/do/research/do-spiritual-care-workflow-map.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-spiritual-care-workflow-map.md",
     "sourceHash": "9393f0bd2496eb64",
     "title": "Spiritual Care Workflow Map",
     "description": "Folder map for spiritual-care care docs and case-level care taxonomy.",
@@ -10118,7 +10118,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-taxonomy-terminology-naming-governance-research",
-    "sourcePath": "Architechtural Docs/do/research/do-taxonomy-terminology-naming-governance-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-taxonomy-terminology-naming-governance-research.md",
     "sourceHash": "2d1a118a3b753b63",
     "title": "Taxonomy, Terminology, and Naming Governance Research",
     "description": "Research brief for standardizing terminology, naming, and governance across Herald docs and workflows.",
@@ -10180,7 +10180,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-teaching-content-pipeline-research",
-    "sourcePath": "Architechtural Docs/do/research/do-teaching-content-pipeline-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-teaching-content-pipeline-research.md",
     "sourceHash": "ae120fd64cac7d31",
     "title": "Teaching Content Pipeline Research",
     "description": "Research brief for documenting how teaching content is planned, created, reviewed, prepared, and distributed.",
@@ -10241,7 +10241,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-template-scaffold-generator-research",
-    "sourcePath": "Architechtural Docs/do/research/do-template-scaffold-generator-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-template-scaffold-generator-research.md",
     "sourceHash": "4da9ee007d12f3a6",
     "title": "Template, Scaffold, and Generator Research",
     "description": "Research brief for reusable templates, starter scaffolds, and content generators.",
@@ -10303,7 +10303,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-volunteering-serving-research",
-    "sourcePath": "Architechtural Docs/do/research/do-volunteering-serving-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-volunteering-serving-research.md",
     "sourceHash": "70eec21bf433a646",
     "title": "Volunteering and Serving Research",
     "description": "Research plan for volunteer recruitment, onboarding, scheduling, and service coordination.",
@@ -10370,7 +10370,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-workflow-inventory-surface-mapping",
-    "sourcePath": "Architechtural Docs/do/research/do-workflow-inventory-surface-mapping.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-workflow-inventory-surface-mapping.md",
     "sourceHash": "b9d0681c22508c1f",
     "title": "Workflow Inventory & Surface Mapping",
     "description": "Research brief for mapping current ministry and operations workflows, user-facing surfaces, and system touchpoints.",
@@ -10432,7 +10432,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.do-worship-planning-service-flow-research",
-    "sourcePath": "Architechtural Docs/do/research/do-worship-planning-service-flow-research.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/do-worship-planning-service-flow-research.md",
     "sourceHash": "8f1a4f8eb72b8b9e",
     "title": "Worship Planning and Service Flow Research",
     "description": "Research plan for service planning, worship set coordination, and Sunday flow management.",
@@ -10497,7 +10497,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "research.readme",
-    "sourcePath": "Architechtural Docs/do/research/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/research/README.md",
     "sourceHash": "825023c2757bfa07",
     "title": "Research Docs",
     "description": "Index of active research briefs used to shape Herald automation and documentation decisions.",
@@ -10552,7 +10552,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "security.do-7-tier-permissions-model",
-    "sourcePath": "Architechtural Docs/do/security/do-7-tier-permissions-model.md",
+    "sourcePath": "New_Covenant/iris/docs/do/security/do-7-tier-permissions-model.md",
     "sourceHash": "5f25c3ad290d8fb5",
     "title": "Do 7-Tier Permissions Model",
     "description": "Proposed seven-tier permission ladder for ministry automation, based on the current GAS backend role and module matrix.",
@@ -10623,7 +10623,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "security.do-authentication-best-practices",
-    "sourcePath": "Architechtural Docs/do/security/do-authentication-best-practices.md",
+    "sourcePath": "New_Covenant/iris/docs/do/security/do-authentication-best-practices.md",
     "sourceHash": "8408755bf903a1a0",
     "title": "Do Authentication Best Practices",
     "description": "Authentication, access-control, and account-safety guidance for safeguarding ministry data and automation workflows.",
@@ -10698,7 +10698,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "security.do-background-screening-and-checkr",
-    "sourcePath": "Architechtural Docs/do/security/do-background-screening-and-checkr.md",
+    "sourcePath": "New_Covenant/iris/docs/do/security/do-background-screening-and-checkr.md",
     "sourceHash": "6cf3778d9a04d181",
     "title": "Do Background Screening and Checkr Integration",
     "description": "Application-wide background screening logic for ministry access, with optional Checkr integration when activated.",
@@ -10757,7 +10757,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "security.readme",
-    "sourcePath": "Architechtural Docs/do/security/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/security/README.md",
     "sourceHash": "59779d0cea8e045d",
     "title": "Do Security",
     "description": "Security planning docs for authentication, access control, and data safeguarding in ministry workflows.",
@@ -10813,7 +10813,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-bible-study-lesson",
-    "sourcePath": "Architechtural Docs/do/teach/do-bible-study-lesson.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-bible-study-lesson.md",
     "sourceHash": "544e12ba93c649ea",
     "title": "Bible Study Lesson",
     "description": "Prepare an interactive Bible study lesson for groups, classes, and discipleship settings.",
@@ -10885,7 +10885,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-biographical-bible-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-biographical-bible-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-biographical-bible-study.md",
     "sourceHash": "9c42abb2836bf131",
     "title": "Biographical Bible Study",
     "description": "Biographical Bible study method for tracing people, character movement, and discipleship implications.",
@@ -10956,7 +10956,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-book-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-book-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-book-study.md",
     "sourceHash": "384bf9fd91c51c3b",
     "title": "Book Study",
     "description": "Focused whole-book study method for sermon prep, Bible study, and teaching-plan creation.",
@@ -11027,7 +11027,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-canonical-redemptive-historical-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-canonical-redemptive-historical-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-canonical-redemptive-historical-study.md",
     "sourceHash": "f793bd12ed8dcf51",
     "title": "Canonical Redemptive-Historical Study",
     "description": "Read a passage within the whole Bible’s storyline, covenant flow, and redemptive purpose.",
@@ -11099,7 +11099,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-congregational-handout-and-notes",
-    "sourcePath": "Architechtural Docs/do/teach/do-congregational-handout-and-notes.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-congregational-handout-and-notes.md",
     "sourceHash": "7a4f68ae7943840e",
     "title": "Congregational Handout and Notes",
     "description": "Prepare congregational handouts and leader notes that reinforce the sermon without crowding the spoken message.",
@@ -11170,7 +11170,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-cultural-background-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-cultural-background-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-cultural-background-study.md",
     "sourceHash": "3d0dfd66232d3b26",
     "title": "Cultural Background Study",
     "description": "Cultural and background study method for clarifying historical, social, and audience context.",
@@ -11240,7 +11240,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-devotional-message",
-    "sourcePath": "Architechtural Docs/do/teach/do-devotional-message.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-devotional-message.md",
     "sourceHash": "45ad267ff3112e42",
     "title": "Devotional Message",
     "description": "Prepare a short devotional message for reflection, encouragement, and prayer.",
@@ -11308,7 +11308,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-doctrinal-sermon",
-    "sourcePath": "Architechtural Docs/do/teach/do-doctrinal-sermon.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-doctrinal-sermon.md",
     "sourceHash": "3fd0fe5eb8369f27",
     "title": "Doctrinal Sermon",
     "description": "Doctrinal sermon workflow for teaching a biblical doctrine clearly, carefully, and in New Covenant context.",
@@ -11378,7 +11378,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-evangelistic-sermon",
-    "sourcePath": "Architechtural Docs/do/teach/do-evangelistic-sermon.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-evangelistic-sermon.md",
     "sourceHash": "1bc328e90ef73633",
     "title": "Evangelistic Sermon",
     "description": "Prepare a gospel-forward sermon for seekers, new believers, and outreach settings.",
@@ -11450,7 +11450,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-expository-sermon",
-    "sourcePath": "Architechtural Docs/do/teach/do-expository-sermon.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-expository-sermon.md",
     "sourceHash": "903436415028196a",
     "title": "Expository Sermon",
     "description": "Expository sermon workflow for preaching one passage with faithful context and clear application.",
@@ -11521,7 +11521,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-historical-grammatical-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-historical-grammatical-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-historical-grammatical-study.md",
     "sourceHash": "cc6e2d678e90fd36",
     "title": "Historical-Grammatical Study",
     "description": "Study Scripture by authorial intent, historical context, grammar, and genre before sermon preparation.",
@@ -11591,7 +11591,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-inductive-bible-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-inductive-bible-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-inductive-bible-study.md",
     "sourceHash": "a38bf38db37c8138",
     "title": "Inductive Bible Study",
     "description": "Use observation, interpretation, and application to study a passage for sermon prep and shared teaching notes.",
@@ -11663,7 +11663,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-narrative-sermon",
-    "sourcePath": "Architechtural Docs/do/teach/do-narrative-sermon.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-narrative-sermon.md",
     "sourceHash": "2e3debf9bd818b7f",
     "title": "Narrative Sermon",
     "description": "Narrative sermon workflow for preaching biblical stories with plot, theology, and faithful application.",
@@ -11735,7 +11735,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-passage-guide-workflow",
-    "sourcePath": "Architechtural Docs/do/teach/do-passage-guide-workflow.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-passage-guide-workflow.md",
     "sourceHash": "a04ac23b97644138",
     "title": "Passage Guide Workflow",
     "description": "Build a passage guide around a biblical text for FEED-style sermon preparation, including themes, related scriptures, theological guardrails, and application points.",
@@ -11807,7 +11807,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-pastoral-exhortation",
-    "sourcePath": "Architechtural Docs/do/teach/do-pastoral-exhortation.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-pastoral-exhortation.md",
     "sourceHash": "ba2f600d2c86b42c",
     "title": "Pastoral Exhortation",
     "description": "Prepare a shepherding message that comforts, corrects, and strengthens the church.",
@@ -11889,7 +11889,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-archive-and-retrieval",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-archive-and-retrieval.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-archive-and-retrieval.md",
     "sourceHash": "2558270975908901",
     "title": "Sermon Archive and Retrieval",
     "description": "Archive completed sermons and make them easy to find, reopen, and reuse.",
@@ -11964,7 +11964,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-construction-outline",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-construction-outline.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-construction-outline.md",
     "sourceHash": "e15c66ddb0fd797e",
     "title": "Sermon Construction Outline",
     "description": "Construct a FEED-style sermon outline from a studied passage, including thesis, outline shape, introduction, transitions, illustration selection, application, closing call, and reuse storage.",
@@ -12035,7 +12035,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-cross-references-and-footnotes",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-cross-references-and-footnotes.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-cross-references-and-footnotes.md",
     "sourceHash": "10a17140f39153e7",
     "title": "Sermon Cross-References and Footnotes",
     "description": "Organize sermon cross-references and footnotes so supporting Scripture and citations strengthen the message.",
@@ -12106,7 +12106,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-illustrations-and-application",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-illustrations-and-application.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-illustrations-and-application.md",
     "sourceHash": "82b3f548bfbb570a",
     "title": "Sermon Illustrations and Application",
     "description": "Choose sermon illustrations and application pathways that serve the text, the congregation, and the final sermon package.",
@@ -12178,7 +12178,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-manuscript-drafting",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-manuscript-drafting.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-manuscript-drafting.md",
     "sourceHash": "9525211c62feb53b",
     "title": "Sermon Manuscript Drafting",
     "description": "Draft a delivery-ready sermon manuscript from the approved outline and study work.",
@@ -12250,7 +12250,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-response-and-prayer-planning",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-response-and-prayer-planning.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-response-and-prayer-planning.md",
     "sourceHash": "45e96427afa4d4c0",
     "title": "Sermon Response and Prayer Planning",
     "description": "Plan sermon response moments, invitations, and prayer elements for the service.",
@@ -12325,7 +12325,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-review-and-versioning",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-review-and-versioning.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-review-and-versioning.md",
     "sourceHash": "60ea9c02090679f7",
     "title": "Sermon Review and Versioning",
     "description": "Review sermons with peer feedback, controlled revisions, approval gates, and version synchronization close to delivery.",
@@ -12396,7 +12396,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-series-planning",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-series-planning.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-series-planning.md",
     "sourceHash": "4147737671d23b96",
     "title": "Sermon Series Planning",
     "description": "Plan sermon series with text progression, ministry alignment, and real-time collaboration for the teaching team.",
@@ -12468,7 +12468,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-slides-and-notes-sync",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-slides-and-notes-sync.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-slides-and-notes-sync.md",
     "sourceHash": "a869395f2a0b8cab",
     "title": "Sermon Slides and Notes Sync",
     "description": "Align sermon slides and speaker notes with the final manuscript and service flow.",
@@ -12536,7 +12536,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-storage-and-realtime-sharing",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-storage-and-realtime-sharing.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-storage-and-realtime-sharing.md",
     "sourceHash": "64a70584fba5ba29",
     "title": "Sermon Storage and Real-Time Sharing",
     "description": "Store sermons in the system with clear metadata, draft and publish states, revision history, and real-time visibility for approved leaders.",
@@ -12608,7 +12608,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-sermon-study-flow",
-    "sourcePath": "Architechtural Docs/do/teach/do-sermon-study-flow.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-sermon-study-flow.md",
     "sourceHash": "ccb46ac2641e456d",
     "title": "Sermon Study Flow",
     "description": "Passage-to-sermon workflow for Bible study, application, and handoff.",
@@ -12679,7 +12679,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-syntactical-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-syntactical-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-syntactical-study.md",
     "sourceHash": "ba61dde1262c7a97",
     "title": "Syntactical Study",
     "description": "Syntactical study method for tracing clause structure, grammar, and argument flow.",
@@ -12747,7 +12747,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-thematic-bible-study",
-    "sourcePath": "Architechtural Docs/do/teach/do-thematic-bible-study.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-thematic-bible-study.md",
     "sourceHash": "a957f6f34125e8f0",
     "title": "Thematic Bible Study",
     "description": "Trace a doctrine or topic across Scripture without proof-texting, then turn it into sermon-ready teaching notes.",
@@ -12818,7 +12818,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-topical-sermon",
-    "sourcePath": "Architechtural Docs/do/teach/do-topical-sermon.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-topical-sermon.md",
     "sourceHash": "dd869ec95576d280",
     "title": "Topical Sermon",
     "description": "Topical sermon workflow for teaching one biblical theme through multiple passages without losing textual faithfulness.",
@@ -12890,7 +12890,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.do-word-study-exegesis",
-    "sourcePath": "Architechtural Docs/do/teach/do-word-study-exegesis.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/do-word-study-exegesis.md",
     "sourceHash": "5494d69b06e1eabd",
     "title": "Word Study and Exegesis",
     "description": "Original-language and lexical study guide for careful exegesis.",
@@ -12958,7 +12958,7 @@ export const DO_WORKFLOWS = [
   },
   {
     "workflowId": "teach.readme",
-    "sourcePath": "Architechtural Docs/do/teach/README.md",
+    "sourcePath": "New_Covenant/iris/docs/do/teach/README.md",
     "sourceHash": "8fc105b867100508",
     "title": "Teach Workflows",
     "description": "This directory contains the teaching and sermon-preparation workflows used to move from study to a finished, shareable sermon package. The docs are organized around interpretation, construction, packaging, collaboration, and archive retrieval so teams can work in real time without losing version context.",

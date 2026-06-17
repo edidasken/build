@@ -17,7 +17,7 @@
 
 ### For New Church Setup
 
-Add `seedFromMasterJSON()` function to your GAS `Code.gs` file (see implementation in `Architechtural Docs/New Covenant/Data/seedFromMasterJSON.gs`).
+Add `seedFromMasterJSON()` function to your GAS `Code.gs` file (see implementation in `New_Covenant/iris/docs/New Covenant/Data/seedFromMasterJSON.gs`).
 
 **What it does:**
 1. Fetches this file from GitHub Pages
@@ -46,7 +46,7 @@ GAS fetches from this URL using `UrlFetchApp.fetch()`.
 
 ## Documentation
 
-Complete documentation is available in `Architechtural Docs/New Covenant/Data/`:
+Complete documentation is available in `New_Covenant/iris/docs/New Covenant/Data/`:
 
 1. **SEED_DATABASE_GAS_INTEGRATION.md** — Technical details, architecture, how it works
 2. **seedFromMasterJSON.gs** — Complete GAS function code (paste into Code.gs)
@@ -110,7 +110,7 @@ New_Covenant/Data/
   ├── do_workflows.js             ← Source: Installed /do workflows
   └── README_GAS_INTEGRATION.md   ← This file
 
-Architechtural Docs/New Covenant/Data/  (PRIVATE, gitignored)
+New_Covenant/iris/docs/New Covenant/Data/  (PRIVATE, gitignored)
   ├── SEED_DATABASE_GAS_INTEGRATION.md  ← Technical docs
   ├── seedFromMasterJSON.gs             ← GAS function code
   └── NEW_CHURCH_SETUP.md               ← Setup guide
@@ -149,4 +149,4 @@ function setupFlockOSFirestore() {
 ## Support
 
 **Issues:** https://github.com/flock-os/FlockOS/issues  
-**Docs:** See `Architechtural Docs/New Covenant/Data/` for complete documentation
+**Docs:** See `New_Covenant/iris/docs/New Covenant/Data/` for complete documentation

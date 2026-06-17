@@ -11,7 +11,7 @@
 //         durationMinutes, segments[], scriptureRefs, tags[],
 //         status ('Draft'|'Approved'|'Review'), approvedBy, approvedAt, _docId
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/export_teaching_plans_to_js.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/export_teaching_plans_to_js.py"
 // DO NOT EDIT — regenerate from Firestore instead.
 
 export default [

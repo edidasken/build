@@ -2,7 +2,7 @@
   "source": {
     "name": "BibleCommentaries / 110000-English-Bible-Sermons-Parallel-Commentaries",
     "repo": "https://github.com/BibleCommentaries/110000-English-Bible-Sermons-Parallel-Commentaries",
-    "archivePath": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/",
+    "archivePath": "New_Covenant/iris/docs/datasets/app-bible/commentaries/bible-commentaries-english/",
     "description": "Imported gateway pages for public-domain sermon and commentary indexes from the provided BibleCommentaries repo. External URLs are retained only inside the archived source HTML/index data."
   },
   "libraries": [
@@ -105,9 +105,9 @@
     "commentaryChunks": "commentaries/chunks/"
   },
   "archive": {
-    "readme": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/README.md",
-    "commentariesHtml": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/30-English-Commentaries.html",
-    "parallelHtml": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/parallel-kjv(asv)-commentaries.html",
-    "sermonsHtml": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/110000-sermons.html"
+    "readme": "New_Covenant/iris/docs/datasets/app-bible/commentaries/bible-commentaries-english/README.md",
+    "commentariesHtml": "New_Covenant/iris/docs/datasets/app-bible/commentaries/bible-commentaries-english/30-English-Commentaries.html",
+    "parallelHtml": "New_Covenant/iris/docs/datasets/app-bible/commentaries/bible-commentaries-english/parallel-kjv(asv)-commentaries.html",
+    "sermonsHtml": "New_Covenant/iris/docs/datasets/app-bible/commentaries/bible-commentaries-english/110000-sermons.html"
   }
 }

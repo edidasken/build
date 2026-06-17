@@ -1,7 +1,7 @@
 // reading-plans.js — Static day-by-day reading schedules
 // Generated: 2026-04-29T05:56:12Z
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/generate_reading_plans.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/generate_reading_plans.py"
 // DO NOT EDIT — regenerate from the script instead.
 
 export default {

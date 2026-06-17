@@ -1,5 +1,5 @@
 // one_year_bible.js - 365-day One Year Bible reading plan
-// Source: Architechtural Docs/oneyearbiblereadingplan.pdf
+// Source: New_Covenant/iris/docs/oneyearbiblereadingplan.pdf
 // Generated: 2026-06-17T06:36:46Z
 // Days: 365
 //
@@ -9,7 +9,7 @@
 //   ps - Psalm reading
 //   pr - Proverbs reading
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/generate_one_year_bible.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/generate_one_year_bible.py"
 // DO NOT EDIT - regenerate from the script instead.
 
 export default [

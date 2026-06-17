@@ -40,7 +40,7 @@ const GAS_DOCS = [
     id: 'code',
     label: 'Code.gs',
     filename: 'B-Master Code.md',
-    path: new URL('../../Architechtural Docs/B-Master Code.md', import.meta.url).href,
+    path: new URL('../../iris/docs/New Covenant As Built/06 — GAS Backend Master Code.md', import.meta.url).href,
     description: 'Main GAS backend — paste as Code.gs. Contains all CRUD handlers, dispatcher, camelCase normalization, setupFlockOS(), and DEPLOY_CONFIG.',
   },
 ];

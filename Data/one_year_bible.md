@@ -1,6 +1,6 @@
 # One Year Bible Reading Plan
 
-Source: `Architechtural Docs/oneyearbiblereadingplan.pdf`
+Source: `New_Covenant/iris/docs/oneyearbiblereadingplan.pdf`
 Generated: `2026-06-17T06:36:46Z`
 
 | Day | Date | Old Testament | New Testament | Psalms | Proverbs |

@@ -3,7 +3,7 @@
 // Exported: 2026-04-29T05:54:09Z
 // Topics:   50
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/export_counseling_to_js.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/export_counseling_to_js.py"
 // DO NOT EDIT — regenerate from Firestore instead.
 
 export default [

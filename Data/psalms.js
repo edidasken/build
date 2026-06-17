@@ -3,7 +3,7 @@
 // Exported: 2026-04-29T05:44:15Z
 // byNumber: 135 entries  |  byTheme: 11 sections
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/convert_psalms_to_js.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/convert_psalms_to_js.py"
 // DO NOT EDIT — regenerate from the source .md instead.
 
 export default {

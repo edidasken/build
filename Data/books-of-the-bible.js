@@ -3,7 +3,7 @@
 // Exported: 2026-05-11T18:02:49Z
 // Records:  66
 //
-// Re-generate: python "Architechtural Docs/New Covenant/Automation/Shepherds/convert_books_to_js.py"
+// Re-generate: python "New_Covenant/iris/docs/New Covenant/Automation/Shepherds/convert_books_to_js.py"
 // DO NOT EDIT — regenerate from the source .md instead.
 
 export default [
