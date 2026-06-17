@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-06-17T06:09:52.040Z",
+  "sourceRoot": "Architechtural Docs/do",
+  "outputFile": "New_Covenant/Data/do_workflows.js",
+  "count": 160,
+  "byFamily": {
+    "care": 17,
+    "cases": 69,
+    "discipleship": 4,
+    "research": 35,
+    "security": 4,
+    "teach": 31
+  },
+  "byPriority": {
+    "urgent": 17,
+    "normal": 119,
+    "high": 15,
+    "low": 9
+  },
+  "validation": {
+    "errors": [],
+    "warnings": []
+  }
+}

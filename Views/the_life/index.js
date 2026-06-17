@@ -7,6 +7,7 @@ import { pageHero } from '../_frame.js';
 import { profile } from '../../Scripts/the_priesthood/index.js';
 import { buildAdapter } from '../../Scripts/the_living_water_adapter.js';
 import { getWarmCareRows, subscribeOpenCareRows, setOpenCareCount } from '../../Scripts/the_life/index.js';
+import DO_WORKFLOWS from '../../Data/do_workflows.js';
 
 export const name  = 'the_life';
 export const title = 'Pastoral Care';
@@ -648,6 +649,110 @@ const CARE_CFG = {
     closureChecklist: ['Connected to ongoing community', 'Professional counselor referral made if desired', '6-month formal reviews completed', 'Transitioned to Shepherding', 'Final pastoral note'],
   },
 };
+
+const DO_CASE_WORKFLOWS = (Array.isArray(DO_WORKFLOWS) ? DO_WORKFLOWS : [])
+  .filter((w) => w && w.family === 'cases')
+  .sort((a, b) => {
+    const ga = a.groupLabel || '';
+    const gb = b.groupLabel || '';
+    if (ga !== gb) return ga.localeCompare(gb);
+    return (a.caseType || a.title || '').localeCompare(b.caseType || b.title || '');
+  });
+
+const DO_WORKFLOW_BY_ID = Object.fromEntries(
+  DO_CASE_WORKFLOWS.map((w) => [w.workflowId, w])
+);
+
+const DO_WORKFLOW_BY_CARE_TYPE = {};
+
+function _priorityFromWorkflow(w) {
+  const p = String(w?.defaultPriority || 'normal').toLowerCase();
+  return PRIORITY[p] ? p : 'normal';
+}
+
+function _careTypeFromWorkflow(w) {
+  return (w?.caseType || w?.title || w?.workflowId || 'Other').replace(/^Spiritual Care:\s*/i, '').trim();
+}
+
+function _stageTitleFromWorkflow(w) {
+  const urgency = String(w?.defaultUrgency || '').replace(/-/g, ' ');
+  return urgency ? `Workflow — ${urgency}` : 'Workflow';
+}
+
+function _workflowNotesTemplate(w) {
+  const fields = Array.isArray(w?.requiredIntakeFields) ? w.requiredIntakeFields : [];
+  const lines = fields.slice(0, 12).map((field) => `${field}:`);
+  return [
+    `${_careTypeFromWorkflow(w).toUpperCase()} INTAKE`,
+    _SEP,
+    ...lines,
+    '',
+    'Next Action:',
+    'Next Due:',
+  ].join('\n');
+}
+
+function _workflowGuideConfig(w) {
+  const routing = Array.isArray(w?.routingRules) ? w.routingRules : [];
+  const output = Array.isArray(w?.outputExpectations) ? w.outputExpectations : [];
+  const escalation = Array.isArray(w?.escalationTriggers) ? w.escalationTriggers : [];
+  const closure = Array.isArray(w?.closureChecklist) && w.closureChecklist.length
+    ? w.closureChecklist
+    : ['Next owner or support lane is clear', 'Follow-up cadence is documented', 'Closure reason is recorded'];
+  const stages = (routing.length ? routing : output).slice(0, 6).map((text, i) => ({
+    t: `${_stageTitleFromWorkflow(w)} ${i + 1}`,
+    d: text,
+  }));
+  if (!stages.length) {
+    stages.push({
+      t: _stageTitleFromWorkflow(w),
+      d: w?.description || w?.purpose || 'Follow the documented workflow before closing the care loop.',
+    });
+  }
+  return {
+    color: _priorityFromWorkflow(w) === 'urgent' ? '#c94c4c' : (_priorityFromWorkflow(w) === 'high' ? '#d4853a' : '#5b9bd5'),
+    workflowId: w.workflowId,
+    sourcePath: w.sourcePath,
+    stages,
+    notes: _workflowNotesTemplate(w),
+    watchFor: escalation.map((trigger) => trigger.replace(/-/g, ' ')),
+    closureChecklist: closure,
+  };
+}
+
+function _installDoCaseWorkflows() {
+  DO_CASE_WORKFLOWS.forEach((w) => {
+    const careType = _careTypeFromWorkflow(w);
+    if (!careType) return;
+    DO_WORKFLOW_BY_CARE_TYPE[careType] = w;
+    if (!CARE_TYPES[careType]) {
+      CARE_TYPES[careType] = {
+        icon: '',
+        label: careType,
+        priority: _priorityFromWorkflow(w),
+        workflowId: w.workflowId,
+        group: w.group,
+        groupLabel: w.groupLabel,
+      };
+    } else {
+      CARE_TYPES[careType] = Object.assign({}, CARE_TYPES[careType], {
+        workflowId: CARE_TYPES[careType].workflowId || w.workflowId,
+        group: CARE_TYPES[careType].group || w.group,
+        groupLabel: CARE_TYPES[careType].groupLabel || w.groupLabel,
+      });
+    }
+    if (!CARE_CFG[careType]) {
+      CARE_CFG[careType] = _workflowGuideConfig(w);
+    } else {
+      CARE_CFG[careType] = Object.assign({}, _workflowGuideConfig(w), CARE_CFG[careType], {
+        workflowId: CARE_CFG[careType].workflowId || w.workflowId,
+        sourcePath: CARE_CFG[careType].sourcePath || w.sourcePath,
+      });
+    }
+  });
+}
+
+_installDoCaseWorkflows();
 
 const STATUSES = ['Open', 'In Progress', 'Follow-Up', 'Referred'];
 
@@ -1751,6 +1856,74 @@ function _cfgFor(careTypeValue) {
   return CARE_CFG[careTypeValue] || CARE_CFG[_CARE_CFG_LC[careTypeValue.toLowerCase()]] || null;
 }
 
+function _workflowForCareType(careTypeValue) {
+  if (!careTypeValue) return null;
+  if (DO_WORKFLOW_BY_ID[careTypeValue]) return DO_WORKFLOW_BY_ID[careTypeValue];
+  return DO_WORKFLOW_BY_CARE_TYPE[careTypeValue] || null;
+}
+
+function _isoDateAfter({ hours = 0, days = 0 } = {}) {
+  const d = new Date();
+  if (Number(hours)) d.setHours(d.getHours() + Number(hours));
+  if (Number(days)) d.setDate(d.getDate() + Number(days));
+  return d.toISOString().slice(0, 10);
+}
+
+function _defaultDueDateForWorkflow(w) {
+  const cadence = w?.followUpCadence || {};
+  if (cadence.dueWithinHours) return _isoDateAfter({ hours: cadence.dueWithinHours });
+  if (cadence.dueWithinDays) return _isoDateAfter({ days: cadence.dueWithinDays });
+  const priority = _priorityFromWorkflow(w);
+  if (priority === 'urgent') return _isoDateAfter({ hours: 4 });
+  if (priority === 'high') return _isoDateAfter({ days: 1 });
+  return _isoDateAfter({ days: 5 });
+}
+
+function _workflowIntakeNote(w, summary = '') {
+  const cfg = w ? _workflowGuideConfig(w) : null;
+  return [
+    `Workflow installed: ${w?.title || _careTypeFromWorkflow(w) || 'Care Workflow'}`,
+    w?.sourcePath ? `Source: ${w.sourcePath}` : '',
+    cfg?.notes || '',
+    summary ? `Initial Summary:\n${summary}` : '',
+  ].filter(Boolean).join('\n\n');
+}
+
+function _careTypeOptionsHtml() {
+  const groups = new Map();
+  const seen = new Set();
+  DO_CASE_WORKFLOWS.forEach((w) => {
+    const careType = _careTypeFromWorkflow(w);
+    if (!careType || seen.has(careType)) return;
+    seen.add(careType);
+    const groupLabel = w.groupLabel || 'Other';
+    if (!groups.has(groupLabel)) groups.set(groupLabel, []);
+    groups.get(groupLabel).push({
+      value: careType,
+      label: careType,
+      priority: _priorityFromWorkflow(w),
+    });
+  });
+  Object.keys(CARE_TYPES).forEach((key) => {
+    if (!key || key.toLowerCase() === key || seen.has(key)) return;
+    const meta = CARE_TYPES[key] || {};
+    const groupLabel = meta.groupLabel || 'Legacy Care Types';
+    if (!groups.has(groupLabel)) groups.set(groupLabel, []);
+    groups.get(groupLabel).push({
+      value: key,
+      label: meta.label || key,
+      priority: meta.priority || 'normal',
+    });
+  });
+  return Array.from(groups.entries()).map(([groupLabel, items]) => {
+    const options = items
+      .sort((a, b) => a.label.localeCompare(b.label))
+      .map((item) => `<option value="${_e(item.value)}" data-priority="${_e(item.priority)}">${_e(item.label)}</option>`)
+      .join('');
+    return `<optgroup label="${_e(groupLabel)}">${options}</optgroup>`;
+  }).join('');
+}
+
 // Render a workflow guide <details> block for a given care type value
 function _workflowGuideHtml(careTypeValue) {
   const cfg = _cfgFor(careTypeValue);
@@ -1955,6 +2128,7 @@ function _newCareModal(memberDir, onSave) {
   _closeSheet();
   const V   = window.TheVine;
   const MXC = buildAdapter('flock.care', V);
+  const MXCI = buildAdapter('flock.care.interactions', V);
   const hasMemberDir = memberDir && memberDir.length > 0;
   const leadPastor   = _findLeadPastor(memberDir || [], _lpConfigId);
   const lpId         = leadPastor ? (leadPastor.id || leadPastor.uid || leadPastor.docId || leadPastor.memberNumber || leadPastor.email || '') : '';
@@ -1983,52 +2157,8 @@ function _newCareModal(memberDir, onSave) {
         <div class="life-sheet-field">
           <div class="life-sheet-label">Care Type</div>
           <select class="life-sheet-input" data-field="careType">
-            <optgroup label="Crisis & Safety">
-              <option value="Crisis">🚨 Crisis</option>
-              <option value="Abuse / Domestic Violence">🛡️ Abuse / Domestic Violence</option>
-            </optgroup>
-            <optgroup label="Medical & Physical">
-              <option value="Hospital Visit">🏥 Hospital Visit</option>
-              <option value="Medical">🩺 Medical</option>
-              <option value="Elder Care">🧓 Elder Care</option>
-              <option value="Terminal Illness / End of Life">🕯️ Terminal Illness / End of Life</option>
-            </optgroup>
-            <optgroup label="Grief & Loss">
-              <option value="Grief">🤍 Grief</option>
-              <option value="Pregnancy &amp; Infant Loss">🕊️ Pregnancy &amp; Infant Loss</option>
-            </optgroup>
-            <optgroup label="Relationships">
-              <option value="Marriage">💍 Marriage</option>
-              <option value="Pre-Marriage">💑 Pre-Marriage</option>
-              <option value="Family">👨‍👩‍👧 Family</option>
-            </optgroup>
-            <optgroup label="Addiction &amp; Recovery">
-              <option value="Addiction">🔗 Addiction</option>
-              <option value="Pornography / Sexual Addiction">🔒 Pornography / Sexual Addiction</option>
-            </optgroup>
-            <optgroup label="Mental &amp; Emotional Health">
-              <option value="Mental Health">🧠 Mental Health</option>
-              <option value="Counseling">💬 Counseling</option>
-            </optgroup>
-            <optgroup label="Discipleship &amp; Growth">
-              <option value="New Believer">✨ New Believer</option>
-              <option value="New Member Integration">🤝 New Member Integration</option>
-              <option value="Discipleship">📚 Discipleship</option>
-              <option value="Shepherding">🐑 Shepherding</option>
-              <option value="Restoration">🔄 Restoration</option>
-            </optgroup>
-            <optgroup label="Life Situations">
-              <option value="Financial">💰 Financial</option>
-              <option value="Immigration / Deportation">✈️ Immigration / Deportation</option>
-              <option value="Incarceration &amp; Re-Entry">🔑 Incarceration &amp; Re-Entry</option>
-              <option value="Gender Identity / Sexuality">✝️ Gender Identity / Sexuality</option>
-            </optgroup>
-            <optgroup label="General">
-              <option value="Prayer Request">🙏 Prayer Request</option>
-              <option value="Follow-Up">📞 Follow-Up</option>
-              <option value="Life Milestone">🎉 Life Milestone</option>
-              <option value="Other">🫱 Other</option>
-            </optgroup>
+            <option value="">Select care type...</option>
+            ${_careTypeOptionsHtml()}
           </select>
         </div>
         <!-- Priority -->
@@ -2134,7 +2264,14 @@ function _newCareModal(memberDir, onSave) {
 
   let _lastAppliedType = null;
   function _applyModalType(val) {
-    if (!val) return;
+    if (!val) {
+      sheet.querySelectorAll('[data-priority]').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.priority === 'normal');
+      });
+      if (wgPlaceholder) wgPlaceholder.innerHTML = '';
+      _lastAppliedType = '';
+      return;
+    }
     const t = CARE_TYPES[val] || {};
     // Auto-set priority pill
     const pri = t.priority || 'normal';
@@ -2167,21 +2304,66 @@ function _newCareModal(memberDir, onSave) {
     const secondary = sheet.querySelector('[data-field="secondary"]')?.value?.trim() || '';
     const summary   = sheet.querySelector('[data-field="summary"]').value.trim();
     if (!memberId) { sheet.querySelector('[data-field="memberId"]').focus(); return; }
+    if (!careType) { sheet.querySelector('[data-field="careType"]').focus(); return; }
     const btn = sheet.querySelector('[data-save]');
     btn.disabled = true; btn.textContent = 'Creating…';
     try {
       // Auto-assign to the configured Lead Pastor when no caregiver was picked.
       const finalAssignee = assignee || lpId || '';
+      const workflow = _workflowForCareType(careType);
+      const workflowDueDate = workflow ? _defaultDueDateForWorkflow(workflow) : '';
       const payload = {
         memberId,
         careType,
         priority,
         status: 'Open',
       };
+      if (workflow) {
+        payload.workflowId           = workflow.workflowId;
+        payload.workflowTitle        = workflow.title || careType;
+        payload.workflowSourcePath   = workflow.sourcePath || '';
+        payload.careGroup            = workflow.group || '';
+        payload.defaultUrgency       = workflow.defaultUrgency || '';
+        payload.confidentialityLevel = workflow.confidentialityLevel || '';
+        payload.minimumRoleTier      = workflow.minimumRoleTier || 2;
+        payload.screeningRequired    = !!workflow.screeningRequired;
+        payload.nextAction           = workflow.defaultPriority === 'urgent'
+          ? 'Confirm safety and complete first follow-up'
+          : 'Complete first follow-up';
+        payload.nextDueAt            = workflowDueDate;
+        payload.dueDate              = workflowDueDate;
+        payload.requiredIntakeFields = workflow.requiredIntakeFields || [];
+        payload.routingRules         = workflow.routingRules || [];
+        payload.escalationTriggers   = workflow.escalationTriggers || [];
+        payload.closureChecklist     = workflow.closureChecklist || [];
+      }
       if (finalAssignee) payload.primaryCaregiverId   = finalAssignee;
       if (secondary)     payload.secondaryCaregiverId = secondary;
       if (summary)       payload.summary              = summary;
-      await MXC.create(payload);
+      const created = await MXC.create(payload);
+      const createdCaseId = typeof created === 'string'
+        ? created
+        : (created?.id || created?.caseId || payload.id || '');
+      if (workflow && createdCaseId) {
+        const session = window.TheVine?.session?.();
+        const workflowNote = {
+          caseId: createdCaseId,
+          workflowId: workflow.workflowId,
+          workflowTitle: workflow.title || careType,
+          interactionType: 'Workflow Intake',
+          notes: _workflowIntakeNote(workflow, summary),
+          followUpDone: false,
+          dueDate: workflowDueDate,
+          assignedTo: finalAssignee || '',
+          createdBy: session?.email || '',
+          author: session?.email || '',
+        };
+        try {
+          await MXCI.create(workflowNote);
+        } catch (err) {
+          console.warn('[TheLife] workflow intake interaction not created:', err);
+        }
+      }
       _closeSheet();
       if (onSave) onSave();
     } catch (err) {
