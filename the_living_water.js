@@ -523,21 +523,19 @@ async function _warmAppBibleOffline(client, limit = Infinity) {
 }
 
 function _prioritizeOfflineAssets(assets) {
-  return assets.map(_normalizeOfflineAsset).filter((asset) => asset.path).sort((a, b) => (
+  return assets.map((asset, index) => _normalizeOfflineAsset(asset, index)).filter((asset) => asset.path).sort((a, b) => (
     a.priority - b.priority
-    || (a.bytes || 0) - (b.bytes || 0)
-    || String(a.group || '').localeCompare(String(b.group || ''))
-    || String(a.book || '').localeCompare(String(b.book || ''))
-    || (Number(a.chapter) || 0) - (Number(b.chapter) || 0)
+    || a.order - b.order
     || String(a.path).localeCompare(String(b.path))
-  ));
+  )).map(({ order, ...asset }) => asset);
 }
 
-function _normalizeOfflineAsset(asset) {
+function _normalizeOfflineAsset(asset, index) {
   const normalized = typeof asset === 'string' ? { path: asset } : { ...asset };
   normalized.priority = Number.isFinite(Number(normalized.priority))
     ? Number(normalized.priority)
     : _inferOfflinePriority(normalized.path);
+  normalized.order = Number.isFinite(Number(normalized.order)) ? Number(normalized.order) : index;
   normalized.tier = normalized.tier || OFFLINE_TIER_LABELS[normalized.priority] || 'Supporting data';
   normalized.group = normalized.group || _inferOfflineGroup(normalized.path);
   return normalized;
