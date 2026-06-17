@@ -2,7 +2,9 @@
    THE BIBLE REFERENCE - local scripture lookup over imported MDBible modules
    ============================================================================ */
 
-const MANIFEST_URL = new URL('../../Data/bible/mdbible/manifest.js', import.meta.url).href;
+const DEFAULT_BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
+const BIBLE_DATA_BASE_URL = _normalizeBibleDataBaseUrl(globalThis.FLOCK_BIBLE_DATA_BASE_URL || DEFAULT_BIBLE_DATA_BASE_URL);
+const MANIFEST_URL = _bibleDataUrl('mdbible/manifest.json').href;
 
 let _manifestPromise = null;
 const _bookCache = new Map();
@@ -17,6 +19,16 @@ function _norm(s) {
     .toLowerCase();
 }
 
+function _normalizeBibleDataBaseUrl(value) {
+  const url = new URL(String(value || DEFAULT_BIBLE_DATA_BASE_URL), globalThis.location?.href || DEFAULT_BIBLE_DATA_BASE_URL);
+  if (!url.pathname.endsWith('/')) url.pathname += '/';
+  return url.href;
+}
+
+function _bibleDataUrl(path) {
+  return new URL(String(path || '').replace(/^\/+/, ''), BIBLE_DATA_BASE_URL);
+}
+
 function _displayRef(book, chapter, verse, verseEnd) {
   let out = `${book} ${chapter}`;
   if (verse) {
@@ -28,7 +40,10 @@ function _displayRef(book, chapter, verse, verseEnd) {
 
 async function _manifest() {
   if (!_manifestPromise) {
-    _manifestPromise = import(MANIFEST_URL).then((m) => m.default || m);
+    _manifestPromise = fetch(MANIFEST_URL).then((response) => {
+      if (!response.ok) throw new Error(`Bible manifest failed: HTTP ${response.status}`);
+      return response.json();
+    });
   }
   return _manifestPromise;
 }
@@ -48,8 +63,10 @@ async function _book(slug) {
   const manifest = await _manifest();
   const meta = (manifest.books || []).find((b) => b.slug === slug);
   if (!meta) return null;
-  const promise = import(new URL(`../../Data/bible/mdbible/${meta.file}`, import.meta.url).href)
-    .then((m) => m.default || m);
+  const promise = fetch(_bibleDataUrl(`esv/${meta.file}`)).then((response) => {
+    if (!response.ok) throw new Error(`Bible book failed: ${slug} HTTP ${response.status}`);
+    return response.json();
+  });
   _bookCache.set(slug, promise);
   return promise;
 }

@@ -1,5 +1,7 @@
 import { mountUnityHeader } from '../Scripts/the_unity_header.js';
 
+const DEFAULT_BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
+const BIBLE_DATA_BASE_URL = normalizeBibleDataBaseUrl(globalThis.FLOCK_BIBLE_DATA_BASE_URL || DEFAULT_BIBLE_DATA_BASE_URL);
 const BIBLE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8"/><path d="M8 11h8"/></svg>';
 
 const CHAPTER_COUNTS = {
@@ -796,6 +798,16 @@ function selectedVerseGroups() {
   return groups;
 }
 
+function normalizeBibleDataBaseUrl(value) {
+  const url = new URL(String(value || DEFAULT_BIBLE_DATA_BASE_URL), globalThis.location?.href || DEFAULT_BIBLE_DATA_BASE_URL);
+  if (!url.pathname.endsWith('/')) url.pathname += '/';
+  return url.href;
+}
+
+function bibleDataUrl(path) {
+  return new URL(String(path || '').replace(/^\/+/, ''), BIBLE_DATA_BASE_URL);
+}
+
 function formatSelectedReference() {
   if (!state.currentBook) return '';
   const groups = selectedVerseGroups();
@@ -806,9 +818,11 @@ function formatSelectedReference() {
 
 async function loadBook(slug) {
   if (state.books.has(slug)) return state.books.get(slug);
-  const mod = await import(`./esv/books/${slug}.js`);
-  state.books.set(slug, mod.default);
-  return mod.default;
+  const response = await fetch(bibleDataUrl(`esv/books/${slug}.json`));
+  if (!response.ok) throw new Error(`ESV book missing for ${slug}`);
+  const data = await response.json();
+  state.books.set(slug, data);
+  return data;
 }
 
 async function loadAllBooks() {
@@ -818,7 +832,7 @@ async function loadAllBooks() {
 
 async function loadCrossrefIndex(slug) {
   if (state.crossrefIndexes.has(slug)) return state.crossrefIndexes.get(slug);
-  const response = await fetch(new URL(`./cross-references/index/${slug}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`cross-references/index/${slug}.json`));
   if (!response.ok) throw new Error(`Cross-reference index missing for ${slug}`);
   const data = await response.json();
   state.crossrefIndexes.set(slug, data);
@@ -827,7 +841,7 @@ async function loadCrossrefIndex(slug) {
 
 async function loadCrossrefBucket(bucket) {
   if (state.crossrefBuckets.has(bucket)) return state.crossrefBuckets.get(bucket);
-  const response = await fetch(new URL(`./cross-references/${bucket}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`cross-references/${bucket}.json`));
   if (!response.ok) throw new Error(`Cross-reference bucket missing: ${bucket}`);
   const data = await response.json();
   state.crossrefBuckets.set(bucket, data);
@@ -836,7 +850,7 @@ async function loadCrossrefBucket(bucket) {
 
 async function loadTskBook(slug) {
   if (state.tskBooks.has(slug)) return state.tskBooks.get(slug);
-  const response = await fetch(new URL(`./tsk/books/${slug}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`tsk/books/${slug}.json`));
   if (!response.ok) throw new Error(`TSK book missing for ${slug}`);
   const data = await response.json();
   state.tskBooks.set(slug, data);
@@ -885,7 +899,7 @@ async function loadCommentaryEntries(source, target) {
     .replace(/^\.\//, '');
   const cacheKey = `${source.id}:${target.slug}:${target.chapter}`;
   if (!state.commentaryBooks.has(cacheKey)) {
-    const response = await fetch(new URL(`./commentaries/${chunkPath}`, import.meta.url));
+    const response = await fetch(bibleDataUrl(`commentaries/${chunkPath}`));
     const data = response.ok ? await response.json() : { entries: [] };
     state.commentaryBooks.set(cacheKey, data);
   }
@@ -895,7 +909,7 @@ async function loadCommentaryEntries(source, target) {
 
 async function loadSermonIndex() {
   if (state.sermonIndex) return state.sermonIndex;
-  const response = await fetch(new URL('./commentaries/bible-commentaries-english/sermons-index.json', import.meta.url));
+  const response = await fetch(bibleDataUrl('commentaries/bible-commentaries-english/sermons-index.json'));
   if (!response.ok) throw new Error('Sermon index missing');
   state.sermonIndex = await response.json();
   return state.sermonIndex;
@@ -903,7 +917,7 @@ async function loadSermonIndex() {
 
 async function loadOriginalBook(slug) {
   if (state.originalBooks.has(slug)) return state.originalBooks.get(slug);
-  const response = await fetch(new URL(`./original-languages/tahmmee-interlinear/books/${slug}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`original-languages/tahmmee-interlinear/books/${slug}.json`));
   if (!response.ok) throw new Error(`Original-language book missing for ${slug}`);
   const data = await response.json();
   state.originalBooks.set(slug, data);
@@ -912,7 +926,7 @@ async function loadOriginalBook(slug) {
 
 async function loadStrongDictionary(kind) {
   if (state.strongDictionaries.has(kind)) return state.strongDictionaries.get(kind);
-  const response = await fetch(new URL(`./original-languages/openscriptures-strongs/json/${kind}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`original-languages/openscriptures-strongs/json/${kind}.json`));
   if (!response.ok) throw new Error(`Strong's dictionary missing: ${kind}`);
   const data = await response.json();
   state.strongDictionaries.set(kind, data);
@@ -921,7 +935,7 @@ async function loadStrongDictionary(kind) {
 
 async function loadEsvFootnotes(slug) {
   if (state.esvFootnotes.has(slug)) return state.esvFootnotes.get(slug);
-  const response = await fetch(new URL(`./original-languages/jburson-bible-data/esv/footnotes/${slug}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`original-languages/jburson-bible-data/esv/footnotes/${slug}.json`));
   if (!response.ok) throw new Error(`ESV footnotes missing for ${slug}`);
   const data = await response.json();
   state.esvFootnotes.set(slug, data);
@@ -930,7 +944,7 @@ async function loadEsvFootnotes(slug) {
 
 async function loadEsvInterlinear(slug) {
   if (state.esvInterlinear.has(slug)) return state.esvInterlinear.get(slug);
-  const response = await fetch(new URL(`./original-languages/jburson-bible-data/esv/interlinear/${slug}.json`, import.meta.url));
+  const response = await fetch(bibleDataUrl(`original-languages/jburson-bible-data/esv/interlinear/${slug}.json`));
   if (!response.ok) throw new Error(`ESV interlinear missing for ${slug}`);
   const data = await response.json();
   state.esvInterlinear.set(slug, data);

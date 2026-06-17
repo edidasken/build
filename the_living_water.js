@@ -14,6 +14,7 @@
 
 const CACHE_NAME = 'flockos-new-covenant-v1.25';
 const OPTIONAL_CACHE_DELAY_MS = 650;
+const BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
 
 /* Derive base path from SW location (works at root or any subpath) */
 const SW_BASE = self.location.pathname.replace(/\/[^\/]+$/, '/');
@@ -50,10 +51,8 @@ const PRECACHE_URLS = [
   'app.bible/manifest.json',
   'app.bible/bible.css',
   'app.bible/bible.js',
-  'app.bible/offline-assets.json',
   'app.bible/commentaries/catalog.json',
   'app.bible/commentaries/commentary-sources.js',
-  'app.bible/commentaries/commentary-cache-manifest.json',
 
   /* ── Styles ───────────────────────────────────────────────────────────── */
   'Styles/new_covenant.css', /* american_garments merged in — one CSS file */
@@ -449,7 +448,7 @@ async function _warmAppBibleOffline(client, limit = Infinity) {
   if (_bibleWarmPromise) return _bibleWarmPromise;
   _bibleWarmPromise = (async () => {
     const cache = await caches.open(CACHE_NAME);
-    const manifestUrl = SW_BASE + 'app.bible/offline-assets.json';
+    const manifestUrl = new URL('offline-assets.json', BIBLE_DATA_BASE_URL).href;
     const response = await fetch(manifestUrl, { cache: 'no-store' });
     if (!response.ok) throw new Error('Bible offline manifest failed: HTTP ' + response.status);
     await cache.put(manifestUrl, response.clone());
@@ -463,7 +462,7 @@ async function _warmAppBibleOffline(client, limit = Infinity) {
       checked += 1;
       const path = typeof asset === 'string' ? asset : asset.path;
       if (!path) continue;
-      const url = SW_BASE + path.replace(/^\/+/, '');
+      const url = new URL(path.replace(/^\/+/, ''), BIBLE_DATA_BASE_URL).href;
       const request = new Request(url, { cache: 'no-store' });
       if (await cache.match(url)) {
         cached += 1;

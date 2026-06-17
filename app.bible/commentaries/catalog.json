@@ -99,8 +99,10 @@
       "keyword": "James"
     }
   ],
-  "local": {
-    "sermonsIndex": "commentaries/bible-commentaries-english/sermons-index.json"
+  "sharedData": {
+    "baseUrl": "https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/",
+    "sermonsIndex": "commentaries/bible-commentaries-english/sermons-index.json",
+    "commentaryChunks": "commentaries/chunks/"
   },
   "archive": {
     "readme": "Architechtural Docs/datasets/app-bible/commentaries/bible-commentaries-english/README.md",
