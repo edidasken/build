@@ -25,6 +25,36 @@ import { profile }          from '../../Scripts/the_priesthood/index.js';
 export const name  = 'the_good_shepherd';
 export const title = 'The Good Shepherd';
 
+const FLOCKSORT_LEVEL_COUNT = 100;
+
+function readFlockSortProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('flocksort_progress') || 'null') || {};
+    const stars = saved.levelStars || {};
+    const solved = Object.keys(stars).length;
+    return {
+      lastLevel: Math.max(1, Math.min(FLOCKSORT_LEVEL_COUNT, Number(saved.lastLevel || 1))),
+      solved,
+      percent: Math.round((solved / FLOCKSORT_LEVEL_COUNT) * 100),
+    };
+  } catch (_) {
+    return { lastLevel: 1, solved: 0, percent: 0 };
+  }
+}
+
+function renderFlockSortCard() {
+  const progress = readFlockSortProgress();
+  return /* html */ `
+    <flock-card data-flocksort-card>
+      <h3 slot="title">FlockSort</h3>
+      <div class="pasture-mini">
+        <p><strong>Level ${progress.lastLevel}</strong></p>
+        <p>${progress.percent}% complete</p>
+      </div>
+    </flock-card>
+  `;
+}
+
 export function render(/* params */) {
   const me = profile();
   return /* html */ `
@@ -47,6 +77,8 @@ export function render(/* params */) {
         <div data-bind="members"            data-jump="the_fold"><flock-skeleton rows="3"></flock-skeleton></div>
         <div data-bind="prayers"            data-jump="the_prayer_chain"><flock-skeleton rows="3"></flock-skeleton></div>
       </div>
+
+      ${renderFlockSortCard()}
 
       <div class="pasture-row">
         <flock-card>
@@ -106,6 +138,12 @@ export function mount(root, ctx) {
     button.addEventListener('click', () => {
       const where = button.getAttribute('data-pasture-jump');
       if (where && ctx && ctx.go) ctx.go(where);
+    });
+  });
+  root.querySelectorAll('[data-flocksort-card]').forEach((card) => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      window.location.href = 'app.flocksort/';
     });
   });
 

@@ -135,6 +135,7 @@ export const NC_APPS = [
   { id: 'truth-admin', name: 'Truth Editor',  sub: 'Content administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=content-admin',    accent: '#2563eb', accentDk: '#1d4ed8' },
   { id: 'stand',     name: 'FlockStand',     sub: 'Songs, setlists & live',         href: 'app.stand/',                       accent: '#a855f7', accentDk: '#4c1d95' },
   { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d' },
+  { id: 'flocksort', name: 'FlockSort',      sub: 'Free water-sort puzzle',         href: 'app.flocksort/',                   accent: '#0f766e', accentDk: '#134e4a' },
   { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/',                   accent: '#2563eb', accentDk: '#1d4ed8' },
   { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#14b8a6', accentDk: '#0f766e' },

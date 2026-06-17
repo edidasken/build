@@ -47,6 +47,7 @@ const ICON = {
   sprout:     I('<path d="M12 22V11"/><path d="M5 13c0-3 3-5 7-4 0 4-3 6-7 4z"/><path d="M19 9c0-3-3-5-7-4 0 4 3 6 7 4z"/>'),
   envelope:   I('<path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>'),
   screen:     I('<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4M8 21h8"/>'),
+  palette:    I('<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 3a9 9 0 0 0 0 18h1.5a2.5 2.5 0 0 0 1.8-4.24 1 1 0 0 1 .7-1.76h1A5 5 0 0 0 22 10c0-3.87-4.48-7-10-7z"/>'),
 };
 
 const SECTIONS = [
@@ -88,6 +89,7 @@ const SECTIONS = [
       { name: 'quarterly_worship',       label: 'Quarterly Planner', icon: ICON.music },
       { name: 'music_stand',             label: 'FlockStand',       icon: ICON.music, href: 'app.stand/' },
       { name: 'flockshow',               label: 'FlockShow',         icon: ICON.screen, href: 'app.flockshow/app.flockshow.html' },
+      { name: 'flocksort',               label: 'FlockSort',         icon: ICON.palette, href: 'app.flocksort/' },
     ],
   },
   /* ── Mission ─────────────────────────────────────────────────────────── */

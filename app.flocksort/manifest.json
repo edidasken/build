@@ -1,0 +1,33 @@
+{
+  "name": "FlockSort",
+  "short_name": "FlockSort",
+  "start_url": "./flock_sort.html",
+  "display": "standalone",
+  "background_color": "#091326",
+  "theme_color": "#091326",
+  "orientation": "portrait",
+  "description": "A free water-sort puzzle game for FlockOS.",
+  "categories": ["games", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Continue",
+      "short_name": "Continue",
+      "url": "./flock_sort.html",
+      "description": "Resume FlockSort"
+    }
+  ]
+}

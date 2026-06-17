@@ -4059,7 +4059,7 @@
             <h4>Announcements</h4>
             <div class="fc-flocknews-content">${announce.substring(0, 150)}${announce.length > 150 ? '...' : ''}</div>
           </div>` : ''}
-          <a href="../app.flocknews/app.flocknews.html#${news.dateKey}" target="_blank" class="fc-flocknews-link">
+          <a href="app.flocknews/flocknews.html#${news.dateKey}" target="_blank" class="fc-flocknews-link">
             View Full Day ↗
           </a>
         </div>`;

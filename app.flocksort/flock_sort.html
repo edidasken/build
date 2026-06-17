@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#091326">
+  <meta name="description" content="FlockSort - a free water-sort puzzle game for FlockOS.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FlockSort">
+  <title>FlockSort</title>
+  <base href="../">
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
+  <link rel="manifest" href="app.flocksort/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="app.flocksort/icon.svg">
+  <link rel="apple-touch-icon" sizes="512x512" href="app.flocksort/icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Styles/new_covenant.css">
+  <link rel="stylesheet" href="Styles/herald-tokens.css">
+  <link rel="stylesheet" href="app.flocksort/flock_sort.css">
+  <script>
+    window.FLOCK_CHURCH_ID = "flockos";
+window.FLOCK_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo",
+  "authDomain": "flockos-notify.firebaseapp.com",
+  "projectId": "flockos-notify",
+  "storageBucket": "flockos-notify.firebasestorage.app",
+  "messagingSenderId": "321766738616",
+  "appId": "1:321766738616:web:d2c1c53ad7493fcde4c24d",
+  "measurementId": "G-EFMSZE581W"
+};
+window.FLOCK_NO_FIREBASE = false;
+window.FLOCK_DATABASE_URL = "https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec";
+  </script>
+</head>
+<body class="theme-covenant">
+  <div id="app" class="fs-app" aria-live="polite"></div>
+  <noscript>
+    <main class="fs-noscript">
+      <h1>FlockSort</h1>
+      <p>JavaScript is required to play.</p>
+    </main>
+  </noscript>
+  <script type="module" src="app.flocksort/flock_sort.js"></script>
+</body>
+</html>

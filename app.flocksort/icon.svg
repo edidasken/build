@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">FlockSort</title>
+  <desc id="desc">A glowing Herald-style potion bottle for FlockSort.</desc>
+  <defs>
+    <radialGradient id="bgHalo" cx="32%" cy="16%" r="82%">
+      <stop offset="0" stop-color="#f7c756" stop-opacity="0.34"/>
+      <stop offset="0.34" stop-color="#48d3d9" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#071022" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bg" x1="64" y1="34" x2="458" y2="486" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1a2d49"/>
+      <stop offset="0.48" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#071022"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="136" y1="106" x2="382" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.74"/>
+      <stop offset="0.4" stop-color="#8ee8ff" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#48d3d9" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="154" y1="79" x2="368" y2="208" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.38" stop-color="#8beaff"/>
+      <stop offset="0.72" stop-color="#48d3d9"/>
+      <stop offset="1" stop-color="#f7c756"/>
+    </linearGradient>
+    <linearGradient id="goldLiquid" x1="186" y1="182" x2="326" y2="336" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff3a3"/>
+      <stop offset="0.47" stop-color="#f7c756"/>
+      <stop offset="1" stop-color="#b8871e"/>
+    </linearGradient>
+    <linearGradient id="cyanLiquid" x1="175" y1="138" x2="348" y2="326" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7ff8ef"/>
+      <stop offset="0.48" stop-color="#00c7be"/>
+      <stop offset="1" stop-color="#007a78"/>
+    </linearGradient>
+    <linearGradient id="blueLiquid" x1="175" y1="266" x2="345" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8de4ff"/>
+      <stop offset="0.45" stop-color="#0a84ff"/>
+      <stop offset="1" stop-color="#0044b8"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="171" y1="128" x2="236" y2="406" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff" stop-opacity="0.88"/>
+      <stop offset="0.46" stop-color="#ffffff" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.04"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="11" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.28 0 0 0 0 0.83 0 0 0 0 0.91 0 0 0 0.86 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.97 0 0 0 0 0.78 0 0 0 0 0.34 0 0 0 0.9 0" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <clipPath id="bottleClip">
+      <path d="M151 169h210v195c0 64-49 116-109 116h-2c-55 0-99-45-99-101V169Z"/>
+    </clipPath>
+    <clipPath id="safeMask">
+      <rect x="0" y="0" width="512" height="512" rx="112"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#safeMask)">
+    <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+    <rect width="512" height="512" rx="112" fill="url(#bgHalo)"/>
+    <path d="M72 392c58 58 127 88 207 88 69 0 124-22 164-65" fill="none" stroke="#48d3d9" stroke-width="28" opacity="0.08"/>
+    <path d="M84 127c28-48 77-73 146-74 71-1 130 25 176 78" fill="none" stroke="#f7c756" stroke-width="22" stroke-linecap="round" opacity="0.12"/>
+
+    <g filter="url(#goldGlow)" opacity="0.94">
+      <path d="M394 89l12 30 32 10-32 11-12 31-12-31-32-11 32-10 12-30Z" fill="#f7c756"/>
+      <path d="M99 182l8 20 21 7-21 8-8 20-8-20-21-8 21-7 8-20Z" fill="#f7c756" opacity="0.72"/>
+    </g>
+    <g fill="#48d3d9" filter="url(#softGlow)" opacity="0.92">
+      <circle cx="410" cy="247" r="6"/>
+      <circle cx="121" cy="342" r="5"/>
+      <circle cx="356" cy="386" r="4"/>
+    </g>
+
+    <ellipse cx="256" cy="430" rx="126" ry="24" fill="#000814" opacity="0.46"/>
+    <ellipse cx="256" cy="421" rx="104" ry="15" fill="#f7c756" opacity="0.22" filter="url(#goldGlow)"/>
+
+    <g filter="url(#softGlow)">
+      <path d="M187 86h138c32 0 58 26 58 58 0 31-25 56-56 56H185c-31 0-56-25-56-56 0-32 26-58 58-58Z" fill="#0b172b" opacity="0.86"/>
+      <path d="M190 103h132c22 0 40 17 40 39 0 21-17 38-38 38H188c-21 0-38-17-38-38 0-22 18-39 40-39Z" fill="none" stroke="url(#rim)" stroke-width="18"/>
+      <ellipse cx="256" cy="141" rx="67" ry="24" fill="#071022" opacity="0.78"/>
+      <ellipse cx="256" cy="134" rx="52" ry="14" fill="#ffffff" opacity="0.18"/>
+    </g>
+
+    <path d="M151 169h210v195c0 64-49 116-109 116h-2c-55 0-99-45-99-101V169Z" fill="#071022" opacity="0.26"/>
+
+    <g clip-path="url(#bottleClip)">
+      <path d="M143 156h226v328H143Z" fill="#071022"/>
+      <path d="M143 158h226v107H143Z" fill="url(#cyanLiquid)"/>
+      <path d="M143 253h226v105H143Z" fill="url(#goldLiquid)"/>
+      <path d="M143 345h226v141H143Z" fill="url(#blueLiquid)"/>
+
+      <ellipse cx="256" cy="255" rx="112" ry="18" fill="#fff3a3" opacity="0.62"/>
+      <ellipse cx="256" cy="158" rx="112" ry="20" fill="#8ff8ef" opacity="0.72"/>
+      <ellipse cx="256" cy="348" rx="112" ry="17" fill="#8de4ff" opacity="0.62"/>
+
+      <path d="M183 152c40 16 89 17 144 3v330H183V152Z" fill="#ffffff" opacity="0.05"/>
+      <path d="M178 176c18-15 40-21 65-18l-44 284c-4 23-31 30-45 13l24-279Z" fill="url(#shine)"/>
+      <path d="M223 174c16-8 36-11 59-9l-36 219c-3 18-21 28-37 22l14-232Z" fill="#ffffff" opacity="0.12"/>
+
+      <circle cx="315" cy="211" r="13" fill="#ffffff" opacity="0.34"/>
+      <circle cx="318" cy="300" r="16" fill="#ffffff" opacity="0.28"/>
+      <circle cx="304" cy="394" r="14" fill="#ffffff" opacity="0.26"/>
+      <circle cx="219" cy="218" r="7" fill="#ffffff" opacity="0.26"/>
+      <circle cx="226" cy="330" r="6" fill="#ffffff" opacity="0.22"/>
+    </g>
+
+    <path d="M151 169h210v195c0 64-49 116-109 116h-2c-55 0-99-45-99-101V169Z" fill="url(#glass)" stroke="url(#rim)" stroke-width="20"/>
+    <path d="M171 190h44v236c0 19-19 30-34 20-7-5-10-12-10-21V190Z" fill="#ffffff" opacity="0.25"/>
+    <path d="M151 169h210" stroke="#ffffff" stroke-width="11" opacity="0.62"/>
+
+    <path d="M105 289c29-23 66-30 104-18" fill="none" stroke="#48d3d9" stroke-width="16" stroke-linecap="round" opacity="0.42"/>
+    <path d="M407 226c-27 24-64 32-104 23" fill="none" stroke="#f7c756" stroke-width="16" stroke-linecap="round" opacity="0.54"/>
+    <path d="M184 261l25 10-23 15" fill="none" stroke="#48d3d9" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.56"/>
+    <path d="M328 259l-25-10 23-15" fill="none" stroke="#f7c756" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.72"/>
+  </g>
+</svg>
