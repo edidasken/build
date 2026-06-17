@@ -86,6 +86,26 @@
             </button>
           </form>
 
+          <div class="bible-picker-wrap">
+            <button class="bible-btn bible-picker-toggle" id="bible-open-picker" type="button" aria-expanded="false" aria-controls="bible-verse-picker">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h7"/><path d="M8 11h5"/></svg>
+              <span>Pick</span>
+            </button>
+            <div class="bible-verse-picker" id="bible-verse-picker" hidden>
+              <header class="bible-picker-head">
+                <div>
+                  <div class="bible-kicker">Verse Picker</div>
+                  <strong id="bible-picker-title">Choose a book</strong>
+                </div>
+                <button class="bible-icon-btn" id="bible-close-picker" type="button" aria-label="Close verse picker" title="Close verse picker">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </header>
+              <div class="bible-picker-steps" id="bible-picker-steps" aria-label="Picker steps"></div>
+              <div class="bible-picker-content" id="bible-picker-content"></div>
+            </div>
+          </div>
+
           <button class="bible-icon-btn" id="bible-copy-passage" type="button" aria-label="Copy passage" title="Copy passage">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>

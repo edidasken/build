@@ -129,6 +129,9 @@ const state = {
   esvFootnotes: new Map(),
   esvInterlinear: new Map(),
   studyRequest: 0,
+  pickerStep: 'book',
+  pickerBook: null,
+  pickerChapter: 1,
 };
 
 const el = {};
@@ -154,6 +157,7 @@ function bindElements() {
   for (const id of [
     'bible-topbar', 'bible-sidebar', 'bible-close-sidebar', 'bible-open-sidebar',
     'bible-book-filter', 'bible-book-list', 'bible-reference-form', 'bible-reference-input',
+    'bible-open-picker', 'bible-close-picker', 'bible-verse-picker', 'bible-picker-title', 'bible-picker-steps', 'bible-picker-content',
     'bible-current-title', 'bible-version-label', 'bible-chapter-select', 'bible-chapter-strip',
     'bible-book-overview',
     'bible-selection-bar', 'bible-selection-count', 'bible-selection-copy', 'bible-selection-share',
@@ -226,6 +230,13 @@ function bindEvents() {
     event.preventDefault();
     goToReference(el.referenceInput.value.trim());
   });
+  el.openPicker.addEventListener('click', toggleVersePicker);
+  el.closePicker.addEventListener('click', closeVersePicker);
+  el.versePicker.addEventListener('click', handleVersePickerClick);
+  document.addEventListener('click', (event) => {
+    if (el.versePicker.hidden || event.target.closest('.bible-picker-wrap')) return;
+    closeVersePicker();
+  });
 
   el.bookFilter.addEventListener('input', renderBookList);
   document.querySelectorAll('[data-testament]').forEach((button) => {
@@ -274,6 +285,7 @@ function bindEvents() {
       closeMobileSidebar();
       closeDrawer();
       closeTextSizeMenu();
+      closeVersePicker();
     }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'l') {
       event.preventDefault();
@@ -435,6 +447,7 @@ async function goToBook(slug, chapter = 1, highlight = null, options = {}) {
   state.selectedVerses = selectedSetForChapter(options.selectedVerses, highlight, state.currentChapter, data);
   renderReader();
   updateActiveBook();
+  syncVersePickerState();
   closeMobileSidebar();
   if (!options.replace) updateLocation();
 }
@@ -452,6 +465,145 @@ async function goToReference(input, options = {}) {
 async function setChapter(chapter) {
   if (!state.currentBook) return;
   await goToBook(state.currentBook.slug, chapter);
+}
+
+function toggleVersePicker(event) {
+  event?.stopPropagation();
+  if (el.versePicker.hidden) {
+    openVersePicker();
+  } else {
+    closeVersePicker();
+  }
+}
+
+function openVersePicker() {
+  state.pickerStep = 'book';
+  syncVersePickerState();
+  el.versePicker.hidden = false;
+  el.openPicker.setAttribute('aria-expanded', 'true');
+  renderVersePicker();
+}
+
+function closeVersePicker() {
+  if (!el.versePicker || el.versePicker.hidden) return;
+  el.versePicker.hidden = true;
+  el.openPicker?.setAttribute('aria-expanded', 'false');
+}
+
+function syncVersePickerState() {
+  if (!state.currentBook) return;
+  state.pickerBook = BOOK_ALIASES.get(state.currentBook.slug) || state.currentBook;
+  state.pickerChapter = state.currentChapter || 1;
+  if (!el.versePicker?.hidden) renderVersePicker();
+}
+
+function handleVersePickerClick(event) {
+  event.stopPropagation();
+  const stepButton = event.target.closest('[data-picker-step]');
+  if (stepButton) {
+    state.pickerStep = stepButton.dataset.pickerStep || 'book';
+    renderVersePicker();
+    return;
+  }
+
+  const bookButton = event.target.closest('[data-picker-book]');
+  if (bookButton) {
+    state.pickerBook = BOOK_ALIASES.get(bookButton.dataset.pickerBook);
+    state.pickerChapter = 1;
+    state.pickerStep = 'chapter';
+    renderVersePicker();
+    return;
+  }
+
+  const chapterButton = event.target.closest('[data-picker-chapter]');
+  if (chapterButton) {
+    state.pickerChapter = Number(chapterButton.dataset.pickerChapter) || 1;
+    state.pickerStep = 'verse';
+    renderVersePicker();
+    return;
+  }
+
+  const verseButton = event.target.closest('[data-picker-verse]');
+  if (verseButton) {
+    selectVerseFromPicker(Number(verseButton.dataset.pickerVerse) || 1);
+  }
+}
+
+async function selectVerseFromPicker(verse) {
+  const book = state.pickerBook || BOOK_ALIASES.get(state.currentBook?.slug);
+  if (!book) return;
+  const chapter = Math.max(1, Number(state.pickerChapter) || 1);
+  closeVersePicker();
+  await goToReference(`${book.name} ${chapter}:${verse}`);
+}
+
+async function renderVersePicker() {
+  if (!el.versePicker || el.versePicker.hidden) return;
+  const book = state.pickerBook || BOOK_ALIASES.get(state.currentBook?.slug) || BOOKS[0];
+  const chapter = Math.max(1, Number(state.pickerChapter) || 1);
+  const step = state.pickerStep || 'book';
+  const bookData = step === 'verse' ? await loadBook(book.slug) : null;
+  const verseCount = bookData?.chapters?.[chapter - 1]?.length || 0;
+
+  el.pickerTitle.textContent = step === 'book'
+    ? 'Choose a book'
+    : step === 'chapter'
+      ? `${book.name}: choose a chapter`
+      : `${book.name} ${chapter}: choose a verse`;
+  el.pickerSteps.innerHTML = [
+    ['book', 'Book'],
+    ['chapter', book.name || 'Chapter'],
+    ['verse', chapter ? `Ch. ${chapter}` : 'Verse'],
+  ].map(([value, label]) => `
+    <button class="${step === value ? 'is-active' : ''}" type="button" data-picker-step="${value}" ${value !== 'book' && !book ? 'disabled' : ''}>
+      ${escapeHtml(label)}
+    </button>
+  `).join('');
+
+  if (step === 'book') {
+    el.pickerContent.innerHTML = renderPickerBooks(book);
+  } else if (step === 'chapter') {
+    el.pickerContent.innerHTML = renderPickerChapters(book, chapter);
+  } else {
+    el.pickerContent.innerHTML = renderPickerVerses(verseCount, selectedVerseNumbers());
+  }
+}
+
+function renderPickerBooks(activeBook) {
+  return `
+    <div class="bible-picker-grid bible-picker-book-grid">
+      ${BOOKS.map((book) => `
+        <button class="${activeBook?.slug === book.slug ? 'is-active' : ''}" type="button" data-picker-book="${escapeAttr(book.slug)}">
+          <span>${escapeHtml(book.name)}</span>
+          <small>${escapeHtml(book.testament)}</small>
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderPickerChapters(book, activeChapter) {
+  const count = book?.chapterCount || 1;
+  return `
+    <div class="bible-picker-grid bible-picker-number-grid">
+      ${Array.from({ length: count }, (_, index) => {
+        const chapter = index + 1;
+        return `<button class="${chapter === activeChapter ? 'is-active' : ''}" type="button" data-picker-chapter="${chapter}">${chapter}</button>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderPickerVerses(verseCount, selected) {
+  if (!verseCount) return '<div class="bible-empty">Verse list unavailable for this chapter.</div>';
+  return `
+    <div class="bible-picker-grid bible-picker-number-grid">
+      ${Array.from({ length: verseCount }, (_, index) => {
+        const verse = index + 1;
+        return `<button class="${selected.includes(verse) ? 'is-active' : ''}" type="button" data-picker-verse="${verse}">${verse}</button>`;
+      }).join('')}
+    </div>
+  `;
 }
 
 async function moveChapter(offset) {
