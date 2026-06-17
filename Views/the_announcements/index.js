@@ -18,7 +18,7 @@ const CHANNEL_ID = 'announcements';
 
 export function render() {
   return `
-    <section>
+    <section class="ann-view">
       ${pageHero({
         title: 'Announcements',
         subtitle: 'A read-only firehose of what the leadership is saying.',

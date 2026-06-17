@@ -25,7 +25,7 @@ const CHANNEL_ID = 'prayer-chain';
 
 export function render() {
   return `
-    <section>
+    <section class="pc-view">
       ${pageHero({
         title: 'Prayer Chain',
         subtitle: 'Lift one another up in real time, and tend the structured prayer requests.',

@@ -18,7 +18,7 @@ const _SRC = (() => {
 
 export function render() {
   return /* html */`
-    <div style="
+    <div class="about-frame-view" style="
       height: calc(100vh - var(--topbar-h, 60px) - 48px);
       min-height: 480px;
       display: flex;

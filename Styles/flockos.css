@@ -1167,9 +1167,25 @@ body.veil-app :is(
   .life-view,
   .seasons-view,
   .aow-view,
+  .ann-view,
+  .about-frame-view,
+  .bz-view,
+  .content-admin-view,
+  .ctf-view,
+  .data-view,
+  .fellowship-frame-view,
+  .fish-view,
+  .gen-view,
+  .inv-view,
+  .lm-view,
+  .pc-view,
+  .pent-view,
+  .pray-view,
   .qwp-view,
   .gc-view,
   .harvest-view,
+  .sdr-view,
+  .upper-room,
   .way-view,
   .truth-view,
   .gift-view,
@@ -1179,13 +1195,31 @@ body.veil-app :is(
   --view-accent: var(--flockos-gold);
   --view-accent-2: var(--flockos-cyan);
   --view-accent-soft: rgba(247,199,86,.12);
+  --accent: var(--view-accent);
+  --accent-soft: var(--view-accent-soft);
+  --accent-hover: color-mix(in srgb, var(--view-accent) 82%, #111827);
   gap: 22px;
   color: var(--flockos-navy);
 }
 
 body.veil-app .grow-page { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .ann-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
+body.veil-app .bz-view { --view-accent: #7c3aed; --view-accent-soft: rgba(124,58,237,.12); }
+body.veil-app .content-admin-view,
+body.veil-app .data-view { --view-accent: #2563eb; --view-accent-soft: rgba(37,99,235,.12); }
+body.veil-app .ctf-view { --view-accent: #ef4444; --view-accent-soft: rgba(239,68,68,.12); }
+body.veil-app .fellowship-frame-view,
+body.veil-app .pc-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
+body.veil-app .fish-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
 body.veil-app .fold-view { --view-accent: #6366f1; --view-accent-soft: rgba(59,130,246,.12); }
+body.veil-app .gen-view { --view-accent: #64748b; --view-accent-soft: rgba(100,116,139,.12); }
+body.veil-app .inv-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
 body.veil-app .life-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
+body.veil-app .lm-view,
+body.veil-app .sdr-view { --view-accent: #f59e0b; --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .pent-view { --view-accent: #d97706; --view-accent-soft: rgba(217,119,6,.12); }
+body.veil-app .pray-view,
+body.veil-app .upper-room { --view-accent: #8b5cf6; --view-accent-soft: rgba(139,92,246,.12); }
 body.veil-app .seasons-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,.12); }
 body.veil-app .gc-view,
 body.veil-app .harvest-view { --view-accent: #22c55e; --view-accent-soft: rgba(34,197,94,.12); }
@@ -1200,9 +1234,23 @@ body.veil-app :is(
   .life-view,
   .seasons-view,
   .aow-view,
+  .ann-view,
+  .bz-view,
+  .content-admin-view,
+  .ctf-view,
+  .data-view,
+  .fish-view,
+  .gen-view,
+  .inv-view,
+  .lm-view,
+  .pc-view,
+  .pent-view,
+  .pray-view,
   .qwp-view,
   .gc-view,
   .harvest-view,
+  .sdr-view,
+  .upper-room,
   .way-view,
   .truth-view,
   .gift-view,
@@ -1230,9 +1278,23 @@ body.veil-app :is(
   .life-view,
   .seasons-view,
   .aow-view,
+  .ann-view,
+  .bz-view,
+  .content-admin-view,
+  .ctf-view,
+  .data-view,
+  .fish-view,
+  .gen-view,
+  .inv-view,
+  .lm-view,
+  .pc-view,
+  .pent-view,
+  .pray-view,
   .qwp-view,
   .gc-view,
   .harvest-view,
+  .sdr-view,
+  .upper-room,
   .way-view,
   .truth-view,
   .gift-view,
@@ -1289,6 +1351,19 @@ body.veil-app :is(
   .aow-service-tabs,
   .aow-budget-row,
   .aow-segment,
+  .ann-composer,
+  .bz-card,
+  .ctf-case-row,
+  .ctf-scripture-card,
+  .ctf-step,
+  .data-card,
+  .data-kpi-card,
+  .fish-contact-row,
+  .fish-funnel,
+  .gen-milestone-body,
+  .gen-stat-card,
+  .inv-invite-card,
+  .inv-pending-row,
   .qwp-grid-card,
   .qwp-setup,
   .qwp-summary,
@@ -1318,7 +1393,20 @@ body.veil-app :is(
   .wall-setting-row,
   .inv-stat-card,
   .gi-card,
-  .gi-tl-panel
+  .gi-tl-panel,
+  .lm-feature-card,
+  .lm-mission-card,
+  .lm-step,
+  .pc-requests-col,
+  .pc-stream,
+  .pent-card,
+  .pray-card,
+  .pray-liturgy-card,
+  .pray-scripture-card,
+  .pray-stat-card,
+  .sdr-check-row,
+  .sdr-referral-card,
+  .ur-panel
 ) {
   border: 1px solid rgba(15,23,42,.12);
   border-radius: var(--flockos-radius-md);
@@ -1333,9 +1421,18 @@ body.veil-app :is(
   .fc-pane,
   .fold-grid,
   .life-queue,
+  .ann-view [data-bind="stream"],
+  .ctf-cases,
+  .ctf-steps,
+  .fish-contacts,
+  .gen-timeline,
+  .inv-list,
   .seasons-list,
   .seasons-personal-list,
   .seasons-todo-list,
+  .pc-layout,
+  .pent-list,
+  .pray-list,
   .way-tracks,
   .way-groups,
   .truth-series-grid,
@@ -1382,6 +1479,16 @@ body.veil-app :is(
 body.veil-app :is(
   .growth-card,
   .fold-card,
+  .bz-card,
+  .ctf-case-row,
+  .ctf-scripture-card,
+  .ctf-step,
+  .data-kpi-card,
+  .fish-contact-row,
+  .gen-milestone-body,
+  .inv-pending-row,
+  .lm-feature-card,
+  .lm-step,
   .life-card,
   .seasons-card,
   .aow-segment,
@@ -1398,6 +1505,10 @@ body.veil-app :is(
   .truth-msg-row,
   .gift-tx-row,
   .gift-fund-row,
+  .pc-req-card,
+  .pent-card,
+  .pray-card,
+  .sdr-check-row,
   .wv-goal-row,
   .wv-init-row,
   .wv-milestone-row
@@ -1411,9 +1522,13 @@ body.veil-app :is(
 
 body.veil-app :is(
   .life-stat-card,
+  .data-kpi-card,
+  .gen-stat-card,
   .harvest-stat-card,
   .gift-kpi-card,
   .gc-kpi-card,
+  .inv-stat-card,
+  .pray-stat-card,
   .inv-stat-card
 ) {
   position: relative;
@@ -1422,10 +1537,14 @@ body.veil-app :is(
 
 body.veil-app :is(
   .life-stat-card,
+  .data-kpi-card,
+  .gen-stat-card,
   .harvest-stat-card,
   .gift-kpi-card,
   .gc-kpi-card,
   .inv-stat-card,
+  .pray-stat-card,
+  .sdr-ref-stat,
   .wv-card,
   .gift-card,
   .qwp-grid-card
@@ -1441,7 +1560,10 @@ body.veil-app :is(
   .fold-toolbar,
   .life-toolbar,
   .fold-filters,
+  .bz-tabbar,
+  .data-card-header,
   .seasons-list-header,
+  .fish-funnel-row,
   .aow-header-row,
   .qwp-controls,
   .qwp-action-row,
@@ -1450,6 +1572,9 @@ body.veil-app :is(
   .gc-filter-bar,
   .gc-tabs,
   .gc-action-bar,
+  .pc-col-hd,
+  .pray-toolbar,
+  .ur-tabs,
   .wall-nav,
   .gift-card-header,
   .wv-card-header,
@@ -1474,9 +1599,25 @@ body.veil-app .wv-card-header {
 body.veil-app :is(
   .way-section-title,
   .growth-section-title,
+  .bz-card h3,
+  .ctf-case-parties,
+  .ctf-scripture-hd,
+  .ctf-step-title,
+  .data-card-title,
+  .fish-contact-name,
   .fold-name,
+  .gen-milestone-title,
   .life-card-name,
+  .lm-feature-title,
+  .lm-mission-title,
+  .lm-step-title,
+  .pc-col-hd,
+  .pc-req-name,
+  .pent-card-title,
+  .pray-liturgy-title,
+  .pray-scripture-ref,
   .seasons-card-title,
+  .sdr-ref-title,
   .aow-seg-title,
   .qwp-grid-title,
   .gc-country-name,
@@ -1498,6 +1639,13 @@ body.veil-app :is(
 
 body.veil-app :is(
   .growth-section-blurb,
+  .ctf-case-date,
+  .ctf-case-issue,
+  .ctf-scripture-text,
+  .ctf-step-desc,
+  .data-kpi-delta,
+  .data-kpi-label,
+  .fish-contact-meta,
   .fold-meta,
   .fold-joined,
   .life-card-note,
@@ -1519,6 +1667,24 @@ body.veil-app :is(
   .truth-msg-meta,
   .gift-card-sub,
   .gift-kpi-delta,
+  .gen-milestone-desc,
+  .gen-stat-label,
+  .lm-feature-desc,
+  .lm-mission-text,
+  .lm-step-desc,
+  .pc-req-date,
+  .pc-req-foot,
+  .pc-req-text,
+  .pent-date,
+  .pent-notes,
+  .pray-card-date,
+  .pray-card-foot,
+  .pray-liturgy-verse,
+  .pray-scripture-label,
+  .pray-scripture-text,
+  .sdr-check-desc,
+  .sdr-ref-sub,
+  .sdr-ref-stat-label,
   .wv-goal-owner,
   .wv-init-meta,
   .wall-field-hint,
@@ -1529,9 +1695,12 @@ body.veil-app :is(
 
 body.veil-app :is(
   .fold-filter,
+  .bz-tab,
   .gc-tabs button,
+  .pray-filter,
   .qwp-mode-tab,
   .qwp-dow-btn,
+  .ur-tab,
   .wall-nav-item,
   .aow-service-tab,
   .life-action-btn,
@@ -1546,9 +1715,12 @@ body.veil-app :is(
 
 body.veil-app :is(
   .fold-filter.is-active,
+  .bz-tab--active,
   .gc-tabs button.is-active,
+  .pray-filter.is-active,
   .qwp-mode-tab.active,
   .qwp-dow-btn.active,
+  .ur-tab.is-active,
   .wall-nav-item.is-active,
   .aow-service-tab.is-active
 ) {
@@ -1561,6 +1733,7 @@ body.veil-app :is(
 body.veil-app :is(
   .flock-btn--primary,
   .fold-add-btn,
+  .btn-primary,
   .seasons-add-btn,
   .seasons-personal-add-btn,
   .seasons-todo-add-btn,
@@ -1588,6 +1761,7 @@ body.veil-app :is(
   .fold-sort,
   .life-member-search,
   .life-member-select,
+  .life-sheet-input,
   .aow-edit-input,
   .qwp-input,
   .qwp-select,
@@ -1609,6 +1783,7 @@ body.veil-app :is(
   .fold-sort,
   .life-member-search,
   .life-member-select,
+  .life-sheet-input,
   .aow-edit-input,
   .qwp-input,
   .qwp-select,
@@ -1627,6 +1802,9 @@ body.veil-app :is(
 
 body.veil-app :is(
   .life-empty,
+  .pc-col-empty,
+  .pc-loading,
+  .pc-stream-empty,
   .gc-empty,
   .gc-loading,
   .truth-loading,
@@ -1643,6 +1821,8 @@ body.veil-app :is(
 
 body.veil-app :is(
   .fold-role-badge,
+  .ctf-stage-badge,
+  .fish-stage-badge,
   .life-type-badge,
   .life-priority-badge,
   .seasons-type-badge,
@@ -1653,6 +1833,12 @@ body.veil-app :is(
   .gc-access-badge,
   .gc-1040-badge,
   .wv-badge,
+  .pc-req-cat,
+  .pc-req-status,
+  .pent-past-badge,
+  .pent-type-badge,
+  .pray-type-badge,
+  .pray-urgent-badge,
   .wall-status-badge
 ) {
   border: 1px solid color-mix(in srgb, var(--view-accent, var(--flockos-gold)) 28%, transparent);
@@ -1662,6 +1848,11 @@ body.veil-app :is(
 
 body.veil-app :is(
   .fold-avatar,
+  .ctf-step-n,
+  .gen-milestone-icon,
+  .lm-feature-icon,
+  .lm-mission-icon,
+  .lm-step-n,
   .life-card-icon,
   .seasons-card-date,
   .harvest-stat-icon,
@@ -1673,7 +1864,11 @@ body.veil-app :is(
   .gc-prayer-icon,
   .gc-resource-icon,
   .gc-partner-icon,
-  .gi-card-icon
+  .gi-card-icon,
+  .pc-req-conf,
+  .pent-card-icon,
+  .pray-lit-icon,
+  .pray-stat-icon
 ) {
   border: 1px solid rgba(15,23,42,0.08);
   background: rgba(247,199,86,0.14) !important;
@@ -1698,6 +1893,23 @@ body.veil-app :is(.seasons-card-day, .qwp-ad-day) {
 
 body.veil-app :is(.seasons-card-mon, .qwp-ad-dow, .qwp-ad-mon) {
   color: #64748b;
+}
+
+body.veil-app .about-frame-view {
+  padding: 0;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: var(--flockos-radius-lg);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 16rem),
+    radial-gradient(circle at bottom left, rgba(247,199,86,.12), transparent 16rem),
+    rgba(255,255,255,.9);
+  box-shadow: var(--flockos-shadow-soft);
+  overflow: hidden;
+}
+
+body.veil-app .about-frame-view iframe {
+  border-radius: var(--flockos-radius-lg) !important;
+  background: #f8fafc !important;
 }
 
 body.veil-app :is(

@@ -6,7 +6,7 @@
      • Embedded FlockChat — channels, direct messages, prayer chain, and live updates
    ══════════════════════════════════════════════════════════════════════════════ */
 
-import { ensureVessels } from '../_frame.js';
+import { ensureVessels, pageHero } from '../_frame.js';
 import { renderFlockchatPane }     from './the_flockchat_pane.js';
 
 export const name  = 'the_fellowship';
@@ -15,6 +15,11 @@ export const title = 'Fellowship';
 export function render(/* params */) {
   return `
     <section class="fellowship-frame-view">
+      ${pageHero({
+        title: 'Fellowship',
+        subtitle: 'Church conversations, prayer chain, channels, and direct messages in one live workspace.',
+        scripture: 'They continued stedfastly in fellowship. — Acts 2:42',
+      })}
       <section data-pane="flockchat" class="fellowship-panel fellowship-panel--flockchat">
         <flock-skeleton rows="6"></flock-skeleton>
       </section>

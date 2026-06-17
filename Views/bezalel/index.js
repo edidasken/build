@@ -113,6 +113,7 @@ export function mount(root) {
 
 /* ── Internal renderer ────────────────────────────────────────────────────── */
 function _render(root, tab) {
+  root.classList.add('bz-view');
   const activeTab = (tab === 'gas-files' ? 'church-setup' : tab) || 'church-setup';
 
   if (!_isPastorPlus()) {
@@ -1071,4 +1072,3 @@ function _wireDeployments(root) {
     _wireRowActions();
   });
 }
-
