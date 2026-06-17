@@ -36,7 +36,7 @@ var stats = seedFromMasterJSON();
 
 ## Published URL
 
-This file is automatically published to GitHub Pages by B-Build:
+This file is automatically published to GitHub Pages by export.sh:
 
 **https://flock-os.github.io/FlockOS/New_Covenant/Data/seed_database.json**
 
@@ -58,27 +58,27 @@ Complete documentation is available in `Architechtural Docs/New Covenant/Data/`:
 
 ### Keeping seed_database.json Up to Date
 
-B-Build automatically monitors for changes and warns you:
+export.sh automatically monitors for changes and warns you:
 
 ```bash
-bash Iris/Bezalel/Scripts/B-Build_Nations.sh
+bash New_Covenant/iris/export.sh
 # → ⚠️  NOTICE: Source data files are newer than seed_database.json
-#    Run: python3 Iris/Shepherds/Build/update_seed_database.py
+#    Run: python3 New_Covenant/iris/Shepherds/Build/update_seed_database.py
 ```
 
 **Update workflow:**
 ```bash
 # 1. Update seed database
-bash Iris/Shepherds/Build/refresh_seed_database.sh
+bash New_Covenant/iris/Shepherds/Build/refresh_seed_database.sh
 
-# 2. B-Build to sync to Nations/
-bash Iris/Bezalel/Scripts/B-Build_Nations.sh
+# 2. export.sh to sync to Nations/
+bash New_Covenant/iris/export.sh
 
 # 3. Commit + push (auto-deploys to GitHub Pages)
 git add -A && git commit -m "Update seed_database.json" && git push origin main
 ```
 
-See `Iris/Shepherds/Build/SEED_DATABASE_MAINTENANCE.md` for details.
+See `New_Covenant/iris/Shepherds/Build/SEED_DATABASE_MAINTENANCE.md` for details.
 
 ---
 
@@ -115,7 +115,7 @@ Architechtural Docs/New Covenant/Data/  (PRIVATE, gitignored)
   ├── seedFromMasterJSON.gs             ← GAS function code
   └── NEW_CHURCH_SETUP.md               ← Setup guide
 
-Iris/Shepherds/Build/
+New_Covenant/iris/Shepherds/Build/
   ├── update_seed_database.py     ← Updates seed_database.json
   ├── refresh_seed_database.sh    ← Helper wrapper
   └── SEED_DATABASE_MAINTENANCE.md ← Maintenance guide

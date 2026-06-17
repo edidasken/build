@@ -289,7 +289,7 @@
 
   /* ── Resolve churchId from page/config ────────────────────────── */
   function _resolveChurchId() {
-    // Try build-injected church ID (window.FLOCK_CHURCH_ID set by A-Build_Churches.sh)
+    // Try build-injected church ID (window.FLOCK_CHURCH_ID set by export.sh)
     if (typeof window.FLOCK_CHURCH_ID === 'string' && window.FLOCK_CHURCH_ID) return window.FLOCK_CHURCH_ID;
     // Try manifest short_name
     try {

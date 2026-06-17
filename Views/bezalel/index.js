@@ -769,7 +769,7 @@ function _deploymentsTab(churches) {
     <strong>Standalone (all projects):</strong>
   </p>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-    <code id="bz-rules-all-cmd" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "Iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh"</code>
+    <code id="bz-rules-all-cmd" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "New_Covenant/iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh"</code>
     <button class="bz-rules-copy btn btn-outline" data-target="bz-rules-all-cmd" style="font-size:0.75rem;padding:5px 10px;white-space:nowrap;">📋 Copy</button>
   </div>
   <div style="font-size:0.78rem;font-weight:700;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Per Church Project</div>
@@ -782,12 +782,12 @@ function _deploymentsTab(churches) {
     </div>`).join('')}
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:10px;border-top:1px solid var(--line);">
       <span style="font-size:0.78rem;font-weight:600;color:var(--ink);min-width:140px;">FlockChat (comms)</span>
-      <code id="bz-rules-cmd-comms" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "Iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-comms</code>
+      <code id="bz-rules-cmd-comms" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "New_Covenant/iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-comms</code>
       <button class="bz-rules-copy btn btn-outline" data-target="bz-rules-cmd-comms" style="font-size:0.75rem;padding:5px 10px;white-space:nowrap;">📋 Copy</button>
     </div>
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
       <span style="font-size:0.78rem;font-weight:600;color:var(--ink);min-width:140px;">Truth (content DB)</span>
-      <code id="bz-rules-cmd-truth" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "Iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-truth</code>
+      <code id="bz-rules-cmd-truth" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "New_Covenant/iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-truth</code>
       <button class="bz-rules-copy btn btn-outline" data-target="bz-rules-cmd-truth" style="font-size:0.75rem;padding:5px 10px;white-space:nowrap;">📋 Copy</button>
     </div>
   </div>
@@ -939,12 +939,12 @@ function _wireDeployments(root) {
       const staticRows = `
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:10px;border-top:1px solid var(--line);">
           <span style="font-size:0.78rem;font-weight:600;color:var(--ink);min-width:140px;">FlockChat (comms)</span>
-          <code id="bz-rules-cmd-comms" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "Iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-comms</code>
+          <code id="bz-rules-cmd-comms" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "New_Covenant/iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-comms</code>
           <button class="bz-rules-copy btn btn-outline" data-target="bz-rules-cmd-comms" style="font-size:0.75rem;padding:5px 10px;white-space:nowrap;">📋 Copy</button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <span style="font-size:0.78rem;font-weight:600;color:var(--ink);min-width:140px;">Truth (content DB)</span>
-          <code id="bz-rules-cmd-truth" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "Iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-truth</code>
+          <code id="bz-rules-cmd-truth" style="flex:1;background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:6px 10px;font-size:0.75rem;font-family:monospace;color:var(--ink);white-space:nowrap;overflow-x:auto;">bash "New_Covenant/iris/Bezalel/Scripts/Z-Deploy_Firestore_Rules.sh" --project flockos-truth</code>
           <button class="bz-rules-copy btn btn-outline" data-target="bz-rules-cmd-truth" style="font-size:0.75rem;padding:5px 10px;white-space:nowrap;">📋 Copy</button>
         </div>`;
       rulesList.innerHTML = churchRows + staticRows;

@@ -141,7 +141,7 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────────────────────────────
-  // FLOCK_FIREBASE_CONFIG is patched by B-Build; falls back to default project.
+  // FLOCK_FIREBASE_CONFIG is patched by export.sh; falls back to default project.
   const FB_CFG = window.FLOCK_FIREBASE_CONFIG || {
     apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
     authDomain:        'flockos-notify.firebaseapp.com',
@@ -152,7 +152,7 @@
   };
 
   // GAS Email API — set this to your deployed GAS Web App URL after deploying
-  // Iris/Bezalel/Scripts/waiver_email_api.gs to Google Apps Script.
+  // the waiver email handler to Google Apps Script.
   // Leave blank to skip auto-email (signature is always saved to Firestore).
   const GAS_EMAIL_URL   = '';   // e.g. 'https://script.google.com/macros/s/AKfy.../exec'
   const GAS_EMAIL_TOKEN = '';   // Match the WAIVER_API_TOKEN in your GAS Script Properties

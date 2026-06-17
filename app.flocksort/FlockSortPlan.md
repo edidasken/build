@@ -17,7 +17,7 @@ Same satisfying gameplay as Magic Sort — tap to pour colored water between bot
 - [x] FS-0-4: Create `New_Covenant/app.flocksort/levels.js` — level data pack (export const LEVELS)
 - [x] FS-0-5: Create `New_Covenant/app.flocksort/manifest.json` — PWA manifest for FlockSort
 - [x] FS-0-6: Add `app.embeds/embed-flocksort.html` per new-app-rule
-- [x] FS-0-7: Add B-Build Firebase patch step for `app.flocksort/` folder (following embed-stand pattern)
+- [x] FS-0-7: Add export.sh Firebase patch step for `app.flocksort/` folder (following embed-stand pattern)
 - [ ] FS-0-8: BCP
 
 ### Phase 1 — Core Game Engine
@@ -81,7 +81,7 @@ Same satisfying gameplay as Magic Sort — tap to pour colored water between bot
 ### Phase 7 — Integration & Build
 - [x] FS-7-1: Add FlockSort entry to `the_pillars.js` sidebar nav — icon: 🎨, label: "FlockSort", route: opens `app.flocksort/`
 - [x] FS-7-2: Add FlockSort card to home dashboard (`the_good_shepherd`) — shows current level + % complete
-- [x] FS-7-3: Confirm B-Build rsync includes `app.flocksort/` folder — add rsync line if missing
+- [x] FS-7-3: Confirm export.sh rsync includes `app.flocksort/` folder — add rsync line if missing
 - [ ] FS-7-4: Full regression — load FlockSort on iPhone SE, iPhone 14 Pro, desktop Chrome Guest
 - [ ] FS-7-5: Lighthouse audit — Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 90
 - [ ] FS-7-6: Final BCP
@@ -209,7 +209,7 @@ Magic Sort charges coins for:
 | Animation           | CSS transitions + JS class toggling             | No dependency, 60fps, respects prefers-reduced-motion |
 | Audio               | Web Audio API synthesis                         | No audio files, no HTTP requests, instant      |
 | Persistence         | localStorage (primary), Firestore (optional)    | Works offline, no auth required                |
-| Level data          | Static JS module (levels.js)                    | No fetch, instant load, B-Build friendly       |
+| Level data          | Static JS module (levels.js)                    | No fetch, instant load, export.sh friendly       |
 | CSS                 | `new_covenant.css` + `flock_sort.css`           | Consistent theming, dark navy + gold chrome    |
 | PWA                 | Standalone manifest + service worker (sw.js)    | Installable, offline-capable                   |
 

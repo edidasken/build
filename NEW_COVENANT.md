@@ -16,7 +16,7 @@ Every church deployment under `Nations/` is built from this folder. **All code c
 
 - **Source:** This folder (`New_Covenant/`)
 - **Deploy to GitHub Pages:** `git push origin main` — GitHub Pages serves `New_Covenant/` directly. No build step needed for the master copy.
-- **Deploy to churches:** Run `A-Build_Churches.sh` (B-Build), which rsyncs this folder into each `Nations/<Church>/` subfolder with per-church branding applied.
+- **Deploy to churches:** Run `New_Covenant/iris/export.sh`, which rsyncs this folder into each `Nations/<Church>/` subfolder with per-church branding applied.
 
 ---
 
@@ -99,7 +99,7 @@ Each `app.*/` folder is a standalone PWA shell with its own `index.html` and `ma
 - **This is the only place to edit FlockOS source.** Do not edit files in `Nations/` directly.
 - **CSS source of truth:** `Covenant/Foundations/SharedVessels/styles/american_garments.css` — shared app-shell styles live there, not inline in `index.html`.
 - **Service worker cache version:** Never change `CACHE_NAME` without discussion. Current: `flockos-new-covenant-v1.01`.
-- After edits, commit and push — GitHub Pages deploys automatically. Run B-Build separately when church deployments need to be updated.
+- After edits, commit and push — GitHub Pages deploys automatically. Run export.sh separately when church deployments need to be updated.
 
 ---
 
