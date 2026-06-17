@@ -15,6 +15,9 @@ const args = new Map(process.argv.slice(2).map((arg) => {
 
 const sourceFilter = args.get('source') || '';
 const scope = args.get('scope') || (args.has('all') ? 'all' : 'john');
+const refresh = args.has('refresh');
+const concurrency = Math.max(1, Number.parseInt(args.get('concurrency') || '8', 10) || 8);
+const pauseMs = Math.max(0, Number.parseInt(args.get('pause') || '0', 10) || 0);
 
 const bookChapters = [
   ['Genesis', 'genesis', 50], ['Exodus', 'exodus', 40], ['Leviticus', 'leviticus', 27],
@@ -53,6 +56,78 @@ const selectedBooks = new Map(
 
 const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function escapeRegExp(value) {
+  return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+const importBooks = bookChapters.map(([name, slug, chapterCount]) => ({
+  name,
+  slug,
+  chapterCount,
+  aliases: [
+    name,
+    slug.replace(/-/g, ' '),
+    slug.replace(/-/g, ''),
+  ],
+}));
+for (const book of importBooks) {
+  if (book.slug === 'psalms') book.aliases.push('Psalm', 'Ps');
+  if (book.slug === 'song-of-solomon') book.aliases.push('Song of Songs', 'Songs');
+}
+const importBookAliases = importBooks
+  .flatMap((book) => [...new Set(book.aliases)].map((alias) => ({ alias, book })))
+  .sort((a, b) => b.alias.length - a.alias.length);
+
+async function runLimited(items, limit, worker) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await worker(items[index], index);
+    }
+  });
+  await Promise.all(runners);
+  return results;
+}
+
+async function readExistingChunkEntries() {
+  const chunksDir = path.join(__dirname, 'chunks');
+  const bySource = new Map();
+  async function visit(dir) {
+    let entries = [];
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch (_) {
+      return;
+    }
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await visit(fullPath);
+        continue;
+      }
+      if (!entry.name.endsWith('.json')) continue;
+      try {
+        const chunk = JSON.parse(await fs.readFile(fullPath, 'utf8'));
+        const sourceId = chunk?.source?.id;
+        if (!sourceId || !Array.isArray(chunk.entries)) continue;
+        if (!bySource.has(sourceId)) bySource.set(sourceId, new Map());
+        const sourceEntries = bySource.get(sourceId);
+        for (const item of chunk.entries) {
+          if (!item?.book || !item?.chapter) continue;
+          const key = `${item.book}:${Number(item.chapter)}`;
+          if (!sourceEntries.has(key)) sourceEntries.set(key, []);
+          sourceEntries.get(key).push(item);
+        }
+      } catch (_) {}
+    }
+  }
+  await visit(chunksDir);
+  return bySource;
+}
+
 function decodeDocumentWrite(html) {
   const match = String(html || '').match(/document\.write\(unescape\('([\s\S]*?)'\)\)/i);
   if (!match) return html;
@@ -79,6 +154,103 @@ function extractBody(html) {
     .replace(/\s+/g, ' ')
     .replace(/>\s+</g, '><')
     .trim();
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || '')
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number.parseInt(code, 10)))
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&ldquo;|&rdquo;/gi, '"')
+    .replace(/&lsquo;|&rsquo;/gi, "'")
+    .replace(/&hellip;/gi, '...')
+    .replace(/&mdash;/gi, '-')
+    .replace(/&ndash;/gi, '-');
+}
+
+function textFromHtml(value) {
+  return decodeHtmlEntities(String(value || '').replace(/<[^>]+>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractArticleHtml(html) {
+  const decoded = decodeDocumentWrite(html);
+  const articleStart = decoded.search(/<p\b[^>]*class=["']?cs/i);
+  let body = articleStart >= 0 ? decoded.slice(articleStart) : extractBody(decoded);
+  const articleEnd = body.search(/<\/body>/i);
+  if (articleEnd >= 0) body = body.slice(0, articleEnd);
+  return body
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<ins\b[^>]*>[\s\S]*?<\/ins>/gi, '')
+    .replace(/<button\b[^>]*>[\s\S]*?<\/button>/gi, '')
+    .replace(/<span\b[^>]*>/gi, '')
+    .replace(/<\/span>/gi, '')
+    .replace(/<p\b[^>]*>/gi, '<p>')
+    .replace(/<br\s*\/?>/gi, '<br>')
+    .replace(/\s+/g, ' ')
+    .replace(/>\s+</g, '><')
+    .trim();
+}
+
+function articleParagraphs(articleHtml) {
+  const paragraphs = [...String(articleHtml || '').matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((match) => textFromHtml(match[1]))
+    .filter((text) => text && text !== 'worlddic.com');
+  return paragraphs.length ? paragraphs : [textFromHtml(articleHtml)].filter(Boolean);
+}
+
+function parseImportReference(value) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!text) return null;
+  for (const { alias, book } of importBookAliases) {
+    const pattern = new RegExp(`(?:^|\\b)${escapeRegExp(alias)}\\.?\\s+(\\d{1,3})(?:\\s*:\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(?:(\\d{1,3})\\s*:\\s*)?(\\d{1,3}))?)?`, 'i');
+    const match = text.match(pattern);
+    if (!match) continue;
+    const chapter = Number(match[1]);
+    const verseStart = match[2] ? Number(match[2]) : null;
+    const endChapter = match[3] ? Number(match[3]) : chapter;
+    const verseEnd = match[4] ? Number(match[4]) : verseStart;
+    if (!Number.isFinite(chapter) || chapter < 1 || chapter > book.chapterCount) continue;
+    return { book, chapter, verseStart, endChapter, verseEnd };
+  }
+  return null;
+}
+
+function formatImportReference(ref) {
+  if (!ref?.book) return '';
+  if (!ref.verseStart) return `${ref.book.name} ${ref.chapter}`;
+  if (ref.verseEnd && ref.verseEnd !== ref.verseStart) {
+    if (ref.endChapter && ref.endChapter !== ref.chapter) return `${ref.book.name} ${ref.chapter}:${ref.verseStart}-${ref.endChapter}:${ref.verseEnd}`;
+    return `${ref.book.name} ${ref.chapter}:${ref.verseStart}-${ref.verseEnd}`;
+  }
+  return `${ref.book.name} ${ref.chapter}:${ref.verseStart}`;
+}
+
+function findEntryReference(paragraphs) {
+  for (const paragraph of paragraphs.slice(0, 12)) {
+    const ref = parseImportReference(paragraph);
+    if (ref) return ref;
+  }
+  return parseImportReference(paragraphs.join(' '));
+}
+
+function mergeEntries(entries) {
+  const byKey = new Map();
+  for (const entry of entries) {
+    if (!entry?.book || !entry?.chapter) continue;
+    const key = `${entry.book}:${Number(entry.chapter)}:${entry.sourceUrl || ''}`;
+    byKey.set(key, entry);
+  }
+  return [...byKey.values()].sort((a, b) => (
+    String(a.book).localeCompare(String(b.book)) ||
+    Number(a.chapter) - Number(b.chapter) ||
+    String(a.sourceUrl || '').localeCompare(String(b.sourceUrl || ''))
+  ));
 }
 
 function updateModule(source, entries) {
@@ -118,29 +290,126 @@ async function fetchChapter(source, book, chapter) {
   };
 }
 
+function listFileUrl(source, file) {
+  const folder = source.listFolder || 'sermon31';
+  return `https://worlddic.com/xe/view_file.php?folder=${encodeURIComponent(folder)}&file=${encodeURIComponent(file)}`;
+}
+
+async function fetchListFiles(source) {
+  const folder = source.listFolder || 'sermon31';
+  const keyword = source.listKeyword || source.worlddicCode;
+  const files = [];
+  const seen = new Set();
+  for (let page = 1; page <= 50; page += 1) {
+    const listUrl = `https://worlddic.com/xe/file_list.php?folder=${encodeURIComponent(folder)}&keyword=${encodeURIComponent(keyword)}&page=${page}`;
+    const response = await fetch(listUrl);
+    if (!response.ok) break;
+    const html = await response.text();
+    const pageFiles = [...html.matchAll(/file=([^"'&<>]+\.html)/g)]
+      .map((match) => match[1])
+      .filter((file) => file.startsWith(`${source.worlddicCode}_`));
+    let added = 0;
+    for (const file of pageFiles) {
+      if (seen.has(file)) continue;
+      seen.add(file);
+      files.push(file);
+      added += 1;
+    }
+    if (!pageFiles.length || (page > 1 && !added)) break;
+  }
+  return files;
+}
+
+async function fetchListEntry(source, file) {
+  const sourceUrl = listFileUrl(source, file);
+  const response = await fetch(sourceUrl);
+  if (!response.ok) return null;
+  const html = await response.text();
+  const text = extractArticleHtml(html);
+  if (!text || textFromHtml(text).length < 80) return null;
+  const paragraphs = articleParagraphs(text);
+  const ref = findEntryReference(paragraphs);
+  if (!ref) return null;
+  const title = paragraphs.find((paragraph) => !parseImportReference(paragraph)) || source.name;
+  return {
+    ref: formatImportReference(ref),
+    book: ref.book.slug,
+    chapter: ref.chapter,
+    sourceUrl,
+    title,
+    text,
+  };
+}
+
+const existingBySource = await readExistingChunkEntries();
+
 for (const source of sources) {
   if (!source.worlddicCode) continue;
   if (sourceFilter && source.id !== sourceFilter && source.scriptName !== sourceFilter && source.worlddicCode !== sourceFilter) continue;
   const entries = [];
+  const existingSourceEntries = existingBySource.get(source.id) || new Map();
   let checked = 0;
   let imported = 0;
+  let reused = 0;
+  if (source.importStrategy === 'list') {
+    for (const existing of existingSourceEntries.values()) {
+      entries.push(...existing);
+      reused += existing.length;
+    }
+    const existingUrls = new Set(entries.map((entry) => entry.sourceUrl).filter(Boolean));
+    const files = await fetchListFiles(source);
+    const fetchTasks = refresh ? files : files.filter((file) => !existingUrls.has(listFileUrl(source, file)));
+    checked = files.length;
+    console.log(`${source.name}: checking ${fetchTasks.length} list files with ${reused} cached entries.`);
+    const fetched = await runLimited(fetchTasks, concurrency, async (file) => {
+      const entry = await fetchListEntry(source, file);
+      if (pauseMs) await pause(pauseMs);
+      if (entry) {
+        process.stdout.write(`Importing ${source.name} ${entry.ref}... ${textFromHtml(entry.text).length} chars\n`);
+      }
+      return entry;
+    });
+    for (const entry of fetched) {
+      if (!entry) continue;
+      entries.push(entry);
+      imported += 1;
+    }
+    const merged = mergeEntries(entries);
+    await updateModule(source, merged);
+    console.log(`${source.name}: imported ${imported} new, reused ${reused} existing entries, ${merged.length} bundled entries after ${checked} listed files.`);
+    continue;
+  }
+  const fetchTasks = [];
   for (const [book, config] of selectedBooks) {
     for (const chapter of config.chapters) {
       checked += 1;
-      process.stdout.write(`Importing ${source.name} ${config.name} ${chapter}... `);
-      const entry = await fetchChapter(source, book, chapter);
-      if (entry) {
-        entries.push(entry);
-        imported += 1;
-        process.stdout.write(`${entry.text.length} chars\n`);
-      } else {
-        process.stdout.write('missing\n');
+      const existingKey = `${book}:${chapter}`;
+      if (!refresh && existingSourceEntries.has(existingKey)) {
+        const existing = existingSourceEntries.get(existingKey);
+        entries.push(...existing);
+        reused += existing.length;
+        continue;
       }
-      await pause(80);
+      fetchTasks.push({ book, chapter, bookName: config.name });
     }
   }
-  await updateModule(source, entries);
-  console.log(`${source.name}: imported ${imported} of ${checked} checked chapters.`);
+  console.log(`${source.name}: checking ${fetchTasks.length} remote chapters with ${reused} cached entries.`);
+  const fetched = await runLimited(fetchTasks, concurrency, async (task) => {
+    const entry = await fetchChapter(source, task.book, task.chapter);
+    if (pauseMs) await pause(pauseMs);
+    if (entry) {
+      process.stdout.write(`Importing ${source.name} ${task.bookName} ${task.chapter}... ${entry.text.length} chars\n`);
+    }
+    return entry;
+  });
+  for (const entry of fetched) {
+    if (!entry) continue;
+    entries.push(entry);
+    imported += 1;
+  }
+  const merged = mergeEntries(entries);
+  await updateModule(source, merged);
+  console.log(`${source.name}: imported ${imported} new, reused ${reused} existing entries, ${merged.length} bundled entries after ${checked} checked chapters.`);
 }
 
 console.log('Commentary import complete. Splitting source modules into offline chunks...');

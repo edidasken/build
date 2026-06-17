@@ -18,6 +18,9 @@ export default [
     worlddicCode: 'Spurgeon_Ser',
     name: "Spurgeon's Sermons",
     keyword: 'Spurgeon Ser',
+    importStrategy: 'list',
+    listFolder: 'sermon31',
+    listKeyword: 'Spurgeon_Ser',
   },
   {
     id: 'spurgeon_daily_devotion',
@@ -26,6 +29,9 @@ export default [
     worlddicCode: 'Spurgeon_Daily',
     name: "Spurgeon's Daily Devotion",
     keyword: 'Spurgeon Daily',
+    importStrategy: 'list',
+    listFolder: 'sermon31',
+    listKeyword: 'Spurgeon_Daily',
   },
   {
     id: 'matthew_henry_complete',
