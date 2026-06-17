@@ -16,6 +16,16 @@ const CACHE_NAME = 'flockos-new-covenant-v1.25';
 const OPTIONAL_CACHE_DELAY_MS = 650;
 const BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
 const SHARED_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/shared-data/v1/';
+const OFFLINE_TIER_LABELS = {
+  10: 'Critical manifests',
+  20: 'Scripture core',
+  30: 'Cross references',
+  40: 'Study tools',
+  50: 'Original languages',
+  60: 'Commentary indexes',
+  70: 'Commentaries',
+  90: 'Source archives',
+};
 
 /* Derive base path from SW location (works at root or any subpath) */
 const SW_BASE = self.location.pathname.replace(/\/[^\/]+$/, '/');
@@ -475,19 +485,22 @@ async function _warmAppBibleOffline(client, limit = Infinity) {
     if (!response.ok) throw new Error('Bible offline manifest failed: HTTP ' + response.status);
     await cache.put(manifestUrl, response.clone());
     const manifest = await response.json();
-    const assets = Array.isArray(manifest.assets) ? manifest.assets : [];
+    const assets = _prioritizeOfflineAssets(Array.isArray(manifest.assets) ? manifest.assets : []);
     const maxAssets = Number.isFinite(Number(limit)) ? Math.max(0, Number(limit)) : Infinity;
+    const totalAssets = Number.isFinite(maxAssets) ? Math.min(maxAssets, assets.length) : assets.length;
     let cached = 0;
     let checked = 0;
     for (const asset of assets) {
       if (checked >= maxAssets) break;
       checked += 1;
-      const path = typeof asset === 'string' ? asset : asset.path;
-      if (!path) continue;
-      const url = new URL(path.replace(/^\/+/, ''), BIBLE_DATA_BASE_URL).href;
+      if (!asset.path) continue;
+      const url = new URL(asset.path.replace(/^\/+/, ''), BIBLE_DATA_BASE_URL).href;
       const request = new Request(url, { cache: 'no-store' });
       if (await cache.match(url)) {
         cached += 1;
+        if (client && cached > 0 && cached % 50 === 0) {
+          client.postMessage(_offlineProgressMessage(cached, totalAssets, asset));
+        }
         continue;
       }
       try {
@@ -497,16 +510,69 @@ async function _warmAppBibleOffline(client, limit = Infinity) {
           cached += 1;
         }
       } catch (_) {}
-      if (client && cached % 50 === 0) {
-        client.postMessage({ type: 'BIBLE_OFFLINE_PROGRESS', cached, total: assets.length });
+      if (client && cached > 0 && cached % 50 === 0) {
+        client.postMessage(_offlineProgressMessage(cached, totalAssets, asset));
       }
       await _delay(OPTIONAL_CACHE_DELAY_MS);
     }
-    if (client) client.postMessage({ type: 'BIBLE_OFFLINE_COMPLETE', cached, total: assets.length });
+    if (client) client.postMessage({ type: 'BIBLE_OFFLINE_COMPLETE', cached, total: totalAssets });
   })().finally(() => {
     _bibleWarmPromise = null;
   });
   return _bibleWarmPromise;
+}
+
+function _prioritizeOfflineAssets(assets) {
+  return assets.map(_normalizeOfflineAsset).filter((asset) => asset.path).sort((a, b) => (
+    a.priority - b.priority
+    || (a.bytes || 0) - (b.bytes || 0)
+    || String(a.group || '').localeCompare(String(b.group || ''))
+    || String(a.book || '').localeCompare(String(b.book || ''))
+    || (Number(a.chapter) || 0) - (Number(b.chapter) || 0)
+    || String(a.path).localeCompare(String(b.path))
+  ));
+}
+
+function _normalizeOfflineAsset(asset) {
+  const normalized = typeof asset === 'string' ? { path: asset } : { ...asset };
+  normalized.priority = Number.isFinite(Number(normalized.priority))
+    ? Number(normalized.priority)
+    : _inferOfflinePriority(normalized.path);
+  normalized.tier = normalized.tier || OFFLINE_TIER_LABELS[normalized.priority] || 'Supporting data';
+  normalized.group = normalized.group || _inferOfflineGroup(normalized.path);
+  return normalized;
+}
+
+function _inferOfflinePriority(path) {
+  if (!path) return 999;
+  if (path.endsWith('/manifest.json') || path.endsWith('/_manifest.json') || path.endsWith('/info.json')) return 10;
+  if (path.startsWith('esv/books/') || path.startsWith('mdbible/')) return 20;
+  if (path.startsWith('cross-references/')) return 30;
+  if (path.startsWith('tsk/books/') || path.startsWith('original-languages/openscriptures-strongs/')) return 40;
+  if (path.startsWith('original-languages/')) return 50;
+  if (path.startsWith('commentaries/') && !path.startsWith('commentaries/chunks/')) return 60;
+  if (path.startsWith('commentaries/chunks/')) return 70;
+  if (path.includes('.parts/')) return 90;
+  return 80;
+}
+
+function _inferOfflineGroup(path) {
+  if (!path) return 'unknown';
+  if (path.startsWith('commentaries/chunks/')) return 'commentary';
+  if (path.startsWith('original-languages/')) return 'original-language';
+  return path.split('/')[0] || 'dataset';
+}
+
+function _offlineProgressMessage(cached, total, asset) {
+  return {
+    type: 'BIBLE_OFFLINE_PROGRESS',
+    cached,
+    total,
+    priority: asset.priority,
+    tier: asset.tier,
+    group: asset.group,
+    path: asset.path,
+  };
 }
 
 function _delay(ms) {
