@@ -98,18 +98,26 @@ const STORAGE_KEYS = {
   prayers: 'herald_bible_prayers_v1',
 };
 
+const TEXT_SIZE_KEY = 'herald.text-size-scale';
+const TEXT_SIZE_OPTIONS = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+
 const state = {
   books: new Map(),
   currentBook: null,
   currentChapter: 1,
   highlight: null,
+  selectedVerses: new Set(),
   testament: 'all',
   searchLoaded: false,
   crossrefIndexes: new Map(),
   crossrefBuckets: new Map(),
   tskBooks: new Map(),
   commentaryCatalog: null,
+  commentarySources: new Map(),
+  commentaryBooks: new Map(),
+  commentaryRequest: 0,
   sermonIndex: null,
+  bookOverviewIndex: null,
   originalBooks: new Map(),
   strongDictionaries: new Map(),
   esvFootnotes: new Map(),
@@ -127,10 +135,13 @@ async function init() {
   bindEvents();
   renderBookList();
   renderBookmarks();
+  initTextSizeControl();
   await renderTodayPlan();
 
-  const initialRef = new URLSearchParams(location.search).get('ref') || decodeURIComponent(location.hash.replace(/^#/, '')) || 'John 1';
-  await goToReference(initialRef, { replace: true });
+  const initialParams = new URLSearchParams(location.search);
+  const initialRef = initialParams.get('ref') || decodeURIComponent(location.hash.replace(/^#/, '')) || 'John 1';
+  await goToReference(initialRef, { replace: true, selectedVerses: parseSelectedVerseParam(initialParams.get('verses')) });
+  registerBibleServiceWorker();
 }
 
 function bindElements() {
@@ -138,14 +149,16 @@ function bindElements() {
     'bible-topbar', 'bible-sidebar', 'bible-close-sidebar', 'bible-open-sidebar',
     'bible-book-filter', 'bible-book-list', 'bible-reference-form', 'bible-reference-input',
     'bible-current-title', 'bible-version-label', 'bible-chapter-select', 'bible-chapter-strip',
-    'bible-passage', 'bible-prev-chapter', 'bible-next-chapter', 'bible-copy-passage',
+    'bible-book-overview',
+    'bible-selection-bar', 'bible-selection-count', 'bible-selection-copy', 'bible-selection-share',
+    'bible-selection-save', 'bible-selection-clear', 'bible-passage', 'bible-prev-chapter', 'bible-next-chapter', 'bible-copy-passage',
     'bible-bookmark', 'bible-note', 'bible-pray', 'bible-search-form', 'bible-search-input',
     'bible-search-results', 'bible-search-count', 'bible-bookmark-list', 'bible-clear-bookmarks',
     'bible-crossrefs', 'bible-crossref-count', 'bible-commentaries', 'bible-commentary-count',
     'bible-original', 'bible-original-count',
-    'bible-reading-plan', 'bible-open-reading-plan', 'bible-drawer', 'bible-drawer-backdrop',
+    'bible-reading-plan', 'bible-reading-plan-date', 'bible-open-reading-plan', 'bible-drawer', 'bible-drawer-backdrop',
     'bible-sidebar-backdrop', 'bible-close-drawer', 'bible-drawer-kicker', 'bible-drawer-title', 'bible-drawer-body',
-    'bible-toasts',
+    'bible-reader-toggle', 'bible-reader-menu', 'bible-toasts',
   ]) {
     el[toCamel(id.replace(/^bible-/, ''))] = document.getElementById(id);
   }
@@ -185,6 +198,23 @@ function mountHeader() {
   syncSidebarToggleState(!isMobileShell());
 }
 
+function registerBibleServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.register('the_living_water.js').then((registration) => {
+    const warm = () => {
+      const worker = registration.active || navigator.serviceWorker.controller;
+      worker?.postMessage({ type: 'WARM_APP_BIBLE_OFFLINE' });
+    };
+    const schedule = () => window.setTimeout(warm, 8000);
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(schedule, { timeout: 15000 });
+    } else {
+      schedule();
+    }
+    window.addEventListener('appinstalled', () => window.setTimeout(warm, 12000), { once: true });
+  }).catch(() => {});
+}
+
 function bindEvents() {
   el.referenceForm.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -203,10 +233,18 @@ function bindEvents() {
   el.chapterSelect.addEventListener('change', () => setChapter(Number(el.chapterSelect.value)));
   el.prevChapter.addEventListener('click', () => moveChapter(-1));
   el.nextChapter.addEventListener('click', () => moveChapter(1));
+  el.bookOverview.addEventListener('click', openBookOverviewDrawer);
   el.copyPassage.addEventListener('click', copyCurrentPassage);
   el.bookmark.addEventListener('click', saveBookmark);
   el.note.addEventListener('click', () => openNoteDrawer('note'));
   el.pray.addEventListener('click', () => openNoteDrawer('prayer'));
+  el.selectionCopy.addEventListener('click', copyCurrentPassage);
+  el.selectionShare.addEventListener('click', shareCurrentPassage);
+  el.selectionSave.addEventListener('click', saveBookmark);
+  el.selectionClear.addEventListener('click', clearVerseSelection);
+  document.querySelectorAll('[data-study-jump]').forEach((button) => {
+    button.addEventListener('click', () => jumpToStudyPanel(button.dataset.studyJump));
+  });
   el.searchForm.addEventListener('submit', searchBible);
   el.clearBookmarks.addEventListener('click', clearBookmarks);
   el.openSidebar.addEventListener('click', () => toggleSidebar(true));
@@ -229,12 +267,129 @@ function bindEvents() {
     if (event.key === 'Escape') {
       closeMobileSidebar();
       closeDrawer();
+      closeTextSizeMenu();
     }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'l') {
       event.preventDefault();
       el.referenceInput.select();
     }
   });
+}
+
+function jumpToStudyPanel(id) {
+  const target = document.getElementById(id || '');
+  if (!target) return;
+  document.querySelectorAll('[data-study-jump]').forEach((button) => {
+    button.classList.toggle('is-active', button.dataset.studyJump === id);
+  });
+  scrollToStudyTarget(target);
+  window.setTimeout(() => {
+    try {
+      target.focus({ preventScroll: true });
+    } catch (_) {
+      target.focus();
+    }
+  }, 260);
+}
+
+function scrollToStudyTarget(target) {
+  const scroller = getDocumentScroller();
+  const top = target.getBoundingClientRect().top + getDocumentScrollTop() - getStudyScrollOffset();
+  if (scroller === document.body) {
+    document.body.scrollTo({ top, behavior: 'auto' });
+  } else {
+    window.scrollTo({ top, behavior: 'auto' });
+  }
+}
+
+function getDocumentScroller() {
+  const html = document.documentElement;
+  return document.body.scrollHeight > html.scrollHeight ? document.body : (document.scrollingElement || html);
+}
+
+function getDocumentScrollTop() {
+  const scroller = getDocumentScroller();
+  return scroller === document.body ? document.body.scrollTop : window.scrollY;
+}
+
+function getStudyScrollOffset() {
+  const style = getComputedStyle(document.documentElement);
+  const safe = parseFloat(style.getPropertyValue('--bible-safe-top')) || 0;
+  const shell = parseFloat(style.getPropertyValue('--bible-shell-top')) || 0;
+  const header = parseFloat(style.getPropertyValue('--bible-header-h')) || 56;
+  const gap = parseFloat(style.getPropertyValue('--bible-header-gap')) || 16;
+  const renderedHeader = el.topbar?.getBoundingClientRect().bottom || 0;
+  return Math.max(renderedHeader, safe + shell + header + gap) + 34;
+}
+
+function initTextSizeControl() {
+  setTextSize(readTextSize(), false);
+  if (!el.readerToggle || !el.readerMenu) return;
+
+  el.readerToggle.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (el.readerMenu.hidden) openTextSizeMenu();
+    else closeTextSizeMenu();
+  });
+
+  el.readerMenu.querySelectorAll('[data-reading-size]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setTextSize(button.getAttribute('data-reading-size') || '1', true);
+      closeTextSizeMenu();
+      el.readerToggle.focus();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (el.readerMenu.hidden) return;
+    if (!el.readerMenu.contains(event.target) && !el.readerToggle.contains(event.target)) {
+      closeTextSizeMenu();
+    }
+  });
+}
+
+function openTextSizeMenu() {
+  if (!el.readerToggle || !el.readerMenu) return;
+  el.readerMenu.hidden = false;
+  el.readerToggle.setAttribute('aria-expanded', 'true');
+}
+
+function closeTextSizeMenu() {
+  if (!el.readerToggle || !el.readerMenu) return;
+  el.readerMenu.hidden = true;
+  el.readerToggle.setAttribute('aria-expanded', 'false');
+}
+
+function readTextSize() {
+  try {
+    return nearestTextSize(localStorage.getItem(TEXT_SIZE_KEY) || '1');
+  } catch (_) {
+    return 1;
+  }
+}
+
+function setTextSize(scale, persist) {
+  const best = nearestTextSize(scale);
+  document.documentElement.style.setProperty('--reader-scale', String(best));
+  document.documentElement.setAttribute('data-reader-scale', String(best));
+  document.querySelectorAll('[data-reading-size]').forEach((button) => {
+    const active = Math.abs(Number(button.getAttribute('data-reading-size') || '1') - best) < 0.001;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+  if (persist) {
+    try {
+      localStorage.setItem(TEXT_SIZE_KEY, String(best));
+    } catch (_) {}
+  }
+}
+
+function nearestTextSize(value) {
+  const scale = Number(value);
+  const target = Number.isFinite(scale) ? scale : 1;
+  return TEXT_SIZE_OPTIONS.reduce((nearest, option) => (
+    Math.abs(option - target) < Math.abs(nearest - target) ? option : nearest
+  ), 1);
 }
 
 function renderBookList() {
@@ -271,6 +426,7 @@ async function goToBook(slug, chapter = 1, highlight = null, options = {}) {
   state.currentBook = data;
   state.currentChapter = clamp(chapter, 1, data.chapters.length);
   state.highlight = highlight;
+  state.selectedVerses = selectedSetForChapter(options.selectedVerses, highlight, state.currentChapter, data);
   renderReader();
   updateActiveBook();
   closeMobileSidebar();
@@ -284,7 +440,7 @@ async function goToReference(input, options = {}) {
     return;
   }
   await goToBook(parsed.book.slug, parsed.chapter || 1, parsed, options);
-  el.referenceInput.value = formatReference(parsed, { fallbackChapter: state.currentChapter });
+  el.referenceInput.value = currentReference() || formatReference(parsed, { fallbackChapter: state.currentChapter });
 }
 
 async function setChapter(chapter) {
@@ -324,13 +480,13 @@ function renderReader() {
   });
 
   const verses = book.chapters[chapter - 1] || [];
-  const highlight = normalizeHighlight(state.highlight, chapter);
+  const selected = selectedVerseNumbers();
   el.passage.innerHTML = `
     <div class="bible-passage-inner">
       ${verses.map((text, index) => {
         const verse = index + 1;
-        const active = highlight && verse >= highlight.start && verse <= highlight.end;
-        return `<p class="bible-verse ${active ? 'is-highlighted' : ''}" id="v${verse}" data-verse="${verse}">
+        const active = state.selectedVerses.has(verse);
+        return `<p class="bible-verse ${active ? 'is-highlighted is-selected' : ''}" id="v${verse}" data-verse="${verse}" role="button" tabindex="0" aria-pressed="${active ? 'true' : 'false'}">
           <span class="bible-verse-num">${verse}</span>${escapeHtml(text)}
         </p>`;
       }).join('')}
@@ -342,12 +498,18 @@ function renderReader() {
   `;
   el.passage.querySelectorAll('[data-verse]').forEach((node) => {
     node.addEventListener('click', () => selectVerse(Number(node.dataset.verse)));
+    node.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      selectVerse(Number(node.dataset.verse));
+    });
   });
-  if (highlight) {
-    requestAnimationFrame(() => document.getElementById(`v${highlight.start}`)?.scrollIntoView({ block: 'center' }));
+  if (selected.length) {
+    requestAnimationFrame(() => document.getElementById(`v${selected[0]}`)?.scrollIntoView({ block: 'center' }));
   } else {
     el.passage.scrollTop = 0;
   }
+  updateSelectionBar();
   renderCrossReferences();
   renderOriginalLanguage();
   renderCommentaries();
@@ -361,20 +523,126 @@ function updateActiveBook() {
 
 function selectVerse(verse) {
   if (!state.currentBook || !verse) return;
-  state.highlight = {
-    book: BOOK_ALIASES.get(state.currentBook.slug) || state.currentBook,
-    chapter: state.currentChapter,
-    verseStart: verse,
-    verseEnd: verse,
-  };
+  if (state.selectedVerses.has(verse)) {
+    state.selectedVerses.delete(verse);
+  } else {
+    state.selectedVerses.add(verse);
+  }
+  state.highlight = highlightFromSelection();
   el.referenceInput.value = currentReference();
-  el.passage.querySelectorAll('.bible-verse').forEach((node) => {
-    node.classList.toggle('is-highlighted', Number(node.dataset.verse) === verse);
-  });
+  syncVerseSelectionDom();
+  updateSelectionBar();
   updateLocation();
   renderCrossReferences();
   renderOriginalLanguage();
   renderCommentaries();
+}
+
+function clearVerseSelection() {
+  if (!state.currentBook) return;
+  state.selectedVerses.clear();
+  state.highlight = null;
+  el.referenceInput.value = currentReference();
+  syncVerseSelectionDom();
+  updateSelectionBar();
+  updateLocation();
+  renderCrossReferences();
+  renderOriginalLanguage();
+  renderCommentaries();
+}
+
+function syncVerseSelectionDom() {
+  el.passage.querySelectorAll('.bible-verse').forEach((node) => {
+    const selected = state.selectedVerses.has(Number(node.dataset.verse));
+    node.classList.toggle('is-highlighted', selected);
+    node.classList.toggle('is-selected', selected);
+    node.setAttribute('aria-pressed', selected ? 'true' : 'false');
+  });
+}
+
+function updateSelectionBar() {
+  if (!el.selectionBar || !el.selectionCount) return;
+  const count = selectedVerseNumbers().length;
+  el.selectionBar.hidden = !count;
+  el.selectionCount.textContent = `${count} ${count === 1 ? 'verse' : 'verses'} selected`;
+}
+
+function selectedVerseNumbers() {
+  return Array.from(state.selectedVerses || [])
+    .map(Number)
+    .filter((verse) => Number.isInteger(verse) && verse > 0)
+    .sort((a, b) => a - b);
+}
+
+function selectedSetForChapter(verses, highlight, chapter, book) {
+  const max = book?.chapters?.[chapter - 1]?.length || 0;
+  const fromExplicit = normalizeVerseList(verses, max);
+  if (fromExplicit.length) return new Set(fromExplicit);
+  const fromHighlight = selectedVersesFromHighlight(highlight, chapter, max);
+  return new Set(fromHighlight);
+}
+
+function selectedVersesFromHighlight(ref, chapter, max) {
+  const highlight = normalizeHighlight(ref, chapter);
+  if (!highlight) return [];
+  const end = Math.min(highlight.end || highlight.start, max || highlight.end || highlight.start);
+  const verses = [];
+  for (let verse = Math.max(1, highlight.start); verse <= end; verse += 1) verses.push(verse);
+  return verses;
+}
+
+function normalizeVerseList(verses, max = 0) {
+  const list = Array.isArray(verses) ? verses : parseSelectedVerseParam(verses);
+  const upper = Number(max) || Number.MAX_SAFE_INTEGER;
+  return Array.from(new Set(list
+    .map(Number)
+    .filter((verse) => Number.isInteger(verse) && verse >= 1 && verse <= upper)))
+    .sort((a, b) => a - b);
+}
+
+function parseSelectedVerseParam(value) {
+  return String(value || '')
+    .split(',')
+    .map((item) => Number(item.trim()))
+    .filter((verse) => Number.isInteger(verse) && verse > 0);
+}
+
+function highlightFromSelection() {
+  const selected = selectedVerseNumbers();
+  if (!selected.length || !state.currentBook) return null;
+  return {
+    book: BOOK_ALIASES.get(state.currentBook.slug) || state.currentBook,
+    chapter: state.currentChapter,
+    verseStart: selected[0],
+    verseEnd: selected[selected.length - 1],
+  };
+}
+
+function selectedVerseGroups() {
+  const selected = selectedVerseNumbers();
+  if (!selected.length) return [];
+  const groups = [];
+  let start = selected[0];
+  let prev = selected[0];
+  for (const verse of selected.slice(1)) {
+    if (verse === prev + 1) {
+      prev = verse;
+      continue;
+    }
+    groups.push([start, prev]);
+    start = verse;
+    prev = verse;
+  }
+  groups.push([start, prev]);
+  return groups;
+}
+
+function formatSelectedReference() {
+  if (!state.currentBook) return '';
+  const groups = selectedVerseGroups();
+  if (!groups.length) return `${state.currentBook.name} ${state.currentChapter}`;
+  const verseList = groups.map(([start, end]) => (start === end ? `${start}` : `${start}-${end}`)).join(', ');
+  return `${state.currentBook.name} ${state.currentChapter}:${verseList}`;
 }
 
 async function loadBook(slug) {
@@ -418,10 +686,52 @@ async function loadTskBook(slug) {
 
 async function loadCommentaryCatalog() {
   if (state.commentaryCatalog) return state.commentaryCatalog;
-  const response = await fetch(new URL('./commentaries/catalog.json', import.meta.url));
+  const [response, sourceMod] = await Promise.all([
+    fetch(new URL('./commentaries/catalog.json', import.meta.url)),
+    import('./commentaries/commentary-sources.js'),
+  ]);
   if (!response.ok) throw new Error('Commentary catalog missing');
-  state.commentaryCatalog = await response.json();
+  const catalog = await response.json();
+  const localSources = sourceMod.default || [];
+  const sourceByKeyword = new Map(localSources.map((source) => [source.keyword, source]));
+  catalog.libraries = (catalog.libraries || []).map((library) => ({
+    ...library,
+    ...(sourceByKeyword.get(library.keyword) || {}),
+  }));
+  catalog.localSources = localSources;
+  state.commentaryCatalog = catalog;
   return state.commentaryCatalog;
+}
+
+async function loadCommentarySource(source) {
+  if (!source?.modulePath) return null;
+  if (state.commentarySources.has(source.id)) return state.commentarySources.get(source.id);
+  const modulePath = source.modulePath.replace(/^\.\//, '');
+  const mod = await import(`./commentaries/${modulePath}`);
+  const data = mod[source.scriptName] || mod.default || null;
+  state.commentarySources.set(source.id, data);
+  return data;
+}
+
+async function loadCommentaryEntries(source, target) {
+  if (!source) return [];
+  const inlineEntries = findCommentaryEntries(source, target, []);
+  const availableChapters = source.books?.[target.slug] || source.books?.[target.book.name];
+  if (!source.chunkPath || !Array.isArray(availableChapters) || !availableChapters.includes(target.chapter)) {
+    return inlineEntries;
+  }
+  const chunkPath = source.chunkPath
+    .replace('{book}', target.slug)
+    .replace('{chapter}', String(target.chapter))
+    .replace(/^\.\//, '');
+  const cacheKey = `${source.id}:${target.slug}:${target.chapter}`;
+  if (!state.commentaryBooks.has(cacheKey)) {
+    const response = await fetch(new URL(`./commentaries/${chunkPath}`, import.meta.url));
+    const data = response.ok ? await response.json() : { entries: [] };
+    state.commentaryBooks.set(cacheKey, data);
+  }
+  const chunk = state.commentaryBooks.get(cacheKey);
+  return findCommentaryEntries(source, target, chunk.entries || inlineEntries);
 }
 
 async function loadSermonIndex() {
@@ -473,7 +783,8 @@ function currentStudyTarget() {
   const chapter = state.currentChapter;
   const verses = state.currentBook.chapters[chapter - 1] || [];
   const highlight = normalizeHighlight(state.highlight, chapter);
-  const verse = clamp(highlight?.start || 1, 1, Math.max(verses.length, 1));
+  const selected = selectedVerseNumbers();
+  const verse = clamp(selected[0] || highlight?.start || 1, 1, Math.max(verses.length, 1));
   return {
     book: BOOK_ALIASES.get(state.currentBook.slug) || state.currentBook,
     slug: state.currentBook.slug,
@@ -591,50 +902,186 @@ async function renderCommentaries() {
     const [catalog, sermonIndex] = await Promise.all([loadCommentaryCatalog(), loadSermonIndex()]);
     const libraries = catalog.libraries || [];
     const matches = findLocalSermonMatches(sermonIndex.items || [], target);
-    const local = catalog.local || {};
-    el.commentaryCount.textContent = `${matches.length || sermonIndex.count || 0} local`;
-    el.commentaries.innerHTML = `
-      <div class="bible-commentary-actions">
-        <a class="bible-commentary-primary" href="app.bible/${escapeAttr(local.sermonsHtml || 'commentaries/bible-commentaries-english/110000-sermons.html')}" target="_blank" rel="noopener">
-          <span class="bible-crossref-ref">Imported Sermon Index</span>
-          <span class="bible-crossref-text">${escapeHtml(String(sermonIndex.count || 0))} local entries from the provided BibleCommentaries repo</span>
-        </a>
-        <a class="bible-commentary-primary" href="app.bible/${escapeAttr(local.commentariesHtml || 'commentaries/bible-commentaries-english/30-English-Commentaries.html')}" target="_blank" rel="noopener">
-          <span class="bible-crossref-ref">30 English Commentaries</span>
-          <span class="bible-crossref-text">${escapeHtml(String(libraries.length))} imported collection names</span>
-        </a>
-      </div>
-      ${matches.length ? `
-        <div class="bible-commentary-local">
-          ${matches.slice(0, 8).map((item) => `
-            <article class="bible-commentary-hit">
-              <span class="bible-crossref-ref">${escapeHtml(target.book.name)} ${target.chapter}</span>
-              <span class="bible-crossref-text">${escapeHtml(item.title)}</span>
-            </article>
-          `).join('')}
-        </div>
-      ` : '<div class="bible-empty">No local sermon-index match for this chapter.</div>'}
-      <details class="bible-commentary-details">
-        <summary>Imported commentary collections</summary>
-        <div class="bible-commentary-library">
-          ${libraries.map((item) => `
-            <span>${escapeHtml(item.name)}</span>
-          `).join('')}
-        </div>
-      </details>
-      <div class="bible-commentary-links">
-        <a href="app.bible/${escapeAttr(local.readme || 'commentaries/bible-commentaries-english/README.md')}" target="_blank" rel="noopener">Local README</a>
-        <a href="app.bible/${escapeAttr(local.parallelHtml || 'commentaries/bible-commentaries-english/parallel-kjv(asv)-commentaries.html')}" target="_blank" rel="noopener">Local Parallel Index</a>
-      </div>
-      <div class="bible-crossref-source">
-        Imported from <a href="${escapeAttr(catalog.source?.repo || 'https://github.com/BibleCommentaries')}" target="_blank" rel="noopener">BibleCommentaries</a>.
-        Local archive files are stored under app.bible/commentaries.
-      </div>
-    `;
+    el.commentaryCount.textContent = `${libraries.length} libraries`;
+    const firstWithMatch = libraries.findIndex((item) => commentaryHasMatchingTitle(item, matches));
+    const activeIndex = Math.max(0, firstWithMatch);
+    el.commentaries.innerHTML = renderCommentaryLibrary(target, libraries, matches, sermonIndex, activeIndex);
+    bindCommentaryLibrary(libraries, target, matches);
+    await showCommentaryPreview(libraries[activeIndex], target, matches);
   } catch (_) {
     el.commentaryCount.textContent = '';
     el.commentaries.innerHTML = '<div class="bible-empty">Commentary library unavailable.</div>';
   }
+}
+
+function renderCommentaryLibrary(target, libraries, matches, sermonIndex, activeIndex = 0) {
+  return `
+    <div class="bible-commentary-intro">
+      <div>
+        <span class="bible-kicker">Current Passage</span>
+        <strong>${escapeHtml(formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))}</strong>
+      </div>
+      <span>${escapeHtml(String(matches.length))} local index ${matches.length === 1 ? 'match' : 'matches'}</span>
+    </div>
+    <label class="bible-commentary-select-wrap" for="bible-commentary-select">
+      <span>Library</span>
+      <select id="bible-commentary-select">
+        ${libraries.map((item, index) => `<option value="${index}" ${index === activeIndex ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('')}
+      </select>
+    </label>
+    <div class="bible-commentary-shell">
+      <article class="bible-commentary-viewer" id="bible-commentary-viewer" aria-live="polite">
+        <div class="bible-loading">Choose a commentary library.</div>
+      </article>
+      <details class="bible-commentary-browse">
+        <summary>Browse all libraries</summary>
+        <div class="bible-commentary-picker" role="list" aria-label="Commentary libraries">
+          ${libraries.map((item, index) => renderCommentaryCard(item, index, matches, activeIndex)).join('')}
+        </div>
+      </details>
+    </div>
+    <details class="bible-commentary-details">
+      <summary>Local import status</summary>
+      <div class="bible-commentary-imports">
+        <span>${escapeHtml(String(libraries.length))} commentary modules are registered in app.bible.</span>
+        <span>${escapeHtml(String(sermonIndex.count || 0))} sermon/index records are archived locally.</span>
+        <span>Full commentary bodies are loaded from the local module files as they are imported.</span>
+      </div>
+    </details>
+  `;
+}
+
+function renderCommentaryCard(item, index, matches, activeIndex = 0) {
+  const hasMatch = commentaryHasMatchingTitle(item, matches);
+  return `
+    <button class="bible-commentary-card ${index === activeIndex ? 'is-active' : ''}" type="button" data-commentary-index="${index}" role="listitem">
+      <span class="bible-commentary-card-name">${escapeHtml(item.name)}</span>
+      <span class="bible-commentary-card-status">${hasMatch ? 'Matched in local index' : 'Local module ready'}</span>
+    </button>
+  `;
+}
+
+function bindCommentaryLibrary(libraries, target, matches) {
+  const select = document.getElementById('bible-commentary-select');
+  const selectCommentary = (index) => {
+    const library = libraries[index];
+    if (!library) return;
+    if (select) select.value = String(index);
+    el.commentaries.querySelectorAll('[data-commentary-index]').forEach((node) => {
+      node.classList.toggle('is-active', Number(node.dataset.commentaryIndex) === index);
+    });
+    showCommentaryPreview(library, target, matches);
+  };
+  select?.addEventListener('change', () => selectCommentary(Number(select.value)));
+  el.commentaries.querySelectorAll('[data-commentary-index]').forEach((button) => {
+    button.addEventListener('click', () => {
+      selectCommentary(Number(button.dataset.commentaryIndex));
+    });
+  });
+}
+
+async function showCommentaryPreview(item, target, matches) {
+  const viewer = document.getElementById('bible-commentary-viewer');
+  if (!viewer || !item) return;
+  const request = ++state.commentaryRequest;
+  viewer.innerHTML = '<div class="bible-loading">Opening library...</div>';
+  try {
+    const source = await loadCommentarySource(item);
+    if (request !== state.commentaryRequest) return;
+    const entries = await loadCommentaryEntries(source, target);
+    const localMatches = matches.filter((match) => commentaryTitleMatches(item, match.title)).slice(0, 6);
+    viewer.innerHTML = `
+      <header class="bible-commentary-viewer-head">
+        <span class="bible-kicker">Library</span>
+        <h4>${escapeHtml(item.name)}</h4>
+        <p>${escapeHtml(commentaryStatusText(source, entries, localMatches))}</p>
+      </header>
+      ${entries.length ? `
+        <div class="bible-commentary-entries">
+          ${entries.map((entry) => `
+            <section class="bible-commentary-entry">
+              <span class="bible-crossref-ref">${escapeHtml(entry.ref || formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))}</span>
+              <div>${cleanCommentaryHtml(entry.text || entry.body || '')}</div>
+            </section>
+          `).join('')}
+        </div>
+      ` : renderCommentaryIndexMatches(item, localMatches, target)}
+      <div class="bible-commentary-module">
+        <span>Local script</span>
+        <code>${escapeHtml(item.scriptName || '')}</code>
+        <code>${escapeHtml(item.modulePath || '')}</code>
+        ${source?.chunkPath ? `<code>${escapeHtml(source.chunkPath.replace('{book}', target.slug).replace('{chapter}', String(target.chapter)))}</code>` : ''}
+      </div>
+    `;
+  } catch (_) {
+    if (request !== state.commentaryRequest) return;
+    viewer.innerHTML = '<div class="bible-empty">This commentary module could not be opened.</div>';
+  }
+}
+
+function commentaryStatusText(source, entries, matches) {
+  if (entries.length) return `${entries.length} local passage ${entries.length === 1 ? 'entry' : 'entries'} loaded from local chapter data.`;
+  if (matches.length) return 'The local index has related records for this passage; the full text import is still pending.';
+  if (source) return 'This library has no bundled local text for the current passage yet.';
+  return 'This library is registered, but its local module is not available.';
+}
+
+function renderCommentaryIndexMatches(item, matches, target) {
+  if (matches.length) {
+    return `
+      <div class="bible-commentary-local">
+        ${matches.map((match) => `
+          <article class="bible-commentary-hit">
+            <span class="bible-crossref-ref">${escapeHtml(target.book.name)} ${target.chapter}</span>
+            <span class="bible-crossref-text">${escapeHtml(match.title)}</span>
+          </article>
+        `).join('')}
+      </div>
+    `;
+  }
+  return `
+    <div class="bible-empty">
+      No bundled local commentary for ${escapeHtml(formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))} is available from ${escapeHtml(item.name)} yet.
+    </div>
+  `;
+}
+
+function findCommentaryEntries(source, target, sourceEntries = null) {
+  if (!source) return [];
+  const keys = [
+    `${target.chapter}:${target.verse}`,
+    `${target.chapter}`,
+    `${target.book.name} ${target.chapter}:${target.verse}`,
+    `${target.book.name} ${target.chapter}`,
+    `${target.slug} ${target.chapter}:${target.verse}`,
+    `${target.slug} ${target.chapter}`,
+  ].map((key) => normalizeBookName(key));
+  const entries = Array.isArray(sourceEntries) ? sourceEntries : (Array.isArray(source.entries) ? source.entries : []);
+  const fromEntries = entries.filter((entry) => {
+    const ref = normalizeBookName(entry.ref || entry.reference || '');
+    return ref && keys.some((key) => ref === key || ref.startsWith(`${key} `));
+  });
+  const chapterBucket = source.books?.[target.slug]?.[String(target.chapter)] || source.books?.[target.book.name]?.[String(target.chapter)];
+  const verseBucket = chapterBucket?.[String(target.verse)] || chapterBucket;
+  const fromBooks = Array.isArray(verseBucket) ? verseBucket : (verseBucket ? [verseBucket] : []);
+  return [...fromEntries, ...fromBooks].slice(0, 8);
+}
+
+function commentaryHasMatchingTitle(item, matches) {
+  return matches.some((match) => commentaryTitleMatches(item, match.title));
+}
+
+function commentaryTitleMatches(item, title) {
+  const sourceName = normalizeBookName(item?.name || '');
+  const keyword = normalizeBookName(item?.keyword || '');
+  const text = normalizeBookName(title || '');
+  if (!text) return false;
+  return (keyword && text.includes(keyword)) || sourceName.split(' ').some((word) => word.length > 4 && text.includes(word));
+}
+
+function cleanCommentaryHtml(value) {
+  const html = cleanTskHtml(String(value || ''));
+  return html || '<span class="bible-muted">No commentary text.</span>';
 }
 
 async function loadCrossReferencesFor(target) {
@@ -869,6 +1316,7 @@ function formatReference(ref, { fallbackChapter = 1 } = {}) {
 
 function currentReference() {
   if (!state.currentBook) return '';
+  if (selectedVerseNumbers().length) return formatSelectedReference();
   if (state.highlight?.verseStart) return formatReference(state.highlight);
   return `${state.currentBook.name} ${state.currentChapter}`;
 }
@@ -877,10 +1325,10 @@ function getCurrentPassageText() {
   if (!state.currentBook) return '';
   const chapter = state.currentChapter;
   const verses = state.currentBook.chapters[chapter - 1] || [];
-  const highlight = normalizeHighlight(state.highlight, chapter);
-  const start = highlight?.start || 1;
-  const end = Math.min(highlight?.end || verses.length, verses.length);
-  const body = verses.slice(start - 1, end).map((text, index) => `${start + index}. ${text}`).join('\n');
+  const selected = selectedVerseNumbers();
+  const body = selected.length
+    ? selected.map((verse) => `${verse}. ${verses[verse - 1] || ''}`).join('\n')
+    : verses.map((text, index) => `${index + 1}. ${text}`).join('\n');
   return `${currentReference()} (ESV)\n${body}\n\nCredit: ESV Bible text via ESV.org`;
 }
 
@@ -895,16 +1343,37 @@ async function copyCurrentPassage() {
   }
 }
 
+async function shareCurrentPassage() {
+  const ref = currentReference();
+  const text = getCurrentPassageText();
+  updateLocation();
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: `${ref} (ESV)`, text, url: location.href });
+      return;
+    }
+    await navigator.clipboard.writeText(`${text}\n${location.href}`);
+    toast('Passage copied for sharing.');
+  } catch (_) {
+    try {
+      fallbackCopy(`${text}\n${location.href}`);
+      toast('Passage copied for sharing.');
+    } catch (_) {}
+  }
+}
+
 function saveBookmark() {
   if (!state.currentBook) return;
   const bookmarks = readStore(STORAGE_KEYS.bookmarks);
   const ref = currentReference();
+  const selectedVerses = selectedVerseNumbers();
   if (!bookmarks.some((item) => item.ref === ref)) {
     bookmarks.unshift({
       ref,
       book: state.currentBook.slug,
       chapter: state.currentChapter,
       highlight: state.highlight,
+      selectedVerses,
       text: getCurrentPassagePreview(),
       savedAt: new Date().toISOString(),
     });
@@ -929,9 +1398,11 @@ function renderBookmarks() {
     </div>
   `).join('');
   el.bookmarkList.querySelectorAll('[data-bookmark]').forEach((button) => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', async () => {
       const item = bookmarks[Number(button.dataset.bookmark)];
-      if (item) goToBook(item.book, item.chapter, item.highlight);
+      if (!item) return;
+      await goToBook(item.book, item.chapter, item.highlight, { selectedVerses: item.selectedVerses });
+      el.referenceInput.value = currentReference();
     });
   });
 }
@@ -945,6 +1416,69 @@ function clearBookmarks() {
 function getCurrentPassagePreview() {
   const text = getCurrentPassageText().split('\n').slice(1).join(' ');
   return text.length > 170 ? `${text.slice(0, 170)}...` : text;
+}
+
+async function openBookOverviewDrawer() {
+  if (!state.currentBook) return;
+  el.drawerKicker.textContent = 'Book Overview';
+  el.drawerTitle.textContent = state.currentBook.name;
+  el.drawerBody.innerHTML = '<div class="bible-loading">Loading book overview...</div>';
+  openDrawer();
+
+  try {
+    const overview = await getBookOverview(state.currentBook);
+    if (!overview) {
+      el.drawerBody.innerHTML = '<div class="bible-empty">No overview is available for this book yet.</div>';
+      return;
+    }
+    el.drawerBody.innerHTML = renderBookOverview(overview);
+  } catch (_) {
+    el.drawerBody.innerHTML = '<div class="bible-empty">Book overview unavailable.</div>';
+  }
+}
+
+async function getBookOverview(book) {
+  if (!state.bookOverviewIndex) {
+    const mod = await import('../Data/books-of-the-bible.js');
+    state.bookOverviewIndex = new Map((mod.default || []).map((item) => [
+      normalizeBookName(item.bookName),
+      item,
+    ]));
+  }
+  return state.bookOverviewIndex.get(normalizeBookName(book.name))
+    || state.bookOverviewIndex.get(normalizeBookName(book.slug.replace(/-/g, ' ')))
+    || null;
+}
+
+function renderBookOverview(overview) {
+  const meta = [
+    overview.testament ? `${overview.testament} Testament` : '',
+    overview.genre || '',
+    overview.author ? `Author: ${overview.author}` : '',
+  ].filter(Boolean);
+  return `
+    <article class="bible-book-overview">
+      <div class="bible-overview-meta">
+        ${meta.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}
+      </div>
+      ${renderOverviewSection('Summary', overview.summary)}
+      ${renderOverviewSection('Key Verse', overview.keyVerse, 'bible-overview-verse')}
+      ${renderOverviewSection('Themes', overview.themes)}
+      ${renderOverviewSection('Christ in This Book', overview.christInBook)}
+      ${renderOverviewSection('Time Period', overview.timePeriod)}
+      ${renderOverviewSection('Application', overview.application)}
+    </article>
+  `;
+}
+
+function renderOverviewSection(label, value, className = '') {
+  if (!value) return '';
+  return `
+    <section class="bible-overview-section ${className}">
+      <h3>${escapeHtml(label)}</h3>
+      <p>${escapeHtml(value)}</p>
+    </section>
+  `;
 }
 
 function openNoteDrawer(type) {
@@ -1083,6 +1617,9 @@ async function renderTodayPlan() {
     const today = new Date();
     const label = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
     const row = mod.default.find((entry) => entry.date === label) || mod.default[0];
+    if (el.readingPlanDate) {
+      el.readingPlanDate.textContent = `${row.date} - Day ${row.day}`;
+    }
     const items = [
       ['Old Testament', row.ot],
       ['New Testament', row.nt],
@@ -1091,18 +1628,40 @@ async function renderTodayPlan() {
     ];
     el.readingPlan.innerHTML = items.map(([labelText, ref]) => `
       <div class="bible-reading-row">
-        <button type="button" data-plan-ref="${escapeAttr(ref)}">
+        <button type="button" data-plan-ref="${escapeAttr(ref)}" aria-label="Open ${escapeAttr(labelText)} reading, ${escapeAttr(ref)}">
           <span class="bible-result-ref">${escapeHtml(labelText)}</span>
           <span class="bible-result-text">${escapeHtml(ref)}</span>
         </button>
       </div>
     `).join('');
     el.readingPlan.querySelectorAll('[data-plan-ref]').forEach((button) => {
-      button.addEventListener('click', () => goToReference(button.dataset.planRef));
+      button.addEventListener('click', () => goToPlanReference(button.dataset.planRef));
     });
   } catch (error) {
+    if (el.readingPlanDate) el.readingPlanDate.textContent = '';
     el.readingPlan.innerHTML = '<div class="bible-empty">Reading plan unavailable.</div>';
   }
+}
+
+async function goToPlanReference(ref) {
+  const parsed = parseReference(ref);
+  if (parsed) {
+    await goToReference(ref);
+    return;
+  }
+  const openingRef = getOpeningReference(ref);
+  if (openingRef && openingRef !== ref) {
+    await goToReference(openingRef);
+    return;
+  }
+  await goToReference(ref);
+}
+
+function getOpeningReference(ref) {
+  const text = String(ref || '').trim();
+  if (!text) return '';
+  const firstSegment = text.split(/\s+-\s+(?=[1-3]?\s*[A-Za-z])/)[0]?.trim();
+  return firstSegment || text;
 }
 
 function toggleSidebar(force) {
@@ -1148,8 +1707,16 @@ function isMobileShell() {
 }
 
 function updateLocation() {
-  const ref = encodeURIComponent(currentReference());
-  history.replaceState(null, '', `${location.pathname}?ref=${ref}`);
+  if (!state.currentBook) return;
+  const params = new URLSearchParams();
+  const selected = selectedVerseNumbers();
+  if (selected.length) {
+    params.set('ref', `${state.currentBook.name} ${state.currentChapter}`);
+    params.set('verses', selected.join(','));
+  } else {
+    params.set('ref', currentReference());
+  }
+  history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
 }
 
 function readStore(key) {

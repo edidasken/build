@@ -11,7 +11,23 @@
   <meta name="apple-mobile-web-app-title" content="Bible">
   <meta name="theme-color" content="#0f172a">
   <meta name="description" content="Herald themed ESV Bible reader for lookup, notes, prayer, and study.">
-  <script>document.documentElement.setAttribute('data-theme', 'herald');</script>
+  <script>
+    (function () {
+      document.documentElement.setAttribute('data-theme', 'herald');
+      try {
+        var scale = Number(localStorage.getItem('herald.text-size-scale') || '1');
+        var sizes = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+        var best = sizes.reduce(function (nearest, value) {
+          return Math.abs(value - scale) < Math.abs(nearest - scale) ? value : nearest;
+        }, 1);
+        document.documentElement.style.setProperty('--reader-scale', String(best));
+        document.documentElement.setAttribute('data-reader-scale', String(best));
+      } catch (_) {
+        document.documentElement.style.setProperty('--reader-scale', '1');
+        document.documentElement.setAttribute('data-reader-scale', '1');
+      }
+    })();
+  </script>
   <title>Bible - Herald</title>
   <link rel="manifest" href="app.bible/manifest.json">
   <link rel="icon" type="image/svg+xml" href="Images/icon-grow.svg">
@@ -84,12 +100,29 @@
           </button>
         </div>
 
+        <section class="bible-today-card" aria-label="Today's One Year Bible readings">
+          <div class="bible-tool-head">
+            <div>
+              <div class="bible-kicker">Today</div>
+              <h3>One Year Bible</h3>
+              <span class="bible-muted bible-reading-plan-date" id="bible-reading-plan-date"></span>
+            </div>
+            <div class="bible-today-actions">
+              <button class="bible-mini-btn" id="bible-open-reading-plan" type="button">Plan</button>
+            </div>
+          </div>
+          <div id="bible-reading-plan" class="bible-reading-plan bible-reading-plan-today"></div>
+        </section>
+
         <div class="bible-content-grid">
           <section class="bible-reader-panel" aria-live="polite">
             <div class="bible-reader-head">
               <div>
                 <div class="bible-kicker" id="bible-version-label">English Standard Version 2011</div>
-                <h2 id="bible-current-title">John 1</h2>
+                <div class="bible-reader-title-row">
+                  <h2 id="bible-current-title">John 1</h2>
+                  <button class="bible-mini-btn bible-overview-btn" id="bible-book-overview" type="button">Overview</button>
+                </div>
               </div>
               <div class="bible-chapter-nav">
                 <button class="bible-icon-btn" id="bible-prev-chapter" type="button" aria-label="Previous chapter" title="Previous chapter">
@@ -103,11 +136,27 @@
             </div>
 
             <div class="bible-chapter-strip" id="bible-chapter-strip" aria-label="Chapters"></div>
+            <nav class="bible-study-jumpbar" aria-label="Study tools">
+              <button type="button" data-study-jump="bible-crossrefs-panel">TSK</button>
+              <button type="button" data-study-jump="bible-original-panel">Interlinear</button>
+              <button type="button" data-study-jump="bible-commentary-panel">Library</button>
+              <button type="button" data-study-jump="bible-search-panel">Search</button>
+              <button type="button" data-study-jump="bible-bookmarks-panel">Saved</button>
+            </nav>
+            <div class="bible-selection-bar" id="bible-selection-bar" hidden>
+              <span class="bible-selection-count" id="bible-selection-count">0 selected</span>
+              <div class="bible-selection-actions">
+                <button class="bible-mini-btn" id="bible-selection-copy" type="button">Copy</button>
+                <button class="bible-mini-btn" id="bible-selection-share" type="button">Share</button>
+                <button class="bible-mini-btn" id="bible-selection-save" type="button">Save</button>
+                <button class="bible-mini-btn" id="bible-selection-clear" type="button">Clear</button>
+              </div>
+            </div>
             <article class="bible-passage" id="bible-passage" tabindex="0"></article>
           </section>
 
-          <aside class="bible-original-panel" aria-label="Original language tools">
-            <section class="bible-tool-section bible-original-section">
+          <aside class="bible-original-panel" id="bible-original-panel" aria-label="Original language tools">
+            <section class="bible-tool-section bible-original-section" tabindex="-1">
               <div class="bible-tool-head">
                 <div>
                   <div class="bible-kicker">Original</div>
@@ -120,7 +169,7 @@
           </aside>
 
           <aside class="bible-study-panel" aria-label="Study tools">
-            <section class="bible-tool-section">
+            <section class="bible-tool-section" id="bible-crossrefs-panel" tabindex="-1">
               <div class="bible-tool-head">
                 <div>
                   <div class="bible-kicker">References</div>
@@ -131,7 +180,7 @@
               <div id="bible-crossrefs" class="bible-crossrefs"></div>
             </section>
 
-            <section class="bible-tool-section">
+            <section class="bible-tool-section" id="bible-commentary-panel" tabindex="-1">
               <div class="bible-tool-head">
                 <div>
                   <div class="bible-kicker">Commentary</div>
@@ -142,18 +191,7 @@
               <div id="bible-commentaries" class="bible-commentaries"></div>
             </section>
 
-            <section class="bible-tool-section">
-              <div class="bible-tool-head">
-                <div>
-                  <div class="bible-kicker">Today</div>
-                  <h3>One Year Bible</h3>
-                </div>
-                <button class="bible-mini-btn" id="bible-open-reading-plan" type="button">Plan</button>
-              </div>
-              <div id="bible-reading-plan" class="bible-reading-plan"></div>
-            </section>
-
-            <section class="bible-tool-section">
+            <section class="bible-tool-section" id="bible-search-panel" tabindex="-1">
               <div class="bible-tool-head">
                 <div>
                   <div class="bible-kicker">Search</div>
@@ -171,7 +209,7 @@
               <div class="bible-search-results" id="bible-search-results"></div>
             </section>
 
-            <section class="bible-tool-section">
+            <section class="bible-tool-section" id="bible-bookmarks-panel" tabindex="-1">
               <div class="bible-tool-head">
                 <div>
                   <div class="bible-kicker">Saved</div>
@@ -201,6 +239,20 @@
     </header>
     <div class="bible-drawer-body" id="bible-drawer-body"></div>
   </aside>
+
+  <div class="bible-reader-tools" aria-label="Reading controls">
+    <button class="bible-reader-fab" id="bible-reader-toggle" type="button" aria-expanded="false" aria-controls="bible-reader-menu" aria-label="Text size" title="Text size">
+      <strong>Aa</strong>
+    </button>
+    <div class="bible-reader-menu" id="bible-reader-menu" role="menu" aria-label="Text size" hidden>
+      <button class="bible-reader-size-option" type="button" data-reading-size="0.92">Smaller</button>
+      <button class="bible-reader-size-option is-active" type="button" data-reading-size="1">Normal (Default)</button>
+      <button class="bible-reader-size-option" type="button" data-reading-size="1.08">Large</button>
+      <button class="bible-reader-size-option" type="button" data-reading-size="1.16">XL</button>
+      <button class="bible-reader-size-option" type="button" data-reading-size="1.24">XXL</button>
+      <button class="bible-reader-size-option" type="button" data-reading-size="1.32">XXXL</button>
+    </div>
+  </div>
 
   <div id="bible-toasts" aria-live="polite"></div>
 

@@ -13,6 +13,7 @@
    ══════════════════════════════════════════════════════════════════════════════ */
 
 const CACHE_NAME = 'flockos-new-covenant-v1.25';
+const OPTIONAL_CACHE_DELAY_MS = 650;
 
 /* Derive base path from SW location (works at root or any subpath) */
 const SW_BASE = self.location.pathname.replace(/\/[^\/]+$/, '/');
@@ -41,6 +42,18 @@ const PRECACHE_URLS = [
   /* ── Invite standalone PWA ───────────────────────────────────────────── */
   'app.invite/app.invite.html',
   'app.invite/manifest.json',
+
+  /* ── Bible standalone PWA shell ──────────────────────────────────────── */
+  'app.bible/',
+  'app.bible/index.html',
+  'app.bible/app.bible.html',
+  'app.bible/manifest.json',
+  'app.bible/bible.css',
+  'app.bible/bible.js',
+  'app.bible/offline-assets.json',
+  'app.bible/commentaries/catalog.json',
+  'app.bible/commentaries/commentary-sources.js',
+  'app.bible/commentaries/commentary-cache-manifest.json',
 
   /* ── Styles ───────────────────────────────────────────────────────────── */
   'Styles/new_covenant.css', /* american_garments merged in — one CSS file */
@@ -344,6 +357,10 @@ self.addEventListener('message', (event) => {
         .then(() => self.skipWaiting())
     );
   }
+
+  if (event.data.type === 'WARM_APP_BIBLE_OFFLINE') {
+    event.waitUntil(_warmAppBibleOffline(event.source, event.data.limit));
+  }
 });
 
 /* ─── Fetch: routing strategies ─────────────────────────────────────────────── */
@@ -378,7 +395,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   /* Static assets (JS, CSS, SVG, images) — stale-while-revalidate */
-  if (/\.(js|css|svg|png|jpg|webp|woff2?)$/.test(url.pathname)) {
+  if (/\.(js|css|json|svg|png|jpg|webp|woff2?)$/.test(url.pathname)) {
     event.respondWith(_staleWhileRevalidate(request));
     return;
   }
@@ -424,6 +441,55 @@ async function _networkFirst(request) {
     const cached = await cache.match(request);
     return cached || new Response('Offline', { status: 503 });
   }
+}
+
+let _bibleWarmPromise = null;
+
+async function _warmAppBibleOffline(client, limit = Infinity) {
+  if (_bibleWarmPromise) return _bibleWarmPromise;
+  _bibleWarmPromise = (async () => {
+    const cache = await caches.open(CACHE_NAME);
+    const manifestUrl = SW_BASE + 'app.bible/offline-assets.json';
+    const response = await fetch(manifestUrl, { cache: 'no-store' });
+    if (!response.ok) throw new Error('Bible offline manifest failed: HTTP ' + response.status);
+    await cache.put(manifestUrl, response.clone());
+    const manifest = await response.json();
+    const assets = Array.isArray(manifest.assets) ? manifest.assets : [];
+    const maxAssets = Number.isFinite(Number(limit)) ? Math.max(0, Number(limit)) : Infinity;
+    let cached = 0;
+    let checked = 0;
+    for (const asset of assets) {
+      if (checked >= maxAssets) break;
+      checked += 1;
+      const path = typeof asset === 'string' ? asset : asset.path;
+      if (!path) continue;
+      const url = SW_BASE + path.replace(/^\/+/, '');
+      const request = new Request(url, { cache: 'no-store' });
+      if (await cache.match(url)) {
+        cached += 1;
+        continue;
+      }
+      try {
+        const fresh = await fetch(request);
+        if (fresh.ok) {
+          await cache.put(url, fresh);
+          cached += 1;
+        }
+      } catch (_) {}
+      if (client && cached % 50 === 0) {
+        client.postMessage({ type: 'BIBLE_OFFLINE_PROGRESS', cached, total: assets.length });
+      }
+      await _delay(OPTIONAL_CACHE_DELAY_MS);
+    }
+    if (client) client.postMessage({ type: 'BIBLE_OFFLINE_COMPLETE', cached, total: assets.length });
+  })().finally(() => {
+    _bibleWarmPromise = null;
+  });
+  return _bibleWarmPromise;
+}
+
+function _delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function _cacheFirst(request) {
