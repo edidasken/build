@@ -819,10 +819,10 @@ import theologyRaw  from './Data/theology.js';
 import apologeticsRaw from './Data/apologetics.js';
 import counselingRaw  from './Data/counseling.js';
 import quizRaw        from './Data/quiz.js';
-import genealogyRaw   from './Data/genealogy.js';
 import heartRaw       from './Data/heart.js';
 import bibleRaw       from './Data/one_year_bible.js';
 import psalmsRaw      from './Data/psalms.js';
+import { loadGenealogyFeaturedPerson } from './Scripts/shared_data.js';
 
 const DAY   = window._FN_DAY;
 const TODAY = window._FN_TODAY;
@@ -1346,11 +1346,13 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 // ════════════════════════════════════════════════════════════════════════════
 // § 7 — PERSON OF SCRIPTURE
 // ════════════════════════════════════════════════════════════════════════════
-(function () {
-  // filter to entries with meaningful bios
-  const filtered = genealogyRaw.filter(p => p.bio && p.bio.length > 30 && p.name);
-  const idx  = PICK.figureIdx != null ? PICK.figureIdx : DAY % filtered.length;
-  const fig  = filtered[idx];
+(async function () {
+  let fig = null;
+  try {
+    fig = await loadGenealogyFeaturedPerson(DAY, PICK.figureIdx);
+  } catch (e) {
+    console.error('[herald] genealogy feature failed:', e);
+  }
   if (!fig) { document.getElementById('fn-figure-content').textContent = '—'; return; }
 
   document.getElementById('fn-figure-head').textContent = fig.name + (fig.title ? ' — ' + fig.title : '');

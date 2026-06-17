@@ -3405,6 +3405,15 @@
     };
   }
 
+  async function _loadSharedGenealogyRows() {
+    try {
+      var mod = await import('../shared_data.js');
+      return await mod.loadGenealogyRows();
+    } catch (_) {
+      return [];
+    }
+  }
+
   async function _renderGenealogy() {
     _panel(_spinner());
     try {
@@ -3417,8 +3426,7 @@
       // Static snapshot bundled at deploy time
       if (!rows.length) {
         try {
-          var _gMod = await import('../Data/genealogy.js');
-          var _gStatic = (_gMod.default || []).filter(function(r) { return r.name || r['Name']; });
+          var _gStatic = (await _loadSharedGenealogyRows()).filter(function(r) { return r.name || r['Name']; });
           if (_gStatic.length) rows = _gStatic.map(_normalizeGeneRow);
         } catch (_) {}
       }

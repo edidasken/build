@@ -3355,6 +3355,17 @@ const TheWay = (() => {
     };
   }
 
+  async function _loadSharedGenealogyRows() {
+    var paths = ['./Scripts/shared_data.js', '../Scripts/shared_data.js', '../../Scripts/shared_data.js'];
+    for (var i = 0; i < paths.length; i++) {
+      try {
+        var mod = await import(paths[i]);
+        if (mod && typeof mod.loadGenealogyRows === 'function') return await mod.loadGenealogyRows();
+      } catch (_) {}
+    }
+    return [];
+  }
+
   async function _renderGenealogy() {
     _panel(_spinner());
     try {
@@ -3367,8 +3378,7 @@ const TheWay = (() => {
       // Static snapshot bundled at deploy time
       if (!rows.length) {
         try {
-          var _gMod = await import('../Data/genealogy.js');
-          var _gStatic = (_gMod.default || []).filter(function(r) { return r.name || r['Name']; });
+          var _gStatic = (await _loadSharedGenealogyRows()).filter(function(r) { return r.name || r['Name']; });
           if (_gStatic.length) rows = _gStatic.map(_normalizeGeneRow);
         } catch (_) {}
       }

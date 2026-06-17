@@ -4,6 +4,7 @@
    ══════════════════════════════════════════════════════════════════════════════ */
 
 import { esc, snip, emptyState, loadingCards, chip } from './the_gospel_shared.js';
+import { loadGenealogyRows } from '../shared_data.js';
 
 export const name        = 'the_gospel_genealogy';
 export const title       = 'Genealogy';
@@ -49,13 +50,11 @@ export function mount(root) {
 
 async function _load(root) {
   const list = root.querySelector('[data-bind="list"]');
-  // Load from static bundle (regenerated from Firestore via export_genealogy_to_js.py)
   try {
-    const mod = await import('../../Data/genealogy.js');
-    _state.rows = mod.default || [];
+    _state.rows = await loadGenealogyRows();
     _paint(root);
   } catch (e) {
-    console.error('[gospel/genealogy] static bundle failed:', e);
+    console.error('[gospel/genealogy] shared dataset failed:', e);
     list.innerHTML = emptyState({ icon: '⚠️', title: 'Could not load genealogy', body: e.message || String(e) });
   }
 }

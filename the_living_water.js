@@ -15,6 +15,7 @@
 const CACHE_NAME = 'flockos-new-covenant-v1.25';
 const OPTIONAL_CACHE_DELAY_MS = 650;
 const BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
+const SHARED_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/shared-data/v1/';
 
 /* Derive base path from SW location (works at root or any subpath) */
 const SW_BASE = self.location.pathname.replace(/\/[^\/]+$/, '/');
@@ -286,7 +287,6 @@ const PRECACHE_URLS = [
   'Data/books-of-the-bible.js',
   'Data/counseling.js',
   'Data/devotionals.js',
-  'Data/genealogy.js',
   'Data/heart.js',
   'Data/library.js',
   'Data/mirror.js',
@@ -319,6 +319,11 @@ self.addEventListener('install', (event) => {
       if (failed.length) {
         console.warn('[SW] ' + failed.length + ' file(s) failed to precache:',
           failed.map((r) => r.reason && r.reason.message).join(', '));
+      }
+      try {
+        await _warmGenealogyOffline(cache);
+      } catch (err) {
+        console.warn('[SW] genealogy shared-data warmup failed:', err);
       }
     })
   );
@@ -443,6 +448,23 @@ async function _networkFirst(request) {
 }
 
 let _bibleWarmPromise = null;
+
+async function _warmGenealogyOffline(cache) {
+  const manifestUrl = new URL('genealogy/manifest.json', SHARED_DATA_BASE_URL).href;
+  const response = await fetch(manifestUrl, { cache: 'no-store' });
+  if (!response.ok) throw new Error('Genealogy manifest failed: HTTP ' + response.status);
+  await cache.put(manifestUrl, response.clone());
+  const manifest = await response.json();
+  const chunks = Array.isArray(manifest.chunks) ? manifest.chunks : [];
+  await Promise.all(chunks.map(async (chunk) => {
+    if (!chunk || !chunk.file) return;
+    const url = new URL('genealogy/' + chunk.file.replace(/^\/+/, ''), SHARED_DATA_BASE_URL).href;
+    try {
+      const fresh = await fetch(url, { cache: 'no-store' });
+      if (fresh.ok) await cache.put(url, fresh);
+    } catch (_) {}
+  }));
+}
 
 async function _warmAppBibleOffline(client, limit = Infinity) {
   if (_bibleWarmPromise) return _bibleWarmPromise;
