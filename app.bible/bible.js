@@ -100,6 +100,12 @@ const STORAGE_KEYS = {
 
 const TEXT_SIZE_KEY = 'herald.text-size-scale';
 const TEXT_SIZE_OPTIONS = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+const CROSSREF_VISIBLE_LIMIT = 5;
+const CROSSREF_TEXT_PREVIEW_CHARS = 150;
+const TSK_VERSE_PREVIEW_CHARS = 220;
+const ORIGINAL_VISIBLE_LIMIT = 6;
+const ESV_ALIGNMENT_VISIBLE_LIMIT = 6;
+const ORIGINAL_NOTES_VISIBLE_LIMIT = 3;
 
 const state = {
   books: new Map(),
@@ -785,11 +791,13 @@ function currentStudyTarget() {
   const highlight = normalizeHighlight(state.highlight, chapter);
   const selected = selectedVerseNumbers();
   const verse = clamp(selected[0] || highlight?.start || 1, 1, Math.max(verses.length, 1));
+  const verseEnd = clamp(selected[selected.length - 1] || highlight?.end || verse, verse, Math.max(verses.length, 1));
   return {
     book: BOOK_ALIASES.get(state.currentBook.slug) || state.currentBook,
     slug: state.currentBook.slug,
     chapter,
     verse,
+    verseEnd,
   };
 }
 
@@ -808,15 +816,20 @@ async function renderCrossReferences() {
     ]);
     if (request !== state.studyRequest) return;
 
+    const visibleReferences = references.items.slice(0, CROSSREF_VISIBLE_LIMIT);
+    const hiddenReferences = references.items.slice(CROSSREF_VISIBLE_LIMIT);
     const referenceHtml = references.items.length
-      ? references.items.map((item, index) => `
-          <article class="bible-crossref-item">
-            <button type="button" data-crossref="${index}">
-              <span class="bible-crossref-ref">${escapeHtml(item.ref)}</span>
-              <span class="bible-crossref-text">${escapeHtml(item.text || '')}</span>
-            </button>
-          </article>
-        `).join('')
+      ? `
+        ${visibleReferences.map((item, index) => renderCrossReferenceItem(item, index)).join('')}
+        ${hiddenReferences.length ? `
+          <details class="bible-study-more">
+            <summary>${hiddenReferences.length} more cross references</summary>
+            <div class="bible-crossrefs bible-crossrefs-extra">
+              ${hiddenReferences.map((item, index) => renderCrossReferenceItem(item, index + CROSSREF_VISIBLE_LIMIT)).join('')}
+            </div>
+          </details>
+        ` : ''}
+      `
       : '<div class="bible-empty">No cross references found for this verse.</div>';
 
     const tskHtml = renderTskSection(tsk);
@@ -864,20 +877,46 @@ async function renderOriginalLanguage() {
       kinds.has('h') ? loadStrongDictionary('hebrew') : Promise.resolve({}),
     ]);
     const dictionary = { ...greek, ...hebrew };
-    const limitedWords = words.slice(0, 36);
-    const wordHtml = limitedWords.length
-      ? limitedWords.map((word) => renderOriginalWord(word, dictionary)).join('')
+    const visibleWords = words.slice(0, ORIGINAL_VISIBLE_LIMIT);
+    const hiddenWords = words.slice(ORIGINAL_VISIBLE_LIMIT);
+    const wordHtml = visibleWords.length
+      ? visibleWords.map((word) => renderOriginalWord(word, dictionary)).join('')
       : '<div class="bible-empty">No interlinear data found for this verse.</div>';
+    const extraWordHtml = hiddenWords.length
+      ? `
+        <details class="bible-study-more">
+          <summary>${hiddenWords.length} more interlinear words</summary>
+          <div class="bible-original-grid bible-original-grid-extra">${hiddenWords.map((word) => renderOriginalWord(word, dictionary)).join('')}</div>
+        </details>
+      `
+      : '';
     const esvHtml = esvWords.length
-      ? `<details class="bible-original-details"><summary>ESV interlinear alignment</summary><div class="bible-original-alignment">${esvWords.slice(0, 28).map(renderEsvInterlinearToken).join('')}</div></details>`
+      ? `
+        <details class="bible-original-details">
+          <summary>ESV interlinear alignment</summary>
+          <div class="bible-original-alignment">${esvWords.slice(0, ESV_ALIGNMENT_VISIBLE_LIMIT).map(renderEsvInterlinearToken).join('')}</div>
+          ${esvWords.length > ESV_ALIGNMENT_VISIBLE_LIMIT ? `
+            <details class="bible-study-more bible-study-more-nested">
+              <summary>${esvWords.length - ESV_ALIGNMENT_VISIBLE_LIMIT} more alignment tokens</summary>
+              <div class="bible-original-alignment">${esvWords.slice(ESV_ALIGNMENT_VISIBLE_LIMIT).map(renderEsvInterlinearToken).join('')}</div>
+            </details>
+          ` : ''}
+        </details>
+      `
       : '';
     const noteHtml = notes.length
-      ? `<details class="bible-original-details"><summary>ESV notes and cross references</summary><div class="bible-original-notes">${notes.slice(0, 10).map(renderEsvNote).join('')}</div></details>`
+      ? `
+        <details class="bible-original-details">
+          <summary>ESV notes and cross references</summary>
+          <div class="bible-original-notes">${notes.slice(0, ORIGINAL_NOTES_VISIBLE_LIMIT).map(renderEsvNote).join('')}</div>
+          ${notes.length > ORIGINAL_NOTES_VISIBLE_LIMIT ? `<div class="bible-crossref-source">${notes.length - ORIGINAL_NOTES_VISIBLE_LIMIT} more imported notes are available in the local data.</div>` : ''}
+        </details>
+      `
       : '';
     el.originalCount.textContent = `${words.length} words`;
     el.original.innerHTML = `
       <div class="bible-original-grid">${wordHtml}</div>
-      ${limitedWords.length < words.length ? `<div class="bible-crossref-source">${words.length - limitedWords.length} additional words are available in the imported local data.</div>` : ''}
+      ${extraWordHtml}
       ${esvHtml}
       ${noteHtml}
       <div class="bible-crossref-source">
@@ -891,8 +930,20 @@ async function renderOriginalLanguage() {
   }
 }
 
+function renderCrossReferenceItem(item, index) {
+  return `
+    <article class="bible-crossref-item">
+      <button type="button" data-crossref="${index}">
+        <span class="bible-crossref-ref">${escapeHtml(item.ref)}</span>
+        <span class="bible-crossref-text">${escapeHtml(truncatePlainText(item.text || '', CROSSREF_TEXT_PREVIEW_CHARS))}</span>
+      </button>
+    </article>
+  `;
+}
+
 async function renderCommentaries() {
   if (!el.commentaries || !state.currentBook) return;
+  const request = ++state.commentaryRequest;
   const target = currentStudyTarget();
   if (!target) return;
   el.commentaryCount.textContent = '';
@@ -902,148 +953,230 @@ async function renderCommentaries() {
     const [catalog, sermonIndex] = await Promise.all([loadCommentaryCatalog(), loadSermonIndex()]);
     const libraries = catalog.libraries || [];
     const matches = findLocalSermonMatches(sermonIndex.items || [], target);
-    el.commentaryCount.textContent = `${libraries.length} libraries`;
-    const firstWithMatch = libraries.findIndex((item) => commentaryHasMatchingTitle(item, matches));
-    const activeIndex = Math.max(0, firstWithMatch);
-    el.commentaries.innerHTML = renderCommentaryLibrary(target, libraries, matches, sermonIndex, activeIndex);
-    bindCommentaryLibrary(libraries, target, matches);
-    await showCommentaryPreview(libraries[activeIndex], target, matches);
+    const results = await loadAvailableCommentaryResults(libraries, target, matches);
+    if (request !== state.commentaryRequest) return;
+    el.commentaryCount.textContent = `${results.length} available`;
+    el.commentaries.innerHTML = renderCommentaryLibrary(target, results, libraries, matches, sermonIndex);
   } catch (_) {
+    if (request !== state.commentaryRequest) return;
     el.commentaryCount.textContent = '';
     el.commentaries.innerHTML = '<div class="bible-empty">Commentary library unavailable.</div>';
   }
 }
 
-function renderCommentaryLibrary(target, libraries, matches, sermonIndex, activeIndex = 0) {
+async function loadAvailableCommentaryResults(libraries, target, matches) {
+  const settled = await Promise.allSettled(libraries.map(async (library) => {
+    const source = await loadCommentarySource(library);
+    if (!source) return null;
+    const chapters = source.books?.[target.slug] || source.books?.[target.book.name];
+    if (Array.isArray(chapters) && !chapters.includes(target.chapter)) return null;
+    const entries = await loadCommentaryEntries(source, target);
+    const sections = entries.flatMap((entry) => extractCommentarySections(entry, target)).slice(0, 4);
+    if (!sections.length) return null;
+    return {
+      library,
+      source,
+      entries,
+      sections,
+      matches: matches.filter((match) => commentaryTitleMatches(library, match.title)).slice(0, 3),
+    };
+  }));
+  return settled
+    .filter((result) => result.status === 'fulfilled' && result.value)
+    .map((result) => result.value);
+}
+
+function renderCommentaryLibrary(target, results, libraries, matches, sermonIndex) {
   return `
     <div class="bible-commentary-intro">
       <div>
         <span class="bible-kicker">Current Passage</span>
-        <strong>${escapeHtml(formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))}</strong>
+        <strong>${escapeHtml(formatStudyTarget(target))}</strong>
       </div>
-      <span>${escapeHtml(String(matches.length))} local index ${matches.length === 1 ? 'match' : 'matches'}</span>
+      <span>${escapeHtml(String(results.length))} available ${results.length === 1 ? 'library' : 'libraries'}</span>
     </div>
-    <label class="bible-commentary-select-wrap" for="bible-commentary-select">
-      <span>Library</span>
-      <select id="bible-commentary-select">
-        ${libraries.map((item, index) => `<option value="${index}" ${index === activeIndex ? 'selected' : ''}>${escapeHtml(item.name)}</option>`).join('')}
-      </select>
-    </label>
     <div class="bible-commentary-shell">
-      <article class="bible-commentary-viewer" id="bible-commentary-viewer" aria-live="polite">
-        <div class="bible-loading">Choose a commentary library.</div>
-      </article>
-      <details class="bible-commentary-browse">
-        <summary>Browse all libraries</summary>
-        <div class="bible-commentary-picker" role="list" aria-label="Commentary libraries">
-          ${libraries.map((item, index) => renderCommentaryCard(item, index, matches, activeIndex)).join('')}
+      ${results.length ? `
+        <div class="bible-commentary-accordion-list" role="list">
+          ${results.map((result, index) => renderCommentaryAccordion(result, index)).join('')}
         </div>
-      </details>
+      ` : `
+        <div class="bible-empty">No bundled local commentary is available for ${escapeHtml(formatStudyTarget(target))} yet.</div>
+      `}
     </div>
     <details class="bible-commentary-details">
       <summary>Local import status</summary>
       <div class="bible-commentary-imports">
         <span>${escapeHtml(String(libraries.length))} commentary modules are registered in app.bible.</span>
+        <span>${escapeHtml(String(results.length))} have bundled local text for this selected passage.</span>
         <span>${escapeHtml(String(sermonIndex.count || 0))} sermon/index records are archived locally.</span>
-        <span>Full commentary bodies are loaded from the local module files as they are imported.</span>
+        <span>Commentary bodies load from local chapter chunks so offline use stays mobile-friendly.</span>
+        ${matches.length ? `<span>${escapeHtml(String(matches.length))} local index ${matches.length === 1 ? 'match' : 'matches'} found for this chapter.</span>` : ''}
       </div>
     </details>
   `;
 }
 
-function renderCommentaryCard(item, index, matches, activeIndex = 0) {
-  const hasMatch = commentaryHasMatchingTitle(item, matches);
+function renderCommentaryAccordion(result, index) {
+  const { library, source, entries, sections } = result;
+  const first = sections[0];
+  const remaining = sections.length - 1;
   return `
-    <button class="bible-commentary-card ${index === activeIndex ? 'is-active' : ''}" type="button" data-commentary-index="${index}" role="listitem">
-      <span class="bible-commentary-card-name">${escapeHtml(item.name)}</span>
-      <span class="bible-commentary-card-status">${hasMatch ? 'Matched in local index' : 'Local module ready'}</span>
-    </button>
-  `;
-}
-
-function bindCommentaryLibrary(libraries, target, matches) {
-  const select = document.getElementById('bible-commentary-select');
-  const selectCommentary = (index) => {
-    const library = libraries[index];
-    if (!library) return;
-    if (select) select.value = String(index);
-    el.commentaries.querySelectorAll('[data-commentary-index]').forEach((node) => {
-      node.classList.toggle('is-active', Number(node.dataset.commentaryIndex) === index);
-    });
-    showCommentaryPreview(library, target, matches);
-  };
-  select?.addEventListener('change', () => selectCommentary(Number(select.value)));
-  el.commentaries.querySelectorAll('[data-commentary-index]').forEach((button) => {
-    button.addEventListener('click', () => {
-      selectCommentary(Number(button.dataset.commentaryIndex));
-    });
-  });
-}
-
-async function showCommentaryPreview(item, target, matches) {
-  const viewer = document.getElementById('bible-commentary-viewer');
-  if (!viewer || !item) return;
-  const request = ++state.commentaryRequest;
-  viewer.innerHTML = '<div class="bible-loading">Opening library...</div>';
-  try {
-    const source = await loadCommentarySource(item);
-    if (request !== state.commentaryRequest) return;
-    const entries = await loadCommentaryEntries(source, target);
-    const localMatches = matches.filter((match) => commentaryTitleMatches(item, match.title)).slice(0, 6);
-    viewer.innerHTML = `
-      <header class="bible-commentary-viewer-head">
-        <span class="bible-kicker">Library</span>
-        <h4>${escapeHtml(item.name)}</h4>
-        <p>${escapeHtml(commentaryStatusText(source, entries, localMatches))}</p>
-      </header>
-      ${entries.length ? `
+    <details class="bible-commentary-accordion" ${index === 0 ? 'open' : ''} role="listitem">
+      <summary>
+        <span class="bible-commentary-card-name">${escapeHtml(library.name)}</span>
+        <span class="bible-commentary-card-status">${escapeHtml(first.label)}${remaining ? ` + ${remaining} more` : ''}</span>
+      </summary>
+      <div class="bible-commentary-viewer">
+        <header class="bible-commentary-viewer-head">
+          <span class="bible-kicker">Library</span>
+          <h4>${escapeHtml(library.name)}</h4>
+          <p>${escapeHtml(`${sections.length} applicable ${sections.length === 1 ? 'portion' : 'portions'} loaded from local chapter data.`)}</p>
+        </header>
         <div class="bible-commentary-entries">
-          ${entries.map((entry) => `
+          ${sections.map((section) => `
             <section class="bible-commentary-entry">
-              <span class="bible-crossref-ref">${escapeHtml(entry.ref || formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))}</span>
-              <div>${cleanCommentaryHtml(entry.text || entry.body || '')}</div>
+              <span class="bible-crossref-ref">${escapeHtml(section.label)}</span>
+              <div>${cleanCommentaryHtml(truncateCommentaryHtml(section.html))}</div>
             </section>
           `).join('')}
         </div>
-      ` : renderCommentaryIndexMatches(item, localMatches, target)}
-      <div class="bible-commentary-module">
-        <span>Local script</span>
-        <code>${escapeHtml(item.scriptName || '')}</code>
-        <code>${escapeHtml(item.modulePath || '')}</code>
-        ${source?.chunkPath ? `<code>${escapeHtml(source.chunkPath.replace('{book}', target.slug).replace('{chapter}', String(target.chapter)))}</code>` : ''}
+        <details class="bible-commentary-full">
+          <summary>View whole chapter commentary</summary>
+          <div class="bible-commentary-full-body">
+            ${entries.map((entry) => `
+              <section class="bible-commentary-entry">
+                <span class="bible-crossref-ref">${escapeHtml(entry.ref || `${first.book} ${first.chapter}`)}</span>
+                <div>${cleanCommentaryHtml(entry.text || entry.body || '')}</div>
+              </section>
+            `).join('')}
+          </div>
+        </details>
+        <div class="bible-commentary-module">
+          <span>Local data</span>
+          <code>${escapeHtml(library.scriptName || '')}</code>
+          ${source?.chunkPath ? `<code>${escapeHtml(source.chunkPath.replace('{book}', first.book).replace('{chapter}', String(first.chapter)))}</code>` : ''}
+        </div>
       </div>
-    `;
-  } catch (_) {
-    if (request !== state.commentaryRequest) return;
-    viewer.innerHTML = '<div class="bible-empty">This commentary module could not be opened.</div>';
-  }
-}
-
-function commentaryStatusText(source, entries, matches) {
-  if (entries.length) return `${entries.length} local passage ${entries.length === 1 ? 'entry' : 'entries'} loaded from local chapter data.`;
-  if (matches.length) return 'The local index has related records for this passage; the full text import is still pending.';
-  if (source) return 'This library has no bundled local text for the current passage yet.';
-  return 'This library is registered, but its local module is not available.';
-}
-
-function renderCommentaryIndexMatches(item, matches, target) {
-  if (matches.length) {
-    return `
-      <div class="bible-commentary-local">
-        ${matches.map((match) => `
-          <article class="bible-commentary-hit">
-            <span class="bible-crossref-ref">${escapeHtml(target.book.name)} ${target.chapter}</span>
-            <span class="bible-crossref-text">${escapeHtml(match.title)}</span>
-          </article>
-        `).join('')}
-      </div>
-    `;
-  }
-  return `
-    <div class="bible-empty">
-      No bundled local commentary for ${escapeHtml(formatReference({ book: target.book, chapter: target.chapter, verseStart: target.verse }))} is available from ${escapeHtml(item.name)} yet.
-    </div>
+    </details>
   `;
+}
+
+function extractCommentarySections(entry, target) {
+  const blocks = commentaryHtmlBlocks(entry.text || entry.body || '');
+  if (!blocks.length) return [];
+  const parsed = [];
+  let current = null;
+  for (const block of blocks) {
+    const range = detectCommentaryRange(block.text, target);
+    if (range) {
+      if (current?.html.length) parsed.push(current);
+      current = {
+        book: entry.book || target.slug,
+        chapter: Number(entry.chapter || target.chapter),
+        start: range.start,
+        end: range.end,
+        label: formatCommentaryRangeLabel(target, range.start, range.end),
+        html: [block.html],
+      };
+    } else if (current) {
+      current.html.push(block.html);
+    }
+  }
+  if (current?.html.length) parsed.push(current);
+  const matching = parsed.filter((section) => rangesOverlap(section.start, section.end, target.verse, target.verseEnd));
+  const precise = matching.filter((section) => section.start === target.verse && section.end <= target.verseEnd);
+  const sections = precise.length ? precise : matching;
+  if (sections.length) {
+    return sections.map((section) => ({
+      ...section,
+      html: section.html.join(''),
+    }));
+  }
+  if (!parsed.length && Number(entry.chapter || target.chapter) === target.chapter) {
+    return [{
+      book: entry.book || target.slug,
+      chapter: Number(entry.chapter || target.chapter),
+      start: target.verse,
+      end: target.verseEnd,
+      label: formatStudyTarget(target),
+      html: blocks.map((block) => block.html).join(''),
+    }];
+  }
+  return [];
+}
+
+function commentaryHtmlBlocks(value) {
+  const template = document.createElement('template');
+  template.innerHTML = String(value || '');
+  const blockNodes = [...template.content.querySelectorAll('p, h1, h2, h3, h4, h5, h6, li, blockquote')];
+  const blocks = blockNodes.length ? blockNodes : [...template.content.childNodes].filter((node) => String(node.textContent || '').trim());
+  return blocks.map((node) => ({
+    html: node.outerHTML || escapeHtml(node.textContent || ''),
+    text: normalizeWhitespace(node.textContent || ''),
+  })).filter((block) => block.text);
+}
+
+function truncateCommentaryHtml(value, maxBlocks = 5, maxChars = 950) {
+  const blocks = commentaryHtmlBlocks(value);
+  if (!blocks.length) return value;
+  let count = 0;
+  const selected = [];
+  let truncated = blocks.length > maxBlocks;
+  for (const block of blocks) {
+    if (selected.length >= maxBlocks || count >= maxChars) {
+      truncated = true;
+      break;
+    }
+    if (count + block.text.length > maxChars) {
+      selected.push(`<p>${escapeHtml(block.text.slice(0, Math.max(0, maxChars - count)).trim())}...</p>`);
+      truncated = true;
+      break;
+    }
+    selected.push(block.html);
+    count += block.text.length;
+  }
+  return `${selected.join('')}${truncated ? '<p class="bible-commentary-truncated">Open the whole chapter commentary below for the complete local text.</p>' : ''}`;
+}
+
+function detectCommentaryRange(text, target) {
+  const value = normalizeWhitespace(text);
+  const bookPattern = escapeRegExp(target.book.name).replace(/\\ /g, '\\s+');
+  const slugPattern = escapeRegExp(target.slug.replace(/-/g, ' ')).replace(/\\ /g, '\\s+');
+  const patterns = [
+    /^Verses?\s+(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?/i,
+    /^Verse\s+(\d{1,3})/i,
+    new RegExp(`\\b(?:${bookPattern}|${slugPattern})\\s+${target.chapter}\\s*:\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(\\d{1,3}))?`, 'i'),
+    new RegExp(`^${target.chapter}\\s*:\\s*(\\d{1,3})(?:\\s*[-–—]\\s*(\\d{1,3}))?`, 'i'),
+  ];
+  for (const pattern of patterns) {
+    const match = value.match(pattern);
+    if (!match) continue;
+    const start = Number(match[1]);
+    const end = Number(match[2] || match[1]);
+    if (Number.isFinite(start) && start > 0) {
+      return { start, end: Math.max(start, end || start) };
+    }
+  }
+  return null;
+}
+
+function rangesOverlap(startA, endA, startB, endB) {
+  return startA <= endB && startB <= endA;
+}
+
+function formatCommentaryRangeLabel(target, start, end) {
+  const base = `${target.book.name} ${target.chapter}:${start}`;
+  return start === end ? base : `${base}-${end}`;
+}
+
+function formatStudyTarget(target) {
+  return formatReference({
+    book: target.book,
+    chapter: target.chapter,
+    verseStart: target.verse,
+    verseEnd: target.verseEnd > target.verse ? target.verseEnd : null,
+  });
 }
 
 function findCommentaryEntries(source, target, sourceEntries = null) {
@@ -1084,6 +1217,14 @@ function cleanCommentaryHtml(value) {
   return html || '<span class="bible-muted">No commentary text.</span>';
 }
 
+function truncatePlainText(value, maxChars) {
+  const text = normalizeWhitespace(String(value || ''));
+  if (!maxChars || text.length <= maxChars) return text;
+  const slice = text.slice(0, maxChars + 1);
+  const trimmed = slice.slice(0, Math.max(slice.lastIndexOf(' '), maxChars)).trim();
+  return `${trimmed || text.slice(0, maxChars).trim()}...`;
+}
+
 async function loadCrossReferencesFor(target) {
   const index = await loadCrossrefIndex(target.slug);
   const pointer = index[`${target.chapter}:${target.verse}`];
@@ -1108,10 +1249,13 @@ async function loadTskFor(target) {
 
 function renderTskSection(tsk) {
   if (!tsk?.chapter && !tsk?.verse) return '';
+  const verseHtml = tsk.verse ? cleanTskHtml(tsk.verse) : '';
+  const showFullVerse = normalizeWhitespace(textFromHtml(tsk.verse)).length > TSK_VERSE_PREVIEW_CHARS;
   return `
     <article class="bible-tsk-note">
       <div class="bible-crossref-ref">Treasury of Scripture Knowledge</div>
-      ${tsk.verse ? `<div class="bible-tsk-body">${cleanTskHtml(tsk.verse)}</div>` : ''}
+      ${verseHtml ? `<div class="bible-tsk-body ${showFullVerse ? 'bible-tsk-body-preview' : ''}">${verseHtml}</div>` : ''}
+      ${showFullVerse ? `<details class="bible-tsk-details"><summary>Full verse note</summary><div class="bible-tsk-body">${verseHtml}</div></details>` : ''}
       ${tsk.chapter ? `<details class="bible-tsk-details"><summary>Chapter overview</summary><div class="bible-tsk-body">${cleanTskHtml(tsk.chapter)}</div></details>` : ''}
     </article>
   `;
@@ -1213,6 +1357,12 @@ function cleanTskHtml(raw) {
   const template = document.createElement('template');
   template.innerHTML = String(raw || '');
   return Array.from(template.content.childNodes).map(renderTskNode).join('');
+}
+
+function textFromHtml(raw) {
+  const template = document.createElement('template');
+  template.innerHTML = String(raw || '');
+  return template.content.textContent || '';
 }
 
 function renderTskNode(node) {
@@ -1740,6 +1890,10 @@ function normalizeBookName(value) {
     .replace(/&/g, 'and')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
+}
+
+function normalizeWhitespace(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
 }
 
 function toCamel(value) {
