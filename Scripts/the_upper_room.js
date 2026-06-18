@@ -65,10 +65,40 @@
     ]);
   }
 
+  function _sessionIdentity(session, firebaseUser) {
+    var id = '';
+    if (session) {
+      id = session.email || session.username || session.displayName || session.name || session.id || session.uid || '';
+    }
+    if (!id && firebaseUser) id = firebaseUser.email || firebaseUser.uid || '';
+    return id || '';
+  }
+
+  function _sessionDisplayName(session, firebaseUser) {
+    if (session) {
+      return session.displayName || session.name || session.email || session.username || session.id || session.uid || '';
+    }
+    return firebaseUser ? (firebaseUser.displayName || firebaseUser.email || firebaseUser.uid || '') : '';
+  }
+
+  function _hasFlockSession(session) {
+    return !!(session && (session.token || session.email || session.username || session.id || session.uid || session.displayName));
+  }
+
+  function _safePathId(value, fallback) {
+    var id = String(value || fallback || 'default').trim();
+    return (id || 'default').replace(/[\/\\#?\[\]]/g, '_');
+  }
+
   function _churchRef() {
-    // Collections live at the root of each church's own Firebase project —
-    // no churches/{churchId}/ nesting needed; the project IS the boundary.
-    return _db;
+    var churchId = _safePathId(_churchId || _resolveChurchId(), 'default');
+    var dataRef = _db.collection('churches').doc(churchId).collection('data');
+    return {
+      collection: function(collectionName) {
+        var safeName = _safePathId(collectionName, 'records');
+        return dataRef.doc(safeName).collection('records');
+      }
+    };
   }
   var _churchDoc = _churchRef;
 
@@ -212,13 +242,13 @@
         if (user) {
           // Firebase persisted a session — fill in email from Firebase user if
           // Nehemiah/TheVine session isn't available (e.g. standalone app page).
-          if (!session || !session.email) {
+          if (!_hasFlockSession(session)) {
             _userEmail = user.email || user.uid;
             _userName  = user.displayName || user.email || user.uid;
             console.log('[FLOCK-DEBUG] UpperRoom.authenticate() — no FlockOS session; using Firebase user email=' + _userEmail);
           } else {
-            _userEmail = session.email;
-            _userName  = session.displayName || session.email;
+            _userEmail = _sessionIdentity(session, user);
+            _userName  = _sessionDisplayName(session, user);
           }
           console.log('[FLOCK-DEBUG] UpperRoom.authenticate() — email=' + _userEmail + ', churchId=' + _churchId);
 
@@ -235,7 +265,7 @@
                 }
                 // Claims lost after token refresh — get a fresh custom token.
                 // This requires Nehemiah/TheVine to be available.
-                if (!session || !session.email) {
+                if (!_hasFlockSession(session)) {
                   throw new Error('No FlockOS session — please sign in from the FlockOS Launcher first.');
                 }
                 console.log('[FLOCK-DEBUG] UpperRoom.authenticate() — claims LOST, re-minting…');
@@ -245,12 +275,12 @@
           ).then(resolve).catch(reject);
         } else {
           // No persisted Firebase session at all — require Nehemiah/TheVine to mint a new one.
-          if (!session || !session.email) {
+          if (!_hasFlockSession(session)) {
             console.error('[FLOCK-DEBUG] UpperRoom.authenticate() — no Firebase session and no FlockOS session');
             return reject(new Error('No FlockOS session — please sign in from the FlockOS Launcher first.'));
           }
-          _userEmail = session.email;
-          _userName  = session.displayName || session.email;
+          _userEmail = _sessionIdentity(session);
+          _userName  = _sessionDisplayName(session);
           console.log('[FLOCK-DEBUG] UpperRoom.authenticate() — not signed in, calling _mintAndSignIn()…');
           _mintAndSignIn().then(resolve).catch(reject);
         }
@@ -406,9 +436,9 @@
       var _sess = null;
       if (typeof Nehemiah !== 'undefined' && Nehemiah.getSession) _sess = Nehemiah.getSession();
       else if (typeof TheVine !== 'undefined' && TheVine.session) _sess = TheVine.session();
-      if (_sess && _sess.email) {
-        _userEmail = _sess.email;
-        _userName  = _sess.displayName || _sess.email;
+      if (_hasFlockSession(_sess)) {
+        _userEmail = _sessionIdentity(_sess);
+        _userName  = _sessionDisplayName(_sess);
       }
     }
     if (!_userEmail) { callback([]); return; } // no session at all — return empty
@@ -967,7 +997,7 @@
   }
 
   /* ══════════════════════════════════════════════════════════════════
-     TODOS / TASKS — churches/{churchId}/todos
+     TASKS — churches/{churchId}/data/todos/records
      ══════════════════════════════════════════════════════════════════ */
 
   function _todosRef() {
@@ -4358,7 +4388,7 @@
       var metricKeys = [];
       snap.forEach(function(d) { var c = d.data(); metricKeys.push(c.key || c.metricKey || d.id); });
       var snapData = { createdAt: _ts(), createdBy: _userEmail, label: 'Auto-compute', metrics: {} };
-      metricKeys.forEach(function(k) { snapData.metrics[k] = 0; }); // placeholder for real values
+      metricKeys.forEach(function(k) { snapData.metrics[k] = 0; }); // initial value until a metric writer updates it
       return _statsSnapshotsRef().add(snapData);
     });
   }
@@ -4429,7 +4459,7 @@
   // not nested under churches/{churchId}/.
   function _missionsRegistryRef() { return _db.collection('missionsRegistry'); }
 
-  // generic CRUD factory for each missions sub-collection
+  // shared CRUD factory for each missions sub-collection
   function _mList(col, opts) {
     opts = opts || {};
     var q = _missionsRef(col);
