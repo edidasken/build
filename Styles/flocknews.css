@@ -51,6 +51,8 @@ html, body {
   line-height: 1.6;
   -webkit-text-size-adjust: 100%;
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 html {
@@ -3611,8 +3613,46 @@ html[data-fn-sidebar="open"] .fn-nav-toggle {
 @media (max-width: 640px) {
   .fn-back-bar.unity-header {
     top: var(--fn-shell-top, 8px);
-    width: calc(100vw - 16px);
+    width: 100%;
+    max-width: calc(100vw - 20px);
     margin-bottom: 1rem;
+    gap: 6px;
+    padding: 6px 8px 6px 6px;
+    overflow: hidden;
+  }
+
+  .fn-back-bar.unity-header .unity-brand {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 8.5rem;
+    gap: 7px;
+    padding: 5px 8px 5px 5px;
+  }
+
+  .fn-back-bar.unity-header .unity-brand-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .fn-back-bar.unity-header .unity-brand-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+
+  .fn-back-bar.unity-header .unity-action,
+  .fn-back-bar.unity-header .unity-avatar,
+  .fn-back-bar.unity-header .nc-switcher-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 14px;
+    flex: 0 0 36px;
+  }
+
+  .fn-back-bar.unity-header .unity-avatar.unity-avatar--herald {
+    padding: 2px;
+    margin-left: 0;
   }
 }
 
