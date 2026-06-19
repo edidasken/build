@@ -481,7 +481,7 @@
     appAccentDk: '#b8871e',
     homeHref:    'index.html',
     avatarSrc:   'Images/icon-pwa.svg',
-    signInHref:  'app.flockos/',
+    signInHref:  new URL('app.flocknews/index.html?return=index.html', document.baseURI).href,
     onHamburger: () => setHeraldSidebar(),
     extras: [
       {

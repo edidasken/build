@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    document.documentElement.setAttribute('data-theme', 'herald');
+  </script>
+  <meta charset="UTF-8">
+  <base href="../">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>Herald — Sign In</title>
+
+  <link rel="manifest" href="app.flocknews/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="Images/icon-herald.svg">
+  <link rel="apple-touch-icon" href="Images/icon-512.png">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Herald">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Styles/app-login.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <img src="Images/icon-herald.svg" alt="">
+      </div>
+      <div>
+        <div class="brand-name">Herald</div>
+        <div class="brand-sub">A FlockOS Publication</div>
+      </div>
+    </div>
+
+    <div class="form-title">Sign in to continue</div>
+
+    <form id="signin-form" method="post" autocomplete="on" novalidate>
+      <div class="field-group">
+        <label for="herald-email">Email</label>
+        <input type="email" id="herald-email" name="email" placeholder="you@church.com" autocomplete="email" required>
+      </div>
+
+      <div class="field-group">
+        <label for="herald-pass">Passcode</label>
+        <input type="password" id="herald-pass" name="password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+
+      <button type="submit" class="btn-signin" id="herald-submit">Sign In</button>
+    </form>
+
+    <div class="error-msg" id="herald-error"></div>
+
+    <p class="foot-note">Use your FlockOS church account credentials.</p>
+    <a href="index.html" class="return-home-link">← Return to Herald</a>
+  </div>
+
+  <script>
+    window.FLOCK_FIREBASE_CONFIG = {
+      apiKey:            'AIzaSyBA-fkxjABbwIHn0i6MPiXbGwahfJmuJeo',
+      authDomain:        'flockos-notify.firebaseapp.com',
+      projectId:         'flockos-notify',
+      storageBucket:     'flockos-notify.firebasestorage.app',
+      messagingSenderId: '321766738616',
+      appId:             '1:321766738616:web:d2c1c53ad7493fcde4c24d',
+      measurementId:     'G-EFMSZE581W'
+    };
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" defer></script>
+  <script defer src="Scripts/firm_foundation.js"></script>
+  <script defer src="Scripts/the_upper_room.js"></script>
+  <script defer src="Scripts/the_true_vine.js"></script>
+
+  <script>
+    (function () {
+      function resolveReturnUrl() {
+        var params = new URLSearchParams(location.search);
+        var raw = params.get('return') || params.get('returnTo') || 'index.html';
+        var fallback = new URL('index.html', document.baseURI);
+        try {
+          var target = new URL(raw, document.baseURI);
+          var basePath = new URL('.', document.baseURI).pathname;
+          var isLoginPage = /\/app\.flocknews\/index\.html$/i.test(target.pathname);
+          if (target.origin !== location.origin || !target.pathname.startsWith(basePath) || isLoginPage) {
+            return fallback.href;
+          }
+          return target.href;
+        } catch (_) {
+          return fallback.href;
+        }
+      }
+
+      function ready(fn) {
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+        else fn();
+      }
+
+      ready(function () {
+        var returnUrl = resolveReturnUrl();
+        if (typeof Nehemiah !== 'undefined' && Nehemiah.isAuthenticated && Nehemiah.isAuthenticated()) {
+          window.location.replace(returnUrl);
+          return;
+        }
+
+        var form = document.getElementById('signin-form');
+        var btn = document.getElementById('herald-submit');
+        var errBox = document.getElementById('herald-error');
+
+        function showError(msg) {
+          errBox.textContent = msg;
+          errBox.classList.add('visible');
+        }
+        function clearError() {
+          errBox.classList.remove('visible');
+        }
+        function setLoading(on) {
+          btn.disabled = on;
+          btn.innerHTML = on ? '<span class="spinner"></span>Signing in…' : 'Sign In';
+        }
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          clearError();
+          var email = document.getElementById('herald-email').value.trim();
+          var pass = document.getElementById('herald-pass').value;
+          if (!email || !pass) {
+            showError('Please enter your email and passcode.');
+            return;
+          }
+          if (typeof Nehemiah === 'undefined' || typeof Nehemiah.login !== 'function') {
+            showError('Auth system not loaded yet. Please refresh and try again.');
+            return;
+          }
+          setLoading(true);
+          try {
+            await Nehemiah.login(email, pass);
+            window.location.replace(returnUrl);
+          } catch (err) {
+            setLoading(false);
+            showError(err.message || 'Sign in failed. Check your credentials and try again.');
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
