@@ -267,8 +267,13 @@ const TheVine = (() => {
       }
       url = baseUrl + '?' + new URLSearchParams(qsParams).toString();
       fetchOpts.method = 'POST';
-      fetchOpts.headers = { 'Content-Type': 'text/plain' };
-      fetchOpts.body = JSON.stringify(params);
+      if (opts.bodyMode === 'form') {
+        fetchOpts.headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+        fetchOpts.body = new URLSearchParams(params).toString();
+      } else {
+        fetchOpts.headers = { 'Content-Type': 'text/plain' };
+        fetchOpts.body = JSON.stringify(params);
+      }
     } else {
       url = baseUrl + '?' + new URLSearchParams(params).toString();
       fetchOpts.method = 'GET';
@@ -455,7 +460,7 @@ const TheVine = (() => {
     auth: {
       login: async (params) => {
         // POST so credentials go in the request body, not the URL query string
-        const data = await _call(_resolveUrl('FLOCK'), 'auth.login', params, { skipAuth: true, method: 'POST' });
+        const data = await _call(_resolveUrl('FLOCK'), 'auth.login', params, { skipAuth: true, method: 'POST', bodyMode: 'form' });
         if (data && data.ok) {
           if (data.session) _saveSession(data.session);
           else if (data.token) _saveSession(data);

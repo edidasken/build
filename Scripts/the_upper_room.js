@@ -390,7 +390,7 @@
     }
     console.log('[FLOCK-DEBUG] _mintAndSignIn() calling TheVine.flock.firebase.token({ churchId: ' + _churchId + ' })…');
     var _mintStart = Date.now();
-    return TheVine.flock.firebase.token({ churchId: _churchId })
+    return TheVine.flock.firebase.token({ churchId: _churchId }, { method: 'POST', bodyMode: 'form' })
       .then(function(res) {
         var token = res && (res.token || res.customToken);
         console.log('[FLOCK-DEBUG] _mintAndSignIn() token received in ' + (Date.now() - _mintStart) + 'ms — hasToken=' + !!token + ', tokenLength=' + (token ? token.length : 0));
@@ -425,8 +425,8 @@
     // Backward compatibility for older deployment paths.
     m = window.location.pathname.match(/\/Church\/([^/]+)\//);
     if (m) return m[1];
-    // Default FlockOS
-    return 'FlockOS';
+    // Default root FlockOS tenant id.
+    return 'flockos';
   }
 
   /* ══════════════════════════════════════════════════════════════════

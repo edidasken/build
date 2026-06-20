@@ -292,7 +292,7 @@
     var rows = _cache.access || [];
     var h = '<div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">';
     h += '<button onclick="TheFold.refreshAccess()" style="background:none;border:1px solid var(--line);border-radius:6px;padding:8px 16px;cursor:pointer;color:var(--ink);font-size:0.84rem;">Refresh Access</button>';
-    h += '<span style="font-size:0.78rem;color:var(--ink-muted);">Reset creates a one-time passcode and rewrites role, group, and module grants.</span>';
+    h += '<span style="font-size:0.78rem;color:var(--ink-muted);">Reset uses the passcode you set and rewrites role, group, and module grants.</span>';
     h += '</div>';
     if (!rows.length) return h + _empty('\uD83D\uDD10', 'No user accounts available.');
     h += '<table class="data-table"><thead><tr>'
@@ -372,11 +372,13 @@
 
   export async function resetPasscode(target) {
     if (!target) return;
-    if (!confirm('Reset passcode for ' + target + '?')) return;
+    var passcode = prompt('Set passcode for ' + target + ' (minimum 6 characters):', '');
+    if (!passcode) return;
+    if (passcode.trim().length < 6) { alert('Passcode must be at least 6 characters.'); return; }
+    if (!confirm('Set passcode for ' + target + '?')) return;
     try {
-      var res = await TheVine.flock.users.resetPasscode({ targetEmail: target });
-      var pass = res && (res.oneTimePassword || res.password || res.passcode);
-      alert('Passcode reset for ' + target + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+      await TheVine.flock.users.resetPasscode({ targetEmail: target, passcode: passcode.trim() });
+      alert('Passcode set for ' + target + '.');
       if (typeof TheScrolls !== 'undefined') TheScrolls.log(TheScrolls.TYPES.ADMIN_ACTION, target, 'Fold reset passcode', { personName: target });
     } catch (e) {
       alert('Failed: ' + (e.message || e));
@@ -390,15 +392,18 @@
     var template = prompt('Access template for ' + target + ':\n\n' + templateNames.join(', '), 'Lead Pastor');
     if (!template) return;
     if (templateNames.indexOf(template) === -1 && !confirm('Use custom template/group "' + template + '"?')) return;
+    var passcode = prompt('Set passcode for ' + target + ' (minimum 6 characters):', '');
+    if (!passcode) return;
+    if (passcode.trim().length < 6) { alert('Passcode must be at least 6 characters.'); return; }
     try {
-      var res = await TheVine.flock.users.resetAccess({
+      await TheVine.flock.users.resetAccess({
         targetEmail: target,
         template: template,
         role: template,
-        status: 'active'
+        status: 'active',
+        passcode: passcode.trim()
       });
-      var pass = res && (res.oneTimePassword || res.password || res.passcode);
-      alert('Access reset for ' + target + '\nTemplate: ' + template + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+      alert('Access reset for ' + target + '\nTemplate: ' + template);
       if (typeof TheScrolls !== 'undefined') TheScrolls.log(TheScrolls.TYPES.ADMIN_ACTION, target, 'Fold reset access', { personName: target, template: template });
       await refreshAccess();
     } catch (e) {

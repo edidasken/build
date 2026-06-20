@@ -71,7 +71,7 @@ export function mount(root) {
       _paintSortButtons(root);
       const grid = root.querySelector('[data-bind="members"]');
       if (grid && Object.keys(_personMap).length) {
-        const sorted = _sortRows(Object.values(_personMap));
+        const sorted = _sortRows(_uniquePeople());
         grid.innerHTML = sorted.map(_liveCard).join('');
         _wireCards(grid, root);
       }
@@ -93,8 +93,8 @@ export function mount(root) {
     searchEl.addEventListener('input', () => {
       const q = searchEl.value.toLowerCase().trim();
       root.querySelectorAll('.fold-card').forEach((card) => {
-        const name = (card.dataset.name || '').toLowerCase();
-        card.style.display = (!q || name.includes(q)) ? '' : 'none';
+        const haystack = (card.dataset.search || card.dataset.name || '').toLowerCase();
+        card.style.display = (!q || haystack.includes(q)) ? '' : 'none';
       });
     });
   }
@@ -144,29 +144,77 @@ function _sortRows(rows) {
   sorted.sort((a, b) => {
     switch (_currentSort) {
       case 'lastName': {
-        const la = (_memberField(a, 'lastName', 'Last Name', 'familyName', 'surname') || _foldPersonName(a)).toLowerCase();
-        const lb = (_memberField(b, 'lastName', 'Last Name', 'familyName', 'surname') || _foldPersonName(b)).toLowerCase();
-        return la < lb ? -1 : la > lb ? 1 : 0;
+        const ap = _memberNameParts(a);
+        const bp = _memberNameParts(b);
+        return _compareFoldPeople(
+          [ap.last || ap.full, ap.first, _canonicalMemberId(a)],
+          [bp.last || bp.full, bp.first, _canonicalMemberId(b)]
+        );
       }
       case 'role': {
-        const ra = (a.role || a.memberType || '').toLowerCase();
-        const rb = (b.role || b.memberType || '').toLowerCase();
-        return ra < rb ? -1 : ra > rb ? 1 : 0;
+        const ap = _memberNameParts(a);
+        const bp = _memberNameParts(b);
+        return _compareFoldPeople(
+          [a.role || a.memberType || '', ap.first, ap.last, _canonicalMemberId(a)],
+          [b.role || b.memberType || '', bp.first, bp.last, _canonicalMemberId(b)]
+        );
       }
       case 'joinDate': {
         const da = a.joinDate || a.memberSince || a.createdAt || '';
         const db = b.joinDate || b.memberSince || b.createdAt || '';
-        return da < db ? -1 : da > db ? 1 : 0;
+        if (da !== db) return da < db ? -1 : 1;
+        const ap = _memberNameParts(a);
+        const bp = _memberNameParts(b);
+        return _compareFoldPeople(
+          [ap.first || ap.full, ap.last, _canonicalMemberId(a)],
+          [bp.first || bp.full, bp.last, _canonicalMemberId(b)]
+        );
       }
       case 'firstName':
       default: {
-        const fa = (_memberField(a, 'preferredName', 'firstName', 'First Name', 'givenName') || _foldPersonName(a)).toLowerCase();
-        const fb = (_memberField(b, 'preferredName', 'firstName', 'First Name', 'givenName') || _foldPersonName(b)).toLowerCase();
-        return fa < fb ? -1 : fa > fb ? 1 : 0;
+        const ap = _memberNameParts(a);
+        const bp = _memberNameParts(b);
+        return _compareFoldPeople(
+          [ap.first || ap.full, ap.last, _canonicalMemberId(a)],
+          [bp.first || bp.full, bp.last, _canonicalMemberId(b)]
+        );
       }
     }
   });
   return sorted;
+}
+
+function _compareFoldPeople(left, right) {
+  for (let i = 0; i < Math.max(left.length, right.length); i++) {
+    const a = String(left[i] || '').toLowerCase();
+    const b = String(right[i] || '').toLowerCase();
+    if (a < b) return -1;
+    if (a > b) return 1;
+  }
+  return 0;
+}
+
+function _uniquePeople() {
+  const out = [];
+  const seen = new Set();
+  Object.values(_personMap).forEach((person) => {
+    const key = _memberLookupKey(person);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    out.push(person);
+  });
+  return out;
+}
+
+function _indexPerson(person) {
+  [
+    _memberLookupKey(person),
+    _canonicalMemberId(person),
+    _displayMemberId(person),
+    _memberField(person, 'email', 'primaryEmail', 'loginEmail'),
+  ].map(v => String(v || '').trim()).filter(Boolean).forEach((key) => {
+    _personMap[key] = person;
+  });
 }
 
 function _wireCards(grid, root) {
@@ -256,10 +304,7 @@ async function _loadMembers(root) {
     }
     // Build lookup map
     _personMap = {};
-    rows.forEach(r => {
-      const key = r.id || r.memberNumber || r.email || '';
-      if (key) _personMap[key] = r;
-    });
+    rows.forEach(_indexPerson);
     const sorted = _sortRows(rows);
     grid.innerHTML = sorted.map(_liveCard).join('');
     if (stats) stats.innerHTML = _liveStats(rows);
@@ -276,6 +321,20 @@ async function _loadMembers(root) {
 }
 
 async function _listFoldMembers(V, MXM, params) {
+  const UR = (typeof window !== 'undefined') ? window.UpperRoom : null;
+  if (UR && typeof UR.listMembers === 'function') {
+    try {
+      if (typeof UR.init === 'function') await UR.init();
+      if (typeof UR.isReady === 'function' && !UR.isReady() && typeof UR.authenticate === 'function') {
+        await UR.authenticate();
+      }
+      if (typeof UR.isReady !== 'function' || UR.isReady()) {
+        return await UR.listMembers(params);
+      }
+    } catch (err) {
+      console.warn('[TheFold] live members.list failed; trying GAS fallback:', err);
+    }
+  }
   const session = V && typeof V.session === 'function' ? V.session() : null;
   if (session && V?.flock?.members?.list) {
     try {
@@ -310,6 +369,8 @@ function _normalizeFoldMember(row) {
   const payload = _memberPayload(row);
   const out = { ...payload, ...(row || {}) };
   const parts = _memberNameParts(out);
+  const docId = _memberField(out, 'id', 'docId', 'docID', 'firestoreId', 'recordId', '_id');
+  if (docId) out.__foldDocId = docId;
   if (parts.first) out.firstName = parts.first;
   if (parts.last) out.lastName = parts.last;
   out.displayName = parts.full || _foldPersonName(out);
@@ -365,10 +426,57 @@ function _memberPayload(p) {
 function _memberField(p, ...keys) {
   const payload = _memberPayload(p);
   for (const key of keys) {
-    const value = p?.[key] ?? payload?.[key];
-    if (value !== undefined && value !== null && String(value).trim() !== '') return String(value).trim();
+    const direct = p?.[key];
+    if (direct !== undefined && direct !== null && String(direct).trim() !== '') return String(direct).trim();
+    const nested = payload?.[key];
+    if (nested !== undefined && nested !== null && String(nested).trim() !== '') return String(nested).trim();
   }
   return '';
+}
+
+function _canonicalMemberId(p) {
+  return _memberField(p, '__foldDocId', 'id', 'docId', 'docID', 'firestoreId', 'recordId', '_id');
+}
+
+function _displayMemberId(p) {
+  return _memberField(p, 'memberNumber', 'memberPin', 'Member Number', 'Member ID') || _canonicalMemberId(p) || _memberField(p, 'email', 'primaryEmail');
+}
+
+function _memberLookupKey(p) {
+  return _canonicalMemberId(p) || _displayMemberId(p) || _memberField(p, 'email', 'primaryEmail');
+}
+
+function _memberSearchText(p) {
+  const parts = _memberNameParts(p);
+  return [
+    parts.full,
+    parts.first,
+    parts.last,
+    _memberField(p, 'email', 'primaryEmail', 'loginEmail', 'username'),
+    _memberField(p, 'phone', 'primaryPhone', 'mobilePhone'),
+    _displayMemberId(p),
+  ].join(' ').toLowerCase();
+}
+
+async function _resolveMemberWriteId(person, MXM) {
+  const direct = _canonicalMemberId(person);
+  if (direct) return direct;
+
+  const candidates = [
+    _memberField(person, 'email', 'primaryEmail', 'loginEmail'),
+    _displayMemberId(person),
+  ].map(v => String(v || '').trim()).filter(Boolean);
+
+  for (const candidate of candidates) {
+    try {
+      const fresh = await MXM.get(candidate);
+      const normalized = fresh ? _normalizeFoldMember(fresh) : null;
+      const id = normalized ? _canonicalMemberId(normalized) : '';
+      if (id) return id;
+    } catch (_) {}
+  }
+
+  throw new Error('This member record is missing its document id. Reload The Fold and try again before saving changes.');
 }
 
 function _liveCard(p) {
@@ -379,11 +487,13 @@ function _liveCard(p) {
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
   const yr       = p.joinDate ? new Date(p.joinDate).getFullYear() : (p.createdAt ? new Date(p.createdAt).getFullYear() : '');
   const color    = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
-  const uid      = p.id || p.memberNumber || p.memberPin || p.email || '';
+  const docId    = _canonicalMemberId(p);
+  const uid      = _displayMemberId(p);
+  const cardKey  = _memberLookupKey(p);
   const email    = (p.email || p.primaryEmail || '').trim();
   const phoneRaw = (p.phone || p.primaryPhone || p.mobilePhone || '').trim();
   const phoneTel = phoneRaw.replace(/[^\d+]/g, '');
-  const bgCheck  = _bgCheckMap[uid] || null;
+  const bgCheck  = _bgCheckMap[docId] || _bgCheckMap[uid] || null;
   const bgBadge  = bgCheck?.status === 'clear'
     ? `<span class="wall-status-badge wall-status--ok" style="font-size:.66rem;padding:2px 7px">APPROVED</span>`
     : bgCheck?.status === 'consider'
@@ -401,7 +511,7 @@ function _liveCard(p) {
         : '';
   return `
     <article class="fold-card" role="listitem" tabindex="0"
-             data-name="${_e(name.toLowerCase())}" data-role="${_e(role)}" data-id="${_e(uid)}">
+             data-name="${_e(name.toLowerCase())}" data-search="${_e(_memberSearchText(p))}" data-role="${_e(role)}" data-id="${_e(cardKey)}">
       <div class="fold-avatar" style="background:${color}">${_e(initials.toUpperCase().slice(0,2))}</div>
       <div class="fold-card-body">
         <div class="fold-name">${_e(name)}</div>
@@ -510,7 +620,8 @@ function _accessResetPayload(person, target, selectedRole) {
   const role = String(selectedRole || '').toLowerCase();
   const email = String(person?.email || person?.primaryEmail || person?.loginEmail || '').trim();
   const username = String(person?.username || (email ? email : target) || '').trim();
-  const memberId = String(person?.userId || person?.memberNumber || person?.memberPin || person?.id || '').trim();
+  const memberId = _canonicalMemberId(person) || String(person?.userId || person?.memberNumber || person?.memberPin || '').trim();
+  const memberNumber = _displayMemberId(person);
   const firstName = String(person?.firstName || '').trim();
   const lastName = String(person?.lastName || '').trim();
   const displayName = _foldPersonName(person);
@@ -520,7 +631,8 @@ function _accessResetPayload(person, target, selectedRole) {
     username: username || target,
     email,
     memberId,
-    memberNumber: memberId,
+    memberNumber,
+    foldDocId: memberId,
     firstName,
     lastName,
     displayName,
@@ -565,8 +677,8 @@ function _openMemberSheet(person, V, onReload) {
   const last    = person.lastName  || '';
   const name    = _foldPersonName(person);
   const role    = (person.role || person.memberType || 'member');
-  const docId   = person.id || '';                                               // Firestore document ID — always use for writes
-  const uid     = person.memberNumber || person.memberPin || person.id || person.email || ''; // display / copy ID
+  const docId   = _canonicalMemberId(person);
+  const uid     = _displayMemberId(person);
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
   const color   = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
   const email    = (person.email || person.primaryEmail || '').trim();
@@ -707,7 +819,7 @@ function _openMemberSheet(person, V, onReload) {
             <button type="button" class="flock-btn flock-btn--sm" data-reset-user-passcode ${userTarget ? '' : 'disabled title="Add an email or username before resetting passcode"'}>
               Reset Passcode
             </button>
-            <span style="font-size:.76rem;color:var(--ink-muted);">Uses the selected access level and returns a one-time passcode.</span>
+            <span style="font-size:.76rem;color:var(--ink-muted);">Uses the selected access level and the passcode you set.</span>
           </div>` : ''}
         </div>
       </div>
@@ -734,7 +846,7 @@ function _openMemberSheet(person, V, onReload) {
   // The sheet opened with data from _personMap (built from list()). If that
   // list used the GAS fallback or had stale cache, fields may be wrong/empty.
   // A direct getMember() read always returns the current Firestore document.
-  const _freshId = docId || uid;
+  const _freshId = docId || _memberField(person, 'email', 'primaryEmail', 'loginEmail') || uid;
   if (_freshId) {
     MXM.get(_freshId).then(fresh => {
       if (!fresh || !_activeFoldSheet) return;
@@ -758,8 +870,8 @@ function _openMemberSheet(person, V, onReload) {
   }
 
   // Load current permissions
-  if (V && uid) {
-    MXP.get({ memberId: uid }).then(res => {
+  if (V && (docId || uid)) {
+    MXP.get({ memberId: docId || uid }).then(res => {
       const currentRole = (res && (res.role || res.accessRole || res.level || '')) || '';
       const sel = sheet.querySelector('[data-field="accessRole"]');
       if (sel && currentRole) sel.value = currentRole.toLowerCase();
@@ -824,15 +936,19 @@ function _openMemberSheet(person, V, onReload) {
     }
     _sheetConfirm({
       title: `Reset passcode for ${name}?`,
-      body: 'This will create a new one-time passcode for this user. Their permissions will not be changed.',
+      body: 'Set the passcode this user should use on their next login. Their permissions will not be changed.',
+      requireInput: true,
+      inputType: 'password',
+      inputPlaceholder: 'Set passcode',
+      inputHint: 'Minimum 6 characters. They can change it after login.',
+      inputMinLength: 6,
       confirmLabel: 'Reset Passcode',
-      onConfirm: async () => {
+      onConfirm: async (passcode) => {
         const btn = sheet.querySelector('[data-reset-user-passcode]');
         btn.disabled = true;
         try {
-          const res = await window.TheVine.flock.users.resetPasscode({ targetEmail: target });
-          const pass = res?.oneTimePassword || res?.password || res?.passcode || '';
-          alert('Passcode reset for ' + target + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+          await window.TheVine.flock.users.resetPasscode({ targetEmail: target, passcode: passcode });
+          alert('Passcode set for ' + target + '.');
         } catch (err) {
           console.error('[TheFold] reset passcode failed:', err);
           alert(err?.message || 'Could not reset passcode.');
@@ -853,19 +969,29 @@ function _openMemberSheet(person, V, onReload) {
     const roleLabel = ACCESS_ROLES.find(r => r.value === selectedRole)?.label || 'Read Only';
     _sheetConfirm({
       title: `Reset access for ${name}?`,
-      body: `This will set this user to <strong>${_e(roleLabel)}</strong>, reactivate the account, and create a new one-time passcode.`,
+      body: `This will set this user to <strong>${_e(roleLabel)}</strong>, reactivate the account, and set the passcode you enter here.`,
+      requireInput: true,
+      inputType: 'password',
+      inputPlaceholder: 'Set passcode',
+      inputHint: 'Minimum 6 characters. They can change it after login.',
+      inputMinLength: 6,
       confirmLabel: 'Reset Access',
-      onConfirm: async () => {
+      onConfirm: async (passcode) => {
         const btn = sheet.querySelector('[data-reset-user-access]');
         btn.disabled = true;
         try {
           const payload = _accessResetPayload(person, target, selectedRole);
-          const res = await window.TheVine.flock.users.resetAccess(payload);
-          if (selectedRole && uid) {
-            try { await MXP.set({ memberId: uid, role: selectedRole }); } catch (syncErr) { console.warn('[TheFold] member role sync after reset failed:', syncErr); }
+          payload.passcode = passcode;
+          await window.TheVine.flock.users.resetAccess(payload);
+          if (selectedRole) {
+            try {
+              const writeId = await _resolveMemberWriteId(person, MXM);
+              await MXP.set({ memberId: writeId, role: selectedRole });
+            } catch (syncErr) {
+              console.warn('[TheFold] member role sync after reset failed:', syncErr);
+            }
           }
-          const pass = res?.oneTimePassword || res?.password || res?.passcode || '';
-          alert('Access reset for ' + target + '\nAccess Level: ' + roleLabel + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+          alert('Access reset for ' + target + '\nAccess Level: ' + roleLabel);
           onReload?.();
         } catch (err) {
           console.error('[TheFold] reset access failed:', err);
@@ -881,8 +1007,17 @@ function _openMemberSheet(person, V, onReload) {
   sheet.querySelector('[data-save]').addEventListener('click', async () => {
     const btn = sheet.querySelector('[data-save]');
     btn.disabled = true; btn.textContent = 'Saving…';
+    let writeId = docId;
+    try {
+      writeId = await _resolveMemberWriteId(person, MXM);
+    } catch (err) {
+      console.error('[TheFold] member id resolve error:', err);
+      btn.disabled = false; btn.textContent = 'Save Changes';
+      alert(err?.message || 'Could not identify this member record for saving.');
+      return;
+    }
     const updates = {
-      id:         docId || uid,
+      id:         writeId,
       firstName:  sheet.querySelector('[data-field="firstName"]').value.trim(),
       lastName:   sheet.querySelector('[data-field="lastName"]').value.trim(),
       email:      sheet.querySelector('[data-field="email"]').value.trim(),
@@ -905,8 +1040,8 @@ function _openMemberSheet(person, V, onReload) {
       if (result === null && !MXM.isFirestore()) {
         throw new Error('Member could not be saved — directory sync unavailable. Please try again.');
       }
-      if (accessRole && uid) {
-        await MXP.set({ memberId: uid, role: accessRole });
+      if (accessRole && writeId) {
+        await MXP.set({ memberId: writeId, role: accessRole });
       }
       _closeMemberSheet();
       onReload?.();
@@ -919,7 +1054,7 @@ function _openMemberSheet(person, V, onReload) {
 
   // ── Inline confirmation modal helper ─────────────────────────────────────
   // Shows a modal layered over the sheet panel itself — no browser dialog.
-  // opts: { title, body, confirmLabel, confirmClass, requireInput, inputPlaceholder, inputExpected, onConfirm }
+  // opts: { title, body, confirmLabel, confirmClass, requireInput, inputPlaceholder, inputExpected, inputMinLength, inputType, onConfirm }
   function _sheetConfirm(opts) {
     const existing = sheet.querySelector('.fold-sheet-modal');
     if (existing) existing.remove();
@@ -932,7 +1067,7 @@ function _openMemberSheet(person, V, onReload) {
     ].join('');
 
     const inputHtml = opts.requireInput ? `
-      <input type="text" class="life-sheet-input fold-sheet-modal-input" placeholder="${_e(opts.inputPlaceholder || '')}" autocomplete="off"
+      <input type="${_e(opts.inputType || 'text')}" class="life-sheet-input fold-sheet-modal-input" placeholder="${_e(opts.inputPlaceholder || '')}" autocomplete="off"
         style="margin:10px 0 4px;font-size:.92rem;" />
       <div class="fold-sheet-modal-hint" style="font-size:.75rem;color:var(--ink-muted);margin-bottom:4px">${_e(opts.inputHint || '')}</div>
     ` : '';
@@ -961,15 +1096,21 @@ function _openMemberSheet(person, V, onReload) {
     if (opts.requireInput) {
       const inp = modal.querySelector('.fold-sheet-modal-input');
       inp.addEventListener('input', () => {
-        confirmBtn.disabled = inp.value.trim().toLowerCase() !== opts.inputExpected.trim().toLowerCase();
+        const value = inp.value.trim();
+        if (opts.inputExpected) {
+          confirmBtn.disabled = value.toLowerCase() !== opts.inputExpected.trim().toLowerCase();
+        } else {
+          confirmBtn.disabled = value.length < (opts.inputMinLength || 1);
+        }
       });
       inp.focus();
     }
 
     cancelBtn.addEventListener('click', () => modal.remove());
     confirmBtn.addEventListener('click', () => {
+      const inputValue = opts.requireInput ? modal.querySelector('.fold-sheet-modal-input')?.value.trim() : '';
       modal.remove();
-      opts.onConfirm();
+      opts.onConfirm(inputValue);
     });
   }
 
@@ -984,7 +1125,8 @@ function _openMemberSheet(person, V, onReload) {
         const btn = sheet.querySelector('[data-archive]');
         btn.disabled = true;
         try {
-          await MXM.update({ id: docId || uid, status: 'Inactive', membershipStatus: 'Archived' });
+          const writeId = await _resolveMemberWriteId(person, MXM);
+          await MXM.update({ id: writeId, status: 'Inactive', membershipStatus: 'Archived' });
           _closeMemberSheet();
           onReload?.();
         } catch (err) {
@@ -1017,7 +1159,8 @@ function _openMemberSheet(person, V, onReload) {
         const btn = sheet.querySelector('[data-delete]');
         btn.disabled = true;
         try {
-          await MXM.delete(docId || uid);
+          const writeId = await _resolveMemberWriteId(person, MXM);
+          await MXM.delete(writeId);
           _closeMemberSheet();
           onReload?.();
         } catch (err) {
@@ -1137,7 +1280,7 @@ function _openFoldCareSheet(person, { connected = false } = {}) {
   const first = person.firstName || '';
   const last  = person.lastName  || '';
   const name  = _foldPersonName(person);
-  const uid   = person.id || person.memberNumber || person.memberPin || person.email || '';
+  const uid   = _canonicalMemberId(person) || _displayMemberId(person);
   const color = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
 
