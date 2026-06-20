@@ -306,10 +306,17 @@ async function _loadBgChecks() {
 
 const _AVATAR_COLORS = ['#7c3aed','#0ea5e9','#059669','#c05818','#db2777','#6366f1','#0891b2','#b45309','#be185d','#4f46e5'];
 
+function _foldPersonName(p) {
+  const first = p?.preferredName || p?.firstName || p?.givenName || '';
+  const last = p?.lastName || p?.familyName || p?.surname || '';
+  const full = `${first} ${last}`.trim();
+  return full || p?.displayName || p?.name || p?.email || p?.primaryEmail || p?.username || 'Unknown';
+}
+
 function _liveCard(p) {
   const first    = p.firstName || '';
   const last     = p.lastName  || '';
-  const name     = p.displayName || p.name || `${first} ${last}`.trim() || 'Unknown';
+  const name     = _foldPersonName(p);
   const role     = (p.role || p.memberType || 'member').toLowerCase();
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
   const yr       = p.joinDate ? new Date(p.joinDate).getFullYear() : (p.createdAt ? new Date(p.createdAt).getFullYear() : '');
@@ -433,13 +440,35 @@ function _foldUserTarget(person) {
     person?.email ||
     person?.primaryEmail ||
     person?.loginEmail ||
+    person?.userId ||
+    person?.memberNumber ||
+    person?.memberPin ||
+    person?.id ||
     ''
   ).trim();
 }
 
-function _accessResetPayload(target, selectedRole) {
+function _accessResetPayload(person, target, selectedRole) {
   const role = String(selectedRole || '').toLowerCase();
-  const base = { targetEmail: target, status: 'active' };
+  const email = String(person?.email || person?.primaryEmail || person?.loginEmail || '').trim();
+  const username = String(person?.username || (email ? email : target) || '').trim();
+  const memberId = String(person?.userId || person?.memberNumber || person?.memberPin || person?.id || '').trim();
+  const firstName = String(person?.firstName || '').trim();
+  const lastName = String(person?.lastName || '').trim();
+  const displayName = _foldPersonName(person);
+  const base = {
+    targetEmail: email || target,
+    targetUsername: username || target,
+    username: username || target,
+    email,
+    memberId,
+    memberNumber: memberId,
+    firstName,
+    lastName,
+    displayName,
+    createIfMissing: true,
+    status: 'active'
+  };
   if (role === 'admin') return { ...base, template: 'Admin', role: 'Admin' };
   if (role === 'pastor') return { ...base, template: 'Lead Pastor', role: 'Lead Pastor' };
   if (role === 'care') return { ...base, template: 'Care Team', role: 'Care Team' };
@@ -476,7 +505,7 @@ function _openMemberSheet(person, V, onReload) {
   const MXP = buildAdapter('flock.permissions', V);
   const first   = person.firstName || '';
   const last    = person.lastName  || '';
-  const name    = person.displayName || person.name || `${first} ${last}`.trim() || 'Unknown';
+  const name    = _foldPersonName(person);
   const role    = (person.role || person.memberType || 'member');
   const docId   = person.id || '';                                               // Firestore document ID — always use for writes
   const uid     = person.memberNumber || person.memberPin || person.id || person.email || ''; // display / copy ID
@@ -771,7 +800,7 @@ function _openMemberSheet(person, V, onReload) {
         const btn = sheet.querySelector('[data-reset-user-access]');
         btn.disabled = true;
         try {
-          const payload = _accessResetPayload(target, selectedRole);
+          const payload = _accessResetPayload(person, target, selectedRole);
           const res = await window.TheVine.flock.users.resetAccess(payload);
           if (selectedRole && uid) {
             try { await MXP.set({ memberId: uid, role: selectedRole }); } catch (syncErr) { console.warn('[TheFold] member role sync after reset failed:', syncErr); }
@@ -1048,7 +1077,7 @@ function _openFoldCareSheet(person, { connected = false } = {}) {
   const MXC = buildAdapter('flock.care', V);
   const first = person.firstName || '';
   const last  = person.lastName  || '';
-  const name  = person.displayName || person.name || `${first} ${last}`.trim() || 'Unknown';
+  const name  = _foldPersonName(person);
   const uid   = person.id || person.memberNumber || person.memberPin || person.email || '';
   const color = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
@@ -1234,7 +1263,7 @@ function _openFoldPrayerSheet(person) {
   const MX = buildAdapter('flock.prayer', V);
   const first = person.firstName || '';
   const last  = person.lastName  || '';
-  const name  = person.displayName || person.name || `${first} ${last}`.trim() || 'Unknown';
+  const name  = _foldPersonName(person);
   const color = _AVATAR_COLORS[(name.charCodeAt(0) + (name.charCodeAt(1) || 0)) % _AVATAR_COLORS.length];
   const initials = (first ? first[0] : (name[0] || '')) + (last ? last[0] : (name[1] || ''));
 
