@@ -117,7 +117,8 @@ const TheVine = (() => {
       const raw = sessionStorage.getItem(_config.SESSION_KEY);
       if (!raw) return null;
       const s = JSON.parse(raw);
-      if (!s || !s.token || !s.email) return null;
+      const identity = s && (s.email || s.username || s.displayName || s.name || s.id || s.uid);
+      if (!s || !s.token || !identity) return null;
       if (s.expiresAt && Date.now() > s.expiresAt) {
         sessionStorage.removeItem(_config.SESSION_KEY);
         return null;
@@ -242,8 +243,10 @@ const TheVine = (() => {
       const session = _getSession();
       if (session) {
         params.token     = params.token     || session.token;
-        params.authEmail = params.authEmail || session.email;
-        params.email     = params.email     || session.email;
+        if (session.email) {
+          params.authEmail = params.authEmail || session.email;
+          params.email     = params.email     || session.email;
+        }
       }
     }
 
@@ -257,9 +260,11 @@ const TheVine = (() => {
     if (usePost) {
       // POST: send only lightweight keys on the URL; payload goes in the body
       var qsParams = { action: params.action, _: params._ };
-      if (params.token)     qsParams.token     = params.token;
-      if (params.authEmail) qsParams.authEmail = params.authEmail;
-      if (params.email)     qsParams.email     = params.email;
+      if (!opts.skipAuth) {
+        if (params.token)     qsParams.token     = params.token;
+        if (params.authEmail) qsParams.authEmail = params.authEmail;
+        if (params.email)     qsParams.email     = params.email;
+      }
       url = baseUrl + '?' + new URLSearchParams(qsParams).toString();
       fetchOpts.method = 'POST';
       fetchOpts.headers = { 'Content-Type': 'text/plain' };

@@ -9,7 +9,7 @@
 
    Responsibilities:
      1. Gate check — is the user authenticated?  (isAuthenticated)
-     2. Login      — email + passcode → token    (login)
+     2. Login      — username/email + passcode → token    (login)
      3. Logout     — clear session + server       (logout)
      4. Register   — self-registration            (register)
      5. Forgot     — password reset request        (forgotPassword)
@@ -23,7 +23,7 @@
 
    Usage:
      Nehemiah.guard();                              // redirect if not logged in
-     Nehemiah.login('user@email.com', 'pass123');   // returns session or throws
+     Nehemiah.login('admin', 'pass123');            // returns session or throws
      Nehemiah.logout();                             // clears everything
      Nehemiah.isAuthenticated();                    // true / false
      Nehemiah.requireRole('pastor');                // throws if insufficient
@@ -419,20 +419,26 @@ var Nehemiah = (() => {
   // ── Login ────────────────────────────────────────────────────────────────
 
   /**
-   * Authenticates with email + passcode via John (Flock API).
+   * Authenticates with username/email + passcode via John (Flock API).
    * On success: saves session + profile to sessionStorage, returns session.
    * On failure: throws an Error with the server's message.
    *
-   * @param {string} email
+   * @param {string} identifier
    * @param {string} passcode
-   * @returns {Promise<Object>} session object { token, email, role, displayName, expiresAt }
+   * @returns {Promise<Object>} session object { token, email, username, role, displayName, expiresAt }
    */
-  async function login(email, passcode) {
-    if (!email || !passcode) {
-      throw new Error('Email and passcode are required.');
+  async function login(identifier, passcode) {
+    const loginId = String(identifier || '').trim();
+    if (!loginId || !passcode) {
+      throw new Error('Username/email and passcode are required.');
     }
 
-    const result = await TheVine.john.auth.login({ email, passcode });
+    const result = await TheVine.john.auth.login({
+      username: loginId,
+      email: loginId,
+      passcode,
+      password: passcode
+    });
 
     if (!result || !result.ok) {
       throw new Error((result && result.error) || 'Login failed.');

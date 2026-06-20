@@ -22,9 +22,9 @@ export async function renderGarments(/* { mode } */) {
         <p class="garments-sub">Tend the flock entrusted to you.</p>
 
         <div class="garments-field">
-          <label class="garments-label" for="gc-email">Email</label>
-          <input class="garments-input" id="gc-email" type="email" name="email"
-                 autocomplete="email" required placeholder="you@church.org">
+          <label class="garments-label" for="gc-identifier">Username or email</label>
+          <input class="garments-input" id="gc-identifier" type="text" name="identifier"
+                 autocomplete="username" required placeholder="admin or you@church.org">
         </div>
         <div class="garments-field">
           <label class="garments-label" for="gc-passcode">Passcode</label>
@@ -84,9 +84,9 @@ export async function renderGarments(/* { mode } */) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       errBox.textContent = '';
-      const email    = form.email.value.trim();
+      const identifier = form.identifier.value.trim();
       const passcode = form.passcode.value;
-      const v  = weighAll(email,    [rules.required, rules.email]);
+      const v  = weighAll(identifier, [rules.required]);
       if (!v.ok)  { errBox.textContent = v.message; return; }
       const v2 = weighAll(passcode, [rules.required]);
       if (!v2.ok) { errBox.textContent = v2.message; return; }
@@ -99,8 +99,8 @@ export async function renderGarments(/* { mode } */) {
           _setLoading(false);
           return;
         }
-        // Nehemiah.login(email, passcode) — two separate args; throws on failure
-        const session = await N.login(email, passcode);
+        // Nehemiah.login(identifier, passcode) — two separate args; throws on failure
+        const session = await N.login(identifier, passcode);
         close({ ok: true, profile: (session && session.profile) || null });
       } catch (err) {
         _setLoading(false);
@@ -109,7 +109,7 @@ export async function renderGarments(/* { mode } */) {
     });
 
     document.body.appendChild(root);
-    setTimeout(() => form.querySelector('#gc-email').focus(), 30);
+    setTimeout(() => form.querySelector('#gc-identifier').focus(), 30);
 
     root.querySelector('[data-act="request-access"]')?.addEventListener('click', () => {
       window.open('grow-public.html?signup=1', '_self');

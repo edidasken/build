@@ -241,7 +241,7 @@ async function _loadMembers(root) {
   }
   grid.innerHTML = '<div class="life-empty">Loading members…</div>';
   try {
-    const res  = await MXM.list({ limit: 500 });
+    const res  = await _listFoldMembers(V, MXM, { limit: 500 });
     const all  = _rows(res);
     // Filter client-side: keep active/non-inactive members
     const rows = all.filter(r => {
@@ -273,6 +273,18 @@ async function _loadMembers(root) {
     console.error('[TheFold] members.list error:', err);
     grid.innerHTML = '<div class="life-empty">Could not load members right now.</div>';
   }
+}
+
+async function _listFoldMembers(V, MXM, params) {
+  const session = V && typeof V.session === 'function' ? V.session() : null;
+  if (session && V?.flock?.members?.list) {
+    try {
+      return await V.flock.members.list(params);
+    } catch (err) {
+      console.warn('[TheFold] GAS members.list failed; trying live adapter:', err);
+    }
+  }
+  return MXM.list(params);
 }
 
 function _rows(res) {
@@ -398,6 +410,56 @@ const ACCESS_ROLES = [
   { value: 'admin',    label: 'Admin — complete access' },
 ];
 
+function _canResetFoldAccess(V) {
+  try {
+    const s = V && typeof V.session === 'function' ? V.session() : null;
+    if (!s) return false;
+    const role = String(s.role || '').toLowerCase();
+    if (role === 'admin' || role === 'lead pastor' || Number(s.roleLevel || 0) >= 5) return true;
+    let groups = s.groups || [];
+    if (typeof groups === 'string') groups = JSON.parse(groups || '[]');
+    return groups.some(g => {
+      const v = String(g || '').toLowerCase();
+      return v === 'admin' || v === 'lead pastor' || v === 'master' || v === 'seed admin';
+    });
+  } catch (_) {
+    return false;
+  }
+}
+
+function _foldUserTarget(person) {
+  return String(
+    person?.username ||
+    person?.email ||
+    person?.primaryEmail ||
+    person?.loginEmail ||
+    ''
+  ).trim();
+}
+
+function _accessResetPayload(target, selectedRole) {
+  const role = String(selectedRole || '').toLowerCase();
+  const base = { targetEmail: target, status: 'active' };
+  if (role === 'admin') return { ...base, template: 'Admin', role: 'Admin' };
+  if (role === 'pastor') return { ...base, template: 'Lead Pastor', role: 'Lead Pastor' };
+  if (role === 'care') return { ...base, template: 'Care Team', role: 'Care Team' };
+  if (role === 'volunteer') return { ...base, template: 'Volunteer Coordinator', role: 'Volunteer Coordinator' };
+  if (role === 'leader') {
+    return {
+      ...base,
+      role: 'Leader',
+      groups: ['Leader'],
+      moduleGrants: ['members:read', 'groups:*', 'events:read', 'tasks:*', 'care:read'],
+    };
+  }
+  return {
+    ...base,
+    role: 'Readonly',
+    groups: ['Readonly'],
+    moduleGrants: ['members:read', 'events:read', 'groups:read'],
+  };
+}
+
 function _closeMemberSheet(el) {
   const target = el || _activeFoldSheet;
   if (!target) return;
@@ -423,6 +485,8 @@ function _openMemberSheet(person, V, onReload) {
   const email    = (person.email || person.primaryEmail || '').trim();
   const phoneRaw = (person.phone || person.primaryPhone || person.mobilePhone || '').trim();
   const phoneTel = phoneRaw.replace(/[^\d+]/g, '');
+  const userTarget = _foldUserTarget(person);
+  const canResetAccess = _canResetFoldAccess(V);
 
   const sheet = document.createElement('div');
   sheet.className = 'life-sheet';
@@ -548,6 +612,16 @@ function _openMemberSheet(person, V, onReload) {
             <option value="">— No access (not a FlockOS user) —</option>
             ${ACCESS_ROLES.map(r => `<option value="${_e(r.value)}">${_e(r.label)}</option>`).join('')}
           </select>
+          ${canResetAccess ? `
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;">
+            <button type="button" class="flock-btn flock-btn--sm flock-btn--primary" data-reset-user-access ${userTarget ? '' : 'disabled title="Add an email or username before resetting access"'}>
+              Reset User Access
+            </button>
+            <button type="button" class="flock-btn flock-btn--sm" data-reset-user-passcode ${userTarget ? '' : 'disabled title="Add an email or username before resetting passcode"'}>
+              Reset Passcode
+            </button>
+            <span style="font-size:.76rem;color:var(--ink-muted);">Uses the selected access level and returns a one-time passcode.</span>
+          </div>` : ''}
         </div>
       </div>
       <div class="life-sheet-foot">
@@ -647,6 +721,71 @@ function _openMemberSheet(person, V, onReload) {
       if (kind === 'text')  { ev.preventDefault(); openContactComposer({ channel: 'text',  name: n, recipient: value, target: tel }); }
       if (kind === 'email') { ev.preventDefault(); openContactComposer({ channel: 'email', name: n, recipient: value, target: value }); }
       // 'call' falls through to native <a href="tel:"> — touch is logged above
+    });
+  });
+
+  function _currentUserTarget() {
+    return userTarget || sheet.querySelector('[data-field="email"]')?.value.trim() || '';
+  }
+
+  sheet.querySelector('[data-reset-user-passcode]')?.addEventListener('click', () => {
+    const target = _currentUserTarget();
+    if (!target) {
+      alert('Add an email or username before resetting this user.');
+      return;
+    }
+    _sheetConfirm({
+      title: `Reset passcode for ${name}?`,
+      body: 'This will create a new one-time passcode for this user. Their permissions will not be changed.',
+      confirmLabel: 'Reset Passcode',
+      onConfirm: async () => {
+        const btn = sheet.querySelector('[data-reset-user-passcode]');
+        btn.disabled = true;
+        try {
+          const res = await window.TheVine.flock.users.resetPasscode({ targetEmail: target });
+          const pass = res?.oneTimePassword || res?.password || res?.passcode || '';
+          alert('Passcode reset for ' + target + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+        } catch (err) {
+          console.error('[TheFold] reset passcode failed:', err);
+          alert(err?.message || 'Could not reset passcode.');
+        } finally {
+          btn.disabled = false;
+        }
+      },
+    });
+  });
+
+  sheet.querySelector('[data-reset-user-access]')?.addEventListener('click', () => {
+    const target = _currentUserTarget();
+    if (!target) {
+      alert('Add an email or username before resetting this user.');
+      return;
+    }
+    const selectedRole = sheet.querySelector('[data-field="accessRole"]')?.value || 'readonly';
+    const roleLabel = ACCESS_ROLES.find(r => r.value === selectedRole)?.label || 'Read Only';
+    _sheetConfirm({
+      title: `Reset access for ${name}?`,
+      body: `This will set this user to <strong>${_e(roleLabel)}</strong>, reactivate the account, and create a new one-time passcode.`,
+      confirmLabel: 'Reset Access',
+      onConfirm: async () => {
+        const btn = sheet.querySelector('[data-reset-user-access]');
+        btn.disabled = true;
+        try {
+          const payload = _accessResetPayload(target, selectedRole);
+          const res = await window.TheVine.flock.users.resetAccess(payload);
+          if (selectedRole && uid) {
+            try { await MXP.set({ memberId: uid, role: selectedRole }); } catch (syncErr) { console.warn('[TheFold] member role sync after reset failed:', syncErr); }
+          }
+          const pass = res?.oneTimePassword || res?.password || res?.passcode || '';
+          alert('Access reset for ' + target + '\nAccess Level: ' + roleLabel + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+          onReload?.();
+        } catch (err) {
+          console.error('[TheFold] reset access failed:', err);
+          alert(err?.message || 'Could not reset user access.');
+        } finally {
+          btn.disabled = false;
+        }
+      },
     });
   });
 
