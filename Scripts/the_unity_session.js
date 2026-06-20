@@ -9,7 +9,8 @@ export function readUnitySession() {
   const profile = _readJson(PROFILE_KEY);
   const merged = { ...(session || {}), ...(profile || {}) };
   if (!merged.email && session?.authEmail) merged.email = session.authEmail;
-  if (!merged.email) return null;
+  const identity = _identity(merged);
+  if (!identity) return null;
   if (merged.expiresAt && Date.now() > Number(merged.expiresAt)) {
     clearUnitySession();
     return null;
@@ -18,13 +19,21 @@ export function readUnitySession() {
 }
 
 export function readUnityUser(fallback = null) {
-  if (fallback && fallback.email) return fallback;
+  if (fallback && _identity(fallback)) return _normalizeUser(fallback);
   const s = readUnitySession();
-  if (!s || !s.email) return null;
+  if (!s || !_identity(s)) return null;
+  return _normalizeUser(s);
+}
+
+function _normalizeUser(s) {
+  const identity = _identity(s);
+  const label = s.displayName || s.name || [s.firstName, s.lastName].filter(Boolean).join(' ') || identity;
   return {
     uid:         s.uid || s.userId || s.memberId || '',
-    displayName: s.displayName || s.name || [s.firstName, s.lastName].filter(Boolean).join(' ') || String(s.email).split('@')[0],
-    email:       s.email,
+    displayName: label,
+    email:       s.email || '',
+    username:    s.username || '',
+    identity,
     photoURL:    s.photoURL || s.photo || '',
     role:        s.role || '',
     roleLevel:   s.roleLevel || 0,
@@ -70,7 +79,7 @@ export function ensureUnityMinted() {
 export function canAccessUnityApp(app, session = readUnitySession()) {
   if (!app) return false;
   if (app.public) return true;
-  if (!session || !session.email) return false;
+  if (!session || !_identity(session)) return false;
   if (session.isSeed || Number(session.roleLevel || 0) >= 5) return true;
   if (_hasBypassGroup(session)) return true;
 
@@ -100,6 +109,12 @@ function _hasBypassGroup(session) {
 
 function _norm(value) {
   return String(value || '').trim().toLowerCase();
+}
+
+function _identity(value) {
+  return String(
+    (value && (value.email || value.username || value.displayName || value.name || value.id || value.uid)) || ''
+  ).trim();
 }
 
 function _readJson(key) {

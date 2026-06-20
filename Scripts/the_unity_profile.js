@@ -173,12 +173,13 @@ function ensureSheet() {
 function _populateMainHeader() {
   if (!_sheet) return;
   const { user } = _opts;
-  const signedIn = !!(user && user.email);
+  const identity = _userIdentity(user);
+  const signedIn = !!identity;
   const display = signedIn
-    ? (user.displayName || user.name || user.email.split('@')[0])
+    ? (user.displayName || user.name || identity)
     : 'Herald Account';
-  const email = signedIn
-    ? user.email
+  const subline = signedIn
+    ? identity
     : 'Sign in to access profile tools';
   const av = _sheet.querySelector('.unity-pp-avatar');
   if (av) {
@@ -187,12 +188,12 @@ function _populateMainHeader() {
     av.textContent = '';
   }
   _sheet.querySelector('.unity-pp-name').textContent  = display;
-  _sheet.querySelector('.unity-pp-email').textContent = email;
+  _sheet.querySelector('.unity-pp-email').textContent = subline;
 }
 
 function _renderMainList() {
   if (!_sheet) return;
-  const signedIn = !!(_opts.user && _opts.user.email);
+  const signedIn = !!_userIdentity(_opts.user);
   const items = signedIn ? ITEMS : SIGNED_OUT_ITEMS;
   _sheet.querySelector('.unity-pp-list').innerHTML = items.map(it => it.divider
     ? `<div class="unity-pp-divider"></div>`
@@ -209,7 +210,7 @@ function _wireMainItems() {
     const btn = e.target.closest('.unity-pp-item');
     if (!btn) return;
     const id   = btn.dataset.id;
-    const items = (_opts.user && _opts.user.email) ? ITEMS : SIGNED_OUT_ITEMS;
+    const items = _userIdentity(_opts.user) ? ITEMS : SIGNED_OUT_ITEMS;
     const item = items.find(it => it.id === id);
     if (!item) return;
 
@@ -252,7 +253,9 @@ function _wireMainItems() {
 function _renderProfileView() {
   const { user } = _opts;
   const view    = _sheet.querySelector('[data-view="profile"]');
-  const display = user.displayName || user.name || user.email.split('@')[0];
+  const identity = _userIdentity(user);
+  const display = user.displayName || user.name || identity;
+  const identityLabel = user.email ? 'Email' : 'Username';
   const photo   = user.photoURL || '';
 
   const avatarContent = photo
@@ -273,8 +276,8 @@ function _renderProfileView() {
         <input class="unity-sv-input" id="pp-name" type="text" value="${_ea(display)}" placeholder="Your name" autocomplete="name" maxlength="60">
       </div>
       <div class="unity-sv-field">
-        <label class="unity-sv-label" for="pp-email">Email</label>
-        <input class="unity-sv-input unity-sv-input--readonly" id="pp-email" type="email" value="${_ea(user.email)}" readonly>
+        <label class="unity-sv-label" for="pp-email">${_e(identityLabel)}</label>
+        <input class="unity-sv-input unity-sv-input--readonly" id="pp-email" type="text" value="${_ea(identity)}" readonly>
       </div>
       <div class="unity-sv-field">
         <label class="unity-sv-label" for="pp-photo">Photo URL</label>
@@ -330,6 +333,10 @@ function _persistProfile(displayName, photoURL) {
       sessionStorage.setItem(key, JSON.stringify(s));
     } catch (_) {}
   });
+}
+
+function _userIdentity(user) {
+  return String((user && (user.email || user.username || user.identity || user.displayName || user.name || user.uid)) || '').trim();
 }
 
 // ── Settings sub-view ──────────────────────────────────────────────────────────
