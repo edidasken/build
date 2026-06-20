@@ -2494,6 +2494,334 @@ body.veil-app .harvest-stat-n {
   margin-top: 0;
 }
 
+body.veil-app :is(.pray-liturgy-list, .lampstand) {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+body.veil-app .wall-setting-row,
+body.veil-app .wall-setting-row > * {
+  min-width: 0;
+}
+
+body.veil-app :is(.wall-setting-label, .wall-setting-value) {
+  overflow-wrap: anywhere;
+}
+
+/* Full FlockOS route sweep: every registered module shares the same canvas,
+   header, panel, row, form, and empty-state treatment. */
+body.veil-app {
+  --grow-accent: var(--view-accent, var(--flockos-gold));
+  --surface: #ffffff;
+  --border: rgba(15,23,42,0.12);
+  --text: var(--flockos-navy);
+  --muted: #64748b;
+}
+
+body.veil-app #the-holy-place > :is(
+  .pasture,
+  .grow-page,
+  .fold-view,
+  .life-view,
+  .seasons-view,
+  .aow-view,
+  .ann-view,
+  .about-frame-view,
+  .bz-view,
+  .content-admin-view,
+  .ctf-view,
+  .data-view,
+  .do-view,
+  .fellowship-frame-view,
+  .fish-view,
+  .gen-view,
+  .inv-view,
+  .lm-view,
+  .pc-view,
+  .pent-view,
+  .pray-view,
+  .qwp-view,
+  .gc-view,
+  .harvest-view,
+  .sdr-view,
+  .upper-room,
+  .way-view,
+  .truth-view,
+  .gift-view,
+  .wv-view,
+  .wall-view
+) {
+  width: 100%;
+  min-width: 0;
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.do-view, .grow-page) {
+  --view-accent: var(--flockos-gold);
+  --view-accent-2: var(--flockos-cyan);
+  --view-accent-soft: rgba(247,199,86,.12);
+  --accent: var(--view-accent);
+  --accent-soft: var(--view-accent-soft);
+  --grow-accent: var(--view-accent);
+  gap: 22px;
+}
+
+body.veil-app :is(.do-view, .fellowship-frame-view, .grow-page) > :is(.page-hero, .grow-hero),
+body.veil-app .upper-room > .page-hero {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: clamp(26px, 4vw, 42px);
+  border: 1px solid rgba(247,199,86,.25);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 86% 12%, rgba(72,211,217,0.12), transparent 18rem),
+    radial-gradient(circle at 14% 88%, rgba(247,199,86,0.12), transparent 18rem),
+    linear-gradient(135deg, rgba(15,23,42,.96), rgba(15,23,42,.92));
+  color: #f8fafc;
+  box-shadow: var(--flockos-shadow);
+  isolation: isolate;
+}
+
+body.veil-app :is(.do-view, .fellowship-frame-view, .grow-page) > :is(.page-hero, .grow-hero)::before,
+body.veil-app .upper-room > .page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.08), transparent 46%),
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 54%);
+  pointer-events: none;
+}
+
+body.veil-app :is(
+  .do-workflow-grid,
+  .grow-grid,
+  .grow-list,
+  .grow-devo-feed,
+  .grow-apo-list,
+  .grow-apo-cards,
+  .grow-quiz-opts,
+  .grow-quiz-cats,
+  .grow-segments
+) {
+  gap: 12px;
+}
+
+body.veil-app :is(
+  .do-workflow-grid,
+  .grow-grid,
+  .grow-list,
+  .grow-devo-feed,
+  .grow-apo-list
+) {
+  min-width: 0;
+}
+
+body.veil-app :is(
+  .grow-toolbar,
+  .grow-section-head,
+  .grow-devo-feed-head,
+  .grow-apo-section-head,
+  .grow-quiz-progress-bar,
+  .do-view .fold-toolbar,
+  .do-view .way-section-header
+) {
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 10rem),
+    rgba(255,255,255,.95);
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app :is(
+  .grow-toolbar,
+  .grow-section-head,
+  .grow-devo-feed-head,
+  .grow-apo-section-head,
+  .do-view .fold-toolbar,
+  .do-view .way-section-header
+) {
+  padding: 14px 16px;
+}
+
+body.veil-app :is(
+  .grow-card,
+  .grow-card--counsel,
+  .grow-empty,
+  .grow-skel-card,
+  .grow-split-aside,
+  .grow-split-main,
+  .grow-devo-featured,
+  .grow-devo-feed-card,
+  .grow-devo,
+  .grow-apo-card,
+  .grow-quiz-lobby,
+  .grow-quiz-q-card,
+  .grow-quiz-review-card,
+  .grow-rx-card,
+  .grow-heart-cat,
+  .grow-scan-bars,
+  .grow-table-wrap,
+  .grow-segment,
+  .grow-quiz-cat-chip,
+  .do-view .life-card
+) {
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: var(--flockos-radius-md);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.12), transparent 12rem),
+    #ffffff;
+  color: var(--flockos-navy);
+  box-shadow: var(--flockos-shadow-soft);
+}
+
+body.veil-app :is(
+  .grow-card,
+  .grow-card--counsel,
+  .grow-devo-feed-card,
+  .grow-apo-card,
+  .grow-quiz-review-card,
+  .do-view .life-card
+):hover {
+  border-color: rgba(15,23,42,.12);
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.14), transparent 12rem),
+    #ffffff;
+  box-shadow: 0 18px 44px rgba(15,23,42,.08);
+}
+
+body.veil-app :is(
+  .grow-card-cover--placeholder,
+  .grow-hero-icon,
+  .grow-empty-icon,
+  .grow-quiz-q-num,
+  .grow-quiz-opt-letter,
+  .grow-apo-num,
+  .do-view .life-card-icon
+) {
+  border: 1px solid rgba(15,23,42,0.08);
+  background: rgba(247,199,86,0.14) !important;
+  color: var(--flockos-gold-deep);
+  box-shadow: none;
+}
+
+body.veil-app :is(
+  .grow-card-title,
+  .grow-section-title,
+  .grow-empty-title,
+  .grow-quiz-q-text,
+  .grow-quiz-big-label,
+  .grow-quiz-review-q,
+  .grow-devo-feat-title,
+  .grow-devo-feed-title,
+  .grow-apo-section-title,
+  .grow-apo-qtext,
+  .grow-heart-cat-title,
+  .grow-card-body h3,
+  .do-view .life-card-name
+) {
+  color: var(--flockos-navy) !important;
+  letter-spacing: 0;
+}
+
+body.veil-app :is(
+  .grow-card-desc,
+  .grow-card-by,
+  .grow-card-meta,
+  .grow-empty-body,
+  .grow-muted,
+  .grow-quiz-lobby-desc,
+  .grow-quiz-score-detail,
+  .grow-quiz-review-wrong,
+  .grow-quiz-review-ref,
+  .grow-devo-feat-reflection,
+  .grow-devo-feed-reflection,
+  .grow-devo-feed-verse,
+  .grow-devo-feed-prayer,
+  .grow-apo-section-intro,
+  .grow-apo-section-count,
+  .grow-apo-answer,
+  .grow-apo-topic,
+  .do-view .life-card-note,
+  .do-view .life-card-foot
+) {
+  color: #64748b !important;
+}
+
+body.veil-app :is(.grow-chip, .grow-card-tags, .grow-devo-feat-theme, .grow-devo-feed-theme) {
+  border: 1px solid rgba(247,199,86,.28);
+  border-radius: 999px;
+  background: rgba(247,199,86,.12);
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app :is(
+  .grow-btn,
+  .grow-quiz-launch,
+  .do-view .flock-btn--primary
+) {
+  border-color: rgba(247,199,86,.35);
+  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  color: #111827;
+  box-shadow: 0 12px 26px rgba(247,199,86,.18);
+}
+
+body.veil-app :is(.grow-btn--ghost, .do-view .flock-btn--ghost) {
+  border-color: rgba(15,23,42,.12);
+  background: rgba(255,255,255,.72);
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.grow-search, .grow-quiz-opt, .do-view .life-sheet-input) {
+  border: 1px solid rgba(15,23,42,0.12);
+  background: rgba(255,255,255,.9);
+  color: var(--flockos-navy);
+}
+
+body.veil-app :is(.grow-search, .grow-quiz-opt, .do-view .life-sheet-input):focus {
+  border-color: var(--view-accent-2, var(--flockos-cyan));
+  box-shadow: 0 0 0 3px rgba(72,211,217,.12);
+  outline: none;
+}
+
+body.veil-app :is(.grow-table th, .grow-table td) {
+  border-color: rgba(15,23,42,.10);
+  color: var(--flockos-navy);
+}
+
+body.veil-app .grow-table th {
+  background: rgba(247,199,86,.12);
+}
+
+body.veil-app :is(.grow-progress, .grow-quiz-progress-bar) {
+  background: rgba(15,23,42,.08);
+}
+
+@media (max-width: 720px) {
+  body.veil-app :is(.do-view, .fellowship-frame-view, .grow-page) > :is(.page-hero, .grow-hero),
+  body.veil-app .upper-room > .page-hero {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  body.veil-app :is(.grow-toolbar, .do-view .fold-toolbar) {
+    align-items: stretch;
+  }
+
+  body.veil-app .wall-setting-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  body.veil-app .wall-setting-row > :is(label, div, input, select, textarea, button) {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 /* ─── Migrated from app.flockos/app.flockos.html ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 /* Core NC tokens (--bg, --bg-raised, --ink, --line) live in new_covenant.css */
