@@ -144,8 +144,8 @@ function _sortRows(rows) {
   sorted.sort((a, b) => {
     switch (_currentSort) {
       case 'lastName': {
-        const la = (a.lastName  || a.displayName || '').toLowerCase();
-        const lb = (b.lastName  || b.displayName || '').toLowerCase();
+        const la = (_memberField(a, 'lastName', 'Last Name', 'familyName', 'surname') || _foldPersonName(a)).toLowerCase();
+        const lb = (_memberField(b, 'lastName', 'Last Name', 'familyName', 'surname') || _foldPersonName(b)).toLowerCase();
         return la < lb ? -1 : la > lb ? 1 : 0;
       }
       case 'role': {
@@ -160,8 +160,8 @@ function _sortRows(rows) {
       }
       case 'firstName':
       default: {
-        const fa = (a.firstName || a.displayName || '').toLowerCase();
-        const fb = (b.firstName || b.displayName || '').toLowerCase();
+        const fa = (_memberField(a, 'preferredName', 'firstName', 'First Name', 'givenName') || _foldPersonName(a)).toLowerCase();
+        const fb = (_memberField(b, 'preferredName', 'firstName', 'First Name', 'givenName') || _foldPersonName(b)).toLowerCase();
         return fa < fb ? -1 : fa > fb ? 1 : 0;
       }
     }
@@ -288,9 +288,9 @@ async function _listFoldMembers(V, MXM, params) {
 }
 
 function _rows(res) {
-  if (Array.isArray(res)) return res;
-  if (res && Array.isArray(res.rows)) return res.rows;
-  if (res && Array.isArray(res.data)) return res.data;
+  if (Array.isArray(res)) return res.map(_normalizeFoldMember);
+  if (res && Array.isArray(res.rows)) return res.rows.map(_normalizeFoldMember);
+  if (res && Array.isArray(res.data)) return res.data.map(_normalizeFoldMember);
   return [];
 }
 
@@ -306,11 +306,69 @@ async function _loadBgChecks() {
 
 const _AVATAR_COLORS = ['#7c3aed','#0ea5e9','#059669','#c05818','#db2777','#6366f1','#0891b2','#b45309','#be185d','#4f46e5'];
 
+function _normalizeFoldMember(row) {
+  const payload = _memberPayload(row);
+  const out = { ...payload, ...(row || {}) };
+  const parts = _memberNameParts(out);
+  if (parts.first) out.firstName = parts.first;
+  if (parts.last) out.lastName = parts.last;
+  out.displayName = parts.full || _foldPersonName(out);
+  return out;
+}
+
 function _foldPersonName(p) {
-  const first = p?.preferredName || p?.firstName || p?.givenName || '';
-  const last = p?.lastName || p?.familyName || p?.surname || '';
-  const full = `${first} ${last}`.trim();
-  return full || p?.displayName || p?.name || p?.email || p?.primaryEmail || p?.username || 'Unknown';
+  const parts = _memberNameParts(p);
+  return parts.full || _memberField(p, 'email', 'primaryEmail', 'username') || 'Unknown';
+}
+
+function _memberNameParts(p) {
+  const firstRaw = _memberField(p, 'preferredName', 'Preferred Name', 'firstName', 'First Name', 'givenName', 'given_name', 'first_name');
+  const lastRaw = _memberField(p, 'lastName', 'Last Name', 'familyName', 'family_name', 'surname', 'last_name');
+  const fullRaw = _memberField(p, 'fullName', 'Full Name', 'memberName', 'Member Name', 'displayName', 'Display Name', 'name', 'Name');
+  let first = firstRaw;
+  let last = lastRaw;
+  if ((!first || !last) && fullRaw) {
+    const split = _splitMemberName(fullRaw);
+    if (split.first && split.last) {
+      first = split.first;
+      last = split.last;
+    }
+  }
+  const full = `${first || ''} ${last || ''}`.trim() || fullRaw;
+  return { first, last, full };
+}
+
+function _splitMemberName(value) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim();
+  if (!text) return { first: '', last: '' };
+  if (text.includes(',')) {
+    const [last, first] = text.split(',').map(v => v.trim());
+    return { first: first || '', last: last || '' };
+  }
+  const parts = text.split(' ').filter(Boolean);
+  if (parts.length < 2) return { first: '', last: '' };
+  return { first: parts[0], last: parts.slice(1).join(' ') };
+}
+
+function _memberPayload(p) {
+  const raw = p?.payloadJson || p?.payload || p?.profileJson || null;
+  if (!raw) return {};
+  if (typeof raw === 'object') return raw;
+  try {
+    const parsed = JSON.parse(String(raw));
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_) {
+    return {};
+  }
+}
+
+function _memberField(p, ...keys) {
+  const payload = _memberPayload(p);
+  for (const key of keys) {
+    const value = p?.[key] ?? payload?.[key];
+    if (value !== undefined && value !== null && String(value).trim() !== '') return String(value).trim();
+  }
+  return '';
 }
 
 function _liveCard(p) {
@@ -680,6 +738,7 @@ function _openMemberSheet(person, V, onReload) {
   if (_freshId) {
     MXM.get(_freshId).then(fresh => {
       if (!fresh || !_activeFoldSheet) return;
+      fresh = _normalizeFoldMember(fresh);
       const _set = (field, val) => {
         if (val == null || val === '') return;
         const el = sheet.querySelector(`[data-field="${field}"]`);
