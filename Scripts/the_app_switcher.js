@@ -64,7 +64,6 @@ export const NC_APP_ICON_SRCS = {
   invite:      new URL('../Images/icon-invite.svg', import.meta.url).href,
   flockos:     new URL('../Images/icon-flockos.svg', import.meta.url).href,
   fold:        new URL('../Images/icon-flockos.svg', import.meta.url).href,
-  fellowship:  new URL('../Images/icon-chat.svg', import.meta.url).href,
   care:        new URL('../Images/icon-flockos.svg', import.meta.url).href,
   workflows:   new URL('../Images/icon-flockos.svg', import.meta.url).href,
   prayer:      new URL('../Images/icon-chat.svg', import.meta.url).href,
@@ -109,7 +108,6 @@ export const NC_APPS = [
   { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#f7c756', accentDk: '#b8871e', public: true },
   { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
   { id: 'fold',      name: 'The Fold',       sub: 'Members & flock care',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_fold',          accent: '#3b82f6', accentDk: '#1e3a8a' },
-  { id: 'fellowship', name: 'Fellowship',    sub: 'Community & conversations',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_fellowship',    accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'workflows', name: 'Workflows',      sub: 'Installed ministry procedures',  href: 'app.flockos/app.flockos.html?covenant=new&view=the_do',            accent: '#64748b', accentDk: '#334155' },
   { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
@@ -183,6 +181,8 @@ function ensureStyles() {
   width: min(320px, calc(100vw - 24px));
   max-height: min(70vh, 560px);
   overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
   background: #111b44; color: #eef1fb;
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 14px;
@@ -203,6 +203,7 @@ function ensureStyles() {
 
 .nc-switcher-grid {
   display: grid; grid-template-columns: 1fr; gap: 4px;
+  min-width: 0;
 }
 
 .nc-switcher-item {
@@ -211,6 +212,9 @@ function ensureStyles() {
   text-decoration: none; color: #eef1fb;
   border: 1px solid transparent;
   transition: background .12s, border-color .12s;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .nc-switcher-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.10); }
 .nc-switcher-item.is-current {
@@ -239,6 +243,7 @@ function ensureStyles() {
 .nc-switcher-label strong {
   display: block; font-size: 0.88rem; font-weight: 700; letter-spacing: -0.005em;
   color: #eef1fb;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .nc-switcher-label span {
   display: block; font-size: 0.72rem; color: #9ba8d0; margin-top: 1px;
@@ -274,6 +279,7 @@ function buttonHTML() {
 }
 
 function popoverHTML(currentId, opts = {}) {
+  currentId = resolveCurrentAppId(currentId);
   // Resolve all app hrefs against the deployment's launcher root (NOT
   // <base href>, which always points at the master source, and NOT the
   // current page directory, which would double-up paths when called from
@@ -358,6 +364,7 @@ function _onScroll(e) {
 function openSwitcher(btn, currentId, opts = {}) {
   if (_open) { closeSwitcher(); return; }
   ensureStyles();
+  currentId = resolveCurrentAppId(currentId);
 
   const backdrop = document.createElement('div');
   backdrop.className = 'nc-switcher-backdrop';
@@ -411,7 +418,7 @@ function openSwitcher(btn, currentId, opts = {}) {
 export function mountSwitcher(host, opts = {}) {
   if (!host) return;
   ensureStyles();
-  const current = opts.current || host.dataset.appSwitcherCurrent || '';
+  const current = resolveCurrentAppId(opts.current || host.dataset.appSwitcherCurrent || '');
   // Make the host look right and behave like a button.
   host.classList.add('nc-switcher-btn');
   host.setAttribute('type', 'button');
@@ -428,6 +435,25 @@ export function mountSwitcher(host, opts = {}) {
     host.dataset.appSwitcherCurrent = current;
   }
   return host;
+}
+
+export function resolveCurrentAppId(fallback = '') {
+  const base = fallback || '';
+  try {
+    const view = new URLSearchParams(location.search).get('view');
+    if (view) {
+      const routed = NC_APPS.find((app) => {
+        try {
+          const hrefView = new URL(app.href, location.origin + '/').searchParams.get('view');
+          return hrefView === view;
+        } catch (_) {
+          return false;
+        }
+      });
+      if (routed) return routed.id;
+    }
+  } catch (_) { /* keep fallback */ }
+  return base;
 }
 
 /* Auto-mount any [data-app-switcher] elements present at load. */

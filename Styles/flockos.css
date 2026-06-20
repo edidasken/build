@@ -2494,7 +2494,7 @@ body.veil-app .harvest-stat-n {
   margin-top: 0;
 }
 
-body.veil-app :is(.pray-liturgy-list, .lampstand) {
+body.veil-app .pray-liturgy-list {
   max-width: 100%;
   min-width: 0;
   overflow-x: hidden;
@@ -2505,8 +2505,12 @@ body.veil-app .wall-setting-row > * {
   min-width: 0;
 }
 
-body.veil-app :is(.wall-setting-label, .wall-setting-value) {
+body.veil-app :is(.wall-setting-label, .wall-setting-value, .gc-kpi-label, .gc-stat-label) {
   overflow-wrap: anywhere;
+}
+
+body.veil-app :is(.gc-kpi-card, .gc-stat, .gc-stat-body) {
+  min-width: 0;
 }
 
 /* Full FlockOS route sweep: every registered module shares the same canvas,
@@ -2564,7 +2568,54 @@ body.veil-app :is(.do-view, .grow-page) {
   --accent: var(--view-accent);
   --accent-soft: var(--view-accent-soft);
   --grow-accent: var(--view-accent);
+  display: flex;
+  flex-direction: column;
   gap: 22px;
+}
+
+body.veil-app .do-view .fold-toolbar {
+  display: flex;
+  align-items: center !important;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+body.veil-app .do-view .fold-filters {
+  display: flex;
+  flex: 1 1 560px;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+body.veil-app .do-view .fold-filter {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(15,23,42,.12);
+  background: rgba(255,255,255,.82);
+  color: var(--flockos-navy);
+  font: 800 0.82rem var(--font-ui);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+body.veil-app .do-view .fold-filter.is-active {
+  border-color: rgba(247,199,86,.42);
+  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  color: #111827;
+  box-shadow: 0 10px 22px rgba(247,199,86,.18);
+}
+
+body.veil-app .do-view [data-do-search] {
+  align-self: center;
+  flex: 1 1 260px;
+  width: min(100%, 360px);
+  min-height: 42px;
+  height: 42px;
+  margin-left: 0 !important;
+  border-radius: 14px;
+  font: 600 0.92rem var(--font-ui);
 }
 
 body.veil-app :is(.do-view, .fellowship-frame-view, .grow-page) > :is(.page-hero, .grow-hero),
@@ -2617,6 +2668,12 @@ body.veil-app :is(
   .grow-apo-list
 ) {
   min-width: 0;
+}
+
+body.veil-app .do-workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  align-items: stretch;
 }
 
 body.veil-app :is(
@@ -2678,6 +2735,74 @@ body.veil-app :is(
   box-shadow: var(--flockos-shadow-soft);
 }
 
+body.veil-app .do-view .life-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-height: 156px;
+  padding: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 160ms var(--ease), border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+body.veil-app .do-view .life-card:hover,
+body.veil-app .do-view .life-card:focus-visible {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+body.veil-app .do-view .life-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+body.veil-app .do-view .life-card-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+body.veil-app .do-view .life-card-name {
+  flex: 1 1 100%;
+  min-width: 0;
+  font: 900 0.98rem/1.25 var(--font-ui);
+}
+
+body.veil-app .do-view .life-card-note {
+  display: -webkit-box;
+  margin-top: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font: 0.88rem/1.45 var(--font-ui);
+}
+
+body.veil-app .do-view .life-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  font: 0.76rem var(--font-ui);
+}
+
+body.veil-app .do-view :is(.life-priority-badge, .life-type-badge) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 9px;
+  border: 1px solid rgba(247,199,86,.25);
+  border-radius: 999px;
+  font: 800 0.68rem var(--font-ui);
+  white-space: nowrap;
+}
+
 body.veil-app :is(
   .grow-card,
   .grow-card--counsel,
@@ -2706,6 +2831,17 @@ body.veil-app :is(
   background: rgba(247,199,86,0.14) !important;
   color: var(--flockos-gold-deep);
   box-shadow: none;
+}
+
+body.veil-app .do-view .life-card-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  font: 900 1rem var(--font-ui);
+  line-height: 1;
 }
 
 body.veil-app :is(
@@ -2819,6 +2955,21 @@ body.veil-app :is(.grow-progress, .grow-quiz-progress-bar) {
   body.veil-app .wall-setting-row > :is(label, div, input, select, textarea, button) {
     width: 100%;
     max-width: 100%;
+  }
+
+  body.veil-app .do-view .fold-filters,
+  body.veil-app .do-view [data-do-search] {
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  body.veil-app .do-workflow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.veil-app .do-view .life-card {
+    min-height: 0;
+    padding: 14px;
   }
 }
 

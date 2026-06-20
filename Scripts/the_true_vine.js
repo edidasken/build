@@ -468,10 +468,17 @@ const TheVine = (() => {
     },
 
     // ── Users (admin) ────────────────────────────────────────────────────
-    users:         _f('users', ['list', 'create', 'update', 'deactivate', 'delete', 'resetPasscode', 'approve', 'deny', 'pending']),
+    users:         _f('users', ['list', 'create', 'update', 'deactivate', 'delete', 'resetPasscode', 'resetAccess', 'approve', 'deny', 'pending'], {
+      resetPasscode: (p) => _call(_resolveUrl('FLOCK'), 'users.resetPasscode', p, { method: 'POST' }),
+      resetAccess:   (p) => _call(_resolveUrl('FLOCK'), 'users.resetAccess', p, { method: 'POST' }),
+    }),
 
     // ── Access (admin) ───────────────────────────────────────────────────
-    access:        _f('access', ['list', 'set', 'remove']),
+    access:        _f('access', ['list', 'set', 'remove', 'templates', 'applyTemplate'], {
+      set:           (p) => _call(_resolveUrl('FLOCK'), 'access.set', p, { method: 'POST' }),
+      remove:        (p) => _call(_resolveUrl('FLOCK'), 'access.remove', p, { method: 'POST' }),
+      applyTemplate: (p) => _call(_resolveUrl('FLOCK'), 'access.applyTemplate', p, { method: 'POST' }),
+    }),
 
     // ── Config  ──────────────────────────────────────────────────────────
     config:        _f('config', ['list', 'get', 'set']),

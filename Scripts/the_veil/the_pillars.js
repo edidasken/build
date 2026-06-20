@@ -8,7 +8,6 @@
    ══════════════════════════════════════════════════════════════════════════════ */
 
 import { go, current } from '../the_scribes/index.js';
-import { unreadTotal } from '../the_upper_room/index.js';
 import { pendingCount, subscribeOpenCareCount } from '../the_life/index.js';
 
 const I = (path) =>
@@ -62,13 +61,6 @@ const SECTIONS = [
     items: [
       { name: 'the_upper_room',        label: 'The Upper Room',     icon: ICON.flame },
       { name: 'the_growth',            label: 'Grow',               icon: ICON.sprout },
-    ],
-  },
-  /* ── Fellowship ──────────────────────────────────────────────────────── */
-  {
-    title: 'Fellowship',
-    items: [
-      { name: 'the_fellowship',        label: 'Fellowship',         icon: ICON.chat,      badge: 'fellowship' },
     ],
   },
   /* ── Care ────────────────────────────────────────────────────────────── */
@@ -160,7 +152,7 @@ export function mountPillars(host) {
   // Refresh badges every 2 minutes — counts don't need real-time freshness
   // and this is the single biggest idle-cost reduction in the app.
   const badgeTick = setInterval(() => _refreshBadges(host), 120_000);
-  // Allow views (the_life resolve, the_fellowship read) to ping us so badges
+  // Allow views to ping us so badges
   // update immediately instead of waiting up to 2 minutes.
   const onBadgeRefresh = () => _refreshBadges(host);
   window.addEventListener('flockos:badges:refresh', onBadgeRefresh);
@@ -203,7 +195,6 @@ async function _refreshBadges(host) {
     if (n && n > 0) { el.textContent = n > 99 ? '99+' : String(n); el.hidden = false; }
     else { el.hidden = true; }
   };
-  try { set('fellowship', _toN(await unreadTotal())); } catch (_) {}
   try { set('care',       _toN(await pendingCount())); } catch (_) {}
 }
 function _toN(v) {

@@ -47,11 +47,37 @@
     if (Array.isArray(res.items)) return res.items;
     return [];
   }
+  function _toast(msg, type) {
+    if (typeof Modules !== 'undefined' && Modules.toast) return Modules.toast(msg, type || 'info');
+    if (typeof window !== 'undefined' && window.toast) return window.toast(msg, type || 'info');
+    if (type === 'danger' || type === 'error') alert(msg);
+  }
+  function _canManageAccess() {
+    try {
+      if (typeof Nehemiah !== 'undefined') {
+        if (Nehemiah.can && (Nehemiah.can('users.write') || Nehemiah.can('users.edit') || Nehemiah.can('access.write') || Nehemiah.can('permissions.write'))) return true;
+        if (Nehemiah.hasGroup && (Nehemiah.hasGroup('Admin') || Nehemiah.hasGroup('Lead Pastor') || Nehemiah.hasGroup('Master') || Nehemiah.hasGroup('Seed Admin'))) return true;
+        if (Nehemiah.hasRole && (Nehemiah.hasRole('admin') || Nehemiah.hasRole('lead pastor'))) return true;
+      }
+    } catch (_) {}
+    try {
+      var s = TheVine && TheVine.session ? TheVine.session() : null;
+      var role = String((s && s.role) || '').toLowerCase();
+      if (s && (role === 'admin' || role === 'lead pastor' || (s.roleLevel || 0) >= 5)) return true;
+      var groups = (s && s.groups) || [];
+      if (typeof groups === 'string') groups = JSON.parse(groups || '[]');
+      return groups.some(function(g) {
+        var v = String(g || '').toLowerCase();
+        return v === 'admin' || v === 'lead pastor' || v === 'master' || v === 'seed admin';
+      });
+    } catch (_) {}
+    return false;
+  }
 
   // ── State ───────────────────────────────────────────────────────────────
   var _container = null;
   var _activeTab = 'groups';
-  var _cache     = { groups: [], attendance: [] };
+  var _cache     = { groups: [], attendance: [], access: [], templates: {}, accessError: '' };
 
   function _isFB() {
     return typeof Modules !== 'undefined' && Modules._isFirebaseComms && Modules._isFirebaseComms();
@@ -67,12 +93,20 @@
     container.innerHTML = _spinner();
 
     try {
-      var res = await Promise.allSettled([
+      var calls = [
         _isFB() ? UpperRoom.listGroups() : TheVine.flock.groups.list(),
-        _isFB() ? UpperRoom.listAttendance({ limit: 60 }) : TheVine.flock.attendance.list({ limit: 60 }),
-      ]);
+        _isFB() ? UpperRoom.listAttendance({ limit: 60 }) : TheVine.flock.attendance.list({ limit: 60 })
+      ];
+      if (_canManageAccess() && TheVine && TheVine.flock) {
+        calls.push(TheVine.flock.access.list());
+        calls.push(TheVine.flock.access.templates());
+      }
+      var res = await Promise.allSettled(calls);
       _cache.groups     = _rows(res[0].status === 'fulfilled' ? res[0].value : []);
       _cache.attendance = _rows(res[1].status === 'fulfilled' ? res[1].value : []);
+      _cache.access     = res[2] && res[2].status === 'fulfilled' ? _rows(res[2].value) : [];
+      _cache.templates  = res[3] && res[3].status === 'fulfilled' ? ((res[3].value && (res[3].value.templates || res[3].value.data)) || {}) : {};
+      _cache.accessError = res[2] && res[2].status === 'rejected' ? String(res[2].reason && res[2].reason.message ? res[2].reason.message : res[2].reason) : '';
     } catch (_) {}
     // Read QUARTERLY_PLANNER from global config cache (set at boot)
     var _qpRaw = localStorage.getItem('flock_cfg_QUARTERLY_PLANNER');
@@ -80,6 +114,7 @@
 
     var nG = _cache.groups.length;
     var nA = _cache.attendance.length;
+    var nU = _cache.access.length;
     var activeGroups = _cache.groups.filter(function(g) { return String(g.status || g.active || '').toUpperCase() !== 'INACTIVE'; }).length;
 
     var h = '';
@@ -113,9 +148,11 @@
 
     // Tab bar
     h += '<div style="display:flex;gap:2px;border-bottom:2px solid var(--line);margin-bottom:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;">';
-    ['groups', 'attendance'].forEach(function(key) {
-      var labels = { groups: '\uD83D\uDC65 Groups', attendance: '\uD83D\uDCCA Attendance' };
-      var counts = { groups: nG, attendance: nA };
+    var tabs = ['groups', 'attendance'];
+    if (_canManageAccess()) tabs.push('access');
+    tabs.forEach(function(key) {
+      var labels = { groups: '\uD83D\uDC65 Groups', attendance: '\uD83D\uDCCA Attendance', access: '\uD83D\uDD10 Access' };
+      var counts = { groups: nG, attendance: nA, access: nU };
       var active = key === _activeTab;
       h += '<button class="fold-tab' + (active ? ' active' : '') + '" data-foldtab="' + key + '"'
          + ' onclick="TheFold.switchTab(\'' + key + '\')"'
@@ -138,6 +175,7 @@
     h += '<div id="fold-panels">';
     h += '<div id="fold-p-groups" style="' + (_activeTab !== 'groups' ? 'display:none;' : '') + '">' + _buildGroups() + '</div>';
     h += '<div id="fold-p-attendance" style="' + (_activeTab !== 'attendance' ? 'display:none;' : '') + '">' + _buildAttendance() + '</div>';
+    if (_canManageAccess()) h += '<div id="fold-p-access" style="' + (_activeTab !== 'access' ? 'display:none;' : '') + '">' + _buildAccess() + '</div>';
     h += '</div>';
 
     container.innerHTML = h;
@@ -157,7 +195,7 @@
       t.style.color     = active ? 'var(--ink-inverse)' : 'var(--ink)';
       t.style.fontWeight = active ? '700' : '500';
     });
-    ['groups','attendance'].forEach(function(k) {
+    ['groups','attendance','access'].forEach(function(k) {
       var p = document.getElementById('fold-p-' + k);
       if (p) p.style.display = k === key ? '' : 'none';
     });
@@ -247,6 +285,40 @@
     return h;
   }
 
+  function _buildAccess() {
+    if (_cache.accessError) {
+      return _empty('\uD83D\uDD10', 'Access controls unavailable: ' + _cache.accessError);
+    }
+    var rows = _cache.access || [];
+    var h = '<div style="display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap;">';
+    h += '<button onclick="TheFold.refreshAccess()" style="background:none;border:1px solid var(--line);border-radius:6px;padding:8px 16px;cursor:pointer;color:var(--ink);font-size:0.84rem;">Refresh Access</button>';
+    h += '<span style="font-size:0.78rem;color:var(--ink-muted);">Reset creates a one-time passcode and rewrites role, group, and module grants.</span>';
+    h += '</div>';
+    if (!rows.length) return h + _empty('\uD83D\uDD10', 'No user accounts available.');
+    h += '<table class="data-table"><thead><tr>'
+       + '<th>User</th><th>Status</th><th>Role</th><th>Groups</th><th>Grants</th><th></th>'
+       + '</tr></thead><tbody>';
+    rows.forEach(function(r) {
+      var target = r.username || r.email || '';
+      var groups = Array.isArray(r.groups) ? r.groups : [];
+      var grants = Array.isArray(r.moduleGrants) ? r.moduleGrants : [];
+      var search = ((r.username || '') + ' ' + (r.email || '') + ' ' + (r.displayName || '') + ' ' + (r.role || '') + ' ' + groups.join(' ')).toLowerCase();
+      h += '<tr class="fold-row" data-search="' + _e(search) + '">';
+      h += '<td data-label="User"><strong>' + _e(r.displayName || r.username || r.email || '') + '</strong><br><span style="font-size:0.76rem;color:var(--ink-muted);">' + _e(r.email || r.username || '') + '</span></td>';
+      h += '<td data-label="Status">' + _statusBadge(r.status || '') + '</td>';
+      h += '<td data-label="Role">' + _e(r.role || '') + '</td>';
+      h += '<td data-label="Groups">' + _e(groups.join(', ')) + '</td>';
+      h += '<td data-label="Grants" style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + _e(grants.join(', ')) + '</td>';
+      h += '<td style="white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap;">'
+        + '<button onclick="TheFold.resetAccess(\'' + _e(target) + '\')" style="background:var(--accent);border:1px solid var(--accent);color:var(--ink-inverse);border-radius:4px;padding:4px 10px;cursor:pointer;font-size:0.76rem;font-weight:700;">Reset Access</button>'
+        + '<button onclick="TheFold.resetPasscode(\'' + _e(target) + '\')" style="background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--ink);font-size:0.76rem;">Passcode</button>'
+        + '</td>';
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+    return h;
+  }
+
   // ══════════════════════════════════════════════════════════════════════════
   // EDIT FUNCTIONS — delegate to Modules._edit / _modal
   // ══════════════════════════════════════════════════════════════════════════
@@ -287,6 +359,53 @@
     }
   }
 
+  export async function refreshAccess() {
+    try {
+      var res = await TheVine.flock.access.list();
+      _cache.access = _rows(res);
+      var panel = document.getElementById('fold-p-access');
+      if (panel) panel.innerHTML = _buildAccess();
+    } catch (e) {
+      _toast('Access refresh failed: ' + (e.message || e), 'danger');
+    }
+  }
+
+  export async function resetPasscode(target) {
+    if (!target) return;
+    if (!confirm('Reset passcode for ' + target + '?')) return;
+    try {
+      var res = await TheVine.flock.users.resetPasscode({ targetEmail: target });
+      var pass = res && (res.oneTimePassword || res.password || res.passcode);
+      alert('Passcode reset for ' + target + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+      if (typeof TheScrolls !== 'undefined') TheScrolls.log(TheScrolls.TYPES.ADMIN_ACTION, target, 'Fold reset passcode', { personName: target });
+    } catch (e) {
+      alert('Failed: ' + (e.message || e));
+    }
+  }
+
+  export async function resetAccess(target) {
+    if (!target) return;
+    var templateNames = Object.keys(_cache.templates || {});
+    if (!templateNames.length) templateNames = ['Lead Pastor', 'Admin', 'Care Team', 'Comms Team', 'Worship Admin', 'Volunteer Coordinator', 'Treasurer'];
+    var template = prompt('Access template for ' + target + ':\n\n' + templateNames.join(', '), 'Lead Pastor');
+    if (!template) return;
+    if (templateNames.indexOf(template) === -1 && !confirm('Use custom template/group "' + template + '"?')) return;
+    try {
+      var res = await TheVine.flock.users.resetAccess({
+        targetEmail: target,
+        template: template,
+        role: template,
+        status: 'active'
+      });
+      var pass = res && (res.oneTimePassword || res.password || res.passcode);
+      alert('Access reset for ' + target + '\nTemplate: ' + template + (pass ? '\n\nOne-time passcode:\n' + pass : ''));
+      if (typeof TheScrolls !== 'undefined') TheScrolls.log(TheScrolls.TYPES.ADMIN_ACTION, target, 'Fold reset access', { personName: target, template: template });
+      await refreshAccess();
+    } catch (e) {
+      alert('Failed: ' + (e.message || e));
+    }
+  }
+
 /* Expose as window.TheFold for inline onclick= handlers */
 if (typeof window !== 'undefined') {
   window.TheFold = {
@@ -295,5 +414,8 @@ if (typeof window !== 'undefined') {
     _search,
     editGroup,
     editAttendance,
+    refreshAccess,
+    resetPasscode,
+    resetAccess,
   };
 }

@@ -129,6 +129,99 @@
     });
   }
 
+  function _currentIdentityValues() {
+    var values = [];
+    function add(v) {
+      v = String(v || '').trim();
+      if (!v) return;
+      if (values.indexOf(v) < 0) values.push(v);
+      var lower = v.toLowerCase();
+      if (values.indexOf(lower) < 0) values.push(lower);
+    }
+    add(_userEmail);
+    try {
+      var user = _auth && _auth.currentUser;
+      if (user) {
+        add(user.email);
+        add(user.uid);
+      }
+    } catch (_) {}
+    return values;
+  }
+
+  function _identityMatches(row, fields, identities) {
+    if (!row || !identities || !identities.length) return false;
+    var lookup = {};
+    identities.forEach(function(v) { lookup[String(v).toLowerCase()] = true; });
+    return fields.some(function(field) {
+      var v = row[field];
+      return v != null && lookup[String(v).trim().toLowerCase()];
+    });
+  }
+
+  function _docData(doc) {
+    var d = doc.data() || {};
+    d.id = doc.id;
+    return d;
+  }
+
+  function _recordTimeMs(row, fields) {
+    for (var i = 0; i < fields.length; i++) {
+      var value = row && row[fields[i]];
+      if (!value) continue;
+      var date = _ts(value);
+      var ms = date && date.getTime ? date.getTime() : 0;
+      if (ms) return ms;
+    }
+    return 0;
+  }
+
+  function _sortRowsDesc(rows, fields) {
+    return rows.sort(function(a, b) {
+      return _recordTimeMs(b, fields) - _recordTimeMs(a, fields);
+    });
+  }
+
+  function _dedupeRows(rows) {
+    var seen = {};
+    return rows.filter(function(row) {
+      var id = row && row.id;
+      if (!id || seen[id]) return false;
+      seen[id] = true;
+      return true;
+    });
+  }
+
+  function _identityQuery(ref, fields, opts, sortFields) {
+    opts = opts || {};
+    var limit = opts.limit || _DEFAULT_PAGE;
+    if (opts.allUsers) {
+      return ref.limit(limit).get().then(function(snap) {
+        return _sortRowsDesc(snap.docs.map(_docData), sortFields).slice(0, limit);
+      });
+    }
+    var identities = _currentIdentityValues();
+    if (!identities.length) return Promise.resolve([]);
+    var jobs = [];
+    fields.forEach(function(field) {
+      identities.forEach(function(value) {
+        jobs.push(ref.where(field, '==', value).limit(limit).get()
+          .then(function(snap) { return snap.docs.map(_docData); })
+          .catch(function() { return []; }));
+      });
+    });
+    return Promise.all(jobs).then(function(chunks) {
+      var rows = _dedupeRows([].concat.apply([], chunks));
+      if (rows.length) return _sortRowsDesc(rows, sortFields).slice(0, limit);
+      return ref.limit(Math.max(limit * 3, 100)).get().then(function(snap) {
+        return _sortRowsDesc(
+          snap.docs.map(_docData).filter(function(row) { return _identityMatches(row, fields, identities); }),
+          sortFields
+        ).slice(0, limit);
+      }).catch(function() { return []; });
+    });
+  }
+
   function _convosRef() {
     return _churchRef().collection('conversations');
   }
@@ -869,28 +962,17 @@
   function listPrayers(opts) {
     opts = opts || {};
     console.log('[FLOCK-DEBUG] UpperRoom.listPrayers() called — allUsers=' + !!opts.allUsers + ', _userEmail=' + _userEmail + ', _ready=' + _ready + ', hasDb=' + !!_db);
-    var q = _prayersRef();
-    // Filter by current user's email unless opts.allUsers is set (admin/pastor).
-    // Firestore rules require createdBy == userEmail() or isConfidential != true;
-    // without a matching .where(), the query is rejected for non-pastor users
-    // and the .catch(() => []) silently returns an empty array.
-    if (!opts.allUsers && _userEmail) {
-      q = q.where('createdBy', '==', _userEmail);
-    }
-    q = q.orderBy('submittedAt', 'desc').limit(opts.limit || _DEFAULT_PAGE);
-    if (opts.startAfter) q = q.startAfter(opts.startAfter);
     console.log('[FLOCK-DEBUG] UpperRoom.listPrayers() executing query…');
     var _lpStart = Date.now();
-    return q.get().then(function(snap) {
-      var results = [];
-      snap.forEach(function(doc) {
-        var d = doc.data();
-        d.id = doc.id;
-        results.push(d);
-      });
+    return _identityQuery(
+      _prayersRef(),
+      ['createdBy', 'submitterEmail', 'ownerEmail', 'email', 'CreatedBy'],
+      opts,
+      ['submittedAt', 'lastUpdated', 'createdAt', 'CreatedAt']
+    ).then(function(results) {
       console.log('[FLOCK-DEBUG] UpperRoom.listPrayers() DONE: ' + results.length + ' rows in ' + (Date.now() - _lpStart) + 'ms');
       if (!opts.startAfter && !opts.paginate) return results;
-      return { results: results, lastDoc: snap.docs.length ? snap.docs[snap.docs.length - 1] : null, hasMore: snap.docs.length === (opts.limit || _DEFAULT_PAGE) };
+      return { results: results, lastDoc: null, hasMore: results.length === (opts.limit || _DEFAULT_PAGE) };
     });
   }
 
@@ -3488,24 +3570,17 @@
   function listJournal(opts) {
     opts = opts || {};
     console.log('[FLOCK-DEBUG] UpperRoom.listJournal() called — allUsers=' + !!opts.allUsers + ', _userEmail=' + _userEmail + ', _ready=' + _ready + ', hasDb=' + !!_db);
-    var q = _journalRef();
-    // Filter by current user's email unless opts.allUsers is set (admin backup).
-    // Firestore rules require createdBy == userEmail() for non-pastor users;
-    // without this .where(), the query is rejected with "permission denied"
-    // and the .catch(() => []) silently returns an empty array.
-    if (!opts.allUsers && _userEmail) {
-      q = q.where('createdBy', '==', _userEmail);
-    }
-    q = q.orderBy('createdAt', 'desc').limit(opts.limit || _DEFAULT_PAGE);
-    if (opts.startAfter) q = q.startAfter(opts.startAfter);
     console.log('[FLOCK-DEBUG] UpperRoom.listJournal() executing query…');
     var _ljStart = Date.now();
-    return q.get().then(function(snap) {
-      var out = [];
-      snap.forEach(function(d) { var o = d.data(); o.id = d.id; out.push(o); });
+    return _identityQuery(
+      _journalRef(),
+      ['createdBy', 'ownerEmail', 'ownerId', 'email', 'CreatedBy', 'createdByEmail', 'submitterEmail'],
+      opts,
+      ['updatedAt', 'createdAt', 'date', 'CreatedAt']
+    ).then(function(out) {
       console.log('[FLOCK-DEBUG] UpperRoom.listJournal() DONE: ' + out.length + ' rows in ' + (Date.now() - _ljStart) + 'ms');
       if (!opts.startAfter && !opts.paginate) return out;
-      return { results: out, lastDoc: snap.docs.length ? snap.docs[snap.docs.length - 1] : null, hasMore: snap.docs.length === (opts.limit || _DEFAULT_PAGE) };
+      return { results: out, lastDoc: null, hasMore: out.length === (opts.limit || _DEFAULT_PAGE) };
     });
   }
 

@@ -55,18 +55,6 @@
       ]
     },
     {
-      "name": "Fellowship",
-      "short_name": "Fellowship",
-      "description": "Open messaging and channels",
-      "url": "./app.flockos.html?view=the_fellowship",
-      "icons": [
-        {
-          "src": "../Images/icon-flockos.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
       "name": "Pastoral Care",
       "short_name": "Care",
       "description": "Open pastoral care follow-ups",

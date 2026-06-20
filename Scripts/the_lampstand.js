@@ -82,9 +82,16 @@ export async function darken() {
   if (!_lit) return;
   const el = document.getElementById(SPLASH_ID);
   if (!el) { _lit = false; return; }
-  await fade(el, { from: 1, to: 0, duration: 320 });
-  el.remove();
-  _lit = false;
+  el.classList.add('is-leaving');
+  el.setAttribute('aria-hidden', 'true');
+  const cleanup = () => {
+    el.remove();
+    _lit = false;
+  };
+  const fallback = setTimeout(cleanup, 420);
+  await fade(el, { from: 1, to: 0, duration: 180 });
+  clearTimeout(fallback);
+  cleanup();
 }
 
 export function isLit() { return _lit; }
