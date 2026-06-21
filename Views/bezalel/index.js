@@ -275,7 +275,7 @@ const _CHURCH_PRESETS = {
     CHURCH_TIMEZONE:      'America/New_York',
     FIRESTORE_PROJECT_ID: '',
     FIRESTORE_CHURCH_ID:  'FlockOS',
-    CHURCH_APP_URL:       'https://script.google.com/macros/s/AKfycbx2pemG039LB609OlVY-OcqLWK75qRV2ZgZNyf4Oc7dGogCR2HC4C__iWUqlG9JfYLt/exec',
+    CHURCH_APP_URL:       'https://script.google.com/macros/s/AKfycbwO3tVeCs6Ntf3udXNa-P0vhmUFFD1oeYR4kXXiI_evydp0yOeOESnHfYgx7r23JTEg/exec',
   },
   tbc: {
     CHURCH_NAME:          'Trinity Baptist Church',
