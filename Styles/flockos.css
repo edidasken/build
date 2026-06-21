@@ -3,30 +3,30 @@
    Shared reset/base rules stay in new_covenant.css. */
 
 body.veil-app {
-  --flockos-navy: #0f172a;
-  --flockos-navy-2: #162235;
-  --flockos-gold: #f7c756;
-  --flockos-gold-deep: #b8871e;
-  --flockos-cyan: #48d3d9;
-  --flockos-panel: rgba(255,255,255,.72);
-  --flockos-panel-strong: #ffffff;
-  --flockos-rule: rgba(15,23,42,.12);
-  --flockos-shadow: 0 22px 60px rgba(15,23,42,.12);
-  --flockos-shadow-soft: 0 12px 30px rgba(15,23,42,0.08);
-  --flockos-radius-lg: 18px;
-  --flockos-radius-md: 14px;
+  --flockos-navy: var(--herald-navy, #0f172a);
+  --flockos-navy-2: var(--herald-navy-2, #162235);
+  --flockos-gold: var(--herald-gold, #f7c756);
+  --flockos-gold-deep: var(--herald-gold-deep, #b8871e);
+  --flockos-cyan: var(--herald-cyan, #48d3d9);
+  --flockos-panel: var(--herald-panel, rgba(255,255,255,.72));
+  --flockos-panel-strong: var(--herald-panel-strong, #ffffff);
+  --flockos-rule: var(--line, rgba(15,23,42,.12));
+  --flockos-shadow: var(--herald-shadow, 0 22px 60px rgba(15,23,42,.12));
+  --flockos-shadow-soft: var(--herald-shadow-soft, 0 12px 30px rgba(15,23,42,0.08));
+  --flockos-radius-lg: var(--herald-radius-lg, 18px);
+  --flockos-radius-md: var(--herald-radius-md, 14px);
   --top-bg: linear-gradient(180deg, var(--flockos-navy), var(--flockos-navy-2));
   --side-bg: linear-gradient(180deg, var(--flockos-navy), var(--flockos-navy-2));
   --gold: var(--flockos-gold);
   --gold-text: var(--flockos-gold-deep);
   --gold-glow: rgba(247,199,86,0.35);
-  background: #ffffff;
+  background: var(--grad-hero);
 }
 
 body.veil-app .veil-wrap {
   --topbar-h: 68px;
   --sidebar-w: 238px;
-  background: #ffffff;
+  background: transparent;
 }
 
 body.veil-app .veil-top,
@@ -184,7 +184,7 @@ body.veil-app .pillars-item[data-section="admin"] .pillars-icon {
 
 body.veil-app .veil-main {
   padding: 0 22px calc(var(--safe-bottom, 0px) + 64px);
-  background: #ffffff;
+  background: transparent;
 }
 
 body.veil-app .veil-main > * {
@@ -517,7 +517,7 @@ body.veil-app .pasture [data-bind="today"] .stat-card {
 }
 
 body.veil-app .pasture [data-bind="members"] .stat-card {
-  --stat-accent: #6366f1;
+  --stat-accent: var(--flockos-gold);
 }
 
 body.veil-app .pasture .stat-card:hover {
@@ -810,7 +810,7 @@ body.veil-app .garments-input:focus {
 }
 
 body.veil-app .garments-btn-submit {
-  background: linear-gradient(135deg, var(--flockos-gold), #f97316);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 14px 28px rgba(247,199,86,.25);
 }
@@ -920,7 +920,7 @@ body.veil-app .ur-tab:focus-visible {
 
 body.veil-app .ur-tab.is-active,
 body.veil-app .ur-tab[data-ur-tab].is-active {
-  background: linear-gradient(135deg, var(--flockos-gold), #f97316);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 10px 22px rgba(247,199,86,.25);
 }
@@ -1199,31 +1199,31 @@ body.veil-app :is(
 }
 
 body.veil-app .grow-page { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
-body.veil-app .ann-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
-body.veil-app .bz-view { --view-accent: #7c3aed; --view-accent-soft: rgba(124,58,237,.12); }
+body.veil-app .ann-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .bz-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .content-admin-view,
-body.veil-app .data-view { --view-accent: #2563eb; --view-accent-soft: rgba(37,99,235,.12); }
-body.veil-app .ctf-view { --view-accent: #ef4444; --view-accent-soft: rgba(239,68,68,.12); }
+body.veil-app .data-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .ctf-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .fellowship-frame-view,
-body.veil-app .pc-view { --view-accent: #06b6d4; --view-accent-soft: rgba(72,211,217,.12); }
+body.veil-app .pc-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .fish-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
-body.veil-app .fold-view { --view-accent: #6366f1; --view-accent-soft: rgba(59,130,246,.12); }
-body.veil-app .gen-view { --view-accent: #64748b; --view-accent-soft: rgba(100,116,139,.12); }
+body.veil-app .fold-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .gen-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .inv-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .life-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .lm-view,
-body.veil-app .sdr-view { --view-accent: #f59e0b; --view-accent-soft: rgba(247,199,86,.12); }
-body.veil-app .pent-view { --view-accent: #d97706; --view-accent-soft: rgba(217,119,6,.12); }
+body.veil-app .sdr-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .pent-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .pray-view,
-body.veil-app .upper-room { --view-accent: #8b5cf6; --view-accent-soft: rgba(139,92,246,.12); }
-body.veil-app .seasons-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,.12); }
+body.veil-app .upper-room { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .seasons-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .gc-view,
 body.veil-app .harvest-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 body.veil-app .way-view,
 body.veil-app .truth-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
-body.veil-app .gift-view { --view-accent: #6366f1; --view-accent-soft: rgba(59,130,246,.12); }
-body.veil-app .wv-view { --view-accent: #0ea5e9; --view-accent-soft: rgba(59,130,246,.12); }
-body.veil-app .wall-view { --view-accent: var(--flockos-cyan); --view-accent-soft: rgba(72,211,217,.12); }
+body.veil-app .gift-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .wv-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
+body.veil-app .wall-view { --view-accent: var(--flockos-gold); --view-accent-soft: rgba(247,199,86,.12); }
 
 body.veil-app :is(
   .fold-view,
@@ -1720,7 +1720,7 @@ body.veil-app :is(
   .aow-service-tab.is-active
 ) {
   border-color: rgba(247,199,86,.44);
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 10px 22px rgba(247,199,86,.22);
 }
@@ -1735,7 +1735,7 @@ body.veil-app :is(
   .aow-btn-add
 ) {
   border-color: rgba(247,199,86,.35);
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 12px 26px rgba(247,199,86,.18);
 }
@@ -2602,7 +2602,7 @@ body.veil-app .do-view .fold-filter {
 
 body.veil-app .do-view .fold-filter.is-active {
   border-color: rgba(247,199,86,.42);
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 10px 22px rgba(247,199,86,.18);
 }
@@ -2900,7 +2900,7 @@ body.veil-app :is(
   .do-view .flock-btn--primary
 ) {
   border-color: rgba(247,199,86,.35);
-  background: linear-gradient(135deg, var(--flockos-gold), #fbbf24);
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep));
   color: #111827;
   box-shadow: 0 12px 26px rgba(247,199,86,.18);
 }
@@ -3014,4 +3014,332 @@ body { margin: 0; padding: 0; background: #ffffff; color: var(--ink); height: 10
     grid-template-areas: "top" "main" "foot";
   }
   #the-veil-side { display: none; }
+}
+
+/* ─── Herald hardening pass ────────────────────────────────────────────────
+   This file is loaded after herald-tokens.css and after Grow. Keep the final
+   word here bound to Herald tokens so inline-generated view badges, charts,
+   avatars, and embedded module controls cannot drift back to the legacy
+   rainbow palette. */
+body.veil-app {
+  --bg: #f8fafc;
+  --bg-raised: #ffffff;
+  --bg-sunken: #f1f5f9;
+  --bg-soft: #f1f5f9;
+  --bg-panel: #ffffff;
+  --bg-card: #ffffff;
+  --ink: #111827;
+  --ink-mid: #334155;
+  --ink-muted: #334155;
+  --ink-faint: #64748b;
+  --line: rgba(15,23,42,.12);
+  --border: rgba(15,23,42,.12);
+  --stroke: rgba(15,23,42,.12);
+  --surface: #ffffff;
+  --text: #111827;
+  --muted: #64748b;
+  --accent: var(--flockos-gold);
+  --accent-hover: var(--flockos-gold-deep);
+  --accent-soft: rgba(247,199,86,.12);
+  --view-accent: var(--flockos-gold);
+  --view-accent-2: var(--flockos-cyan);
+  --view-accent-soft: rgba(247,199,86,.12);
+  background: var(--grad-hero) !important;
+}
+
+body.veil-app :is(.veil-wrap, .veil-main) {
+  background: transparent !important;
+}
+
+body.veil-app #the-holy-place > :is(
+  .pasture,
+  .grow-page,
+  .fold-view,
+  .life-view,
+  .seasons-view,
+  .aow-view,
+  .ann-view,
+  .about-frame-view,
+  .bz-view,
+  .content-admin-view,
+  .ctf-view,
+  .data-view,
+  .do-view,
+  .fellowship-frame-view,
+  .fish-view,
+  .gen-view,
+  .inv-view,
+  .lm-view,
+  .pc-view,
+  .pent-view,
+  .pray-view,
+  .qwp-view,
+  .gc-view,
+  .harvest-view,
+  .sdr-view,
+  .upper-room,
+  .way-view,
+  .truth-view,
+  .gift-view,
+  .wv-view,
+  .wall-view
+) {
+  --view-accent: var(--flockos-gold) !important;
+  --view-accent-2: var(--flockos-cyan) !important;
+  --view-accent-soft: rgba(247,199,86,.12) !important;
+  --accent: var(--flockos-gold) !important;
+  --accent-hover: var(--flockos-gold-deep) !important;
+  --accent-soft: rgba(247,199,86,.12) !important;
+}
+
+body.veil-app :is(
+  .page-hero,
+  .grow-hero,
+  .pasture-hero.page-hero,
+  .upper-room > .page-hero,
+  .do-view > .page-hero,
+  .fellowship-frame-view > .page-hero
+) {
+  border-color: rgba(247,199,86,.25) !important;
+}
+
+body.veil-app :is(
+  .flock-card,
+  flock-card,
+  .stat-card,
+  .growth-card,
+  .grow-card,
+  .grow-card--counsel,
+  .grow-devo-feed-card,
+  .grow-apo-card,
+  .grow-quiz-review-card,
+  .fold-card,
+  .life-stat-card,
+  .life-card,
+  .seasons-card,
+  .ann-composer,
+  .bz-card,
+  .ctf-case-row,
+  .ctf-scripture-card,
+  .ctf-step,
+  .data-card,
+  .data-kpi-card,
+  .do-view .life-card,
+  .fish-contact-row,
+  .fish-funnel,
+  .gen-milestone-body,
+  .gen-stat-card,
+  .gift-card,
+  .gift-kpi-card,
+  .gc-kpi-card,
+  .gc-stat,
+  .gc-country-card,
+  .gc-prayer-card,
+  .gc-partner-card,
+  .gc-team-card,
+  .gc-update-card,
+  .harvest-stat-card,
+  .harvest-outreach-row,
+  .inv-stat-card,
+  .inv-invite-card,
+  .inv-pending-row,
+  .lm-feature-card,
+  .lm-mission-card,
+  .lm-step,
+  .pc-req-card,
+  .pent-card,
+  .pray-card,
+  .pray-liturgy-card,
+  .pray-scripture-card,
+  .pray-stat-card,
+  .qwp-grid-card,
+  .qwp-setup,
+  .qwp-summary,
+  .sdr-check-row,
+  .sdr-referral-card,
+  .truth-series-card,
+  .truth-msg-row,
+  .ur-devo-card,
+  .ur-journal-entry,
+  .ur-journal-form,
+  .ur-read-hero,
+  .ur-read-table,
+  .ur-recent-row,
+  .wall-layout,
+  .wall-panel,
+  .wall-setting-row,
+  .way-track-card,
+  .way-group-row,
+  .wv-card,
+  .wv-goal-row,
+  .wv-init-row,
+  .wv-milestone-row
+) {
+  border-color: rgba(15,23,42,.12) !important;
+  background:
+    radial-gradient(circle at top right, rgba(72,211,217,.08), transparent 12rem),
+    rgba(255,255,255,.92) !important;
+  color: var(--flockos-navy) !important;
+  box-shadow: var(--flockos-shadow-soft) !important;
+}
+
+body.veil-app :is(
+  .fold-filter.is-active,
+  .bz-tab--active,
+  .gc-tabs button.is-active,
+  .pray-filter.is-active,
+  .qwp-mode-tab.active,
+  .qwp-dow-btn.active,
+  .ur-tab.is-active,
+  .wall-nav-item.is-active,
+  .aow-service-tab.is-active,
+  .do-view .fold-filter.is-active,
+  .grow-btn,
+  .grow-quiz-launch,
+  .flock-btn--primary,
+  .fold-add-btn,
+  .btn-primary,
+  .seasons-add-btn,
+  .seasons-personal-add-btn,
+  .seasons-todo-add-btn,
+  .aow-btn-add
+) {
+  border-color: rgba(247,199,86,.42) !important;
+  background: linear-gradient(135deg, var(--flockos-gold), var(--flockos-gold-deep)) !important;
+  color: #111827 !important;
+  box-shadow: 0 12px 26px rgba(247,199,86,.18) !important;
+}
+
+body.veil-app :is(
+  .fold-role-badge,
+  .ctf-stage-badge,
+  .fish-stage-badge,
+  .life-type-badge,
+  .life-priority-badge,
+  .seasons-type-badge,
+  .gift-method-badge,
+  .truth-type-badge,
+  .gc-pri-badge,
+  .gc-rank-pill,
+  .gc-access-badge,
+  .gc-1040-badge,
+  .wv-badge,
+  .pc-req-cat,
+  .pc-req-status,
+  .pent-past-badge,
+  .pent-type-badge,
+  .pray-type-badge,
+  .pray-urgent-badge,
+  .wall-status-badge,
+  .way-group-badge,
+  .harvest-outreach-status,
+  .ur-devo-theme,
+  .ur-recent-theme,
+  .ur-je-cat,
+  .grow-chip,
+  .grow-card-tags,
+  .grow-devo-feat-theme,
+  .grow-devo-feed-theme
+) {
+  border: 1px solid rgba(247,199,86,.28) !important;
+  background: rgba(247,199,86,.12) !important;
+  color: var(--flockos-gold-deep) !important;
+}
+
+body.veil-app :is(
+  .fold-avatar,
+  .ctf-step-n,
+  .gen-milestone-icon,
+  .lm-feature-icon,
+  .lm-mission-icon,
+  .lm-step-n,
+  .life-card-icon,
+  .seasons-card-date,
+  .harvest-stat-icon,
+  .way-group-avatar,
+  .way-group-icon,
+  .truth-series-cover,
+  .truth-msg-play,
+  .gift-tx-avatar,
+  .gc-stat-icon,
+  .gc-prayer-icon,
+  .gc-resource-icon,
+  .gc-partner-icon,
+  .gi-card-icon,
+  .pc-req-conf,
+  .pent-card-icon,
+  .pray-lit-icon,
+  .pray-stat-icon,
+  .aow-seg-icon,
+  .growth-card-icon,
+  .grow-card-cover--placeholder,
+  .grow-hero-icon,
+  .grow-empty-icon,
+  .grow-quiz-q-num,
+  .grow-quiz-opt-letter,
+  .grow-apo-num,
+  .do-view .life-card-icon
+) {
+  border: 1px solid rgba(15,23,42,.08) !important;
+  background: rgba(247,199,86,.14) !important;
+  color: var(--flockos-gold-deep) !important;
+  box-shadow: none !important;
+}
+
+body.veil-app :is(
+  .gen-milestone-dot,
+  .aow-budget-seg,
+  .fold-stat-dot,
+  .gift-fund-dot,
+  .gift-fund-bar,
+  .way-track-stripe,
+  .way-progress-fill,
+  .qwp-chip.is-full,
+  .qwp-service-card.is-full,
+  .qwp-agenda-item.is-full
+) {
+  background: linear-gradient(90deg, var(--flockos-gold), var(--flockos-gold-deep)) !important;
+}
+
+body.veil-app .ur-devo-card::before,
+body.veil-app .pasture flock-card::before,
+body.veil-app .stat-card::before {
+  background: linear-gradient(90deg, var(--flockos-gold), var(--flockos-gold-deep)) !important;
+}
+
+body.veil-app :is(
+  .truth-type-badge,
+  .aow-type-badge,
+  .pent-type-badge,
+  .seasons-type-badge,
+  .way-track-stage,
+  .gift-method-badge,
+  .harvest-outreach-status,
+  .gi-iam-badge,
+  .gi-iam-verse,
+  .scripture-link,
+  .growth-card-icon,
+  .grow-quiz-big-num,
+  .grow-oyb-hero-label,
+  .grow-oyb-hero-stream-label,
+  .qwp-summary .is-full,
+  .qwp-summary .is-synced
+) {
+  color: var(--flockos-gold-deep) !important;
+}
+
+body.veil-app :is(
+  .aow-type-badge,
+  .gi-iam-badge,
+  .qwp-chip.is-full
+) {
+  border-color: rgba(247,199,86,.28) !important;
+  background: rgba(247,199,86,.12) !important;
+}
+
+body.veil-app :is(
+  .qwp-service-card.is-full,
+  .qwp-agenda-item.is-full
+) {
+  border-left-color: var(--flockos-gold) !important;
 }
