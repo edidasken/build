@@ -31,7 +31,7 @@ const ITEMS = [
   { id: 'prayer',        label: 'Prayer Requests',   icon: 'pray',   subview: 'prayer'     },
   { id: 'todo',          label: 'To-Do',             icon: 'check',  subview: 'todo'     },
   { id: 'calendar',      label: 'Personal Calendar', icon: 'cal',    subview: 'calendar' },
-  { id: 'journal',       label: 'Journal Logs',      icon: 'book',   subview: 'journal'  },
+  { id: 'journal',       label: 'My Records',        icon: 'book',   subview: 'journal'  },
   { divider: true },
   { id: 'signout',       label: 'Sign Out',          icon: 'out',    danger: true        },
 ];
@@ -508,6 +508,81 @@ async function _renderJournalView() {
     const d = ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
+  const kindLabel = e => ({
+    bibleBookmark: 'Bible Bookmark',
+    bibleNote: 'Bible Note',
+    biblePrayer: 'Bible Prayer',
+    journal: 'Journal',
+    prayer: 'Prayer',
+    todo: 'To-Do',
+    userRecord: 'Record',
+  }[e.__kind || e.recordType] || _titleCase(e.__kind || e.recordType || e.sourceCollection || 'Record'));
+  const recordDate = e => e.updatedAt || e.savedAt || e.createdAt || e.created || e.date || e.CreatedAt || '';
+  const recordTitle = e => e.title || e.subject || e.ref || e.reference || e.request || e.description || e.body || 'Untitled record';
+  const recordBody = e => e.body || e.notes || e.content || e.note || e.request || e.description || e.text || '';
+  const recordScripture = e => e.scripture || e.ref || e.reference || e.verse || '';
+  const recordPassage = e => e.passage || e.passageText || e.verseText || e.scriptureText || '';
+  const canDelete = e => !e.__local && (e.sourceCollection === 'journal' || e.sourceCollection === 'userRecords');
+  const normalizeRecord = (row, fallbackKind = 'record', source = '') => ({
+    ...row,
+    __kind: row.recordType || row.type || fallbackKind,
+    sourceCollection: row.sourceCollection || source,
+  });
+  const recordKey = e => [
+    e.sourceCollection || '',
+    e.id || '',
+    e.__kind || e.recordType || '',
+    e.ref || e.reference || '',
+    recordBody(e).slice(0, 80),
+    String(recordDate(e) || ''),
+  ].join('|');
+  const readJson = key => {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return [];
+    }
+  };
+  const localBibleRecords = () => [
+    ...readJson('herald_bible_bookmarks_v1').map(item => normalizeRecord({
+      ...item,
+      __local: true,
+      title: `Bible Bookmark: ${item.ref || 'Saved passage'}`,
+      body: item.text || '',
+      recordType: 'bibleBookmark',
+    }, 'bibleBookmark', 'localBibleBookmarks')),
+    ...readJson('herald_bible_notes_v1').map(item => normalizeRecord({
+      ...item,
+      __local: true,
+      title: `Bible Note: ${item.ref || 'Saved note'}`,
+      notes: item.body || item.notes || '',
+      recordType: 'bibleNote',
+    }, 'bibleNote', 'localBibleNotes')),
+    ...readJson('herald_bible_prayers_v1').map(item => normalizeRecord({
+      ...item,
+      __local: true,
+      title: `Bible Prayer: ${item.ref || 'Saved prayer'}`,
+      notes: item.body || item.notes || '',
+      recordType: 'biblePrayer',
+    }, 'biblePrayer', 'localBiblePrayers')),
+  ];
+  const loadRecords = async () => {
+    const remote = ur
+      ? (typeof ur.listUserRecords === 'function'
+        ? await ur.listUserRecords({ limit: 300 }).catch(() => [])
+        : await ur.listJournal().catch(() => []))
+      : [];
+    const rows = remote.map(row => normalizeRecord(row, row.recordType || 'journal', row.sourceCollection || 'journal'))
+      .concat(localBibleRecords());
+    const seen = {};
+    return rows.filter(row => {
+      const key = recordKey(row);
+      if (seen[key]) return false;
+      seen[key] = true;
+      return true;
+    }).sort((a, b) => _recordTime(recordDate(b)) - _recordTime(recordDate(a)));
+  };
 
   let entries = [];
   let mode    = 'list';
@@ -518,7 +593,7 @@ async function _renderJournalView() {
       view.innerHTML = `
         <div class="unity-sv-header">
           <button class="unity-sv-back" data-pp-back aria-label="Back">${IC.back}</button>
-          <span class="unity-sv-title">Journal</span>
+          <span class="unity-sv-title">My Records</span>
           <button class="unity-sv-header-action" id="pp-j-new" aria-label="New entry" title="New entry">${IC.plus}</button>
         </div>
         <div class="unity-sv-body unity-sv-body--list">
@@ -527,12 +602,12 @@ async function _renderJournalView() {
               ? entries.map((e, i) => `
                   <li class="unity-sv-journal-item" data-read="${i}" role="button" tabindex="0">
                     <div class="unity-sv-journal-item-inner">
-                      <div class="unity-sv-journal-title">${_e(e.title || 'Untitled')}</div>
-                      <div class="unity-sv-journal-meta">${fmt(e.createdAt || e.created)}</div>
+                      <div class="unity-sv-journal-title">${_e(recordTitle(e))}</div>
+                      <div class="unity-sv-journal-meta">${_e(kindLabel(e))}${recordDate(e) ? ' · ' + fmt(recordDate(e)) : ''}</div>
                     </div>
                     <span class="unity-sv-journal-chevron" aria-hidden="true">${IC.chevron}</span>
                   </li>`).join('')
-              : '<li class="unity-sv-empty">No journal entries yet.</li>'}
+              : '<li class="unity-sv-empty">No saved records yet.</li>'}
           </ul>
         </div>
       `;
@@ -573,7 +648,7 @@ async function _renderJournalView() {
         try {
           let id = String(Date.now());
           if (ur) { const res = await ur.createJournal({ title, body }); id = res.id || id; }
-          entries.unshift({ id, title, body, createdAt: null });
+          entries.unshift(normalizeRecord({ id, title, body, createdAt: null }, 'journal', 'journal'));
           mode = 'list'; render(); _toast('Entry saved.');
         } catch (_) { _toast('Could not save entry.'); btn.disabled = false; btn.textContent = 'Save Entry'; }
       };
@@ -585,20 +660,31 @@ async function _renderJournalView() {
     } else if (mode === 'read') {
       const entry = entries[readIdx];
       if (!entry) { mode = 'list'; render(); return; }
+      const body = recordBody(entry);
+      const scripture = recordScripture(entry);
+      const passage = recordPassage(entry);
       view.innerHTML = `
         <div class="unity-sv-header">
           <button class="unity-sv-back" data-pp-back aria-label="Back">${IC.back}</button>
-          <span class="unity-sv-title unity-sv-title--sm">${_e(entry.title || 'Entry')}</span>
-          <button class="unity-sv-header-action unity-sv-header-action--danger" id="pp-j-del" aria-label="Delete entry" title="Delete entry">${IC.trash}</button>
+          <span class="unity-sv-title unity-sv-title--sm">${_e(recordTitle(entry))}</span>
+          ${canDelete(entry) ? `<button class="unity-sv-header-action unity-sv-header-action--danger" id="pp-j-del" aria-label="Delete entry" title="Delete entry">${IC.trash}</button>` : ''}
         </div>
         <div class="unity-sv-body unity-sv-body--list">
-          <p class="unity-sv-journal-date">${fmt(entry.createdAt || entry.created)}</p>
-          <p class="unity-sv-journal-body">${_e(entry.body).replace(/\n/g, '<br>')}</p>
+          <p class="unity-sv-journal-date">${_e(kindLabel(entry))}${recordDate(entry) ? ' · ' + fmt(recordDate(entry)) : ''}</p>
+          ${scripture ? `<div class="unity-sv-field"><div class="unity-sv-label">Scripture</div><p class="unity-sv-journal-body">${_e(scripture)}</p></div>` : ''}
+          ${body ? `<div class="unity-sv-field"><div class="unity-sv-label">Notes</div><p class="unity-sv-journal-body">${_e(body).replace(/\n/g, '<br>')}</p></div>` : ''}
+          ${passage ? `<div class="unity-sv-field"><div class="unity-sv-label">Saved Passage</div><p class="unity-sv-journal-body">${_e(passage).replace(/\n/g, '<br>')}</p></div>` : ''}
+          ${!body && !passage && !scripture ? '<p class="unity-sv-empty">No notes are stored on this record.</p>' : ''}
         </div>
       `;
       view.querySelector('[data-pp-back]').onclick = () => { mode = 'list'; render(); };
-      view.querySelector('#pp-j-del').onclick = async () => {
-        if (ur && entry.id) try { await ur.deleteJournal({ id: entry.id }); } catch (_) {}
+      const del = view.querySelector('#pp-j-del');
+      if (del) del.onclick = async () => {
+        if (ur && entry.id && entry.sourceCollection === 'userRecords' && typeof ur.deleteUserRecord === 'function') {
+          try { await ur.deleteUserRecord({ id: entry.id }); } catch (_) {}
+        } else if (ur && entry.id && entry.sourceCollection === 'journal') {
+          try { await ur.deleteJournal({ id: entry.id }); } catch (_) {}
+        }
         entries.splice(readIdx, 1);
         mode = 'list'; render();
       };
@@ -609,14 +695,14 @@ async function _renderJournalView() {
   view.innerHTML = `
     <div class="unity-sv-header">
       <button class="unity-sv-back" data-pp-back aria-label="Back">${IC.back}</button>
-      <span class="unity-sv-title">Journal</span>
+      <span class="unity-sv-title">My Records</span>
     </div>
     <div class="unity-sv-body"><p class="unity-sv-empty">Loading…</p></div>
   `;
   view.querySelector('[data-pp-back]').onclick = () => _showView('main');
 
   try {
-    entries = ur ? await ur.listJournal().catch(() => []) : [];
+    entries = await loadRecords();
   } catch (_) { entries = []; }
 
   render();
@@ -929,6 +1015,21 @@ function _e(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 function _ea(s) { return _e(s); }
+
+function _titleCase(value) {
+  return String(value || '')
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase())
+    .trim();
+}
+
+function _recordTime(value) {
+  if (!value) return 0;
+  const date = value.seconds ? new Date(value.seconds * 1000) : new Date(value);
+  const ms = date && date.getTime ? date.getTime() : 0;
+  return Number.isFinite(ms) ? ms : 0;
+}
 
 function _toast(msg) {
   // Dismiss any existing toast immediately so messages don't stack

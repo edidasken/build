@@ -1,4 +1,5 @@
 import { mountUnityHeader } from '../Scripts/the_unity_header.js';
+import { warmUnityAccountRuntime } from '../Scripts/the_unity_runtime.js';
 
 const DEFAULT_BIBLE_DATA_BASE_URL = 'https://raw.githubusercontent.com/edidasken/do/main/app-bible/v1/';
 const BIBLE_DATA_BASE_URL = normalizeBibleDataBaseUrl(globalThis.FLOCK_BIBLE_DATA_BASE_URL || DEFAULT_BIBLE_DATA_BASE_URL);
@@ -1868,23 +1869,34 @@ async function shareCurrentPassage() {
   }
 }
 
-function saveBookmark() {
+async function saveBookmark() {
   if (!state.currentBook) return;
   const bookmarks = readStore(STORAGE_KEYS.bookmarks);
   const ref = currentReference();
   const selectedVerses = selectedVerseNumbers();
+  const savedAt = new Date().toISOString();
+  const item = {
+    ref,
+    book: state.currentBook.slug,
+    chapter: state.currentChapter,
+    highlight: state.highlight,
+    selectedVerses,
+    text: getCurrentPassagePreview(),
+    passage: getCurrentPassageText(),
+    savedAt,
+  };
   if (!bookmarks.some((item) => item.ref === ref)) {
-    bookmarks.unshift({
-      ref,
-      book: state.currentBook.slug,
-      chapter: state.currentChapter,
-      highlight: state.highlight,
-      selectedVerses,
-      text: getCurrentPassagePreview(),
-      savedAt: new Date().toISOString(),
-    });
+    bookmarks.unshift(item);
     writeStore(STORAGE_KEYS.bookmarks, bookmarks.slice(0, 60));
   }
+  saveSystemUserRecord({
+    ...item,
+    title: `Bible Bookmark: ${ref}`,
+    body: item.text,
+    recordType: 'bibleBookmark',
+    sourceApp: 'Bible',
+    sourceCollection: 'bibleBookmarks',
+  });
   renderBookmarks();
   toast('Bookmark saved.');
 }
@@ -2022,7 +2034,7 @@ function openNoteDrawer(type) {
     </div>
   `;
   el.drawerBody.querySelector('#bible-copy-drawer')?.addEventListener('click', copyCurrentPassage);
-  el.drawerBody.querySelector('#bible-drawer-form')?.addEventListener('submit', (event) => {
+  el.drawerBody.querySelector('#bible-drawer-form')?.addEventListener('submit', async (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const body = String(form.get('body') || '').trim();
@@ -2032,17 +2044,42 @@ function openNoteDrawer(type) {
       return;
     }
     const items = readStore(key);
-    items.unshift({
+    const item = {
       ref: savedRef,
       body,
+      notes: body,
       passage: getCurrentPassageText(),
       savedAt: new Date().toISOString(),
-    });
+    };
+    items.unshift(item);
     writeStore(key, items.slice(0, 100));
+    await saveSystemUserRecord({
+      ...item,
+      title: `${isPrayer ? 'Bible Prayer' : 'Bible Note'}: ${savedRef}`,
+      recordType: isPrayer ? 'biblePrayer' : 'bibleNote',
+      sourceApp: 'Bible',
+      sourceCollection: isPrayer ? 'biblePrayers' : 'bibleNotes',
+    });
     toast(isPrayer ? 'Prayer saved.' : 'Note saved.');
     openNoteDrawer(type);
   });
   openDrawer();
+}
+
+async function saveSystemUserRecord(record) {
+  try {
+    await warmUnityAccountRuntime();
+    const ur = window.UpperRoom;
+    if (!ur || typeof ur.createUserRecord !== 'function') return false;
+    if (typeof ur.isReady === 'function' && !ur.isReady() && typeof ur.authenticate === 'function') {
+      await ur.authenticate();
+    }
+    await ur.createUserRecord(record);
+    return true;
+  } catch (err) {
+    console.warn('[Bible] Saved locally; system record sync unavailable:', err);
+    return false;
+  }
 }
 
 function openDrawer() {

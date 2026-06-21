@@ -140,6 +140,25 @@
     }
     add(_userEmail);
     try {
+      var session = null;
+      var profile = null;
+      if (typeof Nehemiah !== 'undefined' && Nehemiah.getSession) session = Nehemiah.getSession();
+      else if (typeof TheVine !== 'undefined' && TheVine.session) session = TheVine.session();
+      try {
+        var rawProfile = sessionStorage.getItem('flock_auth_profile');
+        profile = rawProfile ? JSON.parse(rawProfile) : null;
+      } catch (_) {}
+      [session, profile].forEach(function(src) {
+        if (!src) return;
+        add(src.email);
+        add(src.primaryEmail);
+        add(src.secondaryEmail);
+        add(src.memberId);
+        add(src.memberPin);
+        add(src.pin);
+      });
+    } catch (_) {}
+    try {
       var user = _auth && _auth.currentUser;
       if (user) {
         add(user.email);
@@ -147,6 +166,38 @@
       }
     } catch (_) {}
     return values;
+  }
+
+  function _currentIdentityMeta() {
+    var meta = { email: _userEmail || '', displayName: _userName || '', memberId: '', memberPin: '' };
+    function apply(src) {
+      if (!src) return;
+      if (!meta.email) meta.email = src.email || src.primaryEmail || src.secondaryEmail || src.username || '';
+      if (!meta.displayName) meta.displayName = src.displayName || src.name || src.email || src.username || '';
+      if (!meta.memberId) meta.memberId = src.memberId || src.id || '';
+      if (!meta.memberPin) meta.memberPin = src.memberPin || src.pin || src['Member Pin'] || '';
+    }
+    try {
+      if (typeof Nehemiah !== 'undefined' && Nehemiah.getSession) apply(Nehemiah.getSession());
+      else if (typeof TheVine !== 'undefined' && TheVine.session) apply(TheVine.session());
+      var rawProfile = sessionStorage.getItem('flock_auth_profile');
+      apply(rawProfile ? JSON.parse(rawProfile) : null);
+    } catch (_) {}
+    return meta;
+  }
+
+  function _stampUserIdentity(data) {
+    data = data || {};
+    var meta = _currentIdentityMeta();
+    if (!data.createdBy) data.createdBy = _userEmail || meta.email || '';
+    if (!data.createdByEmail) data.createdByEmail = _userEmail || meta.email || '';
+    if (!data.ownerEmail && meta.email) data.ownerEmail = meta.email;
+    if (!data.email && meta.email) data.email = meta.email;
+    if (!data.ownerName && meta.displayName) data.ownerName = meta.displayName;
+    if (!data.memberId && meta.memberId) data.memberId = meta.memberId;
+    if (!data.memberPin && meta.memberPin) data.memberPin = meta.memberPin;
+    if (!data['Member Pin'] && meta.memberPin) data['Member Pin'] = meta.memberPin;
+    return data;
   }
 
   function _identityMatches(row, fields, identities) {
@@ -966,7 +1017,7 @@
     var _lpStart = Date.now();
     return _identityQuery(
       _prayersRef(),
-      ['createdBy', 'submitterEmail', 'ownerEmail', 'email', 'CreatedBy'],
+      ['createdBy', 'submitterEmail', 'ownerEmail', 'email', 'memberPin', 'Member Pin', 'CreatedBy'],
       opts,
       ['submittedAt', 'lastUpdated', 'createdAt', 'CreatedAt']
     ).then(function(results) {
@@ -1093,23 +1144,16 @@
   }
 
   function myTodos() {
-    return _todosRef()
-      .where('assignedTo', '==', _userEmail)
-      .orderBy('createdAt', 'desc')
-      .limit(200)
-      .get()
-      .then(function(snap) {
-        var results = [];
-        snap.forEach(function(doc) {
-          var d = doc.data();
-          d.id = doc.id;
-          results.push(d);
-        });
-        return results;
-      });
+    return _identityQuery(
+      _todosRef(),
+      ['assignedTo', 'memberPin', 'Member Pin'],
+      { limit: 200 },
+      ['createdAt', 'updatedAt']
+    );
   }
 
   function createTodo(data) {
+    data = _stampUserIdentity(data || {});
     var id = _uid();
     return _todosRef().doc(id).set({
       title:          data.title || '',
@@ -1124,7 +1168,11 @@
       entityType:     data.entityType || '',
       entityId:       data.entityId || '',
       notes:          data.notes || '',
-      createdBy:      _userEmail,
+      createdBy:      data.createdBy || _userEmail,
+      ownerEmail:     data.ownerEmail || data.email || '',
+      memberId:       data.memberId || '',
+      memberPin:      data.memberPin || '',
+      'Member Pin':   data['Member Pin'] || data.memberPin || '',
       createdAt:      _now(),
       updatedAt:      _now()
     }).then(function() { return id; });
@@ -3574,7 +3622,7 @@
     var _ljStart = Date.now();
     return _identityQuery(
       _journalRef(),
-      ['createdBy', 'ownerEmail', 'ownerId', 'email', 'CreatedBy', 'createdByEmail', 'submitterEmail'],
+      ['createdBy', 'ownerEmail', 'ownerId', 'email', 'memberPin', 'Member Pin', 'CreatedBy', 'createdByEmail', 'submitterEmail'],
       opts,
       ['updatedAt', 'createdAt', 'date', 'CreatedAt']
     ).then(function(out) {
@@ -3585,8 +3633,9 @@
   }
 
   function createJournal(data) {
+    data = _stampUserIdentity(data || {});
     data.createdAt = _now();
-    data.createdBy = _userEmail;
+    data.createdBy = data.createdBy || _userEmail;
     return _journalRef().add(data).then(function(ref) {
       return { id: ref.id, success: true };
     });
@@ -3604,6 +3653,67 @@
   function deleteJournal(opts) {
     var id = opts && opts.id; if (!id) throw new Error('id required');
     return _journalRef().doc(id).delete().then(function() {
+      return { id: id, success: true };
+    });
+  }
+
+  function _userRecordsRef() { return _churchDoc().collection('userRecords'); }
+  var _USER_RECORD_ID_FIELDS = ['createdBy', 'createdByEmail', 'ownerEmail', 'email', 'memberId', 'ownerId', 'memberPin', 'Member Pin', 'submitterEmail'];
+  var _USER_RECORD_SORT_FIELDS = ['updatedAt', 'savedAt', 'createdAt', 'date', 'CreatedAt'];
+
+  function _mapUserRecord(row, type, sourceCollection) {
+    row = row || {};
+    if (!row.recordType) row.recordType = type || sourceCollection || 'record';
+    if (!row.sourceCollection) row.sourceCollection = sourceCollection || '';
+    return row;
+  }
+
+  function listUserRecords(opts) {
+    opts = opts || {};
+    var limit = opts.limit || 300;
+    return Promise.all([
+      _identityQuery(_userRecordsRef(), _USER_RECORD_ID_FIELDS, { limit: limit }, _USER_RECORD_SORT_FIELDS)
+        .then(function(rows) { return rows.map(function(row) { return _mapUserRecord(row, row.recordType || 'userRecord', 'userRecords'); }); })
+        .catch(function() { return []; }),
+      listJournal({ limit: limit })
+        .then(function(rows) { return rows.map(function(row) { return _mapUserRecord(row, row.recordType || 'journal', 'journal'); }); })
+        .catch(function() { return []; }),
+      listPrayers({ limit: limit })
+        .then(function(rows) { return rows.map(function(row) { return _mapUserRecord(row, 'prayer', 'prayers'); }); })
+        .catch(function() { return []; }),
+      myTodos()
+        .then(function(rows) { return rows.map(function(row) { return _mapUserRecord(row, 'todo', 'todos'); }); })
+        .catch(function() { return []; })
+    ]).then(function(chunks) {
+      var rows = _dedupeRows([].concat.apply([], chunks));
+      return _sortRowsDesc(rows, _USER_RECORD_SORT_FIELDS).slice(0, limit);
+    });
+  }
+
+  function createUserRecord(data) {
+    data = _stampUserIdentity(data || {});
+    data.createdAt = data.createdAt || _now();
+    data.savedAt = data.savedAt || data.createdAt;
+    data.sourceApp = data.sourceApp || data.app || '';
+    data.recordType = data.recordType || data.type || 'userRecord';
+    return _userRecordsRef().add(data).then(function(ref) {
+      data.id = ref.id;
+      return { id: ref.id, success: true };
+    });
+  }
+
+  function updateUserRecord(data) {
+    var id = data && data.id; if (!id) throw new Error('id required');
+    delete data.id;
+    data.updatedAt = _now();
+    return _userRecordsRef().doc(id).update(data).then(function() {
+      return { id: id, success: true };
+    });
+  }
+
+  function deleteUserRecord(opts) {
+    var id = opts && opts.id; if (!id) throw new Error('id required');
+    return _userRecordsRef().doc(id).delete().then(function() {
       return { id: id, success: true };
     });
   }
@@ -5470,6 +5580,12 @@
     createJournal: createJournal,
     updateJournal: updateJournal,
     deleteJournal: deleteJournal,
+
+    // Unified member-owned records
+    listUserRecords:   listUserRecords,
+    createUserRecord: createUserRecord,
+    updateUserRecord: updateUserRecord,
+    deleteUserRecord: deleteUserRecord,
 
     // Discipleship — Paths
     listDiscPaths:    listDiscPaths,

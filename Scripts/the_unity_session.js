@@ -39,6 +39,8 @@ function _normalizeUser(s) {
     roleLevel:   s.roleLevel || 0,
     groups:      s.groups || '',
     permissions: s.permissions || {},
+    memberId:    s.memberId || s.id || '',
+    memberPin:   s.memberPin || s.pin || '',
   };
 }
 
