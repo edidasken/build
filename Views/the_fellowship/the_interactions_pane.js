@@ -13,19 +13,15 @@ import * as scrolls from '../../Scripts/the_scrolls/index.js';
 export function renderInteractionsPane(host /*, ctx */) {
   if (!host) return () => {};
   host.innerHTML = `
-    <div class="ix-pane" style="display:flex; flex-direction:column; gap:10px; min-height:60vh;">
-      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-        <select id="ix-type" style="padding:8px 10px; border:1px solid var(--line,#e5e7ef);
-                border-radius:8px; font:inherit; background:var(--bg-raised,#fff);
-                color:var(--ink,#1b264f); min-width:130px;">
+    <div class="ix-pane">
+      <div class="ix-toolbar">
+        <select id="ix-type" class="ix-control ix-type">
           <option value="">All types</option>
         </select>
-        <input type="search" placeholder="Search…" id="ix-q"
-          style="flex:1; min-width:120px; padding:9px 12px; border:1px solid var(--line,#e5e7ef);
-                 border-radius:8px; font:inherit; background:var(--bg-raised,#fff); color:var(--ink,#1b264f);">
-        <button type="button" data-act="refresh" class="flock-btn" style="white-space:nowrap;">Refresh</button>
+        <input type="search" placeholder="Search…" id="ix-q" class="ix-control ix-search">
+        <button type="button" data-act="refresh" class="flock-btn ix-refresh">Refresh</button>
       </div>
-      <div data-bind="list" style="display:flex; flex-direction:column; gap:6px;">
+      <div data-bind="list" class="ix-list">
         <flock-skeleton rows="6"></flock-skeleton>
       </div>
     </div>
@@ -54,9 +50,9 @@ export function renderInteractionsPane(host /*, ctx */) {
         .filter((r) => !q.value.trim() || JSON.stringify(r).toLowerCase().includes(q.value.toLowerCase()));
       list.innerHTML = filtered.length
         ? filtered.map(_row).join('')
-        : `<div style="color:var(--ink-muted,#7a7f96); padding:16px;">No interactions match.</div>`;
+        : `<div class="view-empty ix-empty">No interactions match.</div>`;
     } catch (_) {
-      list.innerHTML = `<div style="color:var(--ink-muted,#7a7f96); padding:16px;">Pastoral ledger unavailable right now.</div>`;
+      list.innerHTML = `<div class="view-empty ix-empty">Pastoral ledger unavailable right now.</div>`;
     }
   }
 
@@ -70,15 +66,13 @@ export function renderInteractionsPane(host /*, ctx */) {
 
 function _row(r) {
   return `
-    <div style="display:flex; gap:10px; padding:10px 12px;
-                background:var(--bg-raised,#fff); border:1px solid var(--line,#e5e7ef);
-                border-radius:10px;">
-      <div style="width:24px; text-align:center;">${_e(r.icon || '•')}</div>
-      <div style="min-width:0; flex:1;">
-        <div style="font-weight:600; color:var(--ink,#1b264f);">${_e(r.label || r.type || 'Interaction')}</div>
-        <div style="color:var(--ink-muted,#7a7f96); font-size:0.85rem;">${_e(r.detail || '')}</div>
+    <div class="ix-row">
+      <div class="ix-icon">${_e(r.icon || '•')}</div>
+      <div class="ix-body">
+        <div class="ix-title">${_e(r.label || r.type || 'Interaction')}</div>
+        <div class="ix-detail">${_e(r.detail || '')}</div>
       </div>
-      <div style="color:var(--ink-muted,#7a7f96); font-size:0.78rem; white-space:nowrap;">${_when(r.ts || r.timestamp)}</div>
+      <div class="ix-time">${_when(r.ts || r.timestamp)}</div>
     </div>`;
 }
 function _when(ts) {

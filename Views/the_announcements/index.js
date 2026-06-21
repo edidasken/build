@@ -24,15 +24,12 @@ export function render() {
         subtitle: 'A read-only firehose of what the leadership is saying.',
         scripture: 'I bring you good tidings of great joy. — Luke 2:10',
       })}
-      <div class="ann-composer" style="display:flex; gap:8px; align-items:flex-start; margin-bottom:14px;
-           padding:12px; background:var(--bg-raised,#fff); border:1px solid var(--line,#e5e7ef); border-radius:10px;">
+      <div class="ann-composer">
         <textarea data-bind="input" rows="2" placeholder="Post an announcement to the whole church…"
-          style="flex:1; padding:9px 12px; border:1px solid var(--line,#e5e7ef); border-radius:8px;
-                 font:inherit; resize:vertical; min-height:42px; background:var(--bg,#f7f8fb);
-                 color:var(--ink,#1b264f);"></textarea>
+          class="ann-input view-resize-vertical"></textarea>
         <button type="button" class="flock-btn flock-btn--primary" data-act="post">Post</button>
       </div>
-      <div data-bind="stream" style="display:flex; flex-direction:column; gap:6px;">
+      <div data-bind="stream" class="ann-stream">
         <flock-skeleton rows="6"></flock-skeleton>
       </div>
     </section>
@@ -48,13 +45,13 @@ export function mount(root /*, ctx */) {
 
   function paint(rows = []) {
     if (!rows.length) {
-      stream.innerHTML = `<div style="color:var(--ink-muted,#7a7f96); padding:24px 8px; text-align:center;">No announcements yet. Post the first.</div>`;
+      stream.innerHTML = `<div class="view-empty">No announcements yet. Post the first.</div>`;
       return;
     }
     stream.innerHTML = rows.slice().reverse().map((m) => `
-      <div class="ann-msg" data-mid="${_e(String(m.id || ''))}" style="position:relative;">
+      <div class="ann-msg" data-mid="${_e(String(m.id || ''))}">
         ${renderMessage(m)}
-        <div class="ann-msg-actions" style="position:absolute; top:6px; right:6px; display:flex; gap:4px; opacity:0; transition:opacity 120ms;">
+        <div class="ann-msg-actions">
           <button type="button" class="flock-icon-btn flock-icon-btn--sm" data-act="edit" title="Edit" aria-label="Edit announcement">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
           </button>
@@ -65,8 +62,8 @@ export function mount(root /*, ctx */) {
       </div>`).join('');
     stream.querySelectorAll('.ann-msg').forEach((el) => {
       const actions = el.querySelector('.ann-msg-actions');
-      el.addEventListener('mouseenter', () => { actions.style.opacity = '1'; });
-      el.addEventListener('mouseleave', () => { actions.style.opacity = '0'; });
+      el.addEventListener('mouseenter', () => { actions.classList.add('is-visible'); });
+      el.addEventListener('mouseleave', () => { actions.classList.remove('is-visible'); });
       el.querySelector('[data-act="edit"]')?.addEventListener('click', async () => {
         const m = rows.find((r) => String(r.id) === el.dataset.mid);
         if (!m) return;
@@ -87,9 +84,9 @@ export function mount(root /*, ctx */) {
 
   messages.watch(CHANNEL_ID, paint, { limit: 200 }).then((u) => { unwatch = u; }).catch(() => {
     stream.innerHTML = `
-      <div style="color:var(--ink-muted,#7a7f96); padding:24px 8px; text-align:center;">
+      <div class="view-empty">
         Announcements channel hasn't been created yet.
-        <div style="margin-top:10px"><button type="button" class="flock-btn flock-btn--primary" data-act="init-channel">Create #announcements</button></div>
+        <div class="ann-init-action"><button type="button" class="flock-btn flock-btn--primary" data-act="init-channel">Create #announcements</button></div>
       </div>`;
     stream.querySelector('[data-act="init-channel"]')?.addEventListener('click', () => _initChannel(stream, root));
   });
@@ -120,13 +117,13 @@ export function mount(root /*, ctx */) {
 async function _initChannel(stream, root) {
   const UR = window.UpperRoom;
   if (!UR || !UR.initializeDirectory) return;
-  stream.innerHTML = `<div style="color:var(--ink-muted,#7a7f96); padding:24px 8px; text-align:center;">Creating channel…</div>`;
+  stream.innerHTML = `<div class="view-loading">Creating channel…</div>`;
   try {
     await UR.initializeDirectory('channel:announcements');
     // Re-mount this view to re-run watch with the now-existing doc.
     location.reload();
   } catch (err) {
-    stream.innerHTML = `<div style="color:#b91c1c; padding:24px 8px; text-align:center;">${_e(err?.message || 'Could not create channel.')}</div>`;
+    stream.innerHTML = `<div class="view-error">${_e(err?.message || 'Could not create channel.')}</div>`;
   }
 }
 

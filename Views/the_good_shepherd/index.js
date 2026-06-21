@@ -128,7 +128,7 @@ export function mount(root, ctx) {
 
   // Click stat cards to jump.
   root.querySelectorAll('[data-bind][data-jump]').forEach((card) => {
-    card.style.cursor = 'pointer';
+    card.classList.add('pasture-clickable');
     card.addEventListener('click', () => {
       const where = card.getAttribute('data-jump');
       if (where && ctx && ctx.go) ctx.go(where);
@@ -141,7 +141,7 @@ export function mount(root, ctx) {
     });
   });
   root.querySelectorAll('[data-flocksort-card]').forEach((card) => {
-    card.style.cursor = 'pointer';
+    card.classList.add('pasture-clickable');
     card.addEventListener('click', () => {
       window.location.href = 'app.flocksort/';
     });

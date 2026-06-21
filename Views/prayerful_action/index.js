@@ -447,8 +447,8 @@ function _openAddRequestSheet(onReload) {
           <input class="life-sheet-input" data-field="name" type="text" placeholder="Your name">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Prayer Request <span style="color:#dc2626">*</span></div>
-          <textarea class="life-sheet-input" data-field="prayerText" rows="4" style="resize:vertical" placeholder="Share your prayer request…"></textarea>
+          <div class="life-sheet-label">Prayer Request <span class="view-required">*</span></div>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="prayerText" rows="4" placeholder="Share your prayer request…"></textarea>
         </div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
@@ -473,7 +473,7 @@ function _openAddRequestSheet(onReload) {
           <input type="checkbox" id="pray-conf-chk" data-field="isConfidential" style="width:16px;height:16px;cursor:pointer">
           <label for="pray-conf-chk" style="font:.88rem var(--font-ui);cursor:pointer">🔒 Keep confidential (prayer team only)</label>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>

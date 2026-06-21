@@ -40,21 +40,21 @@ export function render() {
       <!-- Upcoming special services -->
       <div class="way-section-header">
         <h2 class="way-section-title">Upcoming Special Services</h2>
-        <button class="flock-btn flock-btn--primary" style="display:flex;align-items:center;gap:6px;">
+        <button class="flock-btn flock-btn--primary view-inline-action">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           Schedule Event
         </button>
       </div>
       <div class="pent-list" data-bind="upcoming">
-        <div class="life-empty" style="padding:24px 8px;color:var(--ink-muted,#7a7f96);text-align:center">Loading upcoming services…</div>
+        <div class="life-empty">Loading upcoming services…</div>
       </div>
 
       <!-- Past milestones -->
-      <div class="way-section-header" style="margin-top:28px;">
+      <div class="way-section-header view-section-spaced-lg">
         <h2 class="way-section-title">Past Milestones</h2>
       </div>
       <div class="pent-list pent-list--past" data-bind="past">
-        <div class="life-empty" style="padding:24px 8px;color:var(--ink-muted,#7a7f96);text-align:center">Loading past milestones…</div>
+        <div class="life-empty">Loading past milestones…</div>
       </div>
     </section>
   `;
@@ -81,7 +81,7 @@ function _rows(res) {
 async function _loadPentecost(root) {
   const upEl   = root.querySelector('[data-bind="upcoming"]');
   const pastEl = root.querySelector('[data-bind="past"]');
-  const errMsg = (msg) => `<div class="life-empty" style="padding:24px 8px;color:var(--ink-muted,#7a7f96);text-align:center">${msg}</div>`;
+  const errMsg = (msg) => `<div class="life-empty">${msg}</div>`;
 
   const V = window.TheVine;
   const MX = buildAdapter('flock.events', V);
@@ -112,7 +112,7 @@ async function _loadPentecost(root) {
     [...upcoming, ...past].forEach(ev => { if (ev.id) _livePentMap[String(ev.id)] = ev; });
     const reload = () => _loadPentecost(root);
     root.querySelectorAll('.pent-card[data-id]').forEach(card => {
-      card.style.cursor = 'pointer';
+      card.classList.add('view-clickable');
       card.addEventListener('click', () => {
         const rec = _livePentMap[card.dataset.id];
         if (rec) _openPentEventSheet(rec, reload);
@@ -139,13 +139,14 @@ function _liveEventCard(ev) {
 }
 
 function _cardHTML({ id, title, date, type, meta, notes, candidates, isPast }) {
+  const tone = `pent-tone-${String(type || 'special').replace(/[^a-z0-9_-]/gi, '').toLowerCase()}`;
   return /* html */`
     <article class="pent-card${isPast ? ' pent-card--past' : ''}"${id ? ` data-id="${_e(id)}"` : ''} tabindex="0">
-      <div class="pent-card-icon" style="background:${meta.bg};color:${meta.color}">${meta.icon}</div>
+      <div class="pent-card-icon ${tone}">${meta.icon}</div>
       <div class="pent-card-body">
         <div class="pent-card-title">${_e(title)}</div>
         <div class="pent-card-meta">
-          <span class="pent-type-badge" style="color:${meta.color};background:${meta.bg}">${meta.label}</span>
+          <span class="pent-type-badge ${tone}">${meta.label}</span>
           ${date ? `<span class="pent-date">${_e(date)}</span>` : ''}
           ${candidates > 0 ? `<span class="pent-candidates">💧 ${candidates} candidates</span>` : ''}
           ${isPast ? '<span class="pent-past-badge">Complete</span>' : ''}
@@ -195,7 +196,7 @@ function _openPentEventSheet(ev, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Event Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Event Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(title)}" placeholder="e.g. Baptism Sunday">
         </div>
         <div class="life-sheet-field">
@@ -210,12 +211,12 @@ function _openPentEventSheet(ev, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes / Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Details, speaker, preparation notes…">${_e(notes)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Details, speaker, preparation notes…">${_e(notes)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Cancel Event</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Cancel Event</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Schedule' : 'Save Changes'}</button>
       </div>
@@ -275,4 +276,3 @@ function _openPentEventSheet(ev, onReload) {
     } catch (err) { btn.disabled = false; btn.textContent = 'Cancel Event'; }
   });
 }
-

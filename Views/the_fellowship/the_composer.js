@@ -9,17 +9,12 @@ import { raiseToast } from '../../Scripts/vessels/the_staff.js';
 export function renderComposer(host, { channelId }) {
   if (!host || !channelId) return () => {};
   host.innerHTML = `
-    <div style="display:flex; gap:6px; align-items:flex-end;
-                padding:8px; background:var(--bg-raised,#fff);
-                border:1px solid var(--line,#e5e7ef); border-radius:10px;">
+    <div class="fc-composer-box">
       <button type="button" data-act="emoji"  title="Emoji"
-              style="background:transparent;border:0;padding:6px 8px;cursor:pointer;font-size:1.05rem;">🙂</button>
+              class="fc-composer-tool">🙂</button>
       <button type="button" data-act="attach" title="Attach"
-              style="background:transparent;border:0;padding:6px 8px;cursor:pointer;font-size:1.05rem;">📎</button>
-      <textarea rows="1" placeholder="Speak in love…" style="
-        flex:1; resize:none; padding:8px 10px; border:0; outline:0;
-        font:inherit; color:var(--ink,#1b264f); background:transparent;
-        max-height:140px;"></textarea>
+              class="fc-composer-tool">📎</button>
+      <textarea rows="1" placeholder="Speak in love…" class="fc-composer-input"></textarea>
       <input type="file" hidden>
       <flock-button tone="primary" data-act="send">Send</flock-button>
     </div>

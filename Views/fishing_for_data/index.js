@@ -9,10 +9,10 @@ export const name  = 'fishing_for_data';
 export const title = 'Analytics';
 
 const KPI_DEFS = [
-  { label: 'Avg. Weekly Attendance', color: 'var(--c-violet)' },
-  { label: 'Monthly Giving',         color: 'var(--c-emerald)' },
-  { label: 'New Members (QTD)',      color: 'var(--c-sky)' },
-  { label: 'Care Items Open',        color: 'var(--gold)' },
+  { label: 'Avg. Weekly Attendance', tone: 'violet' },
+  { label: 'Monthly Giving',         tone: 'emerald' },
+  { label: 'New Members (QTD)',      tone: 'sky' },
+  { label: 'Care Items Open',        tone: 'gold' },
 ];
 
 export function render() {
@@ -28,9 +28,9 @@ export function render() {
       <div class="data-kpi-strip" data-bind="kpi">
         ${KPI_DEFS.map(k => `
           <div class="data-kpi-card">
-            <div class="data-kpi-value" style="color:${k.color}">—</div>
+            <div class="data-kpi-value data-kpi-value--${k.tone}">—</div>
             <div class="data-kpi-label">${_e(k.label)}</div>
-            <div class="data-kpi-delta" style="color:var(--ink-muted,#7a7f96)">Loading…</div>
+            <div class="data-kpi-delta">Loading…</div>
           </div>
         `).join('')}
       </div>
@@ -41,7 +41,7 @@ export function render() {
           <h2 class="data-card-title">Weekly Attendance — Last 12 Weeks</h2>
         </div>
         <div class="data-chart-wrap" data-bind="chart">
-          <div class="life-empty" style="padding:24px 8px;color:var(--ink-muted,#7a7f96);text-align:center">Loading attendance data…</div>
+          <div class="life-empty">Loading attendance data…</div>
         </div>
       </div>
     </section>
@@ -63,7 +63,7 @@ function _rows(res) {
 }
 
 async function _loadAnalytics(root) {
-  const errMsg = (msg) => `<div class="life-empty" style="padding:24px 8px;color:var(--ink-muted,#7a7f96);text-align:center">${msg}</div>`;
+  const errMsg = (msg) => `<div class="life-empty">${msg}</div>`;
   const chartWrap = root.querySelector('[data-bind="chart"]');
 
   const V = window.TheVine;
@@ -143,7 +143,7 @@ function _setKpi(root, idx, value, deltaLabel) {
   if (el) el.textContent = value;
   if (deltaLabel != null) {
     const d = cards[idx].querySelector('.data-kpi-delta');
-    if (d) { d.textContent = deltaLabel; d.style.color = 'var(--ink-muted,#7a7f96)'; }
+    if (d) { d.textContent = deltaLabel; }
   }
 }
 
@@ -168,4 +168,3 @@ function _e(s) {
   return String(s ?? '').replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
-

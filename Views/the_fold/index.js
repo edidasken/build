@@ -801,7 +801,7 @@ function _openMemberSheet(person, V, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes</div>
-          <textarea class="life-sheet-input" data-field="notes" rows="2" style="resize:vertical" placeholder="Pastoral notes, household info, etc.">${_e(person.notes || '')}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="notes" rows="2" placeholder="Pastoral notes, household info, etc.">${_e(person.notes || '')}</textarea>
         </div>
         <!-- Permissions -->
         <div class="fold-perm-section">
@@ -1311,7 +1311,7 @@ function _openFoldCareSheet(person, { connected = false } = {}) {
       <div class="life-sheet-body">
         <!-- Care Type -->
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Care Type <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Care Type <span class="view-required">*</span></div>
           <select class="life-sheet-input" data-field="careType" autofocus>
             <option value="">— Select a care type —</option>
             ${careTypeOptions}
@@ -1489,8 +1489,8 @@ function _openFoldPrayerSheet(person) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Prayer Request <span style="color:#dc2626">*</span></div>
-          <textarea class="life-sheet-input" data-field="prayerText" rows="4" style="resize:vertical" placeholder="Share the prayer need…"></textarea>
+          <div class="life-sheet-label">Prayer Request <span class="view-required">*</span></div>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="prayerText" rows="4" placeholder="Share the prayer need…"></textarea>
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Category</div>
@@ -1586,7 +1586,7 @@ function _openNewMemberSheet(onReload) {
         <!-- Name -->
         <div class="fold-form-row">
           <div class="life-sheet-field">
-            <div class="life-sheet-label">First Name <span style="color:#dc2626">*</span></div>
+            <div class="life-sheet-label">First Name <span class="view-required">*</span></div>
             <input class="life-sheet-input" data-field="firstName" type="text" placeholder="First name" autofocus>
           </div>
           <div class="life-sheet-field">
@@ -1626,7 +1626,7 @@ function _openNewMemberSheet(onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes</div>
-          <textarea class="life-sheet-input" data-field="notes" rows="2" style="resize:vertical" placeholder="Any additional notes…"></textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="notes" rows="2" placeholder="Any additional notes…"></textarea>
         </div>
         <div class="fold-perm-section">
           <div class="fold-perm-section-title">🔐 FlockOS Access Level</div>
@@ -1636,13 +1636,13 @@ function _openNewMemberSheet(onReload) {
             ${ACCESS_ROLES.map(r => `<option value="${_e(r.value)}">${_e(r.label)}</option>`).join('')}
           </select>
           <div data-passcode-row style="display:none;margin-top:10px">
-            <div class="life-sheet-label" style="margin-bottom:4px">Initial Passcode <span style="color:#dc2626">*</span></div>
+            <div class="life-sheet-label" style="margin-bottom:4px">Initial Passcode <span class="view-required">*</span></div>
             <input class="life-sheet-input" data-field="passcode" type="password" placeholder="Min. 6 characters" autocomplete="new-password">
             <div style="font-size:.78rem;color:var(--c-muted,#888);margin-top:4px">The person will use this to log in. They can change it later.</div>
           </div>
         </div>
         <!-- Error slot -->
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>

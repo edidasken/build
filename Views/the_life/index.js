@@ -1441,7 +1441,7 @@ function _openSheet(c, memberDir, onSave) {
         </div>
       </div>
       <div class="life-sheet-foot">
-        <button class="flock-btn flock-btn--danger life-delete-btn" data-delete style="margin-right:auto">Delete Case</button>
+        <button class="flock-btn flock-btn--danger life-delete-btn view-danger-push" data-delete>Delete Case</button>
         <button class="flock-btn life-resolve-btn" data-resolve>Resolve Case</button>
         <button class="flock-btn flock-btn--primary" data-save>Save Changes</button>
       </div>
@@ -1792,7 +1792,7 @@ function _quickNote(cid, personName) {
         </button>
       </div>
       <div class="life-sheet-body">
-        <textarea class="life-note-ta" rows="4" placeholder="What happened? What was said?…" style="width:100%"></textarea>
+        <textarea class="life-note-ta view-full-width" rows="4" placeholder="What happened? What was said?…"></textarea>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>
@@ -2856,7 +2856,7 @@ function _openTodoSheet(item, memberDir, onSave) {
         </div>
       </div>
       <div class="life-sheet-foot">
-        ${isEdit ? `<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete</button>` : ''}
+        ${isEdit ? `<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete</button>` : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isEdit ? 'Save Changes' : 'Add Todo'}</button>
       </div>

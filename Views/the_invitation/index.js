@@ -48,7 +48,7 @@ export function render() {
             <input class="fold-search" type="email" placeholder="Email address…" data-bind="church-email" />
           </label>
         </div>
-        <label class="inv-label" style="width:100%">Personal Note (optional)
+        <label class="inv-label view-full-width">Personal Note (optional)
           <textarea class="fold-search inv-textarea" placeholder="E.g. Met at soccer practice — invited to Sunday service…" data-bind="church-note" rows="2"></textarea>
         </label>
         <div class="inv-form-actions">

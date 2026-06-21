@@ -10,11 +10,11 @@ import { renderComposer }     from './the_composer.js';
 export function renderThread(host, { channelId }) {
   if (!host || !channelId) return () => {};
   host.innerHTML = `
-    <div style="display:flex; flex-direction:column; height:60vh; gap:8px;">
-      <div data-bind="stream" style="flex:1; overflow-y:auto; padding:8px 4px; display:flex; flex-direction:column; gap:6px;">
+    <div class="thread-pane">
+      <div data-bind="stream" class="thread-stream">
         <flock-skeleton rows="6"></flock-skeleton>
       </div>
-      <div data-bind="typing" style="min-height:1.1em; color:var(--ink-muted,#7a7f96); font-size:0.82rem;"></div>
+      <div data-bind="typing" class="thread-typing"></div>
       <div data-bind="composer"></div>
     </div>
   `;
@@ -29,7 +29,7 @@ export function renderThread(host, { channelId }) {
   messages.watch(channelId, (rows = []) => {
     stream.innerHTML = rows.length
       ? rows.map((m) => renderMessage(m)).join('')
-      : `<div style="color:var(--ink-muted,#7a7f96); padding:24px 8px; text-align:center;">No messages yet. Be the first.</div>`;
+      : `<div class="view-empty">No messages yet. Be the first.</div>`;
     stream.scrollTop = stream.scrollHeight;
   }).then((u) => { unwatchMsgs = u; }).catch(() => {});
 

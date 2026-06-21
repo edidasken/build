@@ -14,17 +14,14 @@ export function renderMessage(m) {
   const initials = _initials(author);
   const body  = renderMentions(String(m.body || m.text || ''), m.knownMembers || []);
   return `
-    <div class="msg" style="display:flex; gap:10px; align-items:flex-start; padding:6px 4px;">
-      <div style="width:32px; height:32px; flex:none; border-radius:50%;
-                  background:var(--accent,#e8a838); color:#fff;
-                  display:flex; align-items:center; justify-content:center;
-                  font:600 0.8rem 'Noto Sans',sans-serif;">${initials}</div>
-      <div style="min-width:0;">
-        <div style="display:flex; align-items:baseline; gap:8px;">
-          <span style="font-weight:600; color:var(--ink,#1b264f);">${author}</span>
-          <span style="font-size:0.78rem; color:var(--ink-muted,#7a7f96);">${ts}</span>
+    <div class="msg">
+      <div class="msg-avatar">${initials}</div>
+      <div class="msg-body">
+        <div class="msg-meta">
+          <span class="msg-author">${author}</span>
+          <span class="msg-time">${ts}</span>
         </div>
-        <div style="white-space:pre-wrap; color:var(--ink,#1b264f);">${body}</div>
+        <div class="msg-text">${body}</div>
       </div>
     </div>`;
 }

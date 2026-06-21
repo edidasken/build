@@ -42,7 +42,7 @@ export function render() {
           <button class="fold-filter" data-truth-filter="study">Studies</button>
           <button class="fold-filter" data-truth-filter="devotional">Devotionals</button>
         </div>
-        <button class="flock-btn flock-btn--primary" style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+        <button class="flock-btn flock-btn--primary view-toolbar-spacer view-inline-action">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           Upload
         </button>
@@ -53,16 +53,16 @@ export function render() {
         <h2 class="way-section-title">Series</h2>
       </div>
       <div class="truth-series-grid">
-        <div class="truth-loading" style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Loading series…</div>
+        <div class="truth-loading view-loading">Loading series…</div>
       </div>
 
       <!-- Recent messages -->
-      <div class="way-section-header" style="margin-top:24px;">
+      <div class="way-section-header view-section-spaced">
         <h2 class="way-section-title">Recent Messages</h2>
         <button class="flock-btn flock-btn--ghost way-see-all">Browse All</button>
       </div>
       <div class="truth-messages">
-        <div class="truth-loading" style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Loading messages…</div>
+        <div class="truth-loading view-loading">Loading messages…</div>
       </div>
     </section>
   `;
@@ -102,12 +102,12 @@ async function _loadTruth(root) {
   const seriesEl = root.querySelector('.truth-series-grid');
   const msgsEl   = root.querySelector('.truth-messages');
   if (!V) {
-    if (seriesEl) seriesEl.innerHTML = '<div class="life-empty" style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Content backend not loaded.</div>';
-    if (msgsEl)   msgsEl.innerHTML   = '<div class="life-empty" style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Content backend not loaded.</div>';
+    if (seriesEl) seriesEl.innerHTML = '<div class="life-empty">Content backend not loaded.</div>';
+    if (msgsEl)   msgsEl.innerHTML   = '<div class="life-empty">Content backend not loaded.</div>';
     return;
   }
   if (seriesEl) {
-    seriesEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Loading series…</div>';
+    seriesEl.innerHTML = '<div class="view-loading">Loading series…</div>';
     try {
       const res  = await MXS.list();
       const rows = _rows(res);
@@ -116,13 +116,13 @@ async function _loadTruth(root) {
       rows.sort((a, b) => _tsN(b.createdAt || b.startDate) - _tsN(a.createdAt || a.startDate));
       seriesEl.innerHTML = rows.length
         ? rows.map(_liveSeriesCard).join('')
-        : '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">No sermon series on file.</div>';
+        : '<div class="view-empty">No sermon series on file.</div>';
       // Build map + wire edit clicks
       _liveSeriesMap = {};
       rows.forEach(s => { if (s.id) _liveSeriesMap[String(s.id)] = s; });
       const sreload = () => _loadTruth(root);
       seriesEl.querySelectorAll('.truth-series-card[data-id]').forEach(card => {
-        card.style.cursor = 'pointer';
+        card.classList.add('view-clickable');
         card.addEventListener('click', () => {
           const rec = _liveSeriesMap[card.dataset.id];
           if (rec) _openSeriesSheet(rec, sreload);
@@ -130,13 +130,13 @@ async function _loadTruth(root) {
       });
     } catch (err) {
       console.error('[TheTruth] sermonSeries.list error:', err);
-      seriesEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Content library unavailable.</div>';
+      seriesEl.innerHTML = '<div class="view-empty">Content library unavailable.</div>';
     }
   }
 
   // Recent sermons/messages
   if (msgsEl) {
-    msgsEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Loading messages…</div>';
+    msgsEl.innerHTML = '<div class="view-loading">Loading messages…</div>';
     try {
       const res  = await MX.list();
       const rows = _rows(res);
@@ -145,13 +145,13 @@ async function _loadTruth(root) {
       rows.sort((a, b) => _tsNm(b.deliveredDate || b.date || b.createdAt) - _tsNm(a.deliveredDate || a.date || a.createdAt));
       msgsEl.innerHTML = rows.length
         ? rows.map(_liveMsgRow).join('')
-        : '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">No messages on file.</div>';
+        : '<div class="view-empty">No messages on file.</div>';
       // Build map + wire edit clicks
       _liveMsgMap = {};
       rows.forEach(m => { if (m.id) _liveMsgMap[String(m.id)] = m; });
       const mreload = () => _loadTruth(root);
       msgsEl.querySelectorAll('.truth-msg-row[data-id]').forEach(row => {
-        row.style.cursor = 'pointer';
+        row.classList.add('view-clickable');
         row.addEventListener('click', () => {
           const rec = _liveMsgMap[row.dataset.id];
           if (rec) _openMsgSheet(rec, mreload);
@@ -159,7 +159,7 @@ async function _loadTruth(root) {
       });
     } catch (err) {
       console.error('[TheTruth] sermons.list error:', err);
-      msgsEl.innerHTML = '<div style="padding:24px;text-align:center;color:var(--ink-muted,#7a7f96)">Messages unavailable.</div>';
+      msgsEl.innerHTML = '<div class="view-empty">Messages unavailable.</div>';
     }
   }
 }
@@ -171,7 +171,6 @@ function _rows(res) {
   return [];
 }
 
-const _COVER_COLORS = ['#7c3aed','#0ea5e9','#059669','#e8a838','#db2777','#c05818','#6366f1'];
 const _SERIES_ICONS = ['🌿','🛡️','💧','👑','🕊️','🔥','✝️'];
 
 function _liveSeriesCard(s, i) {
@@ -180,11 +179,11 @@ function _liveSeriesCard(s, i) {
   const desc     = s.description || s.desc || '';
   const episodes = s.episodeCount || s.messageCount || s.count || 0;
   const current  = !!(s.current || (s.status || '').toLowerCase() === 'active');
-  const color    = _COVER_COLORS[i % _COVER_COLORS.length];
+  const tone     = `truth-series-cover--${(i % _SERIES_ICONS.length) + 1}`;
   const icon     = _SERIES_ICONS[i % _SERIES_ICONS.length];
   return /* html */`
     <article class="truth-series-card${current ? ' truth-series--current' : ''}"${s.id ? ` data-id="${_e(String(s.id))}"` : ''} tabindex="0">
-      <div class="truth-series-cover" style="background:${color}">${icon}</div>
+      <div class="truth-series-cover ${tone}">${icon}</div>
       <div class="truth-series-body">
         <div class="truth-series-title">${_e(title)}</div>
         ${speaker ? `<div class="truth-series-speaker">${_e(speaker)}</div>` : ''}
@@ -205,6 +204,7 @@ function _liveMsgRow(m) {
   const duration = m.duration || '';
   const views    = m.playCount || m.views || m.viewCount || 0;
   const meta     = TYPE_META[type] || TYPE_META.sermon;
+  const tone     = `truth-type-badge--${String(type || 'sermon').replace(/[^a-z0-9_-]/gi, '').toLowerCase()}`;
   return /* html */`
     <article class="truth-msg-row"${m.id ? ` data-id="${_e(String(m.id))}"` : ''} data-type="${_e(type)}" tabindex="0">
       <div class="truth-msg-play">
@@ -213,7 +213,7 @@ function _liveMsgRow(m) {
       <div class="truth-msg-body">
         <div class="truth-msg-title">${_e(title)}</div>
         <div class="truth-msg-meta">
-          <span class="truth-type-badge" style="color:${meta.color}; background:${meta.bg}">${meta.label}</span>
+          <span class="truth-type-badge ${tone}">${meta.label}</span>
           ${speaker  ? `<span>${_e(speaker)}</span><span>·</span>` : ''}
           ${date     ? `<span>${_e(date)}</span>` : ''}
           ${duration ? `<span>·</span><span>${_e(duration)}</span>` : ''}
@@ -241,7 +241,7 @@ function _workflowPreviewHtml(workflow) {
   const routing = (workflow.routingRules || []).slice(0, 3);
   const outputs = (workflow.outputExpectations || []).slice(0, 3);
   return /* html */`
-    <details class="life-wg" open style="margin-bottom:14px;">
+    <details class="life-wg view-section-bottom" open>
       <summary class="life-wg-summary">${_e(workflow.title || workflow.workflowId)} Workflow</summary>
       <div class="life-wg-body">
         <div class="life-wg-stage">
@@ -298,7 +298,7 @@ function _openMsgSheet(m, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(title)}" placeholder="e.g. Rooted &amp; Built Up (Week 6)">
         </div>
         <div class="life-sheet-field">
@@ -333,12 +333,12 @@ function _openMsgSheet(m, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes / Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Scripture references, highlights…">${_e(desc)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Scripture references, highlights…">${_e(desc)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Upload' : 'Save Changes'}</button>
       </div>
@@ -448,7 +448,7 @@ function _openSeriesSheet(s, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Series Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Series Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(title)}" placeholder="e.g. Rooted">
         </div>
         <div class="life-sheet-field">
@@ -457,16 +457,16 @@ function _openSeriesSheet(s, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Brief summary of the series theme…">${_e(desc)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Brief summary of the series theme…">${_e(desc)}</textarea>
         </div>
-        <div class="life-sheet-field" style="display:flex;align-items:center;gap:10px;">
-          <input type="checkbox" data-field="current" id="truth-current" style="width:auto"${current ? ' checked' : ''}>
-          <label for="truth-current" class="life-sheet-label" style="margin:0">Mark as current series</label>
+        <div class="life-sheet-field view-check-row">
+          <input type="checkbox" data-field="current" id="truth-current" class="view-checkbox"${current ? ' checked' : ''}>
+          <label for="truth-current" class="life-sheet-label view-check-label">Mark as current series</label>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Archive Series</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Archive Series</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Series' : 'Save Changes'}</button>
       </div>

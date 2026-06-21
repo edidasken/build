@@ -21,7 +21,7 @@ export function mountFlockFeed(host, ctx) {
     if (cancelled || !host.isConnected) return;
     const rows = (s && s.recentInteractions) || [];
     if (!rows.length) {
-      host.innerHTML = `<div style="color: var(--ink-muted, #7a7f96);">No recent interactions yet.</div>`;
+      host.innerHTML = `<div class="pasture-muted">No recent interactions yet.</div>`;
       return;
     }
     host.innerHTML = rows.slice(0, 6).map(_row).join('');
@@ -38,7 +38,7 @@ export function mountFlockFeed(host, ctx) {
       .then(render)
       .catch(() => {
         if (!cancelled && host.isConnected) {
-          host.innerHTML = `<div style="color: var(--ink-muted, #7a7f96);">Pastoral ledger unavailable right now.</div>`;
+          host.innerHTML = `<div class="pasture-muted">Pastoral ledger unavailable right now.</div>`;
         }
       });
   }

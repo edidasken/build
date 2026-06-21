@@ -290,7 +290,7 @@ function _openGiftSheet(g, onReload) {
           <input class="life-sheet-input" data-field="name" type="text" value="${_e(g?.name || g?.giverName || '')}" placeholder="Leave blank for Anonymous">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Amount <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Amount <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="amount" type="number" min="0" step="0.01" value="${g?.amount || ''}" placeholder="0.00">
         </div>
         <div class="life-sheet-field">
@@ -313,7 +313,7 @@ function _openGiftSheet(g, onReload) {
           <div class="life-sheet-label">Notes</div>
           <textarea class="life-sheet-input" data-field="notes" rows="2" placeholder="Optional memo…">${_e(g?.notes || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete>Delete Record</button>' : ''}
@@ -491,7 +491,7 @@ function _openPledgeSheet(item, onReload) {
           <input class="life-sheet-input" data-field="name" type="text" value="${_e(item?.name || item?.giverName || '')}" placeholder="Leave blank for Anonymous">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Pledge Total <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Pledge Total <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="totalAmount" type="number" min="0" step="0.01" value="${item?.totalAmount || item?.amount || ''}" placeholder="0.00">
         </div>
         <div class="life-sheet-field">
@@ -524,7 +524,7 @@ function _openPledgeSheet(item, onReload) {
           <div class="life-sheet-label">Notes</div>
           <textarea class="life-sheet-input" data-field="notes" rows="2" placeholder="Optional memo…">${_e(item?.notes || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>

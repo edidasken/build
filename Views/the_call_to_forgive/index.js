@@ -268,7 +268,7 @@ async function _openCaseSheet(c, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">First Party / Member Name <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">First Party / Member Name <span class="view-required">*</span></div>
           <select class="life-sheet-input" data-field="party1">
             ${_memberOptions(existingParty1)}
           </select>
@@ -281,7 +281,7 @@ async function _openCaseSheet(c, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Issue / Description</div>
-          <textarea class="life-sheet-input" data-field="issue" rows="3" style="resize:vertical" placeholder="Brief description of the conflict or need…">${_e(c?.issue || '')}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="issue" rows="3" placeholder="Brief description of the conflict or need…">${_e(c?.issue || '')}</textarea>
         </div>
         ${!isNew ? `<div class="life-sheet-field">
           <div class="life-sheet-label">Stage</div>
@@ -289,10 +289,10 @@ async function _openCaseSheet(c, onReload) {
             ${CTF_STAGES.map(s => `<option value="${_e(s)}"${s === (c?.stage || 'Processing') ? ' selected' : ''}>${_e(s)}</option>`).join('')}
           </select>
         </div>` : ''}
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Case</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Case</button>' : ''}
         ${!isNew ? '<button class="flock-btn flock-btn--ghost" data-close-case>Close Case</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Open Case' : 'Save Changes'}</button>

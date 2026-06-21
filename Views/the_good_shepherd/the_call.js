@@ -9,7 +9,7 @@ export async function renderCall(ctx) {
   await whoAmI(); // ensure auth state is resolved before rendering
 
   const wrap = document.createElement('div');
-  wrap.style.cssText = `margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap;`;
+  wrap.className = 'pasture-call-actions';
 
   wrap.innerHTML = `
     <flock-button tone="primary" size="lg" data-act="fellowship">Open Fellowship</flock-button>

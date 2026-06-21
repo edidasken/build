@@ -250,7 +250,7 @@ function _openEntrySheet(r, onSave) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(r?.title || '')}">
         </div>
         <div class="life-sheet-field">
@@ -264,14 +264,14 @@ function _openEntrySheet(r, onSave) {
           <input class="life-sheet-input" data-field="scripture" type="text" value="${_e(r?.scripture || '')}" placeholder="e.g. John 4:14">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Entry <span style="color:#dc2626">*</span></div>
-          <textarea class="life-sheet-input" data-field="entry" rows="6" style="resize:vertical">${_e(r?.entry || '')}</textarea>
+          <div class="life-sheet-label">Entry <span class="view-required">*</span></div>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="entry" rows="6">${_e(r?.entry || '')}</textarea>
         </div>
         <div class="life-sheet-field" style="display:flex;align-items:center;gap:8px">
           <input type="checkbox" id="ur-je-priv-chk" data-field="private" ${r?.private ? 'checked' : ''}>
           <label for="ur-je-priv-chk" style="font-size:.9rem;color:var(--ink-muted,#6b7280)">Keep private</label>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>

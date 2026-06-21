@@ -263,7 +263,7 @@ function _openContactSheet(c, onReload) {
       <div class="life-sheet-body">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div class="life-sheet-field">
-            <div class="life-sheet-label">First Name <span style="color:#dc2626">*</span></div>
+            <div class="life-sheet-label">First Name <span class="view-required">*</span></div>
             <input class="life-sheet-input" data-field="firstName" type="text" value="${_e(first)}" placeholder="First">
           </div>
           <div class="life-sheet-field">
@@ -298,12 +298,12 @@ function _openContactSheet(c, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes</div>
-          <textarea class="life-sheet-input" data-field="notes" rows="3" style="resize:vertical" placeholder="Conversation highlights, prayer requests, follow-up actions…">${_e(notes)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="notes" rows="3" placeholder="Conversation highlights, prayer requests, follow-up actions…">${_e(notes)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Contact</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Contact</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Log Contact' : 'Save Changes'}</button>
       </div>

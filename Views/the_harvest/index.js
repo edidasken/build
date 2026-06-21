@@ -360,7 +360,7 @@ function _openOutreachSheet(ev, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Effort Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Effort Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(title)}" placeholder="e.g. Downtown Gospel Rally">
         </div>
         <div class="life-sheet-field">
@@ -383,12 +383,12 @@ function _openOutreachSheet(ev, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes / Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Describe the effort, goals, and follow-up…">${_e(description)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Describe the effort, goals, and follow-up…">${_e(description)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Effort</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Effort</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Effort' : 'Save Changes'}</button>
       </div>
@@ -533,7 +533,7 @@ function _openMissionarySheet(m, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Name / Organization <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Name / Organization <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="name" type="text" value="${_e(name)}" placeholder="e.g. Thomas & Grace Adu">
         </div>
         <div class="life-sheet-field">
@@ -561,12 +561,12 @@ function _openMissionarySheet(m, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Ministry focus, prayer needs, relationship history…">${_e(description)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Ministry focus, prayer needs, relationship history…">${_e(description)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Remove Partner</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Remove Partner</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Add Partner' : 'Save Changes'}</button>
       </div>

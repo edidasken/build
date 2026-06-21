@@ -9,35 +9,35 @@ import { renderThread } from './the_thread.js';
 export function renderChannelsPane(host /*, ctx */) {
   if (!host) return () => {};
   host.innerHTML = `
-    <div class="ch-pane" style="display:flex; flex-direction:column; gap:10px; min-height:60vh;">
-      <header style="display:flex; align-items:center; gap:8px;">
-        <strong style="flex:1; font:600 0.95rem 'Noto Sans',sans-serif; color:var(--ink,#1b264f);">Channels</strong>
+    <div class="ch-pane">
+      <header class="ch-pane-hd">
+        <strong class="ch-pane-title">Channels</strong>
         <button type="button" class="flock-btn flock-btn--primary flock-btn--sm" data-act="new-channel">+ New Channel</button>
       </header>
       <div class="ch-grid">
-        <aside class="ch-list" style="overflow:auto;"></aside>
-        <div class="ch-thread" style="min-width:0;"></div>
+        <aside class="ch-list"></aside>
+        <div class="ch-thread"></div>
       </div>
     </div>
   `;
   const list   = host.querySelector('.ch-list');
   const thread = host.querySelector('.ch-thread');
   list.innerHTML = `<flock-skeleton rows="5"></flock-skeleton>`;
-  thread.innerHTML = `<div style="color:var(--ink-muted,#7a7f96); padding:24px 8px;">Pick a channel to begin.</div>`;
+  thread.innerHTML = `<div class="view-empty ch-thread-empty">Pick a channel to begin.</div>`;
 
   let stopThread = null;
   let activeId   = null;
 
   function paint(rows = []) {
     list.innerHTML = rows.length ? rows.map(_row).join('') :
-      `<div style="color:var(--ink-muted,#7a7f96); padding:8px;">No channels yet. Click “+ New Channel” above.</div>`;
+      `<div class="view-empty ch-list-empty">No channels yet. Click “+ New Channel” above.</div>`;
     list.querySelectorAll('[data-ch]').forEach((el) => {
       el.addEventListener('click', (e) => {
         if (e.target.closest('[data-archive]')) return; // archive btn handled separately
         if (activeId === el.dataset.ch) return;
         activeId = el.dataset.ch;
-        list.querySelectorAll('[data-ch]').forEach((n) => n.style.background = 'transparent');
-        el.style.background = 'var(--bg,#f7f8fb)';
+        list.querySelectorAll('[data-ch]').forEach((n) => n.classList.remove('is-active'));
+        el.classList.add('is-active');
         if (stopThread) try { stopThread(); } catch (_) {}
         unread.mark(activeId);
         stopThread = renderThread(thread, { channelId: activeId });
@@ -69,21 +69,18 @@ export function renderChannelsPane(host /*, ctx */) {
   seeding.seed().catch(() => {});
   let unwatch = () => {};
   channels.watch(paint).then((u) => { unwatch = u; }).catch(() => {
-    list.innerHTML = `<div style="color:var(--ink-muted,#7a7f96); padding:8px;">Comms backend not loaded.</div>`;
+    list.innerHTML = `<div class="view-empty ch-list-empty">Comms backend not loaded.</div>`;
   });
 
   return () => { try { unwatch(); } catch (_) {} if (stopThread) try { stopThread(); } catch (_) {} };
 }
 
 function _row(c) {
-  const badge = c && c.unread ? `<span style="background:var(--accent,#e8a838); color:#fff; padding:1px 6px; border-radius:10px; font-size:0.72rem;">${c.unread}</span>` : '';
+  const badge = c && c.unread ? `<span class="ch-unread-badge">${c.unread}</span>` : '';
   return `
-    <div data-ch="${_e(c.id)}" class="ch-row"
-      style="display:flex; align-items:center; gap:8px; width:100%; padding:8px 10px;
-             cursor:pointer; border-radius:8px; color:var(--ink,#1b264f); text-align:left;
-             font:500 0.92rem 'Noto Sans',sans-serif;">
-      <span style="color:var(--ink-muted,#7a7f96);">#</span>
-      <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${_e(c.name || c.id)}</span>
+    <div data-ch="${_e(c.id)}" class="ch-row">
+      <span class="ch-hash">#</span>
+      <span class="ch-name">${_e(c.name || c.id)}</span>
       ${badge}
       <button type="button" data-archive="${_e(c.id)}" data-name="${_e(c.name || c.id)}" title="Archive channel"
         class="flock-icon-btn flock-icon-btn--sm flock-icon-btn--warn">

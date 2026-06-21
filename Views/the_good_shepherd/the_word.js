@@ -83,7 +83,7 @@ function _wireJump(host, ctx) {
   // Whole card is clickable too.
   const card = host.querySelector('.word-card');
   if (card) {
-    card.style.cursor = 'pointer';
+    card.classList.add('pasture-clickable');
     card.addEventListener('click', (e) => {
       if (e.target.closest('button')) return; // let button handler run
       if (ctx && ctx.go) ctx.go('the_upper_room');

@@ -212,8 +212,8 @@ function _openPrayerRequestSheet(p, onReload) {
           <input class="life-sheet-input" data-field="submitterName" type="text" value="${_e(submitter)}" placeholder="Leave blank for Anonymous">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Prayer Request <span style="color:#dc2626">*</span></div>
-          <textarea class="life-sheet-input" data-field="prayerText" rows="4" style="resize:vertical" placeholder="Share the prayer need…">${_e(text)}</textarea>
+          <div class="life-sheet-label">Prayer Request <span class="view-required">*</span></div>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="prayerText" rows="4" placeholder="Share the prayer need…">${_e(text)}</textarea>
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Category</div>
@@ -232,7 +232,7 @@ function _openPrayerRequestSheet(p, onReload) {
           <input type="checkbox" data-field="isConfidential" id="pc-conf"${isConf ? ' checked' : ''} style="width:auto">
           <label for="pc-conf" class="life-sheet-label" style="margin:0">🔒 Mark as confidential (pastoral eyes only)</label>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         ${!isNew ? `<button class="flock-icon-btn flock-icon-btn--warn" data-answered title="Mark answered" aria-label="Mark answered" style="margin-right:6px;">

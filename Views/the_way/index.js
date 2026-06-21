@@ -306,7 +306,7 @@ function _openGroupSheet(g, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Group Name <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Group Name <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="name" type="text" value="${_e(name)}" placeholder="e.g. Young Adults — Eastside">
         </div>
         <div class="life-sheet-field">
@@ -338,9 +338,9 @@ function _openGroupSheet(g, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="What is this group about?">${_e(desc)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="What is this group about?">${_e(desc)}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         ${!isNew ? `
@@ -533,7 +533,7 @@ function _openMinistrySheet(item, onSave) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Ministry Name <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Ministry Name <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="name" type="text" value="${_e(item?.name || '')}" placeholder="e.g. Worship Ministry">
         </div>
         <div class="life-sheet-field">
@@ -560,10 +560,10 @@ function _openMinistrySheet(item, onSave) {
           <div class="life-sheet-label">Description</div>
           <textarea class="life-sheet-ta" data-field="description" rows="3" placeholder="What is this ministry's purpose?">${_e(item?.description || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${isEdit ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Ministry</button>' : ''}
+        ${isEdit ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Ministry</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isEdit ? 'Save Changes' : 'Create Ministry'}</button>
       </div>
@@ -717,7 +717,7 @@ function _openVolunteerSheet(item, onSave) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Member <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Member <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="memberId" type="text" value="${_e(item?.memberId || item?.memberName || '')}" placeholder="Email or name">
         </div>
         <div class="life-sheet-field">
@@ -736,10 +736,10 @@ function _openVolunteerSheet(item, onSave) {
           <div class="life-sheet-label">Notes</div>
           <textarea class="life-sheet-ta" data-field="notes" rows="2" placeholder="Availability, restrictions, context…">${_e(item?.notes || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${isEdit ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Record</button>' : ''}
+        ${isEdit ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Record</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isEdit ? 'Save Changes' : 'Add Volunteer'}</button>
       </div>
@@ -836,7 +836,7 @@ function _openTrackSheet(t, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(t?.title || t?.name || '')}" placeholder="e.g. Foundations of Faith">
         </div>
         <div class="life-sheet-field">
@@ -868,10 +868,10 @@ function _openTrackSheet(t, onReload) {
           <div class="life-sheet-label">Description</div>
           <textarea class="life-sheet-input" data-field="description" rows="3" placeholder="What will participants learn?">${_e(t?.description || t?.desc || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete Track</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete Track</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Track' : 'Save Changes'}</button>
       </div>

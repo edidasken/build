@@ -14,7 +14,7 @@ export function renderDmsPane(host /*, ctx */) {
   host.innerHTML = `
     <div class="dm-pane">
       <header class="dm-pane-hd">
-        <button type="button" class="flock-icon-btn dm-back-btn" data-act="back" aria-label="Back to conversations" style="display:none;">
+        <button type="button" class="flock-icon-btn dm-back-btn view-hidden" data-act="back" aria-label="Back to conversations">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
         <strong class="dm-pane-title">Direct Messages</strong>
@@ -47,7 +47,7 @@ export function renderDmsPane(host /*, ctx */) {
     if (_isMobile()) {
       listCol.classList.add('dm-col--hidden');
       threadCol.classList.remove('dm-col--hidden');
-      if (backBtn) backBtn.style.display = '';
+      if (backBtn) backBtn.classList.remove('view-hidden');
       if (titleEl) titleEl.textContent = label || 'Conversation';
     }
   }
@@ -60,7 +60,7 @@ export function renderDmsPane(host /*, ctx */) {
       threadCol.innerHTML = `<div class="dm-thread-empty">Pick a conversation, or start one with "+ New DM" above.</div>`;
       listCol.classList.remove('dm-col--hidden');
       threadCol.classList.add('dm-col--hidden');
-      backBtn.style.display = 'none';
+      backBtn.classList.add('view-hidden');
       if (titleEl) titleEl.textContent = 'Direct Messages';
     });
   }
@@ -76,7 +76,7 @@ export function renderDmsPane(host /*, ctx */) {
     } else {
       listCol.classList.remove('dm-col--hidden');
       threadCol.classList.remove('dm-col--hidden');
-      if (backBtn) backBtn.style.display = 'none';
+      if (backBtn) backBtn.classList.add('view-hidden');
       if (titleEl) titleEl.textContent = 'Direct Messages';
     }
   }
@@ -135,7 +135,7 @@ export async function openDmWith(who, host) {
         if (window.innerWidth < _MOBILE_BP) {
           if (listCol)  listCol.classList.add('dm-col--hidden');
           threadCol.classList.remove('dm-col--hidden');
-          if (backBtn)  backBtn.style.display = '';
+          if (backBtn) backBtn.classList.remove('view-hidden');
           if (titleEl)  titleEl.textContent   = who;
         }
       }).catch(() => {});

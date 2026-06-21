@@ -1431,7 +1431,7 @@ function _openCountrySheet(rec, onSaved) {
         <div class="gc-sheet-err" style="display:none;color:var(--danger,#dc2626);font:0.84rem var(--font-ui);margin-top:8px;"></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-country-delete style="margin-right:auto">Delete</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-country-delete>Delete</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-submit>${isNew ? 'Add Country' : 'Save Changes'}</button>
       </div>
@@ -1784,7 +1784,7 @@ function _openMissionsSheet(type, V, onSaved, rec = null) {
         <div class="gc-sheet-err" style="display:none;color:var(--danger,#dc2626);font:0.84rem var(--font-ui);margin-top:8px;"></div>
       </div>
       <div class="life-sheet-foot">
-        ${isEdit ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete</button>' : ''}
+        ${isEdit ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete</button>' : ''}
         <button class="flock-btn" data-cancel>Cancel</button>
         <button class="flock-btn flock-btn--primary" data-submit>${isEdit ? 'Save Changes' : 'Save'}</button>
       </div>

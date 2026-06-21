@@ -203,11 +203,11 @@ function _openMilestoneSheet(m, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Date <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Date <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="date" type="date" value="${m?.date || (m?.year ? m.year + '-01-01' : new Date().toISOString().slice(0,10))}">
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(m?.title || '')}" placeholder="Name this milestone…">
         </div>
         <div class="life-sheet-field">
@@ -218,9 +218,9 @@ function _openMilestoneSheet(m, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical" placeholder="Describe this chapter of the church story…">${_e(m?.description || m?.notes || m?.desc || '')}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3" placeholder="Describe this chapter of the church story…">${_e(m?.description || m?.notes || m?.desc || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete>Delete</button>' : ''}

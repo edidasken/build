@@ -347,13 +347,13 @@ function _openGoalSheet(g, onReload) {
     subtitle: isNew ? 'Define a ministry-area objective' : _e(g?.goal || g?.title || 'Goal'),
     fields: /* html */`
       <div class="life-sheet-field">
-        <div class="life-sheet-label">Ministry Area <span style="color:#dc2626">*</span></div>
+        <div class="life-sheet-label">Ministry Area <span class="view-required">*</span></div>
         <select class="life-sheet-input" data-field="area">
           ${MINISTRY_AREAS.map(a => `<option value="${_e(a)}"${a === (g?.area || '') ? ' selected' : ''}>${_e(a)}</option>`).join('')}
         </select>
       </div>
       <div class="life-sheet-field">
-        <div class="life-sheet-label">Goal <span style="color:#dc2626">*</span></div>
+        <div class="life-sheet-label">Goal <span class="view-required">*</span></div>
         <input class="life-sheet-input" data-field="goal" type="text" value="${_e(g?.goal || g?.title || '')}" placeholder="Describe the goal\u2026">
       </div>
       <div class="life-sheet-field">
@@ -374,7 +374,7 @@ function _openGoalSheet(g, onReload) {
         <div class="life-sheet-label">Notes</div>
         <textarea class="life-sheet-input" data-field="notes" rows="2" placeholder="Optional context\u2026">${_e(g?.notes || '')}</textarea>
       </div>
-      <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>`,
+      <div class="fold-form-error" data-error></div>`,
     onSave: async (sheet) => {
       const goal = sheet.querySelector('[data-field="goal"]').value.trim();
       if (!goal) { _showErr(sheet, 'Goal description is required.'); return; }
@@ -413,7 +413,7 @@ function _openInitSheet(item, onReload) {
     subtitle: isNew ? 'Add a key ministry initiative' : _e(item?.title || item?.name || 'Initiative'),
     fields: /* html */`
       <div class="life-sheet-field">
-        <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+        <div class="life-sheet-label">Title <span class="view-required">*</span></div>
         <input class="life-sheet-input" data-field="title" type="text" value="${_e(item?.title || item?.name || '')}" placeholder="Initiative name\u2026">
       </div>
       <div class="life-sheet-field">
@@ -446,7 +446,7 @@ function _openInitSheet(item, onReload) {
         <div class="life-sheet-label">Description</div>
         <textarea class="life-sheet-input" data-field="description" rows="3" placeholder="Optional details\u2026">${_e(item?.description || item?.notes || '')}</textarea>
       </div>
-      <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>`,
+      <div class="fold-form-error" data-error></div>`,
     onSave: async (sheet) => {
       const title = sheet.querySelector('[data-field="title"]').value.trim();
       if (!title) { _showErr(sheet, 'Title is required.'); return; }
@@ -488,7 +488,7 @@ function _openKeyDateSheet(m, onReload) {
     subtitle: isNew ? 'Record a milestone or upcoming date' : _e(m?.label || m?.title || 'Key Date'),
     fields: /* html */`
       <div class="life-sheet-field">
-        <div class="life-sheet-label">Label <span style="color:#dc2626">*</span></div>
+        <div class="life-sheet-label">Label <span class="view-required">*</span></div>
         <input class="life-sheet-input" data-field="label" type="text" value="${_e(m?.label || m?.title || '')}" placeholder="Name this date\u2026">
       </div>
       <div class="life-sheet-field">
@@ -506,7 +506,7 @@ function _openKeyDateSheet(m, onReload) {
         <div class="life-sheet-label">Notes</div>
         <textarea class="life-sheet-input" data-field="notes" rows="2" placeholder="Optional context\u2026">${_e(m?.notes || '')}</textarea>
       </div>
-      <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>`,
+      <div class="fold-form-error" data-error></div>`,
     onSave: async (sheet) => {
       const label = sheet.querySelector('[data-field="label"]').value.trim();
       if (!label) { _showErr(sheet, 'A label is required.'); return; }

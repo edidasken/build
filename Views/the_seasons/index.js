@@ -447,12 +447,12 @@ function _openEventSheet(ev, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Event Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Event Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(title)}" placeholder="e.g. Sunday Worship Service">
         </div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
-            <div class="life-sheet-label">Start Date <span style="color:#dc2626">*</span></div>
+            <div class="life-sheet-label">Start Date <span class="view-required">*</span></div>
             <input class="life-sheet-input" data-field="startDate" type="date" value="${_e(sDate)}">
           </div>
           <div class="life-sheet-field">
@@ -482,16 +482,16 @@ function _openEventSheet(ev, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description / Notes</div>
-          <textarea class="life-sheet-input" data-field="description" rows="3" style="resize:vertical">${_e(desc)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="3">${_e(desc)}</textarea>
         </div>
         <div class="life-sheet-field" style="display:flex;align-items:center;gap:10px;">
           <input type="checkbox" id="event-rsvp-chk" data-field="rsvpRequired" style="width:16px;height:16px;cursor:pointer"${rsvpReq ? ' checked' : ''}>
           <label for="event-rsvp-chk" style="cursor:pointer;font-size:.9rem;">RSVP required for this event</label>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Cancel Event</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Cancel Event</button>' : ''}
         <button class="flock-btn" data-cancel>Close</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Event' : 'Save Changes'}</button>
       </div>
@@ -650,14 +650,14 @@ function _openRsvpSheet(item, eventsMap, onSave) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Event <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Event <span class="view-required">*</span></div>
           <select class="life-sheet-input" data-field="eventId">
             <option value="">— Select event —</option>
             ${eventOptions.join('')}
           </select>
         </div>
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Member / Attendee <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Member / Attendee <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="memberId" type="text" value="${_e(item?.memberId || '')}" placeholder="Email or name">
         </div>
         <div class="life-sheet-field">
@@ -674,7 +674,7 @@ function _openRsvpSheet(item, eventsMap, onSave) {
           <div class="life-sheet-label">Notes</div>
           <textarea class="life-sheet-input" data-field="notes" rows="2" placeholder="Dietary restrictions, accessibility, etc.">${_e(item?.notes || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
         <button class="flock-btn" data-cancel>Cancel</button>
@@ -895,12 +895,12 @@ function _openPersonalSheet(ev, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="Title" type="text" value="${_e(title)}" placeholder="e.g. Doctor Appointment">
         </div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
-            <div class="life-sheet-label">Date <span style="color:#dc2626">*</span></div>
+            <div class="life-sheet-label">Date <span class="view-required">*</span></div>
             <input class="life-sheet-input" data-field="startDate" type="date" value="${_e(sDate)}">
           </div>
           <div class="life-sheet-field">
@@ -927,7 +927,7 @@ function _openPersonalSheet(ev, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description / Notes</div>
-          <textarea class="life-sheet-input" data-field="Description" rows="2" style="resize:vertical">${_e(desc)}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="Description" rows="2">${_e(desc)}</textarea>
         </div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
@@ -966,10 +966,10 @@ function _openPersonalSheet(ev, onReload) {
             Private events are only visible to you, always.
           </div>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete</button>' : ''}
         <button class="flock-btn" data-cancel>Close</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Event' : 'Save Changes'}</button>
       </div>
@@ -1237,12 +1237,12 @@ function _openTodoSheet(task, onReload) {
       </div>
       <div class="life-sheet-body">
         <div class="life-sheet-field">
-          <div class="life-sheet-label">Title <span style="color:#dc2626">*</span></div>
+          <div class="life-sheet-label">Title <span class="view-required">*</span></div>
           <input class="life-sheet-input" data-field="title" type="text" value="${_e(task?.title || '')}" placeholder="e.g. Call the Johnsons">
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Description</div>
-          <textarea class="life-sheet-input" data-field="description" rows="2" style="resize:vertical">${_e(task?.description || '')}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="description" rows="2">${_e(task?.description || '')}</textarea>
         </div>
         <div class="fold-form-row">
           <div class="life-sheet-field">
@@ -1276,12 +1276,12 @@ function _openTodoSheet(task, onReload) {
         </div>
         <div class="life-sheet-field">
           <div class="life-sheet-label">Notes</div>
-          <textarea class="life-sheet-input" data-field="notes" rows="2" style="resize:vertical">${_e(task?.notes || '')}</textarea>
+          <textarea class="life-sheet-input view-resize-vertical" data-field="notes" rows="2">${_e(task?.notes || '')}</textarea>
         </div>
-        <div class="fold-form-error" data-error style="display:none;color:#dc2626;font-size:.85rem;margin-top:8px"></div>
+        <div class="fold-form-error" data-error></div>
       </div>
       <div class="life-sheet-foot">
-        ${!isNew ? '<button class="flock-btn flock-btn--danger" data-delete style="margin-right:auto">Delete</button>' : ''}
+        ${!isNew ? '<button class="flock-btn flock-btn--danger view-danger-push" data-delete>Delete</button>' : ''}
         <button class="flock-btn" data-cancel>Close</button>
         <button class="flock-btn flock-btn--primary" data-save>${isNew ? 'Create Task' : 'Save Changes'}</button>
       </div>

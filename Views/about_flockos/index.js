@@ -18,23 +18,11 @@ const _SRC = (() => {
 
 export function render() {
   return /* html */`
-    <div class="about-frame-view" style="
-      height: calc(100vh - var(--topbar-h, 60px) - 48px);
-      min-height: 480px;
-      display: flex;
-      flex-direction: column;
-    ">
+    <div class="about-frame-view">
       <iframe
         src="${_SRC}"
         title="The Why — About FlockOS"
-        style="
-          flex: 1;
-          width: 100%;
-          border: none;
-          border-radius: 16px;
-          background: #f7f8fb;
-          display: block;
-        "
+        class="about-frame-iframe"
         loading="lazy"
         sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
       ></iframe>

@@ -299,6 +299,13 @@ body.veil-app .pasture-actions {
   margin-top: 20px;
 }
 
+body.veil-app .pasture-call-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
 body.veil-app .pasture-action {
   display: inline-flex;
   align-items: center;
@@ -645,11 +652,20 @@ body.veil-app .pasture .pray-liturgy-row.is-now {
   border-left-color: var(--flockos-gold);
 }
 
+body.veil-app .pasture .pasture-clickable {
+  cursor: pointer;
+}
+
 body.veil-app .pasture .devo-dark-btn,
 body.veil-app .pasture .ph-begin-btn {
   border-color: rgba(15,23,42,.12) !important;
   background: rgba(255,255,255,0.72) !important;
   color: var(--flockos-navy) !important;
+}
+
+body.veil-app .pasture .ph-begin-btn {
+  width: 100%;
+  margin-top: 16px;
 }
 
 body.veil-app .pasture .devo-dark-btn:hover,
@@ -660,6 +676,7 @@ body.veil-app .pasture .ph-begin-btn:hover {
 
 body.veil-app .today-row:hover,
 body.veil-app .bday-row:hover,
+body.veil-app .next-step-row:hover,
 body.veil-app .feed-row:hover {
   background: rgba(247,199,86,0.08);
 }
@@ -667,6 +684,7 @@ body.veil-app .feed-row:hover {
 body.veil-app .pasture .today-row,
 body.veil-app .pasture .bday-row,
 body.veil-app .pasture .todo-row,
+body.veil-app .pasture .next-step-row,
 body.veil-app .pasture .feed-row {
   min-height: 52px;
   padding: 11px 8px;
@@ -674,20 +692,63 @@ body.veil-app .pasture .feed-row {
   border-radius: 10px;
 }
 
+body.veil-app .pasture .next-step-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(15,23,42,0.08);
+  cursor: pointer;
+  text-align: left;
+}
+
+body.veil-app .pasture .next-step-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--flockos-gold);
+}
+
+body.veil-app .pasture .next-step-body {
+  flex: 1;
+  min-width: 0;
+}
+
 body.veil-app .pasture .todo-title,
 body.veil-app .pasture .today-title,
 body.veil-app .pasture .bday-name,
+body.veil-app .pasture .next-step-name,
 body.veil-app .pasture .feed-row-label {
   color: var(--flockos-navy);
+}
+
+body.veil-app .pasture .next-step-name,
+body.veil-app .pasture .next-step-why {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.veil-app .pasture .next-step-name {
+  font-weight: 600;
 }
 
 body.veil-app .pasture .today-loc,
 body.veil-app .pasture .bday-age,
 body.veil-app .pasture .todo-due,
+body.veil-app .pasture .next-step-why,
 body.veil-app .pasture .feed-row-detail,
 body.veil-app .pasture .feed-row-time,
+body.veil-app .pasture .pasture-muted,
 body.veil-app .pasture .empty-soft {
   color: #64748b;
+}
+
+body.veil-app .pasture .next-step-why {
+  font-size: 0.85rem;
 }
 
 body.veil-app .today-time,
@@ -738,6 +799,377 @@ body.veil-app .fc-pane-frame iframe {
   border: 0;
   border-radius: 0;
   background: #ffffff;
+}
+
+body.veil-app .about-frame-view {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--topbar-h, 60px) - 48px);
+  min-height: 480px;
+}
+
+body.veil-app .about-frame-iframe {
+  flex: 1;
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 16px;
+  background: #f7f8fb;
+}
+
+body.veil-app .ann-composer {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 12px;
+}
+
+body.veil-app .ann-input {
+  flex: 1;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 8px;
+  background: rgba(255,255,255,.9);
+  color: var(--flockos-navy);
+  font: inherit;
+}
+
+body.veil-app .ann-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.veil-app .ann-msg {
+  position: relative;
+}
+
+body.veil-app .ann-msg-actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 120ms var(--ease);
+}
+
+body.veil-app .ann-msg-actions.is-visible {
+  opacity: 1;
+}
+
+body.veil-app .ann-init-action {
+  margin-top: 10px;
+}
+
+body.veil-app .fc-composer-box {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 10px;
+  background: rgba(255,255,255,.9);
+}
+
+body.veil-app .fc-composer-tool {
+  padding: 6px 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.05rem;
+}
+
+body.veil-app .fc-composer-input {
+  flex: 1;
+  max-height: 140px;
+  padding: 8px 10px;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  color: var(--flockos-navy);
+  font: inherit;
+}
+
+body.veil-app .ch-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 60vh;
+}
+
+body.veil-app .ch-pane-hd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+body.veil-app .ch-pane-title {
+  flex: 1;
+  color: var(--flockos-navy);
+  font: 600 0.95rem var(--font-ui);
+}
+
+body.veil-app .ch-list {
+  overflow: auto;
+}
+
+body.veil-app .ch-thread {
+  min-width: 0;
+}
+
+body.veil-app .ch-list-empty {
+  padding: 8px;
+}
+
+body.veil-app .ch-thread-empty {
+  text-align: left;
+}
+
+body.veil-app .ch-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--flockos-navy);
+  cursor: pointer;
+  font: 500 0.92rem var(--font-ui);
+  text-align: left;
+}
+
+body.veil-app .ch-row.is-active,
+body.veil-app .ch-row:hover {
+  background: rgba(247,199,86,.12);
+}
+
+body.veil-app .ch-hash {
+  color: #64748b;
+}
+
+body.veil-app .ch-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.veil-app .ch-unread-badge {
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--flockos-gold);
+  color: #111827;
+  font-size: 0.72rem;
+}
+
+body.veil-app .msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 4px;
+}
+
+body.veil-app .msg-avatar {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--flockos-gold);
+  color: #111827;
+  font: 600 0.8rem var(--font-ui);
+}
+
+body.veil-app .msg-body {
+  min-width: 0;
+}
+
+body.veil-app .msg-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+body.veil-app .msg-author {
+  color: var(--flockos-navy);
+  font-weight: 600;
+}
+
+body.veil-app .msg-time {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
+body.veil-app .msg-text {
+  color: var(--flockos-navy);
+  white-space: pre-wrap;
+}
+
+body.veil-app .thread-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 60vh;
+}
+
+body.veil-app .thread-stream {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  padding: 8px 4px;
+}
+
+body.veil-app .thread-typing {
+  min-height: 1.1em;
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+body.veil-app .member-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+
+body.veil-app .member-pane-empty {
+  padding: 8px;
+}
+
+body.veil-app .member-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--flockos-navy);
+  cursor: pointer;
+  font: 500 0.9rem var(--font-ui);
+  text-align: left;
+}
+
+body.veil-app .member-row:hover {
+  background: rgba(247,199,86,.12);
+}
+
+body.veil-app .member-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #cdd2dd;
+}
+
+body.veil-app .member-dot.is-online {
+  background: #15803d;
+}
+
+body.veil-app .ix-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 60vh;
+}
+
+body.veil-app .ix-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+body.veil-app .ix-control {
+  padding: 8px 10px;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 8px;
+  background: rgba(255,255,255,.9);
+  color: var(--flockos-navy);
+  font: inherit;
+}
+
+body.veil-app .ix-type {
+  min-width: 130px;
+}
+
+body.veil-app .ix-search {
+  flex: 1;
+  min-width: 120px;
+  padding: 9px 12px;
+}
+
+body.veil-app .ix-refresh {
+  white-space: nowrap;
+}
+
+body.veil-app .ix-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.veil-app .ix-empty {
+  padding: 16px;
+  text-align: left;
+}
+
+body.veil-app .ix-row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(15,23,42,.12);
+  border-radius: 10px;
+  background: rgba(255,255,255,.9);
+}
+
+body.veil-app .ix-icon {
+  width: 24px;
+  text-align: center;
+}
+
+body.veil-app .ix-body {
+  flex: 1;
+  min-width: 0;
+}
+
+body.veil-app .ix-title {
+  color: var(--flockos-navy);
+  font-weight: 600;
+}
+
+body.veil-app .ix-detail {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+body.veil-app .ix-time {
+  color: #64748b;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+body.veil-app .data-kpi-value--violet {
+  color: var(--flockos-gold);
+}
+
+body.veil-app .data-kpi-value--emerald {
+  color: var(--flockos-gold-deep);
+}
+
+body.veil-app .data-kpi-value--sky {
+  color: var(--flockos-cyan);
+}
+
+body.veil-app .data-kpi-value--gold {
+  color: var(--flockos-gold);
 }
 
 body.veil-app .garments-overlay {
@@ -1812,6 +2244,113 @@ body.veil-app :is(
     radial-gradient(circle at top right, rgba(72,211,217,.10), transparent 10rem),
     #ffffff;
   color: #64748b !important;
+}
+
+/* Shared view hygiene classes for routed modules that generate DOM directly. */
+body.veil-app :is(.view-muted, .view-empty, .view-loading, .view-error) {
+  color: #64748b !important;
+}
+
+body.veil-app :is(.view-empty, .view-loading, .view-error) {
+  padding: 24px 8px;
+  text-align: center;
+}
+
+body.veil-app .view-error {
+  color: #b91c1c !important;
+}
+
+body.veil-app .view-section-spaced {
+  margin-top: 24px;
+}
+
+body.veil-app .view-section-spaced-lg {
+  margin-top: 28px;
+}
+
+body.veil-app .view-section-bottom {
+  margin-bottom: 14px;
+}
+
+body.veil-app .view-clickable {
+  cursor: pointer;
+}
+
+body.veil-app .view-hidden {
+  display: none !important;
+}
+
+body.veil-app .view-toolbar-spacer {
+  margin-left: auto;
+}
+
+body.veil-app .view-inline-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.veil-app .view-required {
+  color: #dc2626 !important;
+}
+
+body.veil-app .view-danger-push {
+  margin-right: auto;
+}
+
+body.veil-app .view-full-width {
+  width: 100%;
+}
+
+body.veil-app .view-resize-vertical {
+  resize: vertical;
+}
+
+body.veil-app .view-check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+body.veil-app .view-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+body.veil-app .view-check-label {
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+body.veil-app .view-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+body.veil-app .view-toast {
+  position: fixed;
+  z-index: 99999;
+  top: 20px;
+  right: 20px;
+  max-width: 360px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--flockos-gold);
+  color: #111827;
+  box-shadow: 0 4px 16px rgba(15,23,42,.22);
+  font-size: 0.85rem;
+}
+
+body.veil-app :is(
+  .fold-form-error,
+  .view-form-error
+) {
+  display: none;
+  margin-top: 8px;
+  color: #dc2626 !important;
+  font-size: 0.85rem;
 }
 
 body.veil-app :is(
@@ -3335,6 +3874,97 @@ body.veil-app :is(
 ) {
   border-color: rgba(247,199,86,.28) !important;
   background: rgba(247,199,86,.12) !important;
+}
+
+body.veil-app :is(
+  .fold-avatar,
+  .fold-stat-dot,
+  .life-card-icon,
+  .life-priority-badge,
+  .life-type-badge,
+  .life-status-pill,
+  .seasons-type-badge,
+  .seasons-card-date,
+  .gift-method-badge,
+  .gift-fund-dot,
+  .truth-type-badge,
+  .truth-series-cover,
+  .truth-msg-play,
+  .gc-pri-badge,
+  .gc-rank-pill,
+  .gc-access-badge,
+  .gc-1040-badge,
+  .gc-fund-fill,
+  .gc-stat-icon,
+  .harvest-stat-icon,
+  .way-track-stripe,
+  .way-progress-fill,
+  .way-group-avatar,
+  .wv-badge,
+  .wv-goal-area,
+  .wv-goal-bar,
+  .wv-init-stripe,
+  .wv-init-bar,
+  .pent-card-icon,
+  .pent-type-badge,
+  .pray-type-badge,
+  .pray-urgent-badge,
+  .qwp-prog-fill,
+  .sdr-progress-fill,
+  .ctf-pg-progress-fill
+)[style*="color"],
+body.veil-app :is(
+  .fold-avatar,
+  .fold-stat-dot,
+  .life-card-icon,
+  .life-priority-badge,
+  .life-type-badge,
+  .life-status-pill,
+  .seasons-type-badge,
+  .seasons-card-date,
+  .gift-method-badge,
+  .gift-fund-dot,
+  .truth-type-badge,
+  .truth-series-cover,
+  .truth-msg-play,
+  .gc-pri-badge,
+  .gc-rank-pill,
+  .gc-access-badge,
+  .gc-1040-badge,
+  .gc-fund-fill,
+  .gc-stat-icon,
+  .harvest-stat-icon,
+  .way-track-stripe,
+  .way-progress-fill,
+  .way-group-avatar,
+  .wv-badge,
+  .wv-goal-area,
+  .wv-goal-bar,
+  .wv-init-stripe,
+  .wv-init-bar,
+  .pent-card-icon,
+  .pent-type-badge,
+  .pray-type-badge,
+  .pray-urgent-badge,
+  .qwp-prog-fill,
+  .sdr-progress-fill,
+  .ctf-pg-progress-fill
+)[style*="background"] {
+  border-color: rgba(247,199,86,.28) !important;
+  background: rgba(247,199,86,.14) !important;
+  color: var(--flockos-gold-deep) !important;
+}
+
+body.veil-app :is(
+  .gc-fund-fill,
+  .way-progress-fill,
+  .wv-goal-bar,
+  .wv-init-bar,
+  .qwp-prog-fill,
+  .sdr-progress-fill,
+  .ctf-pg-progress-fill
+) {
+  background: linear-gradient(90deg, var(--flockos-gold), var(--flockos-gold-deep)) !important;
 }
 
 body.veil-app :is(
