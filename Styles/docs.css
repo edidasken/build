@@ -1472,6 +1472,20 @@ body { background: var(--fd-bg, #f5f0e4); }
   gap: 18px;
 }
 
+.fd-load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0 0;
+  color: #64748b;
+  font: 700 .82rem/1.2 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fd-load-more-count {
+  min-width: 0;
+}
+
 .fd-doc-card {
   background: var(--fd-panel);
   border: 1px solid var(--fd-border);

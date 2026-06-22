@@ -23,6 +23,9 @@ const STORE_KEY_DOCS = 'fd_dev_documents';
 const STORE_KEY_FOLDERS = 'fd_dev_folders';
 const COLLECTION_DOCS = 'flockDocs';
 const COLLECTION_FOLDERS = 'flockFolders';
+const DOC_RENDER_PAGE_SIZE = 36;
+const SYSTEM_DOC_LOAD_LIMIT = 40;
+const SYSTEM_DOC_CACHE_TTL_MS = 2 * 60 * 1000;
 
 /* ── State ────────────────────────────────────────────────────────────────── */
 const S = {
@@ -30,6 +33,13 @@ const S = {
   currentView: 'all-docs', // 'all-docs' | 'notes' | 'prayers' | 'journal' | 'calendar' | 'my-docs' | 'shared-docs' | 'recent' | 'trash'
   currentDoc: null,        // Currently open document
   documents: [],           // All documents (filtered based on view)
+  visibleDocCount: DOC_RENDER_PAGE_SIZE,
+  loadSeq: 0,
+  systemDocCache: {
+    prayer: { docs: null, loadedAt: 0, promise: null },
+    journal: { docs: null, loadedAt: 0, promise: null },
+    calendar: { docs: null, loadedAt: 0, promise: null },
+  },
   folders: [],             // Folder list
   currentFolder: null,     // Current folder filter
   searchQuery: '',         // Search filter
@@ -54,6 +64,7 @@ window.FlockDocs = {
   deleteDocument,
   emptyTrash,
   switchView,
+  loadMoreDocuments,
   importFromExcel,
   exportToExcel,
   createFolder,
@@ -348,6 +359,7 @@ function _bindEvents() {
   // Search input
   document.getElementById('fd-search-input')?.addEventListener('input', (e) => {
     S.searchQuery = e.target.value.toLowerCase();
+    S.visibleDocCount = DOC_RENDER_PAGE_SIZE;
     _renderDocuments();
   });
 
@@ -420,10 +432,13 @@ function _bindEvents() {
 }
 
 /* ── Documents CRUD ───────────────────────────────────────────────────────── */
-async function _loadDocuments() {
+async function _loadDocuments(options = {}) {
   if (!_checkFirebase()) return;
+  const loadSeq = ++S.loadSeq;
+  if (!options.keepVisible) S.visibleDocCount = DOC_RENDER_PAGE_SIZE;
   const systemOnly = _isSystemOnlyView(S.currentView);
-  const systemDocs = await _loadSystemDocumentsForCurrentView();
+  const systemDocs = await _loadSystemDocumentsForCurrentView({ force: !!options.forceSystem });
+  if (loadSeq !== S.loadSeq) return;
 
   // Use localStorage for mock user (development mode)
   if (_isMockUser()) {
@@ -470,6 +485,7 @@ async function _loadDocuments() {
     query = query.orderBy('updatedAt', 'desc');
 
     const snapshot = await query.get();
+    if (loadSeq !== S.loadSeq) return;
     const docs = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
@@ -534,6 +550,15 @@ function _sortDocs(docs) {
   return (Array.isArray(docs) ? docs : []).sort((a, b) => _dateValue(b.updatedAt) - _dateValue(a.updatedAt));
 }
 
+function _upsertLoadedDocument(doc) {
+  if (!doc?.id) return;
+  const next = S.documents.filter(item => item.id !== doc.id);
+  const filtered = _filterDocsForCurrentView([doc]);
+  if (filtered.length) next.push(filtered[0]);
+  S.documents = _sortDocs(next);
+  _renderDocuments();
+}
+
 function _dateValue(value) {
   if (!value) return 0;
   if (value && typeof value.toDate === 'function') return value.toDate().getTime();
@@ -550,18 +575,18 @@ function _shouldLoadSystemDocs(viewName) {
   return viewName === 'all-docs' || viewName === 'recent' || _isSystemOnlyView(viewName);
 }
 
-async function _loadSystemDocumentsForCurrentView() {
+async function _loadSystemDocumentsForCurrentView(options = {}) {
   if (!_shouldLoadSystemDocs(S.currentView) || typeof UpperRoom === 'undefined') return [];
 
   const loaders = [];
   if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'prayers') {
-    loaders.push(_loadPrayerDocs());
+    loaders.push(_loadCachedSystemDocs('prayer', _loadPrayerDocs, options));
   }
   if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'journal') {
-    loaders.push(_loadJournalDocs());
+    loaders.push(_loadCachedSystemDocs('journal', _loadJournalDocs, options));
   }
   if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'calendar') {
-    loaders.push(_loadCalendarDocs());
+    loaders.push(_loadCachedSystemDocs('calendar', _loadCalendarDocs, options));
   }
 
   const settled = await Promise.allSettled(loaders);
@@ -572,21 +597,50 @@ async function _loadSystemDocumentsForCurrentView() {
   });
 }
 
+function _loadCachedSystemDocs(source, loader, options = {}) {
+  const cache = S.systemDocCache[source];
+  if (!cache) return loader();
+
+  const now = Date.now();
+  if (!options.force && cache.docs && now - cache.loadedAt < SYSTEM_DOC_CACHE_TTL_MS) {
+    return Promise.resolve(cache.docs);
+  }
+  if (!options.force && cache.promise) return cache.promise;
+
+  cache.promise = loader()
+    .then(docs => {
+      cache.docs = Array.isArray(docs) ? docs : [];
+      cache.loadedAt = Date.now();
+      return cache.docs;
+    })
+    .finally(() => {
+      cache.promise = null;
+    });
+  return cache.promise;
+}
+
+function _markSystemSourceDirty(source) {
+  const cache = S.systemDocCache[source];
+  if (!cache) return;
+  cache.loadedAt = 0;
+  cache.promise = null;
+}
+
 async function _loadPrayerDocs() {
   if (!UpperRoom.listPrayers) return [];
-  const rows = _unwrapResults(await UpperRoom.listPrayers({ limit: 200 }));
+  const rows = _unwrapResults(await UpperRoom.listPrayers({ limit: SYSTEM_DOC_LOAD_LIMIT }));
   return rows.map(_mapPrayerToDoc).filter(Boolean);
 }
 
 async function _loadJournalDocs() {
   if (!UpperRoom.listJournal) return [];
-  const rows = _unwrapResults(await UpperRoom.listJournal({ limit: 200 }));
+  const rows = _unwrapResults(await UpperRoom.listJournal({ limit: SYSTEM_DOC_LOAD_LIMIT }));
   return rows.map(_mapJournalToDoc).filter(Boolean);
 }
 
 async function _loadCalendarDocs() {
   if (!UpperRoom.listCalendarEvents) return [];
-  const rows = _unwrapResults(await UpperRoom.listCalendarEvents({ limit: 200 }));
+  const rows = _unwrapResults(await UpperRoom.listCalendarEvents({ limit: SYSTEM_DOC_LOAD_LIMIT }));
   return rows.map(_mapCalendarToDoc).filter(Boolean);
 }
 
@@ -981,6 +1035,7 @@ async function saveDocument() {
       }
       
       _saveToLocalStorage(allDocs);
+      _upsertLoadedDocument({ ...S.currentDoc });
       
       if (saveStatus) saveStatus.textContent = 'All changes saved';
       console.log('[FlockDocs] Document saved to localStorage:', S.currentDoc.id);
@@ -1031,6 +1086,7 @@ async function saveDocument() {
       S.currentDoc.id = docRef.id;
     }
 
+    _upsertLoadedDocument({ ...S.currentDoc });
     if (saveStatus) saveStatus.textContent = 'All changes saved';
     console.log('[FlockDocs] Document saved:', S.currentDoc.id);
   } catch (err) {
@@ -1098,6 +1154,8 @@ async function _saveSystemDocument() {
       S.currentDoc.id = _systemDocId(S.currentDoc.source, savedId);
     }
     S.currentDoc.updatedAt = new Date();
+    _markSystemSourceDirty(S.currentDoc.source);
+    _upsertLoadedDocument({ ...S.currentDoc });
     if (saveStatus) saveStatus.textContent = 'All changes saved';
     _toast(`${_getDocTypeLabel(S.currentDoc.type)} saved`, 'success');
   } catch (err) {
@@ -1198,8 +1256,9 @@ async function _deleteSystemDocument(doc) {
     } else {
       throw new Error(`Unsupported system document source: ${doc.source}`);
     }
+    _markSystemSourceDirty(doc.source);
     _toast('Record deleted', 'success');
-    _loadDocuments();
+    _loadDocuments({ forceSystem: true });
   } catch (err) {
     console.error('[FlockDocs] Error deleting system document:', err);
     _toast('Failed to delete record', 'error');
@@ -1491,6 +1550,9 @@ function _renderDocuments() {
       (doc.name || '').toLowerCase().includes(S.searchQuery)
     );
   }
+  if (S.visibleDocCount < DOC_RENDER_PAGE_SIZE) {
+    S.visibleDocCount = DOC_RENDER_PAGE_SIZE;
+  }
 
   if (docs.length === 0) {
     const empty = _getEmptyStateConfig();
@@ -1510,7 +1572,24 @@ function _renderDocuments() {
     return;
   }
 
-  container.innerHTML = `<div class="fd-doc-grid">${docs.map(_renderDocCard).join('')}</div>`;
+  const visibleDocs = docs.slice(0, S.visibleDocCount);
+  const hasMore = visibleDocs.length < docs.length;
+  container.innerHTML = `
+    <div class="fd-doc-grid">${visibleDocs.map(_renderDocCard).join('')}</div>
+    ${hasMore ? `
+      <div class="fd-load-more">
+        <div class="fd-load-more-count">Showing ${visibleDocs.length} of ${docs.length}</div>
+        <button class="fd-btn fd-btn--ghost" type="button" onclick="FlockDocs.loadMoreDocuments()">
+          Load more
+        </button>
+      </div>
+    ` : ''}
+  `;
+}
+
+function loadMoreDocuments() {
+  S.visibleDocCount += DOC_RENDER_PAGE_SIZE;
+  _renderDocuments();
 }
 
 function _getEmptyStateConfig() {
@@ -1687,7 +1766,7 @@ function _closeEditor() {
   document.getElementById('fd-editor-page')?.classList.remove('fd-editor-page--note');
 
   S.currentDoc = null;
-  _loadDocuments();
+  _renderDocuments();
 }
 
 function _execCommand(command, value = null) {
