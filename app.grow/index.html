@@ -2,35 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <base href="../">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Grow - FlockOS</title>
-  <link rel="manifest" href="app.grow/manifest.json">
-  <link rel="icon" type="image/svg+xml" href="Images/icon-grow.svg">
-  <meta name="theme-color" content="#92400e">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GROW — Herald</title>
+  <link rel="canonical" href="app.grow.html">
   <script>
     (function () {
-      var map = {
-        '#the_gospel_courses': 'the_gospel_courses',
-        '#the_gospel_devotionals': 'the_gospel_devotionals',
-        '#the_gospel_missions': 'the_great_commission',
-        '#the_gospel_theology': 'the_gospel_theology',
-        '#the_gospel_reading': 'the_gospel_reading',
-        '#the_gospel_heart': 'the_gospel_heart',
-        '#the_gospel_apologetics': 'the_gospel_apologetics',
-        '#the_gospel_counseling': 'the_gospel_counseling',
-        '#the_gospel_quizzes': 'the_gospel_quizzes',
-        '#the_gospel_genealogy': 'the_gospel_genealogy',
-        '#the_gospel_invitation': 'the_gospel_invitation',
-        '#the_gospel_library': 'the_gospel_library',
-        '#the_gospel_lexicon': 'the_gospel_lexicon'
-      };
-      var view = map[location.hash] || 'the_growth';
-      location.replace(new URL('app.flockos/app.flockos.html?covenant=new&view=' + encodeURIComponent(view), document.baseURI).href);
+      location.replace('app.grow.html' + location.hash);
     })();
   </script>
 </head>
 <body>
-  <p><a href="app.flockos/app.flockos.html?covenant=new&amp;view=the_growth">Open Grow in FlockOS</a></p>
+  <p><a href="app.grow.html">Open GROW</a></p>
 </body>
 </html>

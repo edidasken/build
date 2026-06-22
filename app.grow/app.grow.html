@@ -4,33 +4,86 @@
   <meta charset="UTF-8">
   <base href="../">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Grow - FlockOS</title>
+  <meta name="description" content="GROW by FlockOS — public discipleship, Scripture, theology, apologetics, and missions in the Herald style.">
+  <title>GROW — Herald</title>
   <link rel="manifest" href="app.grow/manifest.json">
   <link rel="icon" type="image/svg+xml" href="Images/icon-grow.svg">
-  <meta name="theme-color" content="#92400e">
+  <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:wght@700;900&display=swap">
+  <meta name="theme-color" content="#b8871e">
   <script>
     (function () {
-      var map = {
-        '#the_gospel_courses': 'the_gospel_courses',
-        '#the_gospel_devotionals': 'the_gospel_devotionals',
-        '#the_gospel_missions': 'the_great_commission',
-        '#the_gospel_theology': 'the_gospel_theology',
-        '#the_gospel_reading': 'the_gospel_reading',
-        '#the_gospel_heart': 'the_gospel_heart',
-        '#the_gospel_apologetics': 'the_gospel_apologetics',
-        '#the_gospel_counseling': 'the_gospel_counseling',
-        '#the_gospel_quizzes': 'the_gospel_quizzes',
-        '#the_gospel_genealogy': 'the_gospel_genealogy',
-        '#the_gospel_invitation': 'the_gospel_invitation',
-        '#the_gospel_library': 'the_gospel_library',
-        '#the_gospel_lexicon': 'the_gospel_lexicon'
-      };
-      var view = map[location.hash] || 'the_growth';
-      location.replace(new URL('app.flockos/app.flockos.html?covenant=new&view=' + encodeURIComponent(view), document.baseURI).href);
+      document.documentElement.setAttribute('data-theme', 'herald');
+      document.documentElement.setAttribute('data-fn-sidebar', 'closed');
+      try {
+        var scale = Number(localStorage.getItem('herald.text-size-scale') || '1');
+        var sizes = [0.92, 1, 1.08, 1.16, 1.24, 1.32];
+        var best = sizes.reduce(function (nearest, value) {
+          return Math.abs(value - scale) < Math.abs(nearest - scale) ? value : nearest;
+        }, 1);
+        document.documentElement.style.setProperty('--reader-scale', String(best));
+        document.documentElement.setAttribute('data-reader-scale', String(best));
+        document.documentElement.style.fontSize = (16 * best) + 'px';
+      } catch (_) {
+        document.documentElement.style.setProperty('--reader-scale', '1');
+        document.documentElement.setAttribute('data-reader-scale', '1');
+        document.documentElement.style.fontSize = '16px';
+      }
     })();
   </script>
+  <link rel="stylesheet" href="Styles/new_covenant.css">
+  <link rel="stylesheet" href="Styles/flocknews.css">
+  <link rel="stylesheet" href="Styles/herald_grow.css">
 </head>
-<body>
-  <p><a href="app.flockos/app.flockos.html?covenant=new&amp;view=the_growth">Open Grow in FlockOS</a></p>
+<body class="herald-shell hg-grow">
+<div class="fn-page">
+  <header class="fn-back-bar unity-header" id="fn-unity-topbar" role="banner" data-herald-unity-header data-herald-app-id="grow">
+    <a class="fn-back-btn" href="index.html" aria-label="Open Herald">
+      <img class="fn-herald-mark" src="Images/icon-pwa.svg" alt="" aria-hidden="true">
+      <span class="fn-btn-label">Herald</span>
+    </a>
+    <div class="fn-top-actions">
+      <a class="fn-share-btn" href="app.bible/" aria-label="Open Bible">Bible</a>
+      <a class="fn-share-btn" href="app.invite/app.invite.html" aria-label="Open The Invitation">Invitation</a>
+      <a class="fn-share-btn" href="app.flockos/app.flockos.html" aria-label="Open FlockOS">FlockOS</a>
+    </div>
+  </header>
+
+  <header class="fn-masthead">
+    <hr class="fn-masthead-rule-top">
+    <div class="fn-masthead-inner">
+      <div class="fn-flag">GROW</div>
+      <div class="fn-church-name">FlockOS</div>
+      <div class="fn-welcome-message">Discipleship Hub</div>
+      <div class="fn-motto">
+        <a class="fn-motto-link" href="#the_gospel_courses">Discipleship</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#the_gospel_devotionals">Devotions</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#the_gospel_missions">Missions</a>
+        <span class="fn-motto-dot">·</span>
+        <a class="fn-motto-link" href="#the_gospel_theology">Theology</a>
+      </div>
+      <div class="fn-dateline">
+        <span class="fn-dateline-row">
+          <span>Public Herald Edition</span>
+          <span class="fn-date-nav"><span id="hg-date"></span></span>
+        </span>
+        <span class="fn-church-website">Grow in grace and knowledge</span>
+      </div>
+    </div>
+    <hr class="fn-masthead-rule-bot">
+  </header>
+
+  <section data-fn-section="grow" id="fn-section-grow" class="hg-herald-integrated">
+    <hr class="rule-double fn-section-rule">
+    <p class="fn-section-label">§ 1 &nbsp;·&nbsp; GROW &nbsp;·&nbsp; Discipleship Hub</p>
+    <main id="hg-edition-content" class="hg-edition-content" data-herald-integrated="true" role="region" aria-label="GROW discipleship hub"></main>
+  </section>
+</div>
+
+<script type="module" src="Scripts/herald_grow.js"></script>
 </body>
 </html>

@@ -1,13 +1,13 @@
 {
-  "name": "FlockOS · Grow",
-  "short_name": "Grow",
-  "description": "Discipleship, Bible study, theology, and learning inside FlockOS.",
+  "name": "FlockOS · GROW",
+  "short_name": "GROW",
+  "description": "Public discipleship, Bible study, theology, and learning in the Herald style.",
   "start_url": "./app.grow.html",
   "id": "./app.grow.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f8fafc",
-  "theme_color": "#92400e",
+  "theme_color": "#b8871e",
   "orientation": "portrait-primary",
   "icons": [
     {

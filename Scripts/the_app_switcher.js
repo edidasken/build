@@ -113,7 +113,6 @@ export const NC_APPS = [
   { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
   { id: 'seasons',   name: 'Seasons',        sub: 'Calendar & events',              href: 'app.flockos/app.flockos.html?covenant=new&view=the_seasons',       accent: '#d97706', accentDk: '#92400e' },
   { id: 'upperroom', name: 'Upper Room',     sub: 'Devotion, journal & prayer',     href: 'app.flockos/app.flockos.html?covenant=new&view=the_upper_room',    accent: '#ef4444', accentDk: '#7f1d1d' },
-  { id: 'grow',      name: 'Grow',           sub: 'Discipleship hub',               href: 'app.flockos/app.flockos.html?covenant=new&view=the_growth',        accent: '#f59e0b', accentDk: '#92400e' },
   { id: 'service',   name: 'Service Order',  sub: 'Worship planning',               href: 'app.flockos/app.flockos.html?covenant=new&view=the_anatomy_of_worship', accent: '#64748b', accentDk: '#334155' },
   { id: 'quarterly', name: 'Quarterly',       sub: 'Quarterly worship planner',      href: 'app.flockos/app.flockos.html?covenant=new&view=quarterly_worship', accent: '#a855f7', accentDk: '#4c1d95' },
   { id: 'missions',  name: 'Missions',        sub: 'Great Commission work',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_great_commission', accent: '#0ea5e9', accentDk: '#0c4a6e' },

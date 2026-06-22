@@ -60,7 +60,6 @@ const SECTIONS = [
     title: 'Word',
     items: [
       { name: 'the_upper_room',        label: 'The Upper Room',     icon: ICON.flame },
-      { name: 'the_growth',            label: 'Grow',               icon: ICON.sprout },
     ],
   },
   /* ── Care ────────────────────────────────────────────────────────────── */

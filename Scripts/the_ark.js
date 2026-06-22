@@ -111,6 +111,16 @@ const flock = {
 async function _registerViews() {
   // Lazy view loaders — each view is its own folder with index.js.
   const V = (n) => () => import(_resolve(`../Views/${n}/index.js`));
+  const G = (hash = '') => () => Promise.resolve({
+    title: 'GROW',
+    render: () => '',
+    mount: () => {
+      const target = new URL('app.grow/app.grow.html', document.baseURI);
+      if (hash) target.hash = hash;
+      location.replace(target.href);
+      return null;
+    },
+  });
 
   register('the_good_shepherd',          V('the_good_shepherd'),          { command: 'Go to: Home' });
   register('the_great_commission',       V('the_great_commission'),       { command: 'Go to: Missions' });
@@ -152,24 +162,24 @@ async function _registerViews() {
   register('the_truth',                V('the_truth'),                { command: 'Go to: Content' });
   register('the_gospel_invitation',    V('the_gospel_invitation'),    { command: 'Go to: The Invitation' });
 
-  // Grow — discipleship dashboard + the_gospel/* learning modules
-  register('the_growth',               V('the_growth'),               { command: 'Go to: Grow' });
-  register('the_gospel_courses',       V('the_gospel_courses'),       { command: 'Go to: Courses' });
-  register('the_gospel_quizzes',       V('the_gospel_quizzes'),       { command: 'Go to: Quizzes' });
-  register('the_gospel_reading',       V('the_gospel_reading'),       { command: 'Go to: Reading Plans' });
-  register('the_gospel_theology',      V('the_gospel_theology'),      { command: 'Go to: Theology' });
-  register('the_gospel_teaching_plans', V('the_gospel_teaching_plans'), { command: 'Go to: Teaching Plans' });
-  register('the_gospel_lexicon',       V('the_gospel_lexicon'),       { command: 'Go to: Lexicon' });
-  register('the_gospel_library',       V('the_gospel_library'),       { command: 'Go to: The Word library' });
-  register('the_gospel_devotionals',   V('the_gospel_devotionals'),   { command: 'Go to: Devotionals' });
-  register('the_gospel_apologetics',   V('the_gospel_apologetics'),   { command: 'Go to: Apologetics' });
-  register('the_gospel_counseling',    V('the_gospel_counseling'),    { command: 'Go to: Counseling' });
-  register('the_gospel_heart',         V('the_gospel_heart'),         { command: 'Go to: Heart Check' });
-  register('the_gospel_mirror',        V('the_gospel_mirror'),        { command: 'Go to: Shepherd\u2019s Mirror' });
-  register('the_gospel_genealogy',     V('the_gospel_genealogy'),     { command: 'Go to: Biblical Genealogy' });
-  register('the_gospel_journal',       V('the_gospel_journal'),       { command: 'Go to: Journal' });
-  register('the_gospel_certificates',  V('the_gospel_certificates'),  { command: 'Go to: Certificates' });
-  register('the_gospel_analytics',     V('the_gospel_analytics'),     { command: 'Go to: Learning analytics' });
+  // Legacy FlockOS GROW routes now hand off to the Herald-style GROW page.
+  register('the_growth',               G());
+  register('the_gospel_courses',       G('the_gospel_courses'));
+  register('the_gospel_quizzes',       G('the_gospel_quizzes'));
+  register('the_gospel_reading',       G('the_gospel_reading'));
+  register('the_gospel_theology',      G('the_gospel_theology'));
+  register('the_gospel_teaching_plans', G('the_gospel_teaching_plans'));
+  register('the_gospel_lexicon',       G('the_gospel_lexicon'));
+  register('the_gospel_library',       G('the_gospel_library'));
+  register('the_gospel_devotionals',   G('the_gospel_devotionals'));
+  register('the_gospel_apologetics',   G('the_gospel_apologetics'));
+  register('the_gospel_counseling',    G('the_gospel_counseling'));
+  register('the_gospel_heart',         G('the_gospel_heart'));
+  register('the_gospel_mirror',        G('the_gospel_mirror'));
+  register('the_gospel_genealogy',     G('the_gospel_genealogy'));
+  register('the_gospel_journal',       G('fn-section-grow'));
+  register('the_gospel_certificates',  G('fn-section-grow'));
+  register('the_gospel_analytics',     G('fn-section-grow'));
 }
 
 /* ── Initial route ────────────────────────────────────────────────────────── */
