@@ -813,6 +813,190 @@ body.docs-auth {
     #ffffff !important;
 }
 
+.fd-editor-view.is-record-editor .fd-editor-container {
+  align-items: center;
+  padding: 28px min(5vw, 48px) 88px;
+}
+
+.fd-editor-view.is-record-editor .fd-editor-page.fd-editor-page--record {
+  width: min(900px, 100%) !important;
+  min-height: 720px !important;
+  padding: clamp(24px, 4vw, 48px) !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.fd-editor-page--prayer {
+  border-color: rgba(185,28,28,.22) !important;
+  background: linear-gradient(180deg, rgba(254,242,242,.92), #ffffff 180px) !important;
+}
+
+.fd-editor-page--journal {
+  border-color: rgba(124,58,237,.22) !important;
+  background: linear-gradient(180deg, rgba(245,243,255,.95), #ffffff 190px) !important;
+}
+
+.fd-editor-page--calendar {
+  border-color: rgba(14,165,233,.24) !important;
+  background: linear-gradient(180deg, rgba(240,249,255,.95), #ffffff 185px) !important;
+}
+
+.fd-record {
+  display: grid;
+  gap: 18px;
+  color: #1e293b;
+  font-family: var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fd-record-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(15,23,42,.10);
+}
+
+.fd-record-icon {
+  width: 58px;
+  height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(15,23,42,.10);
+  box-shadow: 0 10px 24px rgba(15,23,42,.08);
+  flex: 0 0 auto;
+}
+
+.fd-record-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.fd-record-icon--prayer {
+  color: #b91c1c;
+  background: #fff7ed;
+}
+
+.fd-record-icon--journal {
+  color: #6d28d9;
+  background: #f5f3ff;
+}
+
+.fd-record-icon--calendar {
+  color: #0369a1;
+  background: #ecfeff;
+}
+
+.fd-record-kicker {
+  color: #0f172a;
+  font: 800 .82rem/1.2 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.fd-record-subtitle {
+  margin-top: 4px;
+  color: #64748b;
+  font: 700 .92rem/1.4 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fd-record-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fd-record-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid rgba(15,23,42,.10);
+  color: #475569;
+  font: 700 .76rem/1.2 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fd-record-chip strong {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.fd-record-section,
+.fd-record-cell {
+  border: 1px solid rgba(15,23,42,.10);
+  border-radius: 8px;
+  background: rgba(255,255,255,.78);
+  padding: 18px;
+}
+
+.fd-record--prayer .fd-record-section--primary {
+  border-left: 5px solid #b91c1c;
+}
+
+.fd-record--prayer .fd-record-section--notes {
+  border-left: 5px solid #b8871e;
+  background: #fffbeb;
+}
+
+.fd-record--journal .fd-record-section--journal {
+  border-left: 5px solid #7c3aed;
+  background: #faf5ff;
+}
+
+.fd-record--calendar .fd-record-section--primary {
+  border-left: 5px solid #0ea5e9;
+}
+
+.fd-record-label {
+  margin: 0 0 7px;
+  color: #64748b;
+  font: 800 .72rem/1.2 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.fd-editor-content .fd-record-title {
+  margin: 0 0 16px;
+  color: #0f172a;
+  font: 800 clamp(1.65rem, 3vw, 2.45rem)/1.15 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+.fd-editor-content .fd-record-body,
+.fd-editor-content .fd-record-value {
+  margin: 0;
+  color: #1e293b;
+  font: 500 1rem/1.65 'Noto Serif', Georgia, serif;
+}
+
+.fd-editor-content .fd-record-body {
+  min-height: 88px;
+}
+
+.fd-editor-content .fd-record-body--journal {
+  min-height: 340px;
+  font-size: 1.06rem;
+  line-height: 1.78;
+}
+
+.fd-editor-content .fd-record-body--notes {
+  min-height: 96px;
+}
+
+.fd-record-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fd-record-cell--wide {
+  grid-column: 1 / -1;
+}
+
 .fd-editor-content,
 .fd-editor-content p,
 .fd-editor-content li,

@@ -732,36 +732,92 @@ function _firstValue(obj, keys) {
   return key ? obj[key] : '';
 }
 
-function _field(tag, name, value, fallback = '') {
-  return `<${tag} class="fd-system-field" data-field="${_e(name)}" data-placeholder="${_e(fallback)}">${_e(value || fallback)}</${tag}>`;
+function _field(tag, name, value, fallback = '', className = '') {
+  const classes = ['fd-system-field', className].filter(Boolean).join(' ');
+  return `<${tag} class="${classes}" data-field="${_e(name)}" data-placeholder="${_e(fallback)}">${_e(value || fallback)}</${tag}>`;
+}
+
+function _recordChip(label, value) {
+  if (value === undefined || value === null || String(value).trim() === '') return '';
+  return `<span class="fd-record-chip" contenteditable="false"><strong>${_e(label)}</strong>${_e(value)}</span>`;
+}
+
+function _recordLabel(label) {
+  return `<div class="fd-record-label" contenteditable="false">${_e(label)}</div>`;
 }
 
 function _buildPrayerContent(row = {}) {
+  const status = row.status || row.Status || 'Open';
+  const submitted = row.submittedAt || row.createdAt || row.CreatedAt;
   return [
-    _field('h1', 'category', row.category || 'Prayer Request', 'Prayer Request'),
-    _field('p', 'prayerText', row.prayerText || '', 'Write the request here...'),
-    '<h2>Admin Notes</h2>',
-    _field('p', 'adminNotes', row.adminNotes || '', 'Add private care notes here...'),
+    '<article class="fd-record fd-record--prayer">',
+    '<header class="fd-record-hero" contenteditable="false">',
+    '<div class="fd-record-icon fd-record-icon--prayer">' + _getDocIcon('prayer') + '</div>',
+    '<div><div class="fd-record-kicker">Prayer Request</div><div class="fd-record-subtitle">Care and intercession record</div></div>',
+    '</header>',
+    `<div class="fd-record-chips" contenteditable="false">${[
+      _recordChip('Status', status),
+      _recordChip('Submitted', submitted ? _formatDate(submitted) : ''),
+      _recordChip('From', row.submitterName || row.submitterEmail || S.user?.displayName || 'Member'),
+    ].join('')}</div>`,
+    '<section class="fd-record-section fd-record-section--primary">',
+    _recordLabel('Category'),
+    _field('h1', 'category', row.category || 'Prayer Request', 'Prayer Request', 'fd-record-title'),
+    _recordLabel('Request'),
+    _field('p', 'prayerText', row.prayerText || '', 'Write the request here...', 'fd-record-body fd-record-body--prayer'),
+    '</section>',
+    '<section class="fd-record-section fd-record-section--notes">',
+    _recordLabel('Admin Notes'),
+    _field('p', 'adminNotes', row.adminNotes || '', 'Add private care notes here...', 'fd-record-body fd-record-body--notes'),
+    '</section>',
+    '</article>',
   ].join('');
 }
 
 function _buildJournalContent(row = {}) {
+  const date = row.date || row.createdAt || row.CreatedAt;
   return [
-    _field('h1', 'title', row.title || 'Journal Entry', 'Journal Entry'),
-    _field('p', 'body', row.body || '', 'Start writing...'),
+    '<article class="fd-record fd-record--journal">',
+    '<header class="fd-record-hero" contenteditable="false">',
+    '<div class="fd-record-icon fd-record-icon--journal">' + _getDocIcon('journal') + '</div>',
+    '<div><div class="fd-record-kicker">Journal Entry</div><div class="fd-record-subtitle">Reflection and discipleship notes</div></div>',
+    '</header>',
+    `<div class="fd-record-chips" contenteditable="false">${[
+      _recordChip('Date', date ? _formatDate(date) : ''),
+      _recordChip('Owner', row.ownerName || row.createdBy || S.user?.displayName || 'Member'),
+    ].join('')}</div>`,
+    '<section class="fd-record-section fd-record-section--journal">',
+    _recordLabel('Title'),
+    _field('h1', 'title', row.title || 'Journal Entry', 'Journal Entry', 'fd-record-title'),
+    _recordLabel('Entry'),
+    _field('p', 'body', row.body || '', 'Start writing...', 'fd-record-body fd-record-body--journal'),
+    '</section>',
+    '</article>',
   ].join('');
 }
 
 function _buildCalendarContent(row = {}) {
+  const start = row.StartDateTime || row.startDateTime || row.start || '';
+  const end = row.EndDateTime || row.endDateTime || row.end || '';
+  const location = row.Location || row.location || '';
   return [
-    _field('h1', 'Title', row.Title || row.title || 'Calendar Event', 'Calendar Event'),
-    _field('p', 'Description', row.Description || row.description || '', 'Describe the event...'),
-    '<h2>Start</h2>',
-    _field('p', 'StartDateTime', row.StartDateTime || '', _defaultCalendarStart()),
-    '<h2>End</h2>',
-    _field('p', 'EndDateTime', row.EndDateTime || '', _defaultCalendarEnd()),
-    '<h2>Location</h2>',
-    _field('p', 'Location', row.Location || '', 'Add a location...'),
+    '<article class="fd-record fd-record--calendar">',
+    '<header class="fd-record-hero" contenteditable="false">',
+    '<div class="fd-record-icon fd-record-icon--calendar">' + _getDocIcon('calendar') + '</div>',
+    '<div><div class="fd-record-kicker">Calendar Event</div><div class="fd-record-subtitle">Schedule, place, and gathering details</div></div>',
+    '</header>',
+    '<section class="fd-record-section fd-record-section--primary">',
+    _recordLabel('Event Title'),
+    _field('h1', 'Title', row.Title || row.title || 'Calendar Event', 'Calendar Event', 'fd-record-title'),
+    _recordLabel('Description'),
+    _field('p', 'Description', row.Description || row.description || '', 'Describe the event...', 'fd-record-body fd-record-body--calendar'),
+    '</section>',
+    '<section class="fd-record-grid">',
+    '<div class="fd-record-cell">' + _recordLabel('Start') + _field('p', 'StartDateTime', start, _defaultCalendarStart(), 'fd-record-value') + '</div>',
+    '<div class="fd-record-cell">' + _recordLabel('End') + _field('p', 'EndDateTime', end, _defaultCalendarEnd(), 'fd-record-value') + '</div>',
+    '<div class="fd-record-cell fd-record-cell--wide">' + _recordLabel('Location') + _field('p', 'Location', location, 'Add a location...', 'fd-record-value') + '</div>',
+    '</section>',
+    '</article>',
   ].join('');
 }
 
@@ -1732,8 +1788,14 @@ function _openEditor() {
     if (editorView) {
       editorView.classList.remove('hidden');
       editorView.classList.toggle('is-note-editor', S.currentDoc.type === 'note');
+      const recordType = _isSystemDoc(S.currentDoc) ? _normalizeDocType(S.currentDoc.type) : '';
+      editorView.classList.toggle('is-record-editor', !!recordType);
+      ['prayer', 'journal', 'calendar'].forEach(type => {
+        editorView.classList.toggle(`is-${type}-record`, recordType === type);
+      });
       const editor = document.getElementById('fd-editor-content');
       if (editor) {
+        editor.dataset.recordType = recordType;
         editor.innerHTML = S.currentDoc.content;
         editor.focus();
       }
@@ -1742,6 +1804,10 @@ function _openEditor() {
       const toolbarHost = document.getElementById('fd-quill-bar');
       const pageEl      = document.getElementById('fd-editor-page');
       pageEl?.classList.toggle('fd-editor-page--note', S.currentDoc.type === 'note');
+      pageEl?.classList.toggle('fd-editor-page--record', !!recordType);
+      ['prayer', 'journal', 'calendar'].forEach(type => {
+        pageEl?.classList.toggle(`fd-editor-page--${type}`, recordType === type);
+      });
       S._quill = mountQuill(editor, {
         mode:     S.currentDoc.type === 'note' ? 'note' : 'document',
         toolbar:  toolbarHost,
@@ -1762,8 +1828,11 @@ function _closeEditor() {
   if (libraryView) libraryView.classList.remove('hidden');
   if (editorView) editorView.classList.add('hidden');
   if (spreadsheetView) spreadsheetView.classList.add('hidden');
-  editorView?.classList.remove('is-note-editor');
-  document.getElementById('fd-editor-page')?.classList.remove('fd-editor-page--note');
+  editorView?.classList.remove('is-note-editor', 'is-record-editor', 'is-prayer-record', 'is-journal-record', 'is-calendar-record');
+  const pageEl = document.getElementById('fd-editor-page');
+  pageEl?.classList.remove('fd-editor-page--note', 'fd-editor-page--record', 'fd-editor-page--prayer', 'fd-editor-page--journal', 'fd-editor-page--calendar');
+  const editor = document.getElementById('fd-editor-content');
+  if (editor) delete editor.dataset.recordType;
 
   S.currentDoc = null;
   _renderDocuments();
