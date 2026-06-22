@@ -105,45 +105,65 @@ export const NC_APP_ICON_SRCS = {
 export const NC_APPS = [
   { id: 'flocknews', name: 'Herald',         sub: 'Daily spiritual content',        href: 'index.html',                      accent: '#e8a838', accentDk: '#b8871e', public: true },
   { id: 'bible',     name: 'Bible',          sub: 'ESV reader, notes & prayer',     href: 'app.bible/',                      accent: '#f7c756', accentDk: '#b8871e', public: true },
-  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#f7c756', accentDk: '#b8871e', public: true },
+  { id: 'invite',    name: 'The Invitation', sub: 'Share the hope of Jesus Christ', href: 'app.invite/app.invite.html',       accent: '#f7c756', accentDk: '#b8871e', public: true, parentId: 'flocknews' },
   { id: 'flockos',   name: 'FlockOS',        sub: 'Church management',              href: 'app.flockos/app.flockos.html',     accent: '#3b82f6', accentDk: '#1e3a8a' },
-  { id: 'fold',      name: 'The Fold',       sub: 'Members & flock care',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_fold',          accent: '#3b82f6', accentDk: '#1e3a8a' },
-  { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'workflows', name: 'Workflows',      sub: 'Installed ministry procedures',  href: 'app.flockos/app.flockos.html?covenant=new&view=the_do',            accent: '#64748b', accentDk: '#334155' },
-  { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95' },
-  { id: 'seasons',   name: 'Seasons',        sub: 'Calendar & events',              href: 'app.flockos/app.flockos.html?covenant=new&view=the_seasons',       accent: '#d97706', accentDk: '#92400e' },
-  { id: 'upperroom', name: 'Upper Room',     sub: 'Devotion, journal & prayer',     href: 'app.flockos/app.flockos.html?covenant=new&view=the_upper_room',    accent: '#ef4444', accentDk: '#7f1d1d' },
-  { id: 'service',   name: 'Service Order',  sub: 'Worship planning',               href: 'app.flockos/app.flockos.html?covenant=new&view=the_anatomy_of_worship', accent: '#64748b', accentDk: '#334155' },
-  { id: 'quarterly', name: 'Quarterly',       sub: 'Quarterly worship planner',      href: 'app.flockos/app.flockos.html?covenant=new&view=quarterly_worship', accent: '#a855f7', accentDk: '#4c1d95' },
-  { id: 'missions',  name: 'Missions',        sub: 'Great Commission work',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_great_commission', accent: '#0ea5e9', accentDk: '#0c4a6e' },
-  { id: 'harvest',   name: 'Harvest',         sub: 'Outreach & conversions',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_harvest',       accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'way',       name: 'The Way',         sub: 'Discipleship pathways',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_way',           accent: '#f59e0b', accentDk: '#92400e' },
-  { id: 'content',   name: 'Content',         sub: 'Teaching & media library',       href: 'app.flockos/app.flockos.html?covenant=new&view=the_truth',         accent: '#2563eb', accentDk: '#1d4ed8' },
-  { id: 'giving',    name: 'Giving',          sub: 'Stewardship & gifts',            href: 'app.flockos/app.flockos.html?covenant=new&view=the_gift_drift',    accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'weavers',   name: "The Weaver's Plan", sub: 'Strategy & planning',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_weavers_plan',  accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'admin',     name: 'Admin',           sub: 'FlockOS administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_wall',          accent: '#7c3aed', accentDk: '#4c1d95' },
-  { id: 'announcements', name: 'Announcements', sub: 'Church announcements',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_announcements', accent: '#06b6d4', accentDk: '#0c4a6e' },
-  { id: 'events',    name: 'Events',          sub: 'Special events & gatherings',    href: 'app.flockos/app.flockos.html?covenant=new&view=the_pentecost',     accent: '#d97706', accentDk: '#92400e' },
-  { id: 'forgive',   name: 'Forgiveness',     sub: 'Reconciliation guide',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_call_to_forgive', accent: '#ef4444', accentDk: '#7f1d1d' },
-  { id: 'generations', name: 'Generations',   sub: 'Build history & records',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_generations',  accent: '#64748b', accentDk: '#334155' },
-  { id: 'prayerful', name: 'Prayerful Action', sub: 'Prayer journal & rhythm',       href: 'app.flockos/app.flockos.html?covenant=new&view=prayerful_action', accent: '#8b5cf6', accentDk: '#4c1d95' },
-  { id: 'outreach',  name: 'Outreach',        sub: 'Fishing for men',                href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_men',   accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'analytics', name: 'Analytics',       sub: 'Ministry data',                  href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_data',  accent: '#2563eb', accentDk: '#1d4ed8' },
-  { id: 'deploy',    name: 'Deploy',          sub: 'Deployment referral',            href: 'app.flockos/app.flockos.html?covenant=new&view=software_deployment_referral', accent: '#64748b', accentDk: '#334155' },
-  { id: 'bezalel',   name: 'Bezalel',         sub: 'Build tools',                    href: 'app.flockos/app.flockos.html?covenant=new&view=bezalel',           accent: '#7c3aed', accentDk: '#4c1d95' },
-  { id: 'about',     name: 'About FlockOS',   sub: 'The why',                        href: 'app.flockos/app.flockos.html?covenant=new&view=about_flockos',     accent: '#3b82f6', accentDk: '#1e3a8a' },
-  { id: 'learn',     name: 'Learn More',      sub: 'FlockOS overview',               href: 'app.flockos/app.flockos.html?covenant=new&view=learn_more',       accent: '#f59e0b', accentDk: '#92400e' },
-  { id: 'truth-admin', name: 'Truth Editor',  sub: 'Content administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=content-admin',    accent: '#2563eb', accentDk: '#1d4ed8' },
+  { id: 'fold',      name: 'The Fold',       sub: 'Members & flock care',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_fold',          accent: '#3b82f6', accentDk: '#1e3a8a', parentId: 'flockos' },
+  { id: 'care',      name: 'Care',           sub: 'Pastoral care & follow-up',      href: 'app.flockos/app.flockos.html?covenant=new&view=the_life',          accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockos' },
+  { id: 'workflows', name: 'Workflows',      sub: 'Installed ministry procedures',  href: 'app.flockos/app.flockos.html?covenant=new&view=the_do',            accent: '#64748b', accentDk: '#334155', parentId: 'flockos' },
+  { id: 'prayer',    name: 'Prayer',         sub: 'Prayer chain & requests',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_prayer_chain',  accent: '#8b5cf6', accentDk: '#4c1d95', parentId: 'flockos' },
+  { id: 'seasons',   name: 'Seasons',        sub: 'Calendar & events',              href: 'app.flockos/app.flockos.html?covenant=new&view=the_seasons',       accent: '#d97706', accentDk: '#92400e', parentId: 'flockos' },
+  { id: 'upperroom', name: 'Upper Room',     sub: 'Devotion, journal & prayer',     href: 'app.flockos/app.flockos.html?covenant=new&view=the_upper_room',    accent: '#ef4444', accentDk: '#7f1d1d', parentId: 'flockos' },
+  { id: 'service',   name: 'Service Order',  sub: 'Worship planning',               href: 'app.flockos/app.flockos.html?covenant=new&view=the_anatomy_of_worship', accent: '#64748b', accentDk: '#334155', parentId: 'flockos' },
+  { id: 'quarterly', name: 'Quarterly',       sub: 'Quarterly worship planner',      href: 'app.flockos/app.flockos.html?covenant=new&view=quarterly_worship', accent: '#a855f7', accentDk: '#4c1d95', parentId: 'flockos' },
+  { id: 'missions',  name: 'Missions',        sub: 'Great Commission work',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_great_commission', accent: '#0ea5e9', accentDk: '#0c4a6e', parentId: 'flockos' },
+  { id: 'harvest',   name: 'Harvest',         sub: 'Outreach & conversions',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_harvest',       accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockos' },
+  { id: 'way',       name: 'The Way',         sub: 'Discipleship pathways',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_way',           accent: '#f59e0b', accentDk: '#92400e', parentId: 'flockos' },
+  { id: 'content',   name: 'Content',         sub: 'Teaching & media library',       href: 'app.flockos/app.flockos.html?covenant=new&view=the_truth',         accent: '#2563eb', accentDk: '#1d4ed8', parentId: 'flockos' },
+  { id: 'giving',    name: 'Giving',          sub: 'Stewardship & gifts',            href: 'app.flockos/app.flockos.html?covenant=new&view=the_gift_drift',    accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockos' },
+  { id: 'weavers',   name: "The Weaver's Plan", sub: 'Strategy & planning',          href: 'app.flockos/app.flockos.html?covenant=new&view=the_weavers_plan',  accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockos' },
+  { id: 'admin',     name: 'Admin',           sub: 'FlockOS administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_wall',          accent: '#7c3aed', accentDk: '#4c1d95', parentId: 'flockos' },
+  { id: 'announcements', name: 'Announcements', sub: 'Church announcements',         href: 'app.flockos/app.flockos.html?covenant=new&view=the_announcements', accent: '#06b6d4', accentDk: '#0c4a6e', parentId: 'flockos' },
+  { id: 'events',    name: 'Events',          sub: 'Special events & gatherings',    href: 'app.flockos/app.flockos.html?covenant=new&view=the_pentecost',     accent: '#d97706', accentDk: '#92400e', parentId: 'flockos' },
+  { id: 'forgive',   name: 'Forgiveness',     sub: 'Reconciliation guide',           href: 'app.flockos/app.flockos.html?covenant=new&view=the_call_to_forgive', accent: '#ef4444', accentDk: '#7f1d1d', parentId: 'flockos' },
+  { id: 'generations', name: 'Generations',   sub: 'Build history & records',        href: 'app.flockos/app.flockos.html?covenant=new&view=the_generations',  accent: '#64748b', accentDk: '#334155', parentId: 'flockos' },
+  { id: 'prayerful', name: 'Prayerful Action', sub: 'Prayer journal & rhythm',       href: 'app.flockos/app.flockos.html?covenant=new&view=prayerful_action', accent: '#8b5cf6', accentDk: '#4c1d95', parentId: 'flockos' },
+  { id: 'outreach',  name: 'Outreach',        sub: 'Fishing for men',                href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_men',   accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockos' },
+  { id: 'analytics', name: 'Analytics',       sub: 'Ministry data',                  href: 'app.flockos/app.flockos.html?covenant=new&view=fishing_for_data',  accent: '#2563eb', accentDk: '#1d4ed8', parentId: 'flockos' },
+  { id: 'deploy',    name: 'Deploy',          sub: 'Deployment referral',            href: 'app.flockos/app.flockos.html?covenant=new&view=software_deployment_referral', accent: '#64748b', accentDk: '#334155', parentId: 'flockos' },
+  { id: 'bezalel',   name: 'Bezalel',         sub: 'Build tools',                    href: 'app.flockos/app.flockos.html?covenant=new&view=bezalel',           accent: '#7c3aed', accentDk: '#4c1d95', parentId: 'flockos' },
+  { id: 'about',     name: 'About FlockOS',   sub: 'The why',                        href: 'app.flockos/app.flockos.html?covenant=new&view=about_flockos',     accent: '#3b82f6', accentDk: '#1e3a8a', parentId: 'flockos' },
+  { id: 'learn',     name: 'Learn More',      sub: 'FlockOS overview',               href: 'app.flockos/app.flockos.html?covenant=new&view=learn_more',       accent: '#f59e0b', accentDk: '#92400e', parentId: 'flockos' },
+  { id: 'truth-admin', name: 'Truth Editor',  sub: 'Content administration',         href: 'app.flockos/app.flockos.html?covenant=new&view=content-admin',    accent: '#2563eb', accentDk: '#1d4ed8', parentId: 'flockos' },
   { id: 'stand',     name: 'FlockStand',     sub: 'Songs, setlists & live',         href: 'app.stand/',                       accent: '#a855f7', accentDk: '#4c1d95' },
-  { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d' },
+  { id: 'flockshow', name: 'FlockShow',      sub: 'Worship slides & service',       href: 'app.flockshow/app.flockshow.html', accent: '#ef4444', accentDk: '#7f1d1d', parentId: 'stand' },
   { id: 'flocksort', name: 'FlockSort',      sub: 'Free water-sort puzzle',         href: 'app.flocksort/',                   accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'flockchat', name: 'FlockChat',      sub: 'Messaging & prayer chain',       href: 'app.flockchat/app.flockchat.html', accent: '#06b6d4', accentDk: '#0c4a6e' },
   { id: 'flockdocs', name: 'Docs',           sub: 'Documents & productivity',       href: 'app.flockdocs/',                   accent: '#2563eb', accentDk: '#1d4ed8' },
-  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#f7c756', accentDk: '#b8871e' },
-  { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                        accent: '#d97706', accentDk: '#92400e' },
+  { id: 'flockshamar', name: 'Notes',        sub: 'Keep & guard your notes',        href: 'app.flockshamar/app.flockshamar.html', accent: '#f7c756', accentDk: '#b8871e', parentId: 'flockdocs' },
+  { id: 'feed',      name: 'Feed',           sub: 'Sermon prep & study tools',      href: 'app.feed/',                        accent: '#d97706', accentDk: '#92400e', parentId: 'bible' },
   { id: 'wellspring', name: 'The Wellspring', sub: 'Offline data & local database', href: 'app.wellspring/app.wellspring.html', accent: '#f7c756', accentDk: '#b8871e' },
   { id: 'melchizedek', name: 'Safety',       sub: 'Background checks — powered by Checkr', href: 'app.melchizedek/app.melchizedek.html', accent: '#7c3aed', accentDk: '#4c1d95' },
 ];
+
+export function buildAppGroups(apps = NC_APPS) {
+  const byId = new Map(apps.map(app => [app.id, app]));
+  const children = new Map();
+  const groups = [];
+
+  apps.forEach((app) => {
+    if (app.parentId && byId.has(app.parentId)) {
+      if (!children.has(app.parentId)) children.set(app.parentId, []);
+      children.get(app.parentId).push(app);
+      return;
+    }
+    groups.push(app);
+  });
+
+  return groups.map(app => ({
+    ...app,
+    children: children.get(app.id) || [],
+  }));
+}
 
 /* ─── Styles (injected once) ────────────────────────────────────────────── */
 const STYLE_ID = 'nc-app-switcher-style';
@@ -177,7 +197,7 @@ function ensureStyles() {
 
 .nc-switcher-pop {
   position: fixed; z-index: 99999;
-  width: min(320px, calc(100vw - 24px));
+  width: min(380px, calc(100vw - 24px));
   max-height: min(70vh, 560px);
   overflow-y: auto;
   overflow-x: hidden;
@@ -205,6 +225,34 @@ function ensureStyles() {
   min-width: 0;
 }
 
+.nc-switcher-group {
+  min-width: 0;
+}
+
+.nc-switcher-group + .nc-switcher-group {
+  margin-top: 4px;
+}
+
+.nc-switcher-group-children {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  margin: 2px 0 4px 22px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(255,255,255,0.10);
+}
+
+.nc-switcher-group-children::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -2px;
+  width: 1px;
+  height: 10px;
+  background: rgba(255,255,255,0.18);
+}
+
 .nc-switcher-item {
   display: flex; align-items: center; gap: 11px;
   padding: 9px 10px; border-radius: 10px;
@@ -216,6 +264,29 @@ function ensureStyles() {
   box-sizing: border-box;
 }
 .nc-switcher-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.10); }
+.nc-switcher-item--parent {
+  background: rgba(255,255,255,0.025);
+}
+.nc-switcher-item--child {
+  padding: 7px 9px;
+  gap: 9px;
+}
+.nc-switcher-item--child .nc-switcher-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.24);
+}
+.nc-switcher-item--child .nc-switcher-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.nc-switcher-item--child .nc-switcher-label strong {
+  font-size: 0.8rem;
+}
+.nc-switcher-item--child .nc-switcher-label span {
+  font-size: 0.68rem;
+}
 .nc-switcher-item.is-current {
   background: rgba(91,141,238,0.10);
   border-color: rgba(91,141,238,0.30);
@@ -292,27 +363,43 @@ function popoverHTML(currentId, opts = {}) {
     p = p.replace(/\/app\.[^/]+\/.*$/, '/');             // climb out of any app.* folder
     launcherUrl = u.origin + p;
   } catch (_) { launcherUrl = './'; }
-  const visibleApps = NC_APPS.filter(app => canAccessUnityApp(app));
-  const items = visibleApps.map((app) => {
+  const visibleGroups = buildAppGroups(NC_APPS)
+    .map(group => ({
+      ...group,
+      isVisible: canAccessUnityApp(group),
+      children: (group.children || []).filter(app => canAccessUnityApp(app)),
+    }))
+    .filter(group => group.isVisible || group.children.length);
+
+  const itemHTML = (app, { child = false, parent = false } = {}) => {
     const isCurrent = app.id === currentId;
     const tag = isCurrent ? 'div' : 'a';
     const resolvedHref = (() => {
       try { return new URL(app.href, launcherUrl).href; }
       catch (_) { return app.href; }
     })();
-    const hrefAttr = isCurrent ? '' : ` href="${resolvedHref}"`;
-    const cls = `nc-switcher-item${isCurrent ? ' is-current' : ''}`;
+    const hrefAttr = isCurrent ? '' : ` href="${escapeAttr(resolvedHref)}"`;
+    const cls = `nc-switcher-item${parent ? ' nc-switcher-item--parent' : ''}${child ? ' nc-switcher-item--child' : ''}${isCurrent ? ' is-current' : ''}`;
     const pill = isCurrent ? '<span class="nc-switcher-current-pill">Current</span>' : '';
     const iconSrc = NC_APP_ICON_SRCS[app.id];
     const iconHTML = iconSrc
       ? `<img class="nc-switcher-icon-img" src="${escapeAttr(iconSrc)}" alt="" aria-hidden="true">`
       : (NC_APP_ICONS[app.id] || '');
     return `
-      <${tag} class="${cls}"${hrefAttr} data-app-id="${app.id}">
+      <${tag} class="${cls}"${hrefAttr} data-app-id="${escapeAttr(app.id)}"${app.parentId ? ` data-app-parent="${escapeAttr(app.parentId)}"` : ''}>
         <span class="nc-switcher-icon" style="--nc-app-accent-dk:${escapeAttr(app.accentDk)};--nc-app-accent:${escapeAttr(app.accent)}">${iconHTML}</span>
-        <span class="nc-switcher-label"><strong>${app.name}</strong><span>${app.sub}</span></span>
+        <span class="nc-switcher-label"><strong>${escapeHtml(app.name)}</strong><span>${escapeHtml(app.sub)}</span></span>
         ${pill}
       </${tag}>`;
+  };
+
+  const items = visibleGroups.map((group) => {
+    const parentRow = group.isVisible ? itemHTML(group, { parent: group.children.length > 0 }) : '';
+    const childRows = group.children.length ? `
+      <div class="nc-switcher-group-children" role="group" aria-label="${escapeAttr(group.name)} apps">
+        ${group.children.map(app => itemHTML(app, { child: true })).join('')}
+      </div>` : '';
+    return `<section class="nc-switcher-group" data-app-group="${escapeAttr(group.id)}">${parentRow}${childRows}</section>`;
   }).join('');
   const signInHref = (() => {
     try { return new URL(opts.signInHref || 'app.flockos/', launcherUrl).href; }
@@ -481,6 +568,10 @@ function escapeAttr(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', autoMount);
 } else {
@@ -489,5 +580,5 @@ if (document.readyState === 'loading') {
 
 /* Expose for inline / non-module callers */
 if (typeof window !== 'undefined') {
-  window.NCAppSwitcher = { mount: mountSwitcher, open: openSwitcher, close: closeSwitcher, APPS: NC_APPS, ICONS: NC_APP_ICONS };
+  window.NCAppSwitcher = { mount: mountSwitcher, open: openSwitcher, close: closeSwitcher, APPS: NC_APPS, GROUPS: buildAppGroups, ICONS: NC_APP_ICONS };
 }
