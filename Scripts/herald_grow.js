@@ -35,12 +35,13 @@ const NAV = [
       { name: 'the_gospel_psalms', title: 'Psalms', short: 'Psalms', no: '14', desc: 'Prayer, worship, lament, and praise from the Psalter.' },
       { name: 'the_gospel_counseling', title: 'Counseling', short: 'Care', no: '15', desc: 'Biblical care topics and pastoral next steps.' },
       { name: 'the_gospel_genealogy', title: 'Genealogy', short: 'People', no: '16', desc: 'People of Scripture, meanings, timelines, and family lines.' },
+      { name: 'the_gospel_sermons', title: 'Sermons', short: 'Sermons', no: '17', desc: 'Preached messages from the church library.' },
     ],
   },
   {
     section: 'About',
     items: [
-      { name: 'the_gospel_why', title: 'The Why', short: 'Why', no: '17', desc: 'Why GROW exists and how it serves the church.' },
+      { name: 'the_gospel_why', title: 'The Why', short: 'Why', no: '18', desc: 'Why GROW exists and how it serves the church.' },
     ],
   },
 ];
@@ -74,6 +75,7 @@ const ICONS = {
   the_gospel_psalms: '♫',
   the_gospel_counseling: '◍',
   the_gospel_genealogy: '♙',
+  the_gospel_sermons: '◫',
   the_gospel_why: 'i',
 };
 

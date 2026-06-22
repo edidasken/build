@@ -59,14 +59,46 @@ export function mount(root) {
 }
 
 async function _load(root) {
+  let richRows = [];
+  let quickRows = [];
   try {
     const mod = await import('../../Data/books-of-the-bible.js');
-    _state.rows = (mod.default || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
+    richRows = (mod.default || []).slice();
   } catch (e) {
-    console.error('[gospel/library] static bundle failed:', e);
-    _state.rows = [];
+    console.error('[gospel/library] books-of-the-bible bundle failed:', e);
   }
+  try {
+    const mod = await import('../../Data/library.js');
+    quickRows = (mod.default || []).slice();
+  } catch (e) {
+    console.error('[gospel/library] library bundle failed:', e);
+  }
+  _state.rows = _mergeLibraryRows(richRows, quickRows).sort((a, b) => (a.order || 0) - (b.order || 0));
   _paint(root);
+}
+
+function _mergeLibraryRows(richRows, quickRows) {
+  if (!richRows.length) return quickRows.map((row, index) => _quickToBook(row, index + 1));
+  const quickByBook = new Map(quickRows.map(row => [String(row.Book || '').toLowerCase(), row]));
+  return richRows.map((row) => {
+    const quick = quickByBook.get(String(row.bookName || '').toLowerCase());
+    if (!quick) return row;
+    return {
+      ...row,
+      quickSummary: quick.Summary || '',
+      quickGenre: quick.Genre || '',
+    };
+  });
+}
+
+function _quickToBook(row, order) {
+  return {
+    bookName: row.Book || '',
+    testament: row.Testament || '',
+    genre: row.Genre || '',
+    summary: row.Summary || '',
+    order,
+  };
 }
 
 function _filtered() {
@@ -123,6 +155,7 @@ function _paintDetail(root) {
     ${b.timePeriod  ? `<p class="grow-detail-meta">\uD83D\uDD50 ${esc(b.timePeriod)}</p>` : ''}
     ${b.keyVerse    ? `<blockquote class="grow-detail-quote">${esc(b.keyVerse)}</blockquote>` : ''}
     ${b.summary     ? `<h4 class="grow-detail-h4">Summary</h4><p class="grow-detail-body">${esc(b.summary)}</p>` : ''}
+    ${b.quickSummary && b.quickSummary !== b.summary ? `<h4 class="grow-detail-h4">Quick Summary</h4><p class="grow-detail-body">${esc(b.quickSummary)}</p>` : ''}
     ${b.themes      ? `<h4 class="grow-detail-h4">Themes</h4><p class="grow-detail-body">${esc(b.themes)}</p>` : ''}
     ${b.christInBook? `<h4 class="grow-detail-h4">Christ in This Book</h4><p class="grow-detail-body">${esc(b.christInBook)}</p>` : ''}
     ${b.application ? `<h4 class="grow-detail-h4">Application</h4><p class="grow-detail-body">${esc(b.application)}</p>` : ''}

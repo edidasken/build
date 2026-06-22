@@ -12,14 +12,24 @@ export const icon        = `<svg viewBox="0 0 24 24" fill="none" stroke="current
 export const accent      = '#059669';
 
 let _oyb = [];   // one_year_bible bundle, loaded once
+let _planBundles = null; // reading-plans.js bundle, loaded once
 
-const PLANS = [
+const FALLBACK_PLANS = [
   { id: 'm-pro',     title: 'Proverbs in a Month',        days: 31,  category: 'Wisdom',     description: 'A chapter of Proverbs for every day of the month.' },
   { id: 'gospels-90',title: 'Gospels in 90 Days',         days: 90,  category: 'Gospels',    description: 'Walk through Matthew, Mark, Luke, and John in three months.' },
   { id: 'psalms-150',title: 'Psalms in 150 Days',         days: 150, category: 'Psalms',     description: 'A psalm a day for the seasons of the heart.' },
   { id: 'b-year',    title: 'The Bible in a Year',        days: 365, category: 'Whole Bible', description: 'A balanced OT/NT/Psalms reading every day for a full year.' },
   { id: 'nt-90',     title: 'New Testament in 90 Days',   days: 90,  category: 'NT',         description: 'A focused walk through the apostolic witness.' },
 ];
+
+const PLAN_META = {
+  'psalms-30':     { title: 'Psalms in 30 Days', category: 'Psalms', description: 'Pray through the Psalter at a steady monthly rhythm.' },
+  'proverbs-31':   { title: 'Proverbs in 31 Days', category: 'Wisdom', description: 'A daily wisdom path through Proverbs.' },
+  'gospels-60':    { title: 'Gospels in 60 Days', category: 'Gospels', description: 'Walk through Matthew, Mark, Luke, and John in two months.' },
+  'epistles-45':   { title: 'Epistles in 45 Days', category: 'Letters', description: 'A focused journey through apostolic teaching.' },
+  'nt-90':         { title: 'New Testament in 90 Days', category: 'NT', description: 'Read the New Testament in three months.' },
+  chronological:   { title: 'Chronological Bible Plan', category: 'Whole Bible', description: 'Read the Bible along the storyline of redemptive history.' },
+};
 
 const STORAGE = 'tw_reading_progress';
 
@@ -66,6 +76,15 @@ export async function mount(root) {
       console.error('[gospel/reading] one_year_bible bundle failed:', e);
     }
   }
+  if (_planBundles == null) {
+    try {
+      const mod = await import('../../Data/reading-plans.js');
+      _planBundles = mod.default || {};
+    } catch (e) {
+      console.error('[gospel/reading] reading-plans bundle failed:', e);
+      _planBundles = {};
+    }
+  }
 
   // Tab switching
   root.querySelectorAll('.grow-tab').forEach((btn) => {
@@ -86,28 +105,43 @@ export async function mount(root) {
   const streakEl = root.querySelector('[data-bind="streak"]');
   const todayEl  = root.querySelector('[data-bind="today"]');
   const progress = _load();
-  planEl.innerHTML   = PLANS.map((p) => _planCard(p, progress[p.id])).join('');
-  streakEl.innerHTML = _renderStreak(progress);
-  todayEl.innerHTML  = _renderToday(progress);
-
-  planEl.querySelectorAll('[data-toggle]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-toggle');
-      const p  = _load();
-      p[id] = p[id] || { days: {}, started: new Date().toISOString() };
-      const k = new Date().toISOString().slice(0, 10);
-      p[id].days[k] = !p[id].days[k];
-      _save(p);
-      planEl.innerHTML   = PLANS.map((pl) => _planCard(pl, p[pl.id])).join('');
-      streakEl.innerHTML = _renderStreak(p);
-      todayEl.innerHTML  = _renderToday(p);
-      planEl.querySelectorAll('[data-toggle]').forEach((b2) => {
-        b2.addEventListener('click', () => {}); // re-bind handled by outer listener
+  const paintPlans = (p) => {
+    const plans = _planDefinitions();
+    planEl.innerHTML   = plans.map((pl) => _planCard(pl, p[pl.id])).join('');
+    streakEl.innerHTML = _renderStreak(p);
+    todayEl.innerHTML  = _renderToday(p, plans);
+    planEl.querySelectorAll('[data-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-toggle');
+        const next  = _load();
+        next[id] = next[id] || { days: {}, started: new Date().toISOString() };
+        const k = new Date().toISOString().slice(0, 10);
+        next[id].days[k] = !next[id].days[k];
+        _save(next);
+        paintPlans(next);
       });
     });
-  });
+  };
+  paintPlans(progress);
 
   return () => {};
+}
+
+function _planDefinitions() {
+  const entries = Object.entries(_planBundles || {});
+  if (!entries.length) return FALLBACK_PLANS;
+  return entries.map(([id, readings]) => {
+    const meta = PLAN_META[id] || {};
+    const days = Array.isArray(readings) ? readings.length : 0;
+    return {
+      id,
+      title: meta.title || id.replace(/-/g, ' ').replace(/\b\w/g, (ch) => ch.toUpperCase()),
+      days,
+      category: meta.category || 'Reading',
+      description: meta.description || `${days} days of guided Scripture reading.`,
+      readings: Array.isArray(readings) ? readings : [],
+    };
+  });
 }
 
 // ── One Year Bible rendering ──────────────────────────────────────────────
@@ -207,6 +241,7 @@ function _planCard(p, prog) {
   const r    = 28; // circle radius
   const circ = 2 * Math.PI * r;
   const dash = circ - (pct / 100) * circ;
+  const today = _planToday(p);
   return /* html */`
     <article class="grow-plan-card" data-id="${esc(p.id)}">
       <div class="grow-plan-card-top">
@@ -223,6 +258,7 @@ function _planCard(p, prog) {
           <div class="grow-plan-cat">${esc(p.category)} · ${p.days} days</div>
           <h3 class="grow-plan-title">${esc(p.title)}</h3>
           <p class="grow-plan-desc">${esc(p.description)}</p>
+          ${today ? `<p class="grow-plan-desc"><strong>Today:</strong> ${esc(today)}</p>` : ''}
         </div>
       </div>
       <div class="grow-plan-card-foot">
@@ -231,6 +267,14 @@ function _planCard(p, prog) {
       </div>
     </article>
   `;
+}
+
+function _planToday(plan) {
+  if (!plan || !Array.isArray(plan.readings) || !plan.readings.length) return '';
+  const day = _todayDayNumber();
+  const entry = plan.readings[(day - 1) % plan.readings.length];
+  if (!entry || !Array.isArray(entry.passages)) return '';
+  return entry.passages.join('; ');
 }
 
 function _renderStreak(progress) {
@@ -250,9 +294,27 @@ function _renderStreak(progress) {
   return `<div class="grow-heat-grid">${cells.join('')}</div>`;
 }
 
-function _renderToday(progress) {
+function _renderToday(progress, plans = _planDefinitions()) {
   const k = new Date().toISOString().slice(0, 10);
-  const today = PLANS.filter((p) => progress[p.id] && progress[p.id].days && progress[p.id].days[k]);
-  if (!today.length) return `<p class="grow-muted">No reading checked off yet today.</p>`;
-  return `<p class="grow-muted">✓ Today: ${today.map((p) => esc(p.title)).join(', ')}</p>`;
+  const checked = plans.filter((p) => progress[p.id] && progress[p.id].days && progress[p.id].days[k]);
+  const readings = plans
+    .map((p) => ({ title: p.title, today: _planToday(p) }))
+    .filter((p) => p.today)
+    .slice(0, 4);
+  return /* html */`
+    ${checked.length
+      ? `<p class="grow-muted">✓ Today: ${checked.map((p) => esc(p.title)).join(', ')}</p>`
+      : `<p class="grow-muted">No reading checked off yet today.</p>`}
+    ${readings.length ? `
+      <div class="grow-grid grow-grid--reading" style="margin-top:12px;">
+        ${readings.map((p) => `
+          <article class="grow-card" style="padding:14px;">
+            <div class="grow-card-tags">Static plan</div>
+            <h3 class="grow-card-title" style="font-size:1rem;">${esc(p.title)}</h3>
+            <p class="grow-card-desc">${esc(p.today)}</p>
+          </article>
+        `).join('')}
+      </div>
+    ` : ''}
+  `;
 }

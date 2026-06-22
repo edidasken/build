@@ -177,6 +177,7 @@ async function _registerViews() {
   register('the_gospel_heart',         G('the_gospel_heart'));
   register('the_gospel_mirror',        G('the_gospel_mirror'));
   register('the_gospel_genealogy',     G('the_gospel_genealogy'));
+  register('the_gospel_sermons',       G('the_gospel_sermons'));
   register('the_gospel_journal',       G('fn-section-grow'));
   register('the_gospel_certificates',  G('fn-section-grow'));
   register('the_gospel_analytics',     G('fn-section-grow'));
