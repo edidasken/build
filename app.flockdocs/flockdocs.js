@@ -44,6 +44,7 @@ const S = {
   currentFolder: null,     // Current folder filter
   searchQuery: '',         // Search filter
   autoSaveTimer: null,     // Auto-save debounce timer
+  isSwitchingView: false,  // Prevent duplicate tab switches while saving
   prefs: {
     defaultFontSize: 16,
     defaultFont: 'Noto Serif',
@@ -67,6 +68,7 @@ window.FlockDocs = {
   loadMoreDocuments,
   importFromExcel,
   exportToExcel,
+  exportRecordsToExcel,
   createFolder,
   renameDocument,
   moveToFolder,
@@ -350,9 +352,9 @@ function _savePrefs() {
 function _bindEvents() {
   // Sidebar view buttons
   document.querySelectorAll('[data-view]').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const view = btn.dataset.view;
-      switchView(view);
+      await switchView(view);
     });
   });
 
@@ -1040,32 +1042,14 @@ async function openDocument(docId) {
 }
 
 async function saveDocument() {
-  if (!S.currentDoc) return;
-  if (!_checkFirebase()) return;
+  if (!S.currentDoc) return true;
+  if (!_checkFirebase()) return false;
 
   S.currentDoc.updatedAt = new Date();
-
-  // Handle document vs spreadsheet differently
-  if (S.currentDoc.type === 'spreadsheet') {
-    // For spreadsheets, name is editable in the header
-    // cells data is already in S.currentDoc.cells
-  } else {
-    // For documents, extract content and name from editor
-    const editor = document.getElementById('fd-editor-content');
-    if (editor) {
-      S.currentDoc.content = editor.innerHTML;
-      
-      // Extract document name from first heading
-      const firstHeading = editor.querySelector('h1, h2, h3');
-      if (firstHeading) {
-        S.currentDoc.name = firstHeading.textContent.trim() || 'Untitled Document';
-      }
-    }
-  }
+  _captureCurrentEditorState();
 
   if (_isSystemDoc(S.currentDoc)) {
-    await _saveSystemDocument();
-    return;
+    return _saveSystemDocument();
   }
 
   const saveStatus = document.getElementById('fd-save-status');
@@ -1095,12 +1079,13 @@ async function saveDocument() {
       
       if (saveStatus) saveStatus.textContent = 'All changes saved';
       console.log('[FlockDocs] Document saved to localStorage:', S.currentDoc.id);
+      return true;
     } catch (err) {
       console.error('[FlockDocs] Error saving to localStorage:', err);
       if (saveStatus) saveStatus.textContent = 'Error saving';
       _toast('Failed to save document', 'error');
+      return false;
     }
-    return;
   }
 
   // Use Firestore for authenticated users
@@ -1145,11 +1130,27 @@ async function saveDocument() {
     _upsertLoadedDocument({ ...S.currentDoc });
     if (saveStatus) saveStatus.textContent = 'All changes saved';
     console.log('[FlockDocs] Document saved:', S.currentDoc.id);
+    return true;
   } catch (err) {
     console.error('[FlockDocs] Error saving document:', err);
     _toast('Failed to save document', 'error');
     const saveStatus = document.getElementById('fd-save-status');
     if (saveStatus) saveStatus.textContent = 'Error saving';
+    return false;
+  }
+}
+
+function _captureCurrentEditorState() {
+  if (!S.currentDoc || S.currentDoc.type === 'spreadsheet') return;
+
+  const editor = document.getElementById('fd-editor-content');
+  if (!editor) return;
+
+  S.currentDoc.content = editor.innerHTML;
+
+  const firstHeading = editor.querySelector('h1, h2, h3');
+  if (firstHeading) {
+    S.currentDoc.name = firstHeading.textContent.trim() || S.currentDoc.name || 'Untitled Document';
   }
 }
 
@@ -1214,10 +1215,12 @@ async function _saveSystemDocument() {
     _upsertLoadedDocument({ ...S.currentDoc });
     if (saveStatus) saveStatus.textContent = 'All changes saved';
     _toast(`${_getDocTypeLabel(S.currentDoc.type)} saved`, 'success');
+    return true;
   } catch (err) {
     console.error('[FlockDocs] Error saving system document:', err);
     if (saveStatus) saveStatus.textContent = 'Error saving';
     _toast('Failed to save document', 'error');
+    return false;
   }
 }
 
@@ -1565,7 +1568,50 @@ async function shareDocument(docId) {
 }
 
 /* ── View Management ──────────────────────────────────────────────────────── */
-function switchView(viewName) {
+async function switchView(viewName) {
+  if (!viewName || S.isSwitchingView) return;
+
+  S.isSwitchingView = true;
+  _setViewNavigationBusy(true);
+
+  try {
+    const didClose = await _saveAndCloseActiveEditorBeforeViewSwitch();
+    if (!didClose) return;
+    _applyView(viewName);
+  } finally {
+    S.isSwitchingView = false;
+    _setViewNavigationBusy(false);
+  }
+}
+
+async function _saveAndCloseActiveEditorBeforeViewSwitch() {
+  if (!S.currentDoc) return true;
+
+  clearTimeout(S.autoSaveTimer);
+  S.autoSaveTimer = null;
+
+  const saveStatus = document.getElementById('fd-save-status');
+  if (saveStatus) saveStatus.textContent = 'Saving before switching views...';
+
+  const saved = await saveDocument();
+  if (!saved) {
+    if (saveStatus) saveStatus.textContent = 'Save failed';
+    _toast('Save failed. Stayed on the current record.', 'error');
+    return false;
+  }
+
+  _closeEditor({ render: false });
+  return true;
+}
+
+function _setViewNavigationBusy(isBusy) {
+  document.querySelectorAll('[data-view]').forEach(btn => {
+    btn.disabled = !!isBusy;
+    btn.setAttribute('aria-busy', isBusy ? 'true' : 'false');
+  });
+}
+
+function _applyView(viewName) {
   S.currentView = viewName;
   
   // Update sidebar active state
@@ -1819,7 +1865,7 @@ function _openEditor() {
   }
 }
 
-function _closeEditor() {
+function _closeEditor(options = {}) {
   const libraryView = document.getElementById('fd-library-view');
   const editorView = document.getElementById('fd-editor-view');
   const spreadsheetView = document.getElementById('fd-spreadsheet-view');
@@ -1835,7 +1881,7 @@ function _closeEditor() {
   if (editor) delete editor.dataset.recordType;
 
   S.currentDoc = null;
-  _renderDocuments();
+  if (options.render !== false) _renderDocuments();
 }
 
 function _execCommand(command, value = null) {
@@ -2385,6 +2431,218 @@ function exportToExcel() {
     console.error('[FlockDocs] Error exporting to Excel:', err);
     _toast('Failed to export to Excel', 'error');
   }
+}
+
+async function exportRecordsToExcel() {
+  if (typeof XLSX === 'undefined') {
+    _toast('Excel library not loaded', 'error');
+    console.error('[FlockDocs] XLSX library not available');
+    return;
+  }
+
+  const exportBtn = document.getElementById('fd-export-records-btn');
+  const oldLabel = exportBtn?.querySelector('.fd-export-label')?.textContent;
+  try {
+    if (exportBtn) {
+      exportBtn.disabled = true;
+      exportBtn.setAttribute('aria-busy', 'true');
+      const label = exportBtn.querySelector('.fd-export-label');
+      if (label) label.textContent = 'Exporting...';
+    }
+
+    _captureCurrentEditorState();
+    const docs = await _collectDocumentsForLocalExport();
+    const workbook = XLSX.utils.book_new();
+
+    const groups = [
+      ['Documents', docs.filter(doc => _normalizeDocType(doc.type) === 'document')],
+      ['Notes', docs.filter(doc => _normalizeDocType(doc.type) === 'note')],
+      ['Prayer Requests', docs.filter(doc => _normalizeDocType(doc.type) === 'prayer')],
+      ['Journal', docs.filter(doc => _normalizeDocType(doc.type) === 'journal')],
+      ['Calendar', docs.filter(doc => _normalizeDocType(doc.type) === 'calendar')],
+      ['Spreadsheets', docs.filter(doc => _normalizeDocType(doc.type) === 'spreadsheet')],
+    ];
+
+    groups.forEach(([name, rows]) => {
+      const sheetRows = rows.map(doc => _docToExportRow(doc));
+      const worksheet = XLSX.utils.json_to_sheet(sheetRows.length ? sheetRows : [{ Note: `No ${name.toLowerCase()} to export` }]);
+      worksheet['!cols'] = _exportSheetColumns();
+      XLSX.utils.book_append_sheet(workbook, worksheet, _sheetName(name));
+    });
+
+    const manifest = XLSX.utils.json_to_sheet([{
+      ExportedAt: new Date().toISOString(),
+      User: S.user?.displayName || '',
+      Email: S.user?.email || '',
+      TotalRecords: docs.length,
+    }]);
+    manifest['!cols'] = [{ wch: 18 }, { wch: 34 }];
+    XLSX.utils.book_append_sheet(workbook, manifest, 'Export Info');
+
+    const filename = `docs-records-${_dateStamp()}.xlsx`;
+    XLSX.writeFile(workbook, filename);
+    _toast(`Exported ${docs.length} records to ${filename}`, 'success');
+    console.log('[FlockDocs] Exported local records workbook:', filename, docs.length);
+  } catch (err) {
+    console.error('[FlockDocs] Error exporting records workbook:', err);
+    _toast('Failed to export records', 'error');
+  } finally {
+    if (exportBtn) {
+      exportBtn.disabled = false;
+      exportBtn.setAttribute('aria-busy', 'false');
+      const label = exportBtn.querySelector('.fd-export-label');
+      if (label) label.textContent = oldLabel || 'Export';
+    }
+  }
+}
+
+async function _collectDocumentsForLocalExport() {
+  const regularDocs = await _loadRegularDocumentsForLocalExport();
+  const systemDocs = await _loadSystemDocumentsForLocalExport();
+  const docs = _dedupeDocs(regularDocs.concat(systemDocs));
+
+  if (S.currentDoc) {
+    const current = { ...S.currentDoc };
+    if (!current.id) current.id = `unsaved:${Date.now()}`;
+    return _sortDocs(_dedupeDocs(docs.concat(current)).filter(doc => !doc.deleted));
+  }
+  return _sortDocs(docs.filter(doc => !doc.deleted));
+}
+
+async function _loadRegularDocumentsForLocalExport() {
+  if (_isMockUser()) return _loadFromLocalStorage().filter(doc => !doc.deleted);
+  if (!_checkFirebase()) return [];
+
+  const db = firebase.firestore();
+  const snapshot = await db.collection(COLLECTION_DOCS)
+    .where('deleted', '==', false)
+    .orderBy('updatedAt', 'desc')
+    .limit(1000)
+    .get();
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+async function _loadSystemDocumentsForLocalExport() {
+  if (typeof UpperRoom === 'undefined') return [];
+
+  const loaders = [
+    UpperRoom.listPrayers ? UpperRoom.listPrayers({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapPrayerToDoc)) : Promise.resolve([]),
+    UpperRoom.listJournal ? UpperRoom.listJournal({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapJournalToDoc)) : Promise.resolve([]),
+    UpperRoom.listCalendarEvents ? UpperRoom.listCalendarEvents({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapCalendarToDoc)) : Promise.resolve([]),
+  ];
+
+  const settled = await Promise.allSettled(loaders);
+  return settled.flatMap(result => {
+    if (result.status === 'fulfilled') return result.value.filter(Boolean);
+    console.warn('[FlockDocs] Local export source failed:', result.reason);
+    return [];
+  });
+}
+
+function _dedupeDocs(docs) {
+  const seen = new Set();
+  return (Array.isArray(docs) ? docs : []).filter(doc => {
+    if (!doc) return false;
+    const key = doc.id || `${doc.type}:${doc.name}:${_dateValue(doc.updatedAt)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function _docToExportRow(doc) {
+  const type = _normalizeDocType(doc.type);
+  const fields = _extractSystemFields(doc);
+  return {
+    Type: _getDocTypeLabel(type),
+    Name: _cellText(doc.name || fields.title || fields.Title || fields.category || 'Untitled'),
+    Id: _cellText(doc.sourceId || doc.id || ''),
+    Owner: _cellText(doc.ownerName || doc.ownerId || ''),
+    Updated: _exportDate(doc.updatedAt),
+    Created: _exportDate(doc.createdAt),
+    Shared: doc.shared ? 'Yes' : 'No',
+    Summary: _cellText(_exportSummaryForDoc(doc, fields)),
+    Body: _cellText(_exportBodyForDoc(doc, fields)),
+    RawHtml: _cellText(doc.type === 'spreadsheet' ? '' : doc.content || ''),
+  };
+}
+
+function _extractSystemFields(doc) {
+  if (!_isSystemDoc(doc)) return {};
+  if (S.currentDoc && doc.id === S.currentDoc.id) return _collectSystemFields();
+  return _extractFieldsFromHtml(doc.content || '');
+}
+
+function _extractFieldsFromHtml(html) {
+  const fields = {};
+  if (!html || typeof document === 'undefined') return fields;
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  template.content.querySelectorAll('[data-field]').forEach(el => {
+    const key = el.getAttribute('data-field');
+    if (key) fields[key] = el.textContent.trim();
+  });
+  return fields;
+}
+
+function _exportSummaryForDoc(doc, fields) {
+  const type = _normalizeDocType(doc.type);
+  if (type === 'prayer') return fields.category || doc.name || '';
+  if (type === 'journal') return fields.title || doc.name || '';
+  if (type === 'calendar') return [fields.StartDateTime, fields.EndDateTime, fields.Location].filter(Boolean).join(' | ');
+  if (type === 'spreadsheet') return `${Object.keys(doc.cells || {}).length} populated cells`;
+  return _htmlToText(doc.content || '').slice(0, 240);
+}
+
+function _exportBodyForDoc(doc, fields) {
+  const type = _normalizeDocType(doc.type);
+  if (type === 'prayer') return [fields.prayerText, fields.adminNotes ? `Admin Notes: ${fields.adminNotes}` : ''].filter(Boolean).join('\n\n');
+  if (type === 'journal') return fields.body || '';
+  if (type === 'calendar') return fields.Description || '';
+  if (type === 'spreadsheet') return JSON.stringify(doc.cells || {});
+  return _htmlToText(doc.content || '');
+}
+
+function _htmlToText(html) {
+  if (!html || typeof document === 'undefined') return '';
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  return template.content.textContent.replace(/\s+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function _cellText(value, maxLength = 32000) {
+  const text = String(value ?? '');
+  return text.length > maxLength ? `${text.slice(0, maxLength - 18)}\n[truncated]` : text;
+}
+
+function _exportDate(value) {
+  if (!value) return '';
+  if (value && typeof value.toDate === 'function') value = value.toDate();
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : '';
+}
+
+function _dateStamp() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function _sheetName(name) {
+  return String(name).replace(/[\\/?*[\]:]/g, ' ').slice(0, 31);
+}
+
+function _exportSheetColumns() {
+  return [
+    { wch: 18 },
+    { wch: 34 },
+    { wch: 28 },
+    { wch: 24 },
+    { wch: 24 },
+    { wch: 24 },
+    { wch: 10 },
+    { wch: 42 },
+    { wch: 70 },
+    { wch: 70 },
+  ];
 }
 
 /* ── Helpers ──────────────────────────────────────────────────────────────── */

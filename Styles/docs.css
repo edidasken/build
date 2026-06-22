@@ -1678,6 +1678,9 @@ body { background: var(--fd-bg, #f5f0e4); }
   cursor: pointer;
   transition: all .15s;
   position: relative;
+  contain: layout paint style;
+  content-visibility: auto;
+  contain-intrinsic-size: 220px;
 }
 .fd-doc-card:hover {
   border-color: var(--fd-gold);
