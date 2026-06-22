@@ -420,6 +420,10 @@ body.docs-auth {
   color: #1b264f !important;
 }
 
+.fd-doc-icon--sermon {
+  color: #7c2d12 !important;
+}
+
 .fd-doc-icon--spreadsheet {
   color: #166534 !important;
 }
@@ -466,6 +470,12 @@ body.docs-auth {
   border-color: rgba(59,130,246,.18);
   background: rgba(72,211,217,.12);
   color: #1b264f;
+}
+
+.fd-doc-card[data-doc-type="sermon"] .fd-doc-type-pill {
+  border-color: rgba(194,65,12,.20);
+  background: rgba(255,237,213,.72);
+  color: #7c2d12;
 }
 
 #fd-footer {
@@ -534,6 +544,11 @@ body.docs-auth {
 .fd-sidebar-btn[data-view="calendar"] svg {
   background: rgba(255,255,255,.08);
   color: #48d3d9;
+}
+
+.fd-sidebar-btn[data-view="sermons"] svg {
+  background: rgba(255,255,255,.08);
+  color: #fdba74;
 }
 
 .fd-sidebar-btn[data-view="my-docs"] svg {
@@ -633,6 +648,10 @@ body.docs-auth {
 
 .fd-new-menu-item[data-doc-type="calendar"] svg {
   color: #0ea5e9 !important;
+}
+
+.fd-new-menu-item[data-doc-type="sermon"] svg {
+  color: #ea580c !important;
 }
 
 .fd-system-field:empty::before {
@@ -841,6 +860,11 @@ body.docs-auth {
   background: linear-gradient(180deg, rgba(240,249,255,.95), #ffffff 185px) !important;
 }
 
+.fd-editor-page--sermon {
+  border-color: rgba(194,65,12,.24) !important;
+  background: linear-gradient(180deg, rgba(255,247,237,.95), #ffffff 190px) !important;
+}
+
 .fd-record {
   display: grid;
   gap: 18px;
@@ -887,6 +911,11 @@ body.docs-auth {
 .fd-record-icon--calendar {
   color: #0369a1;
   background: #ecfeff;
+}
+
+.fd-record-icon--sermon {
+  color: #9a3412;
+  background: #fff7ed;
 }
 
 .fd-record-kicker {
@@ -952,6 +981,11 @@ body.docs-auth {
   border-left: 5px solid #0ea5e9;
 }
 
+.fd-record--sermon .fd-record-section--sermon {
+  border-left: 5px solid #ea580c;
+  background: #fff7ed;
+}
+
 .fd-record-label {
   margin: 0 0 7px;
   color: #64748b;
@@ -981,6 +1015,12 @@ body.docs-auth {
   min-height: 340px;
   font-size: 1.06rem;
   line-height: 1.78;
+}
+
+.fd-editor-content .fd-record-body--sermon {
+  min-height: 320px;
+  font-size: 1.04rem;
+  line-height: 1.76;
 }
 
 .fd-editor-content .fd-record-body--notes {
@@ -1656,18 +1696,26 @@ body { background: var(--fd-bg, #f5f0e4); }
   gap: 18px;
 }
 
-.fd-load-more {
+.fd-pager {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 12px;
   margin: 22px 0 0;
+  padding: 12px 4px;
   color: #64748b;
   font: 700 .82rem/1.2 var(--font-ui, 'Plus Jakarta Sans', system-ui, sans-serif);
 }
 
-.fd-load-more-count {
+.fd-pager-count {
   min-width: 0;
+}
+
+.fd-pager-actions {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .fd-doc-card {
@@ -1681,6 +1729,8 @@ body { background: var(--fd-bg, #f5f0e4); }
   contain: layout paint style;
   content-visibility: auto;
   contain-intrinsic-size: 220px;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 .fd-doc-card:hover {
   border-color: var(--fd-gold);
@@ -2298,6 +2348,17 @@ body { background: var(--fd-bg, #f5f0e4); }
   .fd-search-box { width: 100%; }
   .fd-doc-grid { grid-template-columns: 1fr; gap: 10px; }
   .fd-doc-card { padding: 14px; }
+  .fd-pager {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .fd-pager-actions {
+    justify-content: stretch;
+  }
+  .fd-pager-actions .fd-btn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
   .fd-doc-menu-btn { opacity: 1; } /* always show on touch — no hover */
 
   /* Word-processor editor: shrink "page" padding */

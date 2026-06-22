@@ -24,21 +24,23 @@ const STORE_KEY_FOLDERS = 'fd_dev_folders';
 const COLLECTION_DOCS = 'flockDocs';
 const COLLECTION_FOLDERS = 'flockFolders';
 const DOC_RENDER_PAGE_SIZE = 36;
-const SYSTEM_DOC_LOAD_LIMIT = 40;
+const SYSTEM_DOC_LOAD_LIMIT = 250;
 const SYSTEM_DOC_CACHE_TTL_MS = 2 * 60 * 1000;
 
 /* ── State ────────────────────────────────────────────────────────────────── */
 const S = {
   user: null,              // { uid, displayName, email, role }
-  currentView: 'all-docs', // 'all-docs' | 'notes' | 'prayers' | 'journal' | 'calendar' | 'my-docs' | 'shared-docs' | 'recent' | 'trash'
+  currentView: 'all-docs', // 'all-docs' | 'notes' | 'prayers' | 'journal' | 'calendar' | 'sermons' | 'my-docs' | 'shared-docs' | 'recent' | 'trash'
   currentDoc: null,        // Currently open document
   documents: [],           // All documents (filtered based on view)
   visibleDocCount: DOC_RENDER_PAGE_SIZE,
+  currentPage: 1,
   loadSeq: 0,
   systemDocCache: {
     prayer: { docs: null, loadedAt: 0, promise: null },
     journal: { docs: null, loadedAt: 0, promise: null },
     calendar: { docs: null, loadedAt: 0, promise: null },
+    sermon: { docs: null, loadedAt: 0, promise: null },
   },
   folders: [],             // Folder list
   currentFolder: null,     // Current folder filter
@@ -59,6 +61,7 @@ window.FlockDocs = {
   createNewPrayerRequest,
   createNewJournalEntry,
   createNewCalendarEvent,
+  createNewSermon,
   createNewSpreadsheet,
   openDocument,
   saveDocument,
@@ -66,6 +69,8 @@ window.FlockDocs = {
   emptyTrash,
   switchView,
   loadMoreDocuments,
+  previousDocumentPage,
+  nextDocumentPage,
   importFromExcel,
   exportToExcel,
   exportRecordsToExcel,
@@ -221,6 +226,7 @@ function _mountHeader() {
       { id: 'fd-prayers',   label: 'Prayer Requests', hint: 'Your prayer requests',  run: () => document.querySelector('[data-view="prayers"]')?.click() },
       { id: 'fd-journal',   label: 'Journal',         hint: 'Your journal entries',  run: () => document.querySelector('[data-view="journal"]')?.click() },
       { id: 'fd-calendar',  label: 'Calendar',        hint: 'Your calendar records', run: () => document.querySelector('[data-view="calendar"]')?.click() },
+      { id: 'fd-sermons',   label: 'Sermons',         hint: 'Your sermon records',   run: () => document.querySelector('[data-view="sermons"]')?.click() },
       { id: 'fd-my-docs',   label: 'My Documents',   hint: 'Docs you created',       run: () => document.querySelector('[data-view="my-docs"]')?.click() },
       { id: 'fd-shared',    label: 'Shared with Me', hint: 'Docs shared with you',   run: () => document.querySelector('[data-view="shared-docs"]')?.click() },
       { id: 'fd-recent',    label: 'Recent',         hint: 'Recently viewed docs',   run: () => document.querySelector('[data-view="recent"]')?.click() },
@@ -301,6 +307,14 @@ function _mountNewButton() {
       </svg>
       <span><strong>Calendar Event</strong><small>Add time and place</small></span>
     </button>
+    <button type="button" class="fd-new-menu-item" data-doc-type="sermon" role="menuitem">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h6"/>
+      </svg>
+      <span><strong>Sermon</strong><small>Prepare a message record</small></span>
+    </button>
   `;
   header.appendChild(menu);
 
@@ -323,6 +337,7 @@ function _mountNewButton() {
       else if (item.dataset.docType === 'prayer') createNewPrayerRequest();
       else if (item.dataset.docType === 'journal') createNewJournalEntry();
       else if (item.dataset.docType === 'calendar') createNewCalendarEvent();
+      else if (item.dataset.docType === 'sermon') createNewSermon();
       else createNewDocument('document');
       setOpen(false);
     });
@@ -362,6 +377,7 @@ function _bindEvents() {
   document.getElementById('fd-search-input')?.addEventListener('input', (e) => {
     S.searchQuery = e.target.value.toLowerCase();
     S.visibleDocCount = DOC_RENDER_PAGE_SIZE;
+    S.currentPage = 1;
     _renderDocuments();
   });
 
@@ -438,6 +454,7 @@ async function _loadDocuments(options = {}) {
   if (!_checkFirebase()) return;
   const loadSeq = ++S.loadSeq;
   if (!options.keepVisible) S.visibleDocCount = DOC_RENDER_PAGE_SIZE;
+  if (!options.keepPage) S.currentPage = 1;
   const systemOnly = _isSystemOnlyView(S.currentView);
   const systemDocs = await _loadSystemDocumentsForCurrentView({ force: !!options.forceSystem });
   if (loadSeq !== S.loadSeq) return;
@@ -539,6 +556,9 @@ function _filterDocsForCurrentView(docs) {
   if (S.currentView === 'calendar') {
     return allDocs.filter(doc => _normalizeDocType(doc.type) === 'calendar' && !doc.deleted);
   }
+  if (S.currentView === 'sermons') {
+    return allDocs.filter(doc => _normalizeDocType(doc.type) === 'sermon' && !doc.deleted);
+  }
   if (S.currentView === 'shared-docs') {
     return allDocs.filter(doc => doc.shared && !doc.deleted);
   }
@@ -570,7 +590,7 @@ function _dateValue(value) {
 }
 
 function _isSystemOnlyView(viewName) {
-  return viewName === 'prayers' || viewName === 'journal' || viewName === 'calendar';
+  return viewName === 'prayers' || viewName === 'journal' || viewName === 'calendar' || viewName === 'sermons';
 }
 
 function _shouldLoadSystemDocs(viewName) {
@@ -589,6 +609,9 @@ async function _loadSystemDocumentsForCurrentView(options = {}) {
   }
   if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'calendar') {
     loaders.push(_loadCachedSystemDocs('calendar', _loadCalendarDocs, options));
+  }
+  if (S.currentView === 'all-docs' || S.currentView === 'recent' || S.currentView === 'sermons') {
+    loaders.push(_loadCachedSystemDocs('sermon', _loadSermonDocs, options));
   }
 
   const settled = await Promise.allSettled(loaders);
@@ -644,6 +667,12 @@ async function _loadCalendarDocs() {
   if (!UpperRoom.listCalendarEvents) return [];
   const rows = _unwrapResults(await UpperRoom.listCalendarEvents({ limit: SYSTEM_DOC_LOAD_LIMIT }));
   return rows.map(_mapCalendarToDoc).filter(Boolean);
+}
+
+async function _loadSermonDocs() {
+  if (!UpperRoom.listSermons) return [];
+  const rows = _unwrapResults(await UpperRoom.listSermons({ limit: SYSTEM_DOC_LOAD_LIMIT, paginate: true }));
+  return rows.map(_mapSermonToDoc).filter(Boolean);
 }
 
 function _unwrapResults(value) {
@@ -714,6 +743,29 @@ function _mapCalendarToDoc(row) {
     deleted: false,
     updatedAt: row.UpdatedAt || row.StartDateTime || row.CreatedAt,
     createdAt: row.CreatedAt || row.StartDateTime,
+  };
+}
+
+function _mapSermonToDoc(row) {
+  if (!row || !row.id) return null;
+  const title = _firstValue(row, ['title', 'Title', 'name', 'sermonTitle']) || 'Sermon';
+  const bodyKey = _firstKey(row, ['manuscript', 'content', 'body', 'notes', 'outline', 'summary']);
+  const body = bodyKey ? row[bodyKey] : '';
+  const normalized = { ...row, title, body, __bodyKey: bodyKey || 'manuscript' };
+  return {
+    id: _systemDocId('sermon', row.id),
+    source: 'sermon',
+    sourceId: row.id,
+    type: 'sermon',
+    name: title,
+    content: _buildSermonContent(normalized),
+    sourceData: normalized,
+    ownerId: row.createdBy || row.preacher || S.user?.email || S.user?.uid,
+    ownerName: row.preacher || row.createdBy || S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    updatedAt: row.updatedAt || row.date || row.createdAt,
+    createdAt: row.createdAt || row.date,
   };
 }
 
@@ -818,6 +870,35 @@ function _buildCalendarContent(row = {}) {
     '<div class="fd-record-cell">' + _recordLabel('Start') + _field('p', 'StartDateTime', start, _defaultCalendarStart(), 'fd-record-value') + '</div>',
     '<div class="fd-record-cell">' + _recordLabel('End') + _field('p', 'EndDateTime', end, _defaultCalendarEnd(), 'fd-record-value') + '</div>',
     '<div class="fd-record-cell fd-record-cell--wide">' + _recordLabel('Location') + _field('p', 'Location', location, 'Add a location...', 'fd-record-value') + '</div>',
+    '</section>',
+    '</article>',
+  ].join('');
+}
+
+function _buildSermonContent(row = {}) {
+  const date = row.date || row.sermonDate || row.createdAt || '';
+  return [
+    '<article class="fd-record fd-record--sermon">',
+    '<header class="fd-record-hero" contenteditable="false">',
+    '<div class="fd-record-icon fd-record-icon--sermon">' + _getDocIcon('sermon') + '</div>',
+    '<div><div class="fd-record-kicker">Sermon</div><div class="fd-record-subtitle">Message, scripture, and preparation record</div></div>',
+    '</header>',
+    `<div class="fd-record-chips" contenteditable="false">${[
+      _recordChip('Date', date ? _formatDate(date) : ''),
+      _recordChip('Preacher', row.preacher || row.speaker || S.user?.displayName || ''),
+      _recordChip('Status', row.status || 'Draft'),
+    ].join('')}</div>`,
+    '<section class="fd-record-section fd-record-section--sermon">',
+    _recordLabel('Title'),
+    _field('h1', 'title', row.title || 'Sermon', 'Sermon', 'fd-record-title'),
+    '<div class="fd-record-grid fd-record-grid--sermon">',
+    '<div class="fd-record-cell">' + _recordLabel('Scripture') + _field('p', 'scripture', row.scripture || row.passage || '', 'Add scripture...', 'fd-record-value') + '</div>',
+    '<div class="fd-record-cell">' + _recordLabel('Date') + _field('p', 'date', date, 'Add date...', 'fd-record-value') + '</div>',
+    '<div class="fd-record-cell">' + _recordLabel('Preacher') + _field('p', 'preacher', row.preacher || row.speaker || '', 'Add preacher...', 'fd-record-value') + '</div>',
+    '<div class="fd-record-cell">' + _recordLabel('Series') + _field('p', 'series', row.series || row.seriesTitle || '', 'Add series...', 'fd-record-value') + '</div>',
+    '</div>',
+    _recordLabel('Message Notes'),
+    _field('p', 'body', row.body || '', 'Write sermon notes, outline, or manuscript...', 'fd-record-body fd-record-body--sermon'),
     '</section>',
     '</article>',
   ].join('');
@@ -950,6 +1031,41 @@ function createNewCalendarEvent() {
     type: 'calendar',
     name: 'Calendar Event',
     content: _buildCalendarContent(row),
+    sourceData: row,
+    ownerId: S.user?.email || S.user?.uid,
+    ownerName: S.user?.displayName || 'Member',
+    shared: false,
+    deleted: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  _openEditor();
+}
+
+function createNewSermon() {
+  const row = {
+    id: null,
+    title: 'Sermon',
+    scripture: '',
+    date: new Date().toISOString().slice(0, 10),
+    preacher: S.user?.displayName || '',
+    series: '',
+    body: '',
+    __bodyKey: 'manuscript',
+    status: 'draft',
+    createdBy: S.user?.email || S.user?.uid,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  S.currentDoc = {
+    id: null,
+    source: 'sermon',
+    sourceId: null,
+    type: 'sermon',
+    name: 'Sermon',
+    content: _buildSermonContent(row),
     sourceData: row,
     ownerId: S.user?.email || S.user?.uid,
     ownerName: S.user?.displayName || 'Member',
@@ -1204,6 +1320,24 @@ async function _saveSystemDocument() {
         savedId = await UpperRoom.createCalendarEvent(payload);
       }
       S.currentDoc.name = payload.Title;
+    } else if (S.currentDoc.source === 'sermon') {
+      const bodyKey = S.currentDoc.sourceData?.__bodyKey || 'manuscript';
+      const payload = {
+        title: fields.title || S.currentDoc.name || 'Sermon',
+        scripture: fields.scripture || '',
+        date: fields.date || '',
+        preacher: fields.preacher || S.user?.displayName || '',
+        series: fields.series || '',
+        status: S.currentDoc.sourceData?.status || 'draft',
+        [bodyKey]: fields.body || '',
+      };
+      if (savedId) {
+        await UpperRoom.updateSermon({ id: savedId, ...payload });
+      } else {
+        const result = await UpperRoom.createSermon(payload);
+        savedId = result?.id || result;
+      }
+      S.currentDoc.name = payload.title;
     }
 
     if (savedId) {
@@ -1312,6 +1446,8 @@ async function _deleteSystemDocument(doc) {
       await UpperRoom.deleteJournal({ id: doc.sourceId });
     } else if (doc.source === 'calendar' && UpperRoom.deleteCalendarEvent) {
       await UpperRoom.deleteCalendarEvent(doc.sourceId);
+    } else if (doc.source === 'sermon' && UpperRoom.deleteSermon) {
+      await UpperRoom.deleteSermon(doc.sourceId);
     } else {
       throw new Error(`Unsupported system document source: ${doc.source}`);
     }
@@ -1626,6 +1762,7 @@ function _applyView(viewName) {
     'prayers': 'Prayer Requests',
     'journal': 'Journal',
     'calendar': 'Calendar',
+    'sermons': 'Sermons',
     'my-docs': 'My Documents',
     'shared-docs': 'Shared with Church',
     'recent': 'Recent Documents',
@@ -1674,24 +1811,41 @@ function _renderDocuments() {
     return;
   }
 
-  const visibleDocs = docs.slice(0, S.visibleDocCount);
-  const hasMore = visibleDocs.length < docs.length;
+  const pageSize = DOC_RENDER_PAGE_SIZE;
+  const totalPages = Math.max(1, Math.ceil(docs.length / pageSize));
+  S.currentPage = Math.min(Math.max(1, S.currentPage || 1), totalPages);
+  const startIndex = (S.currentPage - 1) * pageSize;
+  const visibleDocs = docs.slice(startIndex, startIndex + pageSize);
   container.innerHTML = `
     <div class="fd-doc-grid">${visibleDocs.map(_renderDocCard).join('')}</div>
-    ${hasMore ? `
-      <div class="fd-load-more">
-        <div class="fd-load-more-count">Showing ${visibleDocs.length} of ${docs.length}</div>
-        <button class="fd-btn fd-btn--ghost" type="button" onclick="FlockDocs.loadMoreDocuments()">
-          Load more
-        </button>
+    <div class="fd-pager" aria-label="Documents pagination">
+      <div class="fd-pager-count">Showing ${startIndex + 1}-${startIndex + visibleDocs.length} of ${docs.length} · Page ${S.currentPage} of ${totalPages}</div>
+      <div class="fd-pager-actions">
+        <button class="fd-btn fd-btn--ghost" type="button" onclick="FlockDocs.previousDocumentPage()" ${S.currentPage <= 1 ? 'disabled' : ''}>Previous</button>
+        <button class="fd-btn fd-btn--ghost" type="button" onclick="FlockDocs.nextDocumentPage()" ${S.currentPage >= totalPages ? 'disabled' : ''}>Next</button>
       </div>
-    ` : ''}
+    </div>
   `;
 }
 
 function loadMoreDocuments() {
-  S.visibleDocCount += DOC_RENDER_PAGE_SIZE;
+  nextDocumentPage();
+}
+
+function previousDocumentPage() {
+  S.currentPage = Math.max(1, (S.currentPage || 1) - 1);
   _renderDocuments();
+  _scrollLibraryToTop();
+}
+
+function nextDocumentPage() {
+  S.currentPage = (S.currentPage || 1) + 1;
+  _renderDocuments();
+  _scrollLibraryToTop();
+}
+
+function _scrollLibraryToTop() {
+  document.getElementById('fd-main')?.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function _getEmptyStateConfig() {
@@ -1733,6 +1887,16 @@ function _getEmptyStateConfig() {
       body: 'Add your first calendar event from Docs.',
       button: 'Add Calendar Event',
       action: 'FlockDocs.createNewCalendarEvent()',
+    };
+  }
+  if (S.currentView === 'sermons') {
+    return {
+      type: 'sermon',
+      plural: 'sermons',
+      title: 'No sermons yet',
+      body: 'Create your first sermon record inside Docs.',
+      button: 'Add Sermon',
+      action: 'FlockDocs.createNewSermon()',
     };
   }
   return {
@@ -1836,7 +2000,7 @@ function _openEditor() {
       editorView.classList.toggle('is-note-editor', S.currentDoc.type === 'note');
       const recordType = _isSystemDoc(S.currentDoc) ? _normalizeDocType(S.currentDoc.type) : '';
       editorView.classList.toggle('is-record-editor', !!recordType);
-      ['prayer', 'journal', 'calendar'].forEach(type => {
+      ['prayer', 'journal', 'calendar', 'sermon'].forEach(type => {
         editorView.classList.toggle(`is-${type}-record`, recordType === type);
       });
       const editor = document.getElementById('fd-editor-content');
@@ -1851,7 +2015,7 @@ function _openEditor() {
       const pageEl      = document.getElementById('fd-editor-page');
       pageEl?.classList.toggle('fd-editor-page--note', S.currentDoc.type === 'note');
       pageEl?.classList.toggle('fd-editor-page--record', !!recordType);
-      ['prayer', 'journal', 'calendar'].forEach(type => {
+      ['prayer', 'journal', 'calendar', 'sermon'].forEach(type => {
         pageEl?.classList.toggle(`fd-editor-page--${type}`, recordType === type);
       });
       S._quill = mountQuill(editor, {
@@ -1874,9 +2038,9 @@ function _closeEditor(options = {}) {
   if (libraryView) libraryView.classList.remove('hidden');
   if (editorView) editorView.classList.add('hidden');
   if (spreadsheetView) spreadsheetView.classList.add('hidden');
-  editorView?.classList.remove('is-note-editor', 'is-record-editor', 'is-prayer-record', 'is-journal-record', 'is-calendar-record');
+  editorView?.classList.remove('is-note-editor', 'is-record-editor', 'is-prayer-record', 'is-journal-record', 'is-calendar-record', 'is-sermon-record');
   const pageEl = document.getElementById('fd-editor-page');
-  pageEl?.classList.remove('fd-editor-page--note', 'fd-editor-page--record', 'fd-editor-page--prayer', 'fd-editor-page--journal', 'fd-editor-page--calendar');
+  pageEl?.classList.remove('fd-editor-page--note', 'fd-editor-page--record', 'fd-editor-page--prayer', 'fd-editor-page--journal', 'fd-editor-page--calendar', 'fd-editor-page--sermon');
   const editor = document.getElementById('fd-editor-content');
   if (editor) delete editor.dataset.recordType;
 
@@ -2460,6 +2624,7 @@ async function exportRecordsToExcel() {
       ['Prayer Requests', docs.filter(doc => _normalizeDocType(doc.type) === 'prayer')],
       ['Journal', docs.filter(doc => _normalizeDocType(doc.type) === 'journal')],
       ['Calendar', docs.filter(doc => _normalizeDocType(doc.type) === 'calendar')],
+      ['Sermons', docs.filter(doc => _normalizeDocType(doc.type) === 'sermon')],
       ['Spreadsheets', docs.filter(doc => _normalizeDocType(doc.type) === 'spreadsheet')],
     ];
 
@@ -2529,6 +2694,7 @@ async function _loadSystemDocumentsForLocalExport() {
     UpperRoom.listPrayers ? UpperRoom.listPrayers({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapPrayerToDoc)) : Promise.resolve([]),
     UpperRoom.listJournal ? UpperRoom.listJournal({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapJournalToDoc)) : Promise.resolve([]),
     UpperRoom.listCalendarEvents ? UpperRoom.listCalendarEvents({ limit: 1000 }).then(rows => _unwrapResults(rows).map(_mapCalendarToDoc)) : Promise.resolve([]),
+    UpperRoom.listSermons ? UpperRoom.listSermons({ limit: 1000, paginate: true }).then(rows => _unwrapResults(rows).map(_mapSermonToDoc)) : Promise.resolve([]),
   ];
 
   const settled = await Promise.allSettled(loaders);
@@ -2590,6 +2756,7 @@ function _exportSummaryForDoc(doc, fields) {
   if (type === 'prayer') return fields.category || doc.name || '';
   if (type === 'journal') return fields.title || doc.name || '';
   if (type === 'calendar') return [fields.StartDateTime, fields.EndDateTime, fields.Location].filter(Boolean).join(' | ');
+  if (type === 'sermon') return [fields.scripture, fields.date, fields.preacher].filter(Boolean).join(' | ') || fields.title || doc.name || '';
   if (type === 'spreadsheet') return `${Object.keys(doc.cells || {}).length} populated cells`;
   return _htmlToText(doc.content || '').slice(0, 240);
 }
@@ -2599,6 +2766,7 @@ function _exportBodyForDoc(doc, fields) {
   if (type === 'prayer') return [fields.prayerText, fields.adminNotes ? `Admin Notes: ${fields.adminNotes}` : ''].filter(Boolean).join('\n\n');
   if (type === 'journal') return fields.body || '';
   if (type === 'calendar') return fields.Description || '';
+  if (type === 'sermon') return fields.body || '';
   if (type === 'spreadsheet') return JSON.stringify(doc.cells || {});
   return _htmlToText(doc.content || '');
 }
@@ -2685,6 +2853,7 @@ function _getDocIcon(type) {
     prayer: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s-7-4.35-7-10a7 7 0 1114 0c0 5.65-7 10-7 10z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 10.5h5M12 8v5"/></svg>`,
     journal: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6M9 12h5"/></svg>`,
     calendar: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 2v4m8-4v4M4 10h16M6 5h12a2 2 0 012 2v13H4V7a2 2 0 012-2z"/></svg>`,
+    sermon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h8M8 11h6"/></svg>`,
     spreadsheet: `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-2h2v2zm0-4H7v-2h2v2zm0-4H7V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg>`,
     presentation: `<svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>`,
   };
@@ -2692,7 +2861,7 @@ function _getDocIcon(type) {
 }
 
 function _normalizeDocType(type) {
-  if (type === 'spreadsheet' || type === 'note' || type === 'presentation' || type === 'prayer' || type === 'journal' || type === 'calendar') return type;
+  if (type === 'spreadsheet' || type === 'note' || type === 'presentation' || type === 'prayer' || type === 'journal' || type === 'calendar' || type === 'sermon') return type;
   return 'document';
 }
 
@@ -2703,6 +2872,7 @@ function _getDocTypeLabel(type) {
     prayer: 'Prayer Request',
     journal: 'Journal Entry',
     calendar: 'Calendar Event',
+    sermon: 'Sermon',
     spreadsheet: 'Spreadsheet',
     presentation: 'Presentation',
   };
